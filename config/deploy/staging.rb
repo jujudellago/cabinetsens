@@ -9,14 +9,14 @@ set :stage, :production
 # Extended Server Syntax
 # ======================
 #server '127.0.0.1', user: 'juju', roles: %w{web app db}
-server "80.74.149.209", user: 'gsprojet', roles: %w{web app db}
+server "80.74.149.209", user: 'ftpcab40490', roles: %w{web app db}, port: 2121
 
 #set :tmp_dir, "/home/clients/d9e7a0ab00bb20eac180d94da2fe2de6/tmp"
 
-set :tmp_dir, "/tmp"
+set :tmp_dir, "/home/httpd/vhosts/tmp"
 
 
-set :deploy_to, -> { "/bedrock/staging" }
+set :deploy_to, -> { "/home/httpd/vhosts/bedrock/staging" }
 #SSHKit.config.command_map[:bash] = "source"
 
 #SSHKit.config.shell = "source"
