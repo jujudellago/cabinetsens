@@ -1,0 +1,24 @@
+<wpml-config>
+	<custom-fields>
+		<custom-field action="copy">_thumbnail_id</custom-field>
+	</custom-fields>
+	<custom-types>
+		<custom-type translate="1">uxbarn_portfolio</custom-type>
+	</custom-types>
+	<taxonomies>
+		<taxonomy translate="1">uxbarn_portfolio_tax</taxonomy>
+	</taxonomies>
+	<admin-texts>
+		<key name="theme_mods_jeanne">
+			<key name="jeanne_ctmzr_site_identity_custom_site_title" />
+			<key name="jeanne_ctmzr_site_identity_copyright_text" />
+			<key name="jeanne_ctmzr_settings_general_search_placeholder_text" />
+			<key name="jeanne_ctmzr_settings_blog_read_more_text" />
+			<key name="jeanne_ctmzr_settings_blog_menu_text_active_status" />
+			<key name="jeanne_ctmzr_settings_portfolio_category_menu_text_all" />
+			<key name="jeanne_ctmzr_settings_portfolio_view_more_works_text" />
+			<key name="jeanne_ctmzr_settings_portfolio_view_more_works_text_many" />
+			<key name="jeanne_ctmzr_settings_portfolio_menu_text_active_status" />
+		</key>
+	</admin-texts>
+</wpml-config>

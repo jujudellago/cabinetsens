@@ -1,0 +1,59 @@
+.customize-control-title {
+	color: #050505;
+}
+
+#accordion-panel-nav_menus,
+#accordion-section-jeanne_ctmzr_typography_main_fonts,
+#accordion-section-jeanne_ctmzr_colors_general,
+#accordion-panel-jeanne_ctmzr_panel_settings {
+	border-top: 1px solid #ddd !important;
+	margin-top: 15px;
+}
+
+.custom-heading {
+	background: #050505;
+	border: 1px solid #000;
+	box-sizing: border-box;
+	color: #fff;
+	font-size: 13px;
+	font-style: normal;
+	letter-spacing: 1px;
+	line-height: 1.6;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding: 1em;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.custom-description {
+	color: #383838;
+	font-style: italic;
+}
+
+
+#sub-accordion-section-jeanne_ctmzr_typography_main_fonts .kirki-variant-wrapper {
+	display: none !important;
+}
+/* Kirki 3.0.33 still has a PHP error when the 'font-family' attribute of the Typography field is disabled; */
+/* so, as a workaround, we need to hide the attribute using this custom CSS. */
+#sub-accordion-section-jeanne_ctmzr_typography_header .font-family,
+#sub-accordion-section-jeanne_ctmzr_typography_content .font-family,
+#sub-accordion-section-jeanne_ctmzr_typography_footer .font-family,
+#sub-accordion-section-jeanne_ctmzr_typography_portfolio .font-family,
+.kirki-host-font-locally {
+	display: none !important;
+}
+
+.customize-control-kirki-custom hr {
+	border: 0;
+	border-top: 1px dashed #000;
+}
+
+.customize-control .select2-container--default .select2-selection--single {
+	border-color: #ddd;
+}
+
+.customize-control-kirki-typography .wrapper {
+	padding-top: 0;
+}

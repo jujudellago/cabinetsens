@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>Jeanne WordPress Theme Documentation</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<link href="assets/css/reset.css" rel="stylesheet">
+		<link href="assets/css/foundation.min.css" rel="stylesheet">
+		<link href="assets/css/shi_default.min.css" rel="stylesheet">
+		<link href="assets/css/doc.css" rel="stylesheet">
+		<script src="assets/js/custom.modernizr.js"></script>
+
+	</head>
+
+	<body>
+
+		<nav id="menu" class="top-bar">
+			<ul class="title-area">
+				<!-- Title Area -->
+				<li class="name">
+					<h1><a href="https://uxbarn.com" target="_blank">UXBARN</a></h1>
+				</li>
+				<!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+				<li class="toggle-topbar menu-icon">
+					<a href="#"><span>Menu</span></a>
+				</li>
+			</ul>
+
+			<section class="top-bar-section">
+				<!-- Left Nav Section -->
+				<ul class="right">
+					<li class="divider"></li>
+					<li>
+						<a href="#">Top</a>
+					</li>
+					<li class="divider"></li>
+					<li class="has-dropdown">
+						<a href="#install-the-theme">Installation</a>
+						<ul class="dropdown">
+							<li>
+								<a href="#install-the-theme">1. Install the Theme</a>
+							</li>
+							<li>
+								<a href="#install-plugins">2. Install Plugins</a>
+							</li>
+							<li>
+								<a href="#import-dummy-data">3. Import Dummy Data</a>
+							</li>
+							<li>
+								<a href="#complete-initial-setup">4. Complete the Setup</a>
+							</li>
+						</ul>
+					</li>
+					<li class="divider"></li>
+					<li class="has-dropdown">
+						<a href="#theme-anatomy">Getting Started</a>
+						<ul class="dropdown">
+							<li>
+								<a href="#image-dimension-guideline">Image Dimension Guideline</a>
+							</li>
+							<li>
+								<a href="#style-customizer">Customizer</a>
+							</li>
+						</ul>
+					</li>
+					<li class="divider"></li>
+					<li class="has-dropdown">
+						<a href="#create-portfolio">How To</a>
+						<ul class="dropdown">
+							<li>
+								<a href="#create-portfolio">Create and display your portfolio</a>
+							</li>
+							<li>
+								<a href="#edit-portfolio-slugs">Change the portfolio slugs</a>
+							</li>
+							<li>
+								<a href="#disable-portfolio-lightbox">Disable the lightbox on portfolio single pages</a>
+							</li>
+							<li>
+								<a href="#show-search-menu">Show/hide search button</a>
+							</li>
+							<li>
+								<a href="#edit-copyright">Edit the copyright text and social icons</a>
+							</li>
+							<li>
+								<a href="#add-widgets">Hide or show the widget area</a>
+							</li>
+							<li>
+								<a href="#translate-the-theme">Translate the theme</a>
+							</li>
+							<li>
+								<a href="#update-the-theme">Update the theme and plugins</a>
+							</li>
+						</ul>
+					</li>
+					<li class="divider"></li>
+					<li>
+						<a href="#credits">Credits</a>
+					</li>
+				</ul>
+			</section>
+		</nav>
+
+		<div id="content-container">
+
+			<h2 id="title">Welcome to Jeanne Theme Documentation</h2>
+			<div id="theme-info" class="row">
+				<div class="large-4 columns">
+					<ul>
+						<li>
+							<strong>Created:</strong> September 16, 2018
+						</li>
+						<li>
+							<strong>Updated:</strong> September 16, 2018
+						</li>
+						<li>
+							<strong>By: </strong><a href="https://uxbarn.com">UXBARN</a>
+						</li>
+						<li>
+							<strong>Support: </strong><a href="http://uxbarn.ticksy.com/">http://uxbarn.ticksy.com/</a>
+						</li>
+					</ul>
+				</div>
+				<div class="large-8 columns">
+					Thank you for purchasing our theme! If you have any questions that are beyond the scope of this help file, please feel free to open a ticket at our official support site: <a href="http://uxbarn.ticksy.com/">http://uxbarn.ticksy.com/</a>. Thanks so much!
+				</div>
+			</div>
+
+			<a id="install-the-theme" class="topic"></a>
+			<div class="row top-margin">
+				<div class="large-5 columns">
+					<h3>1. Install the Theme</h3>
+					<p>
+						After downloading the package, please first unzip the main package, then you will see another zip file named <strong>jeanne.zip</strong>. This file is the one to be uploaded via the WordPress Themes screen.
+					</p>
+					<ol>
+						<li>
+							Go to <strong>Appearance &gt; Themes</strong>.
+						</li>
+						<li>
+							Click <strong>Add New</strong> then click <strong>Upload Theme</strong>. Now you will see the screen as showing on the right.
+						</li>
+						<li>
+							Click <strong>Choose File</strong> and select the <strong>jeanne.zip</strong> file. Then click <strong>Install Now</strong>.
+						</li>
+						<li>
+							Wait until you see the message <strong>"Theme installed successfully"</strong>. After that, click the <strong>Activate</strong> link on the screen to start using the theme.
+						</li>
+					</ol>
+				</div>
+				<div class="large-7 columns">
+					<img src="assets/images/install-theme.jpg" class="figure" alt="" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="large-12 columns">
+					<div class="panel">
+						<p>
+						<strong>NOTE:</strong> If you see the message "Are you sure you want to do this?" after clicking the "Install Now" button and you cannot install the theme, it probably means that your server has some configuration restriction in the "php.ini" file that prevents uploading and executing a large file. <br/><br/>You can instead install the theme via FTP by directly upload the theme files into the theme directory of your WordPress site. The path of the theme directory should look like this:
+						</p>
+						<pre>[root]/wp-content/themes</pre>
+						<p>
+							Here are the steps for how to install the theme using this FTP method: <u>(You can skip this section if the theme is already installed using the admin panel as described above.)</u>
+						</p>
+						<ol>
+							<li>
+								After extracting the main downloaded package, you will see a file named <strong>jeanne.zip</strong>. Extract the zip file again then you will get a folder named <strong>jeanne</strong>. You will see many theme files in the folder such as, <em>functions.php, styles.css, page.php, etc.</em>
+							</li>
+							<li>
+								Use an FTP client like FileZilla to access to your hosting and browse to the theme directory (wp-content/themes/). 
+							</li>
+							<li>
+								Upload the folder you get from step 1 into the theme directory. Make sure to upload the entire <strong>jeanne</strong> folder including the folder itself (NOT only the files inside). So, as a result, your theme directory should be like "wp-content/themes/jeanne" in this step.
+							</li>
+							<li>
+								Log in to your WordPress admin, then go to <strong>Appearance > Themes</strong> and you will see the theme in the theme list. Just click the Activate link to use the theme.
+							</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+			
+			<a id="install-plugins" class="topic"></a>
+			<div class="row top-margin">
+				<div class="large-12 columns">
+					<h3>2. Install Plugins</h3>
+					<p>
+						After the theme is activated, you should see a notification at the top saying that there are some required and recommended plugins to be installed like the below image. (Note that the plugins might be different from the image.):
+						<br/>
+						<img src="assets/images/install-plugins1.jpg" class="figure" alt="" />
+					</p>
+					<p>
+						To install and activate them, please follow these steps:
+					</p>
+					<ol>
+						<li>
+							Click the <strong>Begin installing plugins</strong> link or go to <strong>Appearance &gt; Install Plugins</strong>.
+						</li>
+						<li>
+							You will see a list of plugins. Tick all of them then choose <strong>Install</strong> from the select list and click <strong>Apply</strong>:
+							<br/>
+							<img src="assets/images/install-plugins2.jpg" class="figure" alt="" />
+						</li>
+						<li>
+							Wait until the installation is finished then click <strong>Return to Required Plugins Installer</strong> to go back to the plugin list again.
+						</li>
+						<li>
+							Now tick all of them and choose <strong>Activate</strong> then click <strong>Apply</strong>.
+							<br/>
+							<img src="assets/images/install-plugins3.jpg" class="figure" alt="" />
+						</li>
+						<li>
+							That's it! The plugins are now installed and activated. You should see a complete message in this step.
+						</li>
+					</ol>
+				</div>
+			</div>
+			
+			<a id="import-dummy-data" class="topic"></a>
+			<div class="row top-margin">
+				<div class="large-5 columns">
+					<h3>3. Import Dummy Data</h3>
+					<p>
+						Please follow the steps below for importing the dummy data file to get most posts and pages like the demo site.
+					</p>
+					<ol>
+						<li>
+							Go to <strong>Tools > Import</strong> and click the <strong>WordPress</strong> link from the list. <em>(Note that at this step, you may first need to install a WordPress Importer tool.)</em> After that, click <strong>Run Importer</strong>.
+						</li>
+						<li>
+							Click the Choose File button then browse to the theme package. You will see an XML file named <strong>jeannedummy.wordpress.2018-09-15.xml</strong>. Select it and click <strong>Upload file and import</strong>.
+						</li>
+						<li>
+							You will be brought to the screen as showing on the right. Don't forget to check the <strong>Download and import file attachments</strong> checkbox before clicking the Submit button. Then wait until you see the message <strong>"All done. Have fun!"</strong>.
+						</li>
+					</ol>
+				</div>
+				<div class="large-7 columns">
+					<img src="assets/images/import-data.jpg" class="figure" alt="" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="large-12 columns">
+					<div class="panel">
+						<strong>NOTE:</strong> If you do not see the "All done. Have fun!" message as mentioned above and some dummy data are missing, it means that the process is not successfully complete. You might need to update the configuration of the "php.ini" file on your server. Try increasing the value of "max_input_vars" in the file and restart the server then try importing the XML file again. In most of the cases, this should help. <br/><br/>If you are not sure what it is all about, please contact your web hosting. They should be able to help you out in this technical case.
+					</div>
+				</div>
+			</div>
+					
+			
+			<a id="complete-initial-setup" class="topic"></a>
+			<div class="row top-margin">
+				<div class="large-5 columns">
+					<h3>4. Complete the Setup</h3>
+					<p>
+						The theme is almost ready. There are only a few steps left to complete the setup:
+					</p>
+					<ol>
+						<li>
+							Go to <strong>Appearance > Menus</strong> and scroll down to the bottom. There you will see a checkbox for <strong>Main Menu</strong> as showing on the right. Tick it and save the menu.
+						</li>
+						<li style="margin-top: 110px;">
+							Go to <strong>Settings > Reading</strong> and select the options as following:
+							<br/><br/>
+							<ul>
+								<li>
+									<strong>Front page:</strong> > select "Home"
+								</li>
+								<li>
+									<strong>Posts page:</strong> > select "Blog"
+								</li>
+							</ul>
+							<br/>
+							Note that "Front page" is for selecting a page to be used as homepage. "Posts page" is for a page to be used to display your blog posts.
+						</li>
+						<li style="margin-top: 120px;">
+							<p>
+								You might want to change the site title now. To do that, go to <strong>Appearance > Customize > Site Identity</strong> and there you will see the option for changing the title or uploading a logo image.
+							</p>
+						</li>
+						<li>
+							Based on the demo site, it only shows the portfolio items from the Featured category on the homepage. To do that, go to <strong>Appearance > Customize > Theme Settings > Portfolio Settings</strong> and select only the "Featured" category under the Featured Works Template section.
+						</li>
+						<li>
+							All done! Now your site should have all the data as showing on the demo site and the setup is complete!
+						</li>
+					</ol>
+				</div>
+				<div class="large-7 columns">
+					<img src="assets/images/menu-setup.jpg" class="figure" alt="" style="margin-top: 40px;" />
+					<img src="assets/images/reading-setup.jpg" class="figure" alt="" />
+				</div>
+			</div>
+			
+			<a id="image-dimension-guideline" class="topic"></a>
+			<div class="row top-margin">
+				<div class="large-12 columns">
+					<h3>Image Dimension Guideline</h3>
+					<p>
+						Default image dimensions that are used in the theme are as following:
+					</p>
+					<ul>
+						<li>
+							<strong>Portfolio's Featured Images:</strong> The recommended width is 1140px with flexible height.
+							<br/><br/>
+						</li>
+						<li>
+							<strong>Images on Portfolio Single Pages:</strong> You can actually upload any sizes. The theme will pick the best size when displaying in the grid, and the full-size image will display on the lightbox.
+							<br/><br/>
+						</li>
+						<li>
+							<strong>Blog and Page Images (Featured Image):</strong> The recommended width is 1140px with flexible height.
+							<br/><br/>
+						</li>
+					</ul>
+					<p>
+						You can see the online examples from here: <a href="http://themes.uxbarn.com/wp/jeanne-dummy/" target="_blank">http://themes.uxbarn.com/wp/jeanne-dummy/</a>
+					</p>
+				</div>
+			</div>
+			
+			<a id="style-customizer" class="topic"></a>
+			<div class="row top-margin">
+				<div class="large-12 columns">
+					<h3>Customizer</h3>
+					<p>
+						You can use the customizer to change the styles and settings of the theme. There are three main sections: Typography, Colors, and Theme Settings. The Typography section is for adjusting any font-related options. The Colors section is for adjusting colors. And the Theme Settings section is for other options that are not related to the style adjustment.
+					</p>
+					<p>
+						You can also put your custom CSS into the "Additional CSS" section. If you are not sure how to find the correct HTML/CSS elements you want to adjust, we would recommend using the Developer Tools on Chrome or Firebug on Firebox to inspect the elements on the page.
+					</p>
+					<p>
+						More info about it here: <a href="https://uxbarn.com/inspecting-elements-developer-tools/" target="_blank">https://uxbarn.com/inspecting-elements-developer-tools/</a></p>
+					<p>
+						You can open the customizer screen by going to the <strong>Appearance > Customize</strong> menu.
+					</p>
+				</div>
+				<div class="large-12 columns">
+					<img src="assets/images/customizer.jpg" class="figure" alt="" />
+				</div>
+			</div>
+			
+			<a id="create-portfolio" class="topic"></a>
+			<div class="row top-margin">
+				<div class="large-12 columns">
+					<h3>How to create and display portfolio</h3>
+					<ol>
+						<li>
+							First, go to <strong>Portfolio > Add New Portfolio Item</strong> to start adding your work. On the portfolio edit screen, you can upload the Featured Image and it will be used as the item image on the portfolio templates.
+							<br/>
+							<img src="assets/images/create-port1.jpg" class="figure" alt="" />
+							<br/>
+							In the Portfolio Item Settings box, there are three options as following:
+							<ul>
+								<li><strong>Full-width Image on Portfolio Templates:</strong> Normally, the theme will display the image in the flexible grid, but if you want to expand the image of this item to the full-width when displaying on the portfolio templates, you can use this option.</li>
+									
+								<li><strong>Portfolio Item Format:</strong> You can use this option to change the type of the portfolio content. There are three formats you can choose: Image, Video, or Mixed.</li>
+								
+								<li><strong>Images/Video/Mixed Content:</strong> This option will change depending on the selected format.</li>
+							</ul>
+							Don't forget to select the categories for this item then click Publish. Repeat this step to create more items.
+						</li>
+						<li>
+							<p>
+								Now you have got all portfolio items you want to show on the front end. At this step, go to <strong>Pages > Add New</strong> to create a new page to be used as a portfolio listing page.
+							</p>
+							<p>
+								On the page edit screen, enter the page title then look at the right side and you will find a box called <strong>Page Attributes</strong>. Under the <strong>Template</strong> option, there are two templates to choose from.
+								<br/>
+								<img src="assets/images/create-port2.jpg" class="figure" alt="" />
+							</p>
+							<p>
+								Both templates are quite similar as they can be used to show your works except that there are some different options you can set in <strong>Appereance > Customize > Theme Settings > Portfolio Settings</strong>.
+							</p>
+							<p class="panel">
+								<strong>Sample Scenario:</strong> Based on the demo site, you can use the Featured Works template on the homepage to show the works of a specific category; for example, the Featured category. At the same time, you might want to have another page to show the works from all categories; you can then use the All Works template for that.
+							</p>
+							<p>
+								In this case, we will select the Featured Works template for this page. Then we open the customizer and go to the Portfolio Settings as mentioned above to make it show only the works from the Featured category.
+								<br/>
+								<img src="assets/images/create-port3.jpg" class="figure" alt="" /> 
+							</p>
+							
+							<p>
+								When you view this page on the front end, you will see the works showing up.
+								<br/>
+								<img src="assets/images/create-port4.jpg" class="figure" alt="" />
+							</p>
+							<div class="panel">
+								<strong>TIP:</strong> If you want to select more or manage which portfolio categories to display, you can go to <strong>Appearance > Customize > Theme Settings > Portfolio Settings</strong>.
+							</div>
+						</li>
+						<li>
+							That's it for how to create and show your portfolio. When you click on any portfolio item, you will then see its single page that displays the content you added in step 1.
+						</li>
+					</ol>
+				</div>
+			</div>
+			
+			<a id="edit-portfolio-slugs" class="topic"></a>
+			<div class="row top-margin">
+				<div class="large-12 columns">
+					<h3>How to change the portfolio slugs</h3>
+					<p>
+						Go to <strong>Appearance > Customize > Theme Settings > Portfolio Settings</strong> and scroll down to the bottom. Then you will see the options to edit the portfolio slugs. After changing, go to <strong>Settings > Permalinks</strong> and click save to make the new slug work.
+						<br>
+						<img src="assets/images/edit-slugs.jpg" class="figure" alt="" />
+					</p>
+				</div>
+			</div>
+			
+			<a id="disable-portfolio-lightbox" class="topic"></a>
+			<div class="row top-margin">
+				<div class="large-12 columns">
+					<h3>How to disable the lightbox on portfolio single pages</h3>
+					<p>
+						Go to <strong>Appearance > Customize > Theme Settings > Portfolio Settings</strong> and you will find the option there.
+						<br>
+						<img src="assets/images/disable-port-lightbox.jpg" class="figure" alt="" />
+					</p>
+				</div>
+			</div>
+			
+			<a id="show-search-menu" class="topic"></a>
+			<div class="row top-margin">
+				<div class="large-12 columns">
+					<h3>How to show or hide the search button</h3>
+					<p>
+						You can find the option in the <strong>Appearance > Customize > Theme Settings > General Settings</strong> section.
+						<br>
+						<img src="assets/images/show-search-menu.jpg" class="figure" alt="" />
+					</p>
+				</div>
+			</div>
+			
+			<a id="edit-copyright" class="topic"></a>
+			<div class="row top-margin">
+				<div class="large-12 columns">
+					<h3>How to edit the copyright text and social icons</h3>
+					<p>
+						Go to <strong>Appearance > Customize > Site Identity</strong> and you will find the options to edit both copyright text and social icon URLs.
+					</p>
+				</div>
+			</div>
+			
+			<a id="add-widgets" class="topic"></a>
+			<div class="row top-margin">
+				<div class="large-12 columns">
+					<h3>How to hide or show the widget area</h3>
+					<p>
+						Go to <strong>Appearance > Customize > Theme Settings > General Settings</strong>, and you will find the options for hiding or showing the widget area and the number of columns you want in the area.
+						<br>
+						<img src="assets/images/add-widgets.jpg" class="figure" alt="" />
+					</p>
+					<p>
+						To manage widgets, you can go to <strong>Appearance > Widgets</strong> or <strong>Appearance > Customize > Widgets</strong>. The widgets will be displayed at the bottom of the site.
+					</p>
+				</div>
+			</div>
+			
+			<a id="translate-the-theme" class="topic"></a>
+			<div class="row top-margin">
+				<div class="large-12 columns">
+					<h3>How to translate the theme</h3>
+					<p>
+						You can follow these steps to translate the theme into your language. Note that this is <strong>not</strong> the same as creating a multilingual site (multiple languages). To create the multilingual site, you would need to use <strong><a href="http://wpml.org/?aid=30630&affiliate_key=xeeP1z24zlET" target="_blank">WPML plugin</a></strong> for that. 
+					</p>
+					<p>So, let's begin translating the theme:</p>
+					<ol>
+						<li>
+							Download and install the Poedit software: <a href="http://www.poedit.net/download.php" target="_blank">http://www.poedit.net/download.php</a>
+						</li>
+						<li>
+							In the extracted theme ZIP file, go to the <strong>/jeanne/languages</strong> folder and you will see a file named <strong>jeanne.pot</strong> in there. Open the file with the Poedit that you just install. Once opened, you will see all the English texts of the theme.
+						</li>
+						<li>
+							Click on the "Create new translation" button. Make sure to select the target language with country in parenthesis.
+							<br/>
+							<img src="assets/images/create_po.jpg" class="figure" alt="" />
+						</li>
+						<li>
+							 Translate the texts then save. After saving, you will get new PO and MO files for your language. For example, if your translation language is German (Germany), the Poedit will create the files as "de_DE.po" and "de_DE.mo" for you.
+						</li>
+						<li>
+							Upload the <strong>de_DE.mo</strong> file into the <strong>/languages</strong> folder of your installed theme directory on your server. The path should be like: <code>[root]/wp-content/themes/jeanne/languages</code> 
+						</li>
+						<li>
+							On your admin panel, go to <strong>Settings > General > Site Language</strong> and you can select your language here.
+						</li>
+						<li>
+							That's it. WordPress should now load the translated text for the theme.
+						</li>
+					</ol>
+				</div>
+			</div>
+			
+			<a id="update-the-theme" class="topic"></a>
+			<div class="row top-margin">
+				<div class="large-12 columns">
+					<h3>How to update the theme and plugins</h3>
+					<p>
+						
+					</p>
+					<div class="panel">
+						<strong>IMPORTANT: </strong>Before updating the theme, it's recommended to create a backup of the current theme files and database. 
+					</div>
+					
+					<p>
+						There are 2 methods to update the theme. You can choose whether to update the theme via the Envato Market plugin, or manually update it via FTP.
+					</p>
+					<h4>Method 1: Update the theme via the Envato Market plugin</h4>
+					<p>
+						This method assumes that you already have the Envato Market plugin activated as stated in the <strong><a href="#install-plugins">Installation > Install Plugins</a></strong> section in this documentation.
+					</p>
+					<p>
+						The idea of this plugin is that, you create and save a token and the plugin will list the items you purchased on the Envato Market (ThemeForest, CodeCanyon, for examples). You can then update the items easily via WordPress.
+					</p>
+					<ol>
+						<li>
+							Let's start setting the plugin. On your admin panel, go to <strong>Envato Market</strong> menu.
+						</li>
+						<li>
+							You will see the screen similar to the image below:
+							<br>
+							<img src="assets/images/envato-market1.jpg" class="figure" alt="" />
+						</li>
+						<li>
+							<p>
+								There are 2 options to choose:
+							</p>
+							<p>
+								For <strong>Envato API Connection</strong>, it is suitable if this is your own website; so, once a token is saved, the plugin will list all the purchased items here. To start creating a token, click on the link on the page.
+							</p>
+							<p>
+								You may then see the login page, just login with your account that is used to purchase the theme. Now you will see the screen like this for creating a new token:
+								<br>
+								<img src="assets/images/envato-market2.jpg" class="figure" alt="" />
+							</p>
+							<p>
+								Select the permissions as showing in the above picture and click "Create Token". You will finally see a screen showing the created token. Copy that token and put it into the "Token" field on the Envato Market plugin page.
+							</p>
+							<p>
+								After saving, you will see all of the purchased items under the account that is used to create the token. 
+							</p>
+							<br>
+							<p>
+								For <strong>Single Item Tokens</strong>, it is suitable if you create this website for your client so you can specify which items to display. The plugin will list only the added items. The overall concept is similar to the first one. Once you click the "Add Item" button, you will see this popup window:
+								<br>
+								<img src="assets/images/envato-market3.jpg" class="figure" alt="" />
+							</p>
+							<p>
+								Use the same steps as the above global token's to create a new token. Or if you already have one, put it into the "Token" field here. For the item ID, just go to the item page on ThemeForest website then look at the browser's URL field. You will see a number like this "11354296" (it should be right after the item name). Copy and put it into the "Item ID" field then click "Save".
+							</p>
+							<br>
+							<p>
+								That's all for the plugin setting. With this plugin, you can update the theme using the Envato Market menu and you will also be able to see the available theme updates on the WordPress Updates page. The plugin will check for any updates periodically and add them into the WP Updates list.
+							</p>
+						</li>
+				
+					</ol>
+					<br><br>
+					<h4>Method 2: Update the theme via FTP</h4>
+					<ol>
+						<li>
+							Go to your Download page of your account at ThemeForest.net and download the latest version of the theme.
+						</li>
+						<li>
+							Extract the main theme package, and you will see a theme ZIP file named <strong>jeanne.zip</strong>. Extract it. You will get an actual theme folder (<strong>"jeanne"</strong> folder). Then upload all the theme files (<strong>only the files inside</strong>) into the current installed theme directory on your server using FTP, replacing any existing ones. Note that the theme path on your server should look like this: <code>[root]/wp-content/themes/jeanne/</code> 
+						</li>
+						<li>That's all!</li>
+					</ol>
+					<br><br>
+					<h4>Update bundled plugins</h4>
+					<p>
+						After updating the theme, now back to your admin dashboard, you may see a notification like the screenshot below:
+						<br/>
+						<img src="assets/images/update_plugin1.jpg" class="figure" alt="" />
+					</p>
+					<p>
+						If you see this, it means that the new version of the theme also includes the new version of the bundled plugins (in this case, they are UXBARN Portfolio and Visual Composer).
+					</p>
+					<div class="panel">
+						<strong>NOTE:</strong> But if you do not see this notification, it means that there is no update for the plugin. Just skip the steps below. You just finish updating the theme!
+					</div>
+					<ol>
+						<li>
+							So, let's update the plugin by clicking the <strong>Begin updating plugin</strong> link in the notification area or, go to <strong>Appearance > Install Plugins</strong>. Then tick all of them, select "Update" from the select list, and click "Apply":
+							<br/>
+							<img src="assets/images/update_plugin2.jpg" class="figure" alt="" />
+						</li>
+						<li>
+							Wait until you see the complete message. Done!
+						</li>
+					</ol>
+					<br><br>
+					<h5>"W ... Wait! Some plugin can't be updated! I got an error message. What to do?"</h5>
+					<p>
+						If there is a problem with some plugin while updating via WordPress, you can manually upload the plugin to your WordPress site via FTP. Just use an FTP client like FileZilla to connect to your host, then go to the plugin path which should look like this: <code>[root]/wp-content/plugins/</code>. 
+					</p>
+					<p>
+						Now on your local machine, open the purchased package, extract the theme ZIP file, go to this path: <code>/jeanne/includes/plugin-packages/</code> and you will see all of the bundled plugin ZIP packages. Extract the one that has the problem and upload <em>just the folder inside</em> into your WP's plugin path on your host, replacing the old one. For example, when you extract the "uxbarn-portfolio_1.2.1.zip" plugin ZIP package, you will see a folder inside which is "uxbarn-portfolio" -- this is the one to be uploaded to your host.
+					</p>
+				</div>
+			</div>			
+			
+			<a id="credits" class="topic"></a>
+			<div class="row top-margin">
+				<div class="large-12 columns">
+					<h3>Credits</h3>
+					<p>
+						jQuery plugins:
+					</p>
+					<table style="width: 100%">
+						<thead>
+							<tr>
+								<th>
+									jQuery Plugin
+								</th>
+								<th>
+									URL
+								</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr>
+								<td>
+									Fancybox
+								</td>
+								<td>
+									http://fancyapps.com
+								</td>
+							</tr>
+							<tr>
+								<td>
+									flexImages
+								</td>
+								<td>
+									https://github.com/Pixabay/jQuery-flexImages
+								</td>
+							</tr>
+							<tr>
+								<td>
+									SlickNav
+								</td>
+								<td>
+									http://slicknav.io/
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Superfish
+								</td>
+								<td>
+									http://users.tpg.com.au/j_birch/plugins/superfish/
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					
+					<p class="top-margin">
+						Icon fonts from:
+					</p>
+					<p>
+						<table style="width: 100%">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>URL</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Font Awesome</td>
+									<td>http://fontawesome.io/</td>
+								</tr>
+							</tbody>
+						</table>
+					</p>
+					
+				</div>
+				
+			</div>
+			
+			<div class="row top-margin">
+				<div class="large-12 columns">
+					<blockquote class="full-width">
+						<p>
+							Once again, thank you so much for purchasing the theme. As we said at the beginning, we'd be glad to help you if you have any questions relating to this theme. No guarantees, but we'll do our best to assist. If you have a more general question relating to the themes on ThemeForest, you might consider visiting the forums and asking your question in there.
+						</p>
+						<cite> UXBARN </cite>
+					</blockquote>
+				</div>
+			</div>
+			<br><br><br><br>
+		
+		
+		</div>
+		
+		<div id="copyright" class="row">
+			<div class="large-12 columns" style="text-align: center">
+				Copyright &copy; Jeanne. Premium Theme by <a href="https://uxbarn.com">UXBARN</a>.
+			</div>
+		</div>
+
+		<script src="assets/js/jquery-1.9.1.js"></script>
+		<script src="assets/js/foundation.js"></script>
+		<script src="assets/js/shi_jquery.js"></script>
+		<script>
+			$(document).foundation();
+		</script>
+	</body>
+</html>

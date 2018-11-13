@@ -1,0 +1,1730 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Jeanne Theme\n"
+"POT-Creation-Date: 2018-09-15 22:29+0700\n"
+"PO-Revision-Date: 2016-03-22 16:50+0700\n"
+"Last-Translator: Paul <paul@uxbarn.com>\n"
+"Language-Team: UXBARN <support@uxbarn.com>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.1.1\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;esc_html__;esc_html_e;"
+"esc_attr__;esc_attr_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: 404.php:16
+msgid "Page Not Found"
+msgstr ""
+
+#: 404.php:22
+#, php-format
+msgid ""
+"The requested page could not be found or it is currently unavailable.<br/"
+">Please <a href=\"%s\">click here</a> to go to our homepage or use the "
+"search form below."
+msgstr ""
+
+#: comments.php:28 template-parts/content-blog-meta.php:49
+msgid "No Comments"
+msgstr ""
+
+#: comments.php:28 template-parts/content-blog-meta.php:49
+msgid "1 Comment"
+msgstr ""
+
+#: comments.php:28 template-parts/content-blog-meta.php:49
+msgid "% Comments"
+msgstr ""
+
+#: comments.php:51 includes/assets.php:75
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:397
+#: includes/theme-functions.php:598 template-parts/pagination.php:21
+msgid "Previous"
+msgstr ""
+
+#: comments.php:52 includes/assets.php:74
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:399
+#: includes/theme-functions.php:600 template-parts/pagination.php:22
+msgid "Next"
+msgstr ""
+
+#: comments.php:67
+msgid "Comments are closed."
+msgstr ""
+
+#: footer.php:31 includes/customizer/section-site-identity.php:22
+#, php-format
+msgid "&copy; Jeanne WordPress Theme. Designed by <a href=\"%s\">UXBARN</a>."
+msgstr ""
+
+#: footer.php:53 includes/assets.php:76
+msgid "Close"
+msgstr ""
+
+#: header.php:53
+msgid "Search"
+msgstr ""
+
+#: includes/assets.php:69
+msgid "Clear"
+msgstr ""
+
+#: includes/assets.php:70 includes/customizer/section-settings-general.php:50
+msgid "Type and hit enter"
+msgstr ""
+
+#: includes/assets.php:73
+msgid "The requested content cannot be loaded. <br/> Please try again later."
+msgstr ""
+
+#: includes/assets.php:77
+msgid "Start slideshow"
+msgstr ""
+
+#: includes/assets.php:78
+msgid "Pause slideshow"
+msgstr ""
+
+#: includes/assets.php:79
+msgid "Full Screen"
+msgstr ""
+
+#: includes/assets.php:80
+msgid "Thumbnails"
+msgstr ""
+
+#: includes/assets.php:81
+msgid "Download"
+msgstr ""
+
+#: includes/assets.php:82
+msgid "Share"
+msgstr ""
+
+#: includes/assets.php:83
+msgid "Zoom"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:327
+msgid "Install Required Plugins"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:328
+msgid "Install Plugins"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:330
+#, php-format
+msgid "Installing Plugin: %s"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:332
+#, php-format
+msgid "Updating Plugin: %s"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:333
+msgid "Something went wrong with the plugin API."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:385
+msgid "Return to Required Plugins Installer"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:386
+#: includes/class-tgm-plugin-activation.php:827
+#: includes/class-tgm-plugin-activation.php:2533
+#: includes/class-tgm-plugin-activation.php:3580
+msgid "Return to the Dashboard"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:387
+#: includes/class-tgm-plugin-activation.php:3159
+msgid "Plugin activated successfully."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:388
+#: includes/class-tgm-plugin-activation.php:2952
+msgid "The following plugin was activated successfully:"
+msgid_plural "The following plugins were activated successfully:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-tgm-plugin-activation.php:390
+#, php-format
+msgid "No action taken. Plugin %1$s was already active."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:392
+#, php-format
+msgid ""
+"Plugin not activated. A higher version of %s is needed for this theme. "
+"Please update the plugin."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:394
+#, php-format
+msgid "All plugins installed and activated successfully. %1$s"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:395
+msgid "Dismiss this notice"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:396
+msgid ""
+"There are one or more required or recommended plugins to install, update or "
+"activate."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:397
+msgid "Please contact the administrator of this site for help."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:522
+msgid "This plugin needs to be updated to be compatible with your theme."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:523
+msgid "Update Required"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:934
+msgid ""
+"The remote plugin package does not contain a folder with the desired slug "
+"and renaming did not work."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:934
+#: includes/class-tgm-plugin-activation.php:937
+msgid ""
+"Please contact the plugin provider and ask them to package their plugin "
+"according to the WordPress guidelines."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:937
+msgid ""
+"The remote plugin package consists of more than one file, but the files are "
+"not packaged in a folder."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:1982
+#, php-format
+msgid "TGMPA v%s"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2273
+msgid "Required"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2276
+msgid "Recommended"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2292
+msgid "WordPress Repository"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2295
+msgid "External Source"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2298
+msgid "Pre-Packaged"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2315
+msgid "Not Installed"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2319
+msgid "Installed But Not Activated"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2321
+msgid "Active"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2327
+msgid "Required Update not Available"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2330
+msgid "Requires Update"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2333
+msgid "Update recommended"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2342
+#, php-format
+msgctxt "Install/Update Status"
+msgid "%1$s, %2$s"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2392
+#, php-format
+msgid "To Install <span class=\"count\">(%s)</span>"
+msgid_plural "To Install <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-tgm-plugin-activation.php:2396
+#, php-format
+msgid "Update Available <span class=\"count\">(%s)</span>"
+msgid_plural "Update Available <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-tgm-plugin-activation.php:2400
+#, php-format
+msgid "To Activate <span class=\"count\">(%s)</span>"
+msgid_plural "To Activate <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-tgm-plugin-activation.php:2482
+msgctxt "as in: \"version nr unknown\""
+msgid "unknown"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2490
+msgid "Installed version:"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2498
+msgid "Minimum required version:"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2510
+msgid "Available version:"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2533
+msgid "No plugins to install, update or activate."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2547
+msgid "Plugin"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2548
+msgid "Source"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2549
+msgid "Type"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2553
+msgid "Version"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2554
+msgid "Status"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2603
+#, php-format
+msgid "Install %2$s"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2608
+#, php-format
+msgid "Update %2$s"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2614
+#, php-format
+msgid "Activate %2$s"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2684
+msgid "Upgrade message from the plugin author:"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2717
+msgid "Install"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2723
+msgid "Update"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2726
+msgid "Activate"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2757
+msgid "No plugins were selected to be installed. No action taken."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2759
+msgid "No plugins were selected to be updated. No action taken."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2800
+msgid "No plugins are available to be installed at this time."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2802
+msgid "No plugins are available to be updated at this time."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2908
+msgid "No plugins were selected to be activated. No action taken."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:2934
+msgid "No plugins are available to be activated at this time."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:3158
+msgid "Plugin activation failed."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:3498
+#, php-format
+msgid "Updating Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:3501
+#, php-format
+msgid "An error occurred while installing %1$s: <strong>%2$s</strong>."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:3503
+#, php-format
+msgid "The installation of %1$s failed."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:3507
+msgid ""
+"The installation and activation process is starting. This process may take a "
+"while on some hosts, so please be patient."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:3509
+#, php-format
+msgid "%1$s installed and activated successfully."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:3510
+msgid "All installations and activations have been completed."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:3512
+#, php-format
+msgid "Installing and Activating Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:3515
+msgid ""
+"The installation process is starting. This process may take a while on some "
+"hosts, so please be patient."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:3517
+#, php-format
+msgid "%1$s installed successfully."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:3518
+msgid "All installations have been completed."
+msgstr ""
+
+#: includes/class-tgm-plugin-activation.php:3520
+#, php-format
+msgid "Installing Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: includes/customizer/customizer-functions.php:50
+msgid "Not set"
+msgstr ""
+
+#: includes/customizer/customizer-functions.php:111
+#: includes/customizer/customizer-functions.php:130
+msgid "Normal"
+msgstr ""
+
+#: includes/customizer/customizer-functions.php:112
+msgid "Uppercase"
+msgstr ""
+
+#: includes/customizer/customizer-functions.php:113
+msgid "Lowercase"
+msgstr ""
+
+#: includes/customizer/customizer-functions.php:131
+msgid "Italic"
+msgstr ""
+
+#: includes/customizer/customizer-functions.php:148
+msgid "ID"
+msgstr ""
+
+#: includes/customizer/customizer-functions.php:149
+msgid "Title"
+msgstr ""
+
+#: includes/customizer/customizer-functions.php:150
+msgid "Slug"
+msgstr ""
+
+#: includes/customizer/customizer-functions.php:151
+msgid "Published Date"
+msgstr ""
+
+#: includes/customizer/customizer-functions.php:152
+msgid "Modified Date"
+msgstr ""
+
+#: includes/customizer/customizer-functions.php:153
+msgid "Random"
+msgstr ""
+
+#: includes/customizer/customizer-functions.php:170
+msgid "Ascending"
+msgstr ""
+
+#: includes/customizer/customizer-functions.php:171
+msgid "Descending"
+msgstr ""
+
+#: includes/customizer/panel-registration.php:12
+msgid "Theme Settings"
+msgstr ""
+
+#: includes/customizer/section-colors-content.php:9
+msgid "Colors: Content"
+msgstr ""
+
+#: includes/customizer/section-colors-content.php:23
+msgid "Heading Color"
+msgstr ""
+
+#: includes/customizer/section-colors-content.php:49
+msgid "Text Color"
+msgstr ""
+
+#: includes/customizer/section-colors-content.php:75
+msgid "Link Color"
+msgstr ""
+
+#: includes/customizer/section-colors-content.php:111
+msgid "Input Field: Text Color"
+msgstr ""
+
+#: includes/customizer/section-colors-content.php:138
+msgid "Input Field: Background Color"
+msgstr ""
+
+#: includes/customizer/section-colors-content.php:169
+msgid "Input Field: Border Color"
+msgstr ""
+
+#: includes/customizer/section-colors-content.php:196
+msgid "Button: Text Color"
+msgstr ""
+
+#: includes/customizer/section-colors-content.php:223
+msgid "Button: Background Color"
+msgstr ""
+
+#: includes/customizer/section-colors-footer.php:9
+msgid "Colors: Footer"
+msgstr ""
+
+#: includes/customizer/section-colors-footer.php:23
+msgid "Widget: Title Color"
+msgstr ""
+
+#: includes/customizer/section-colors-footer.php:49
+msgid "Widget: Text Color"
+msgstr ""
+
+#: includes/customizer/section-colors-footer.php:75
+msgid "Widget: Link Color"
+msgstr ""
+
+#: includes/customizer/section-colors-footer.php:111
+msgid "Copyright: Text Color"
+msgstr ""
+
+#: includes/customizer/section-colors-footer.php:137
+msgid "Copyright: Link Color"
+msgstr ""
+
+#: includes/customizer/section-colors-general.php:9
+msgid "Colors: General"
+msgstr ""
+
+#: includes/customizer/section-colors-general.php:23
+msgid "Accent Color"
+msgstr ""
+
+#: includes/customizer/section-colors-general.php:62
+msgid "Line Color 1"
+msgstr ""
+
+#: includes/customizer/section-colors-general.php:87
+msgid "Line Color 2"
+msgstr ""
+
+#: includes/customizer/section-colors-general.php:122
+msgid "Site Background"
+msgstr ""
+
+#: includes/customizer/section-colors-general.php:165
+msgid "Search Overlay: Text Color"
+msgstr ""
+
+#: includes/customizer/section-colors-general.php:203
+msgid "Search Overlay: Background Color"
+msgstr ""
+
+#: includes/customizer/section-colors-general.php:246
+msgid "Lightbox Overlay: Background Color"
+msgstr ""
+
+#: includes/customizer/section-colors-general.php:279
+msgid "Lightbox Overlay: Toolbar's Icon Color"
+msgstr ""
+
+#: includes/customizer/section-colors-general.php:313
+msgid "Lightbox Overlay: Toolbar's Background Color"
+msgstr ""
+
+#: includes/customizer/section-colors-header.php:9
+msgid "Colors: Header"
+msgstr ""
+
+#: includes/customizer/section-colors-header.php:23
+msgid "Site Title Color"
+msgstr ""
+
+#: includes/customizer/section-colors-header.php:49
+msgid "Tagline Color"
+msgstr ""
+
+#: includes/customizer/section-colors-header.php:85
+msgid "Menu Text Color"
+msgstr ""
+
+#: includes/customizer/section-colors-header.php:116
+msgid "Submenu Text Color"
+msgstr ""
+
+#: includes/customizer/section-colors-header.php:142
+msgid "Submenu Border Color"
+msgstr ""
+
+#: includes/customizer/section-colors-header.php:168
+msgid "Submenu: Level 1 Background Color"
+msgstr ""
+
+#: includes/customizer/section-colors-header.php:194
+msgid "Submenu: Level 2 Background Color"
+msgstr ""
+
+#: includes/customizer/section-colors-header.php:230
+msgid "Social Link Color"
+msgstr ""
+
+#: includes/customizer/section-colors-header.php:256
+msgid "Search Button Color"
+msgstr ""
+
+#: includes/customizer/section-colors-portfolio.php:9
+msgid "Colors: Portfolio"
+msgstr ""
+
+#: includes/customizer/section-colors-portfolio.php:23
+msgid "Portfolio Title: Text Color"
+msgstr ""
+
+#: includes/customizer/section-colors-portfolio.php:24
+#: includes/customizer/section-typography-portfolio.php:93
+msgid "The title is under each portfolio image on the portfolio templates."
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:9
+msgid "Blog Settings"
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:24
+msgid "Enable Auto Blog Layout?"
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:25
+msgid ""
+"If this is enabled, the layout of a post on the blog list will be adjusted "
+"depending on the orientation of the featured image."
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:31
+#: includes/customizer/section-settings-blog.php:102
+#: includes/customizer/section-settings-blog.php:123
+#: includes/customizer/section-settings-blog.php:144
+#: includes/customizer/section-settings-blog.php:210
+#: includes/customizer/section-settings-general.php:30
+#: includes/customizer/section-settings-general.php:101
+#: includes/customizer/section-settings-general.php:157
+#: includes/customizer/section-settings-page.php:31
+#: includes/customizer/section-settings-portfolio.php:156
+#: includes/customizer/section-settings-portfolio.php:315
+#: includes/customizer/section-settings-portfolio.php:346
+#: includes/customizer/section-settings-portfolio.php:456
+#: includes/customizer/section-settings-portfolio.php:477
+#: includes/customizer/section-settings-portfolio.php:498
+#: includes/customizer/section-settings-portfolio.php:540
+#: includes/customizer/section-settings-portfolio.php:562
+msgid "Yes"
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:32
+#: includes/customizer/section-settings-blog.php:103
+#: includes/customizer/section-settings-blog.php:124
+#: includes/customizer/section-settings-blog.php:145
+#: includes/customizer/section-settings-blog.php:211
+#: includes/customizer/section-settings-general.php:31
+#: includes/customizer/section-settings-general.php:102
+#: includes/customizer/section-settings-general.php:158
+#: includes/customizer/section-settings-page.php:32
+#: includes/customizer/section-settings-portfolio.php:157
+#: includes/customizer/section-settings-portfolio.php:316
+#: includes/customizer/section-settings-portfolio.php:347
+#: includes/customizer/section-settings-portfolio.php:457
+#: includes/customizer/section-settings-portfolio.php:478
+#: includes/customizer/section-settings-portfolio.php:499
+#: includes/customizer/section-settings-portfolio.php:541
+#: includes/customizer/section-settings-portfolio.php:563
+msgid "No"
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:46
+msgid "Blog Excerpt Length"
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:47
+msgid ""
+"The number of character for the excerpt that displays on the blog list page."
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:68
+msgid "Read More Text"
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:73
+#: includes/theme-functions.php:432
+msgid "Read more"
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:96
+msgid "Enable Post Navigation?"
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:97
+msgid "This navigation is on the blog single page."
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:117
+msgid "Post Navigation: Link Same Category Posts Only?"
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:118
+msgid ""
+"If this option is disabled, the navigation will link the posts from all "
+"categories."
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:138
+msgid "Enable Blog Comments?"
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:169
+msgid "Meta Info Display"
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:170
+msgid ""
+"Select which meta info you want to display on the blog list and single posts."
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:175
+msgid "Author"
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:176
+msgid "Comments"
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:177
+msgid "Author Bio"
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:178 single.php:120
+msgid "Categories"
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:179 single.php:154
+msgid "Tags"
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:203
+msgid "Use Full Size Image on Blog Posts?"
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:204
+#: includes/customizer/section-settings-page.php:25
+#: includes/customizer/section-settings-portfolio.php:534
+msgid ""
+"If this is enabled, the full size (original size) of the featured image will "
+"be used instead of the theme image sizes. It will also make the GIF "
+"animation work."
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:235
+msgid "Blog Menu Text for Active Status"
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:236
+msgid ""
+"By default, when viewing a blog single page, WP will not set the active "
+"status on the blog menu. Use this option to tell WP what text on the menu to "
+"be set as active for blog-related pages."
+msgstr ""
+
+#: includes/customizer/section-settings-blog.php:240
+#: includes/theme-functions.php:156
+msgid "Blog"
+msgstr ""
+
+#: includes/customizer/section-settings-general.php:9
+msgid "General Settings"
+msgstr ""
+
+#: includes/customizer/section-settings-general.php:24
+msgid "Show Search Button?"
+msgstr ""
+
+#: includes/customizer/section-settings-general.php:45
+msgid "Search Placeholder Text"
+msgstr ""
+
+#: includes/customizer/section-settings-general.php:63
+msgid "Number of Posts on Search Results"
+msgstr ""
+
+#: includes/customizer/section-settings-general.php:95
+msgid "Show Footer Widget Area?"
+msgstr ""
+
+#: includes/customizer/section-settings-general.php:116
+msgid "Number of Columns for Footer Area"
+msgstr ""
+
+#: includes/customizer/section-settings-general.php:124
+msgid "1 Column"
+msgstr ""
+
+#: includes/customizer/section-settings-general.php:125
+msgid "2 Columns"
+msgstr ""
+
+#: includes/customizer/section-settings-general.php:126
+msgid "3 Columns"
+msgstr ""
+
+#: includes/customizer/section-settings-general.php:127
+msgid "4 Columns"
+msgstr ""
+
+#: includes/customizer/section-settings-general.php:151
+msgid "Enable Lightbox on WP Images and Gallery"
+msgstr ""
+
+#: includes/customizer/section-settings-general.php:152
+msgid ""
+"To make it works, also make sure that you set the \"Link To\" option to "
+"\"Media File\" when adding WP image/gallery."
+msgstr ""
+
+#: includes/customizer/section-settings-general.php:182
+msgid "Font Awesome CDN URL"
+msgstr ""
+
+#: includes/customizer/section-settings-general.php:183
+msgid ""
+"The theme uses icons from Font Awesome. You can use the options in this "
+"section to update its CDN URL and integrity values."
+msgstr ""
+
+#: includes/customizer/section-settings-general.php:199
+msgid "Font Awesome CDN Integrity Value"
+msgstr ""
+
+#: includes/customizer/section-settings-page.php:9
+msgid "Page Settings"
+msgstr ""
+
+#: includes/customizer/section-settings-page.php:24
+msgid "Use Full Size Image on Pages?"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:9
+msgid "Portfolio Settings"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:22
+msgid "Featured Works Template"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:34
+#: includes/customizer/section-settings-portfolio.php:193
+#: includes/customizer/section-settings-portfolio.php:419
+msgid "Grid Max Row Height (px)"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:35
+#: includes/customizer/section-settings-portfolio.php:194
+#: includes/customizer/section-settings-portfolio.php:420
+msgid ""
+"The theme will try to arrange portfolio images within this maximum row "
+"height. Note that this will not have any effect on the portfolio items that "
+"are using the full-width view."
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:65
+#: includes/customizer/section-settings-portfolio.php:224
+msgid "Select Categories"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:66
+#: includes/customizer/section-settings-portfolio.php:225
+msgid ""
+"Select which portfolio categories to display on the template. Unchecking all "
+"will display the work from all categories."
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:84
+msgid "Max Number of Items"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:102
+#: includes/customizer/section-settings-portfolio.php:261
+msgid "Order by"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:121
+#: includes/customizer/section-settings-portfolio.php:280
+msgid "Order"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:150
+#: includes/customizer/section-settings-portfolio.php:309
+msgid "Show Page Content?"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:181
+msgid "All Works Template"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:243
+msgid "Number of Items per Page"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:340
+msgid "Show Category Menu?"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:361
+msgid "Set Active Category"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:381
+msgid "\"All\" Category Menu Text"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:386
+#: includes/plugin-codes/custom-fields-portfolio.php:112
+#: template-parts/portfolio-category-menu.php:50
+msgid "All Works"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:407
+msgid "Portfolio Single Pages"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:450
+msgid "Enable Lightbox?"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:471
+msgid "Enable Related Category Links?"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:472
+msgid "This section displays at the bottom of the portfolio single page."
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:492
+msgid "Enable Comments?"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:521
+msgid "Others"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:533
+msgid "Use Full Size Image on Portfolio Templates?"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:555
+msgid "Use Full Size Image on Portfolio Single Pages?"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:587
+msgid "View More Works Text"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:588
+msgid "This text displays at the bottom of each portfolio single page."
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:592
+msgid "View more work in this category:"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:605
+msgid "View More Works Text (Many Categories)"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:610
+msgid "View more work in these categories:"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:633
+msgid "Portfolio Menu Text for Active Status"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:634
+msgid ""
+"By default, when viewing a portfolio single page, WP will not set the active "
+"status on the blog menu. Use this option to tell WP what text on the menu to "
+"be set as active for portfolio-related pages."
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:638
+#: includes/theme-functions.php:161
+msgid "Works"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:661
+msgid "Portfolio Category Slug"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:662
+msgid ""
+"<p>The slug is displayed in the URL when viewing the portfolio category "
+"template.</p><p>IMPORTANT: Make sure that these slugs are NOT the same as "
+"any page slug.</p><p>*After saving, go to \"Settings > Permalinks\" and "
+"click save to make the new slugs work.</p>"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:666
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:82
+msgid "portfolio-category"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:679
+msgid "Portfolio Slug"
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:680
+msgid ""
+"<p>The slug is displayed in the URL when viewing portfolio single pages."
+msgstr ""
+
+#: includes/customizer/section-settings-portfolio.php:684
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:55
+msgid "portfolio"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:17
+msgid "Copyright Text"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:52
+msgid "Social Network Display"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:58
+msgid "Icons"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:59
+msgid "Text"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:72
+msgid "Facebook URL"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:83
+msgid "Twitter URL"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:94
+msgid "Google+ URL"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:105
+msgid "Instagram URL"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:116
+msgid "Flickr URL"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:127
+msgid "Pinterest URL"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:138
+msgid "500px URL"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:149
+msgid "Dribbble URL"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:160
+msgid "Behance URL"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:171
+msgid "Vimeo URL"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:182
+msgid "YouTube URL"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:193
+msgid "SoundCloud URL"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:204
+msgid "LinkedIn URL"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:215
+msgid "RSS URL"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:226
+#: includes/theme-functions.php:822
+msgid "Email"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:254
+msgid "Custom Social Networks"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:255
+msgid ""
+"If your social network is not in the list, you can use this option to add a "
+"custom one."
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:258
+msgid "Add"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:262
+msgid "[Social Network Name]"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:267
+msgid "Name"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:268
+msgid "Enter a social network name."
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:274
+msgid "Target URL"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:275
+msgid "Enter a target URL for this social network."
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:281
+msgid "Icon Class Name"
+msgstr ""
+
+#: includes/customizer/section-site-identity.php:282
+msgid ""
+"Enter a full icon class name for this social network. For example, \"fab fa-"
+"facebook-square\". <a href=\"https://uxbarn.com/social-network-icons\" "
+"target=\"_blank\">Click here to choose the icon.</a> (You need to click on "
+"each icon again to see its full class name.)"
+msgstr ""
+
+#: includes/customizer/section-typography-content.php:9
+msgid "Typography: Content"
+msgstr ""
+
+#: includes/customizer/section-typography-content.php:23
+msgid "Heading 1 (h1)"
+msgstr ""
+
+#: includes/customizer/section-typography-content.php:51
+msgid "Heading 2 (h2)"
+msgstr ""
+
+#: includes/customizer/section-typography-content.php:79
+msgid "Heading 3 (h3)"
+msgstr ""
+
+#: includes/customizer/section-typography-content.php:107
+msgid "Heading 4 (h4)"
+msgstr ""
+
+#: includes/customizer/section-typography-content.php:135
+msgid "Heading 5 (h5)"
+msgstr ""
+
+#: includes/customizer/section-typography-content.php:163
+msgid "Heading 6 (h6)"
+msgstr ""
+
+#: includes/customizer/section-typography-content.php:191
+msgid "Heading: Font Weight"
+msgstr ""
+
+#: includes/customizer/section-typography-content.php:193
+#: includes/customizer/section-typography-content.php:258
+#: includes/customizer/section-typography-content.php:284
+#: includes/customizer/section-typography-footer.php:53
+#: includes/customizer/section-typography-footer.php:117
+#: includes/customizer/section-typography-footer.php:143
+#: includes/customizer/section-typography-header.php:53
+#: includes/customizer/section-typography-header.php:117
+#: includes/customizer/section-typography-header.php:181
+#: includes/customizer/section-typography-header.php:245
+#: includes/customizer/section-typography-header.php:309
+#: includes/customizer/section-typography-header.php:373
+#: includes/customizer/section-typography-portfolio.php:58
+#: includes/customizer/section-typography-portfolio.php:123
+msgid ""
+"It also depends on the typeface if it supports the selected weight or not."
+msgstr ""
+
+#: includes/customizer/section-typography-content.php:227
+msgid "Content Text: Font Properties"
+msgstr ""
+
+#: includes/customizer/section-typography-content.php:228
+msgid ""
+"The font size here is the base size for other elements' \"em\" unit in the "
+"content area."
+msgstr ""
+
+#: includes/customizer/section-typography-content.php:256
+msgid "Content Text: Font Weight"
+msgstr ""
+
+#: includes/customizer/section-typography-content.php:282
+msgid "Content Text: Link Font Weight"
+msgstr ""
+
+#: includes/customizer/section-typography-footer.php:9
+msgid "Typography: Footer"
+msgstr ""
+
+#: includes/customizer/section-typography-footer.php:23
+msgid "Widget Title: Font Properties"
+msgstr ""
+
+#: includes/customizer/section-typography-footer.php:51
+msgid "Widget Title: Font Weight"
+msgstr ""
+
+#: includes/customizer/section-typography-footer.php:87
+msgid "Widget Text: Font Properties"
+msgstr ""
+
+#: includes/customizer/section-typography-footer.php:115
+msgid "Widget Text: Font Weight"
+msgstr ""
+
+#: includes/customizer/section-typography-footer.php:141
+msgid "Widget Text: Link Font Weight"
+msgstr ""
+
+#: includes/customizer/section-typography-footer.php:177
+msgid "Copyright Font Size"
+msgstr ""
+
+#: includes/customizer/section-typography-footer.php:178
+msgid "You can use either em or px unit here."
+msgstr ""
+
+#: includes/customizer/section-typography-header.php:9
+msgid "Typography: Header"
+msgstr ""
+
+#: includes/customizer/section-typography-header.php:23
+msgid "Site Title: Font Properties"
+msgstr ""
+
+#: includes/customizer/section-typography-header.php:51
+msgid "Site Title: Font Weight"
+msgstr ""
+
+#: includes/customizer/section-typography-header.php:87
+msgid "Tagline: Font Properties"
+msgstr ""
+
+#: includes/customizer/section-typography-header.php:115
+msgid "Tagline: Font Weight"
+msgstr ""
+
+#: includes/customizer/section-typography-header.php:151
+msgid "Menu: Font Properties"
+msgstr ""
+
+#: includes/customizer/section-typography-header.php:179
+msgid "Menu: Font Weight"
+msgstr ""
+
+#: includes/customizer/section-typography-header.php:215
+msgid "Submenu: Font Properties"
+msgstr ""
+
+#: includes/customizer/section-typography-header.php:243
+msgid "Submenu: Font Weight"
+msgstr ""
+
+#: includes/customizer/section-typography-header.php:279
+msgid "Social Links: Font Properties"
+msgstr ""
+
+#: includes/customizer/section-typography-header.php:307
+msgid "Social Links: Font Weight"
+msgstr ""
+
+#: includes/customizer/section-typography-header.php:343
+msgid "Search Button: Font Properties"
+msgstr ""
+
+#: includes/customizer/section-typography-header.php:371
+msgid "Search Button: Font Weight"
+msgstr ""
+
+#: includes/customizer/section-typography-main-fonts.php:9
+msgid "Typography: Main Fonts"
+msgstr ""
+
+#: includes/customizer/section-typography-main-fonts.php:19
+msgid ""
+"The primary font is generally for main elements and headings; the secondary "
+"font is for body elements. You can fine-tune font properties in other "
+"typography sections."
+msgstr ""
+
+#: includes/customizer/section-typography-main-fonts.php:33
+msgid "Primary Font"
+msgstr ""
+
+#: includes/customizer/section-typography-main-fonts.php:57
+msgid "Secondary Font"
+msgstr ""
+
+#: includes/customizer/section-typography-portfolio.php:9
+msgid "Typography: Portfolio"
+msgstr ""
+
+#: includes/customizer/section-typography-portfolio.php:23
+msgid "Category Menu: Font Properties"
+msgstr ""
+
+#: includes/customizer/section-typography-portfolio.php:24
+msgid "This element is on the All Works portfolio template."
+msgstr ""
+
+#: includes/customizer/section-typography-portfolio.php:56
+msgid "Category Menu: Font Weight"
+msgstr ""
+
+#: includes/customizer/section-typography-portfolio.php:92
+msgid "Portfolio Title: Font Properties"
+msgstr ""
+
+#: includes/customizer/section-typography-portfolio.php:121
+msgid "Portfolio Title: Font Weight"
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:19
+msgid "Portfolio Template Settings"
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:35
+msgid ""
+"You can find the template settings by going to <em>Appearance > Customize > "
+"Theme Settings > Portfolio Settings</em>."
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:94
+msgid "Portfolio Item Settings"
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:99
+msgid "Full-width Image on Portfolio Templates"
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:102
+msgid ""
+"Make the featured image of this item full-width when displaying on these "
+"templates:"
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:111
+msgid "Featured Works"
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:123
+msgid "Portfolio Item Format"
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:126
+msgid ""
+"Select the format for this item; then you can manage its content using the "
+"option below."
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:135
+#: includes/plugin-codes/custom-fields-portfolio.php:276
+msgid "Image"
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:136
+#: includes/plugin-codes/custom-fields-portfolio.php:277
+msgid "Video"
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:137
+msgid "Mixed"
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:150
+#: includes/plugin-codes/custom-fields-portfolio.php:290
+msgid "Images"
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:153
+#: includes/plugin-codes/custom-fields-portfolio.php:293
+msgid "The uploaded images will be displayed on the portfolio single page."
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:183
+#: includes/plugin-codes/custom-fields-portfolio.php:323
+msgid "Video URL"
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:186
+#: includes/plugin-codes/custom-fields-portfolio.php:326
+msgid "Enter a YouTube or Vimeo URL here."
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:210
+#: includes/plugin-codes/custom-fields-portfolio.php:350
+msgid "Video Caption"
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:213
+#: includes/plugin-codes/custom-fields-portfolio.php:353
+msgid "This caption will display right below the video."
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:237
+msgid "Mixed Content"
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:240
+msgid "Click to add new content and choose what content type you want to use."
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:260
+msgid "Add New"
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:264
+msgid "Content Type"
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:420
+msgid "Portfolio Image Attachment Settings"
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:425
+msgid "Full-width Image on Portfolio Single Pages?"
+msgstr ""
+
+#: includes/plugin-codes/custom-fields-portfolio.php:428
+msgid ""
+"This option will be applied to the image in the grid on the portfolio single "
+"pages."
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:34
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:36
+msgid "Portfolio"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:37
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:38
+msgid "Add New Portfolio Item"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:39
+msgid "New Portfolio Item"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:40
+msgid "Edit Portfolio Item"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:41
+msgid "All Portfolio Items"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:42
+msgid "View Portfolio"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:43
+msgid "Search Portfolio"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:44
+msgid "Nothing found"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:45
+msgid "Nothing found in Trash"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:71
+msgid "Portfolio Categories"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:73
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:80
+msgid "Portfolio Category"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:74
+msgid "Search Categories"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:75
+msgid "All Categories"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:76
+msgid "Edit Category"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:77
+msgid "Update Category"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:78
+msgid "Add New Category"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:207
+msgid "Loading"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:397
+#: includes/theme-functions.php:598
+msgid "Previous Post"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:399
+#: includes/theme-functions.php:600
+msgid "Next Post"
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:419
+msgid "View more work in these categories: "
+msgstr ""
+
+#: includes/plugin-codes/custom-uxbarn-portfolio-lite.php:421
+msgid "View more work in this category: "
+msgstr ""
+
+#: includes/theme-functions.php:92
+msgid ""
+"The UXBARN Portfolio plugin has been deactivated. This theme uses only the "
+"lite version (UXBARN Portfolio Lite) which is already bundled with the theme "
+"package. You should now see a notification asking you to install it."
+msgstr ""
+
+#: includes/theme-functions.php:129
+msgid "Main Menu"
+msgstr ""
+
+#: includes/theme-functions.php:186
+#, php-format
+msgid "Footer Column %d"
+msgstr ""
+
+#: includes/theme-functions.php:554
+msgid "Pages:"
+msgstr ""
+
+#: includes/theme-functions.php:558
+msgid "Page"
+msgstr ""
+
+#: includes/theme-functions.php:752
+msgid "Facebook"
+msgstr ""
+
+#: includes/theme-functions.php:757
+msgid "Twitter"
+msgstr ""
+
+#: includes/theme-functions.php:762
+msgid "Google+"
+msgstr ""
+
+#: includes/theme-functions.php:767
+msgid "Instagram"
+msgstr ""
+
+#: includes/theme-functions.php:772
+msgid "Flickr"
+msgstr ""
+
+#: includes/theme-functions.php:777
+msgid "Pinterest"
+msgstr ""
+
+#: includes/theme-functions.php:782
+msgid "500px"
+msgstr ""
+
+#: includes/theme-functions.php:787
+msgid "Dribbble"
+msgstr ""
+
+#: includes/theme-functions.php:792
+msgid "Behance"
+msgstr ""
+
+#: includes/theme-functions.php:797
+msgid "Vimeo"
+msgstr ""
+
+#: includes/theme-functions.php:802
+msgid "YouTube"
+msgstr ""
+
+#: includes/theme-functions.php:807
+msgid "SoundCloud"
+msgstr ""
+
+#: includes/theme-functions.php:812
+msgid "LinkedIn"
+msgstr ""
+
+#: includes/theme-functions.php:817
+msgid "RSS"
+msgstr ""
+
+#: includes/theme-functions.php:869
+msgid "Edit"
+msgstr ""
+
+#: includes/theme-functions.php:877
+#, php-format
+msgid "%1$s at %2$s"
+msgstr ""
+
+#: includes/theme-functions.php:884
+msgid "* Your comment is awaiting moderation."
+msgstr ""
+
+#: includes/theme-functions.php:893
+msgid "Reply"
+msgstr ""
+
+#: single.php:84
+msgid "By"
+msgstr ""
+
+#: single.php:122
+msgid "Category"
+msgstr ""
+
+#: single.php:156
+msgid "Tag"
+msgstr ""
+
+#: template-parts/content-blog-meta.php:34
+msgid "Story by"
+msgstr ""
+
+#: template-parts/content-blog-meta.php:48
+msgid "Discussion"
+msgstr ""
+
+#: template-parts/content-none.php:15
+msgid "Nothing Found"
+msgstr ""
+
+#: template-parts/content-none.php:23
+#, php-format
+msgid ""
+"Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
+msgstr ""
+
+#: template-parts/content-none.php:27
+msgid ""
+"Sorry, but nothing matched your search terms. Please try again with some "
+"different keywords."
+msgstr ""
+
+#: template-parts/content-none.php:34
+msgid ""
+"It seems we cannot find what you are looking for. Please try searching the "
+"site using the form below."
+msgstr ""
+
+#: template-parts/content-top.php:29
+#, php-format
+msgid "Found %s results for \"%s\""
+msgstr ""
+
+#: template-parts/pagination.php:42
+msgid "Older Posts"
+msgstr ""
+
+#: template-parts/pagination.php:50
+msgid "Newer Posts"
+msgstr ""
