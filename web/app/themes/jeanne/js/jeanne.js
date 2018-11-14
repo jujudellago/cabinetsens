@@ -19,6 +19,10 @@ jQuery( document ).ready(function( $ ) {
 		timers[uniqueId] = setTimeout(callback, ms);
 	  };
 	})();
+
+	$("a[rel='external'], a.external").each(function(){
+		this.target="_blank";
+	});
 	
 	
 	

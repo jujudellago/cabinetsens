@@ -10,7 +10,7 @@ set :repo_url, 'git@github.com:jujudellago/cabinetsens.git'
 set :branch, :master
 @secrets_yml ||= YAML.load_file(File.expand_path("secrets.yml", __dir__))
 
-     
+
 
 
 # Use :debug for more verbose output when troubleshooting
@@ -22,7 +22,7 @@ set :log_level, :info
 
 
 set :linked_files, fetch(:linked_files, []).push('.env','web/.htaccess')
-set :linked_dirs, fetch(:linked_dirs, []).push('web/app/uploads','web/uploads')
+set :linked_dirs, fetch(:linked_dirs, []).push('web/app/uploads')
 
 
 
@@ -92,8 +92,25 @@ set :local_app_path, Pathname.new(File.dirname(__FILE__)).join('../')
 # Listing them each explicitly keeps our changes to just the deployment
 # configuration.
 
-  
-  
+# or define in block
+namespace :deploy do
+  before :starting, :remove_previous_path do
+    on roles(:web) do
+      execute :mv, "/bedrock/staging/current", "/bedrock/staging/current_previous"
+    end
+  end
+
+end
+# or define in block
+namespace :deploy do
+
+  after :finishing, :notify do
+    #
+    on roles(:web) do
+      execute :sh, "/set_staging.sh"
+    end
+  end
+end
 
 
 
@@ -102,6 +119,7 @@ namespace :deploy do
     on roles(:web) do
       execute :find, release_path.to_s, ' -type d -name  "*" -exec chmod 755 {} \;'
       execute :find, release_path.to_s, ' -type f -name  "*" -exec chmod 644 {} \;'
+      # execute "/bin/sh /set_staging.sh"
     end
   end
 end

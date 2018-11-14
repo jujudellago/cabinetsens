@@ -51,6 +51,10 @@
 	"wpackagist-plugin/html-sitemap" : "*",	
 	"wpackagist-plugin/wp-maintenance-mode" : "*",
 	"wpackagist-plugin/wp-optimize" : "*",
+    "wpackagist-plugin/youtube-embed" : "*",
+    "wpackagist-plugin/wp-colorbox" : "*",
+    "wpackagist-plugin/wp-fancybox" : "*",
+    "wpackagist-plugin/compact-wp-audio-player" : "*",
     "oscarotero/env": "^1.1.0",
     "roots/wp-password-bcrypt": "1.0.0",
     "roots/wp-config": "1.0.0"

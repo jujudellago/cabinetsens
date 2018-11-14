@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "588a4a45de8c11acd081d5f5ca93ebf4",
+    "content-hash": "ab96fa8ade95f92f22d749335b96526e",
     "packages": [
         {
             "name": "composer/installers",
@@ -466,6 +466,26 @@
             "homepage": "https://wordpress.org/plugins/bootstrap-for-contact-form-7/"
         },
         {
+            "name": "wpackagist-plugin/compact-wp-audio-player",
+            "version": "1.9.6",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/compact-wp-audio-player/",
+                "reference": "trunk"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/compact-wp-audio-player.zip?timestamp=1531397900",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/compact-wp-audio-player/"
+        },
+        {
             "name": "wpackagist-plugin/contact-form-7",
             "version": "5.0.5",
             "source": {
@@ -686,6 +706,46 @@
             "homepage": "https://wordpress.org/plugins/wordpress-seo/"
         },
         {
+            "name": "wpackagist-plugin/wp-colorbox",
+            "version": "1.1.2",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/wp-colorbox/",
+                "reference": "trunk"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/wp-colorbox.zip?timestamp=1520169984",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/wp-colorbox/"
+        },
+        {
+            "name": "wpackagist-plugin/wp-fancybox",
+            "version": "1.0.1",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/wp-fancybox/",
+                "reference": "trunk"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/wp-fancybox.zip?timestamp=1512973749",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/wp-fancybox/"
+        },
+        {
             "name": "wpackagist-plugin/wp-maintenance-mode",
             "version": "2.2.1",
             "source": {
@@ -724,6 +784,26 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/wp-optimize/"
+        },
+        {
+            "name": "wpackagist-plugin/youtube-embed",
+            "version": "5.0.4",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/youtube-embed/",
+                "reference": "tags/5.0.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/youtube-embed.5.0.4.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/youtube-embed/"
         }
     ],
     "packages-dev": [
