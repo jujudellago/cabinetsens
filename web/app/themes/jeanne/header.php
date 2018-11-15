@@ -88,7 +88,9 @@
 						
 					</div>
 					<!-- .logo-wrapper -->
+					
 				</div>
+
 				<!-- .logo-tagline-wrapper -->
 				
 				<nav class="site-menu">

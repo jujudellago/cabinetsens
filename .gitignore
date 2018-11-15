@@ -2,6 +2,9 @@
 web/app/plugins/*
 !web/app/plugins/.gitkeep
 !web/app/plugins/js_composer
+!web/app/plugins/uxbarn-portfolio-lite
+!web/app/plugins/envato-market
+!web/app/plugins/advanced-custom-fields-pro
 !web/robots.txt
 web/app/mu-plugins/*/
 web/app/upgrade

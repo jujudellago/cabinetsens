@@ -229,6 +229,26 @@ table td,
 	padding: 1em;
 	vertical-align: middle;
 }
+.widget_text table td{
+	border:hidden!important;
+	padding:0!important;
+}
+.widget_text table td label{
+	    display: inline-block;
+    margin-bottom: 6px;
+}
+.widget_text table td input{
+	padding:7px;
+	margin:0!important;
+
+}
+.widget_text table tr.fw td{
+	padding-top:20px!important;
+}
+.widget_text table tr.fw td input{
+	width:100%;
+}
+
 
 dt {
 	font-weight: bold;
@@ -245,7 +265,7 @@ acronym {
 
 hr {
 	border: 0;
-	border-top: 1px solid #ccc;
+	border-top: 1px solid #666;
 	margin: 3.6em 0;
 }
 
@@ -2459,6 +2479,17 @@ div.wpcf7-mail-sent-ok {
 	color: green;
 }
 
+
+.blog-list .single-post a{
+	font-size:1.3em;
+}
+
+ .header-slogan{
+	
+	float:right;
+	color:#882518;
+
+}
 
 
 /* #Responsive
