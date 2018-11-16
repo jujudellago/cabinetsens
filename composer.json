@@ -45,6 +45,7 @@
 	"wpackagist-plugin/obfuscate-email" : "*",
 	"wpackagist-plugin/stop-spam-comments" : "*",
         "wpackagist-plugin/rss-import": "*",
+          "wpackagist-plugin/safe-redirect-manager": "*",
 	"wpackagist-plugin/w3-total-cache" : "*",
 	"wpackagist-plugin/google-no-captcha-recaptcha" : "*",
 	"wpackagist-plugin/regenerate-thumbnails" : "*",	

@@ -127,6 +127,7 @@ if ( ! function_exists( 'jeanne_register_menus' ) ) {
 		
 		register_nav_menus( array(
 				'main_menu' => esc_html__( 'Main Menu', 'jeanne' ),
+				'secondary_menu' => esc_html__( 'Secondary Menu', 'jeanne' ),
 			)
 		);
 		
