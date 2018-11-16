@@ -578,6 +578,12 @@ figure {
 	line-height: 1.4;
 	margin-bottom: 0;
 }
+.site-sub-title{
+	display: inline-block;
+	float: right;
+	font-size: 16px;
+
+}
 
 
 

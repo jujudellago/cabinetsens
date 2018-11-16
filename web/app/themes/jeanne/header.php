@@ -81,6 +81,9 @@
 								
 							?>
 							</a>
+							<!--<span class="site-sub-title">
+								sens, essence, naissance
+							</span>-->
 							
 						<?php if ( jeanne_is_site_title_h1_allowed() ) : ?>
 							</h1>

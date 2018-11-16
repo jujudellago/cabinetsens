@@ -1,0 +1,111 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: UXBARN Portfolio Lite\n"
+"POT-Creation-Date: 2018-08-13 18:58+0700\n"
+"PO-Revision-Date: 2016-03-22 16:50+0700\n"
+"Last-Translator: Paul <paul@uxbarn.com>\n"
+"Language-Team: UXBARN <support@uxbarn.com>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.1.1\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;esc_html__;esc_html_e;"
+"esc_attr__;esc_attr_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: includes/plugin-functions.php:15 includes/plugin-functions.php:17
+msgid "Portfolio"
+msgstr ""
+
+#: includes/plugin-functions.php:18 includes/plugin-functions.php:19
+msgid "Add New Portfolio Item"
+msgstr ""
+
+#: includes/plugin-functions.php:20
+msgid "New Portfolio Item"
+msgstr ""
+
+#: includes/plugin-functions.php:21
+msgid "Edit Portfolio Item"
+msgstr ""
+
+#: includes/plugin-functions.php:22
+msgid "All Portfolio Items"
+msgstr ""
+
+#: includes/plugin-functions.php:23
+msgid "View Portfolio"
+msgstr ""
+
+#: includes/plugin-functions.php:24
+msgid "Search Portfolio"
+msgstr ""
+
+#: includes/plugin-functions.php:25
+msgid "Nothing found"
+msgstr ""
+
+#: includes/plugin-functions.php:26
+msgid "Nothing found in Trash"
+msgstr ""
+
+#: includes/plugin-functions.php:29
+msgid "Portfolio of your business"
+msgstr ""
+
+#: includes/plugin-functions.php:36
+msgid "portfolio"
+msgstr ""
+
+#: includes/plugin-functions.php:49
+msgid "Portfolio Categories"
+msgstr ""
+
+#: includes/plugin-functions.php:51 includes/plugin-functions.php:58
+msgid "Portfolio Category"
+msgstr ""
+
+#: includes/plugin-functions.php:52
+msgid "Search Categories"
+msgstr ""
+
+#: includes/plugin-functions.php:53
+msgid "All Categories"
+msgstr ""
+
+#: includes/plugin-functions.php:54
+msgid "Edit Category"
+msgstr ""
+
+#: includes/plugin-functions.php:55
+msgid "Update Category"
+msgstr ""
+
+#: includes/plugin-functions.php:56
+msgid "Add New Category"
+msgstr ""
+
+#: includes/plugin-functions.php:60
+msgid "portfolio-category"
+msgstr ""
+
+#: includes/plugin-functions.php:85
+msgid "Title"
+msgstr ""
+
+#: includes/plugin-functions.php:86
+msgid "Featured Image"
+msgstr ""
+
+#: includes/plugin-functions.php:87
+msgid "Item Format"
+msgstr ""
+
+#: includes/plugin-functions.php:88
+msgid "Categories"
+msgstr ""
