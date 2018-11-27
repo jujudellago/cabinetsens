@@ -1,0 +1,218 @@
+@import "../../css/_mixins.scss";
+@import "../../css/_theme-vars.scss";
+
+/* About Theme
+----------------------------------------------------------------*/
+.callie_britt_about {
+	margin: 2em 2em 0 0;
+	padding: 3em;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	@include border-radius(2px);
+}
+@media (max-width: 959px) {
+	.callie_britt_about {
+		margin: 1em 1em 0 0;
+		padding: 2em;
+	}
+}
+
+/* Header */
+.callie_britt_about_header {
+	overflow:hidden;
+}
+	.callie_britt_about_logo {
+		float: left;
+		display:inline-block;
+		max-width: 30%;
+		margin: 0 2em 1em 0;
+	}
+	@media (max-width: 783px) {
+		.callie_britt_about_logo {
+			max-width: 50%;
+			margin: 0 0 1em 0;
+			float: none;
+		}
+	}
+	@media (max-width: 479px) {
+		.callie_britt_about_logo {
+			max-width: 100%;
+		}
+	}
+	.callie_britt_about_logo img {
+		max-width: 100%;
+		height: auto;
+	}
+
+	.callie_britt_about_title {
+		text-align: left;
+		margin-top:0;
+		line-height:1.5em;
+	}
+	.callie_britt_about_description {
+		color: #888;
+		margin-bottom: 3em;
+		line-height:1.5em;
+	}
+	.callie_britt_about_description p {
+		@include font(1.1538em, 1.5em);
+		margin: 0.5em 0 0;
+	}
+	@media (max-width: 1279px) {
+		.callie_britt_about_description p {
+			@include font(1em, 1.7em);
+		}
+	}
+	.callie_britt_about_description b,
+	.callie_britt_about_description strong {
+		color: #333;
+	}
+
+
+/* Tabs */
+#callie_britt_about_tabs > ul > li > a {
+	background-color: #eee;
+	font-size: 1.1538em;
+}
+#callie_britt_about_tabs > ul > li.ui-state-active > a {
+	background-color: #f7f7f7;
+}
+
+/* Sections */
+#callie_britt_about_tabs .callie_britt_about_section {
+	@include flex;
+	@include flex-wrap(wrap);
+	background-color: #f7f7f7;
+	padding: 2em;
+}
+
+/* Blocks */
+.callie_britt_about_block {
+	display: inline-block;
+	vertical-align:top;
+	font-size: 1.1538em;
+	width: 25%;
+	padding: 0 2em 2em 0;
+	@include border-box;
+}
+@media (max-width: 1679px) {
+	.callie_britt_about_block {
+		width: 33.3333%;
+	}
+}
+@media (max-width: 1439px) {
+	.callie_britt_about_block {
+		width: 50%;
+	}
+}
+@media (max-width: 1279px) {
+	#callie_britt_about_tabs > ul > li > a {
+		font-size: 1em;
+	}
+	.callie_britt_about_block {
+		font-size: 1em;
+	}
+}
+@media (max-width: 767px) {
+	.callie_britt_about_block {
+		width: 100%;
+		padding-right:0;
+	}
+}
+.callie_britt_about_block_inner {
+	display: inline-block;
+	vertical-align:top;
+	padding: 2em;
+	@include box(100%, 100%);
+	@include border-box;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	@include border-radius(2px);
+	@include transition(box-shadow .5s ease);
+}
+.callie_britt_about_block_inner:hover {
+	@include box-shadow(0 0 20px 0 rgba(0, 0, 0, 0.2));
+}
+.callie_britt_about_block_title {
+	margin: 0;
+}
+.callie_britt_about_block_image {
+	max-width: 100%;
+	height: auto;
+	margin: 1em 0;
+}
+.callie_britt_about_block_description {
+	margin: 1em 0;
+	line-height:1.7em;
+}
+.callie_britt_about_block a.callie_britt_about_block_link,
+.callie_britt_about_block span.callie_britt_about_block_link {
+	@include font(1em, 1.7em);
+	padding:0.5em 1em;
+	height: auto;
+	display: inline-block;
+	margin: 0.5em 0.5em 0.5em 0;
+	vertical-align:middle;
+	@include transition-properties(border,background,color);
+}
+.callie_britt_about_block span.callie_britt_about_block_link_active {
+	cursor: default;
+	pointer-events: none;
+}
+
+/* Section 'Required actions' */
+#callie_britt_about_section_actions .callie_britt_about_block {
+	width: 100%;
+	padding-right:0;
+}
+#callie_britt_about_section_actions .callie_britt_about_block_inner {
+	border-width: 0 0 0 3px;
+	border-color: red;
+	@include border-sharp;
+}
+
+/* Section Free vs Pro */
+table.callie_britt_about_table {
+	border-collapse: collapse;
+	width:100%;
+}
+.callie_britt_about_table tr {
+	border-bottom: 1px solid #ddd;
+}
+.callie_britt_about_table td {
+	padding: 2em 0;
+}
+.callie_britt_about_table td + td {
+	padding: 2em 1em;
+	text-align: center;
+}
+.callie_britt_about_table_info {
+	width: 70%;
+}
+.callie_britt_about_table_check {
+	width: 15%;
+}
+.callie_britt_about_table_info_title {
+	margin-top: 0;
+	margin-bottom: 0.3em;
+}
+.callie_britt_about_table thead td.callie_britt_about_table_check {
+	font-size:1.1538em;
+	font-weight:bold;
+}
+.callie_britt_about_table td.callie_britt_about_table_check .dashicons {
+	@include font(2em, 1em);
+	@include box(1em, 1em);
+}
+.callie_britt_about_table td.callie_britt_about_table_check .dashicons:before {
+	font-size: 1em;
+}
+.callie_britt_about_table td.callie_britt_about_table_check .dashicons-yes:before {
+	color:#00aa00;
+}
+.callie_britt_about_table td.callie_britt_about_table_check .dashicons-no:before {
+	color:#aa0000;
+}
+table.callie_britt_about_table .callie_britt_about_block_link {
+	float:none;
+}

@@ -1,0 +1,212 @@
+/* About Theme
+----------------------------------------------------------------*/
+.callie_britt_about {
+  margin: 2em 2em 0 0;
+  padding: 3em;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 2px; }
+
+@media (max-width: 959px) {
+  .callie_britt_about {
+    margin: 1em 1em 0 0;
+    padding: 2em; } }
+/* Header */
+.callie_britt_about_header {
+  overflow: hidden; }
+
+.callie_britt_about_logo {
+  float: left;
+  display: inline-block;
+  max-width: 30%;
+  margin: 0 2em 1em 0; }
+
+@media (max-width: 783px) {
+  .callie_britt_about_logo {
+    max-width: 50%;
+    margin: 0 0 1em 0;
+    float: none; } }
+@media (max-width: 479px) {
+  .callie_britt_about_logo {
+    max-width: 100%; } }
+.callie_britt_about_logo img {
+  max-width: 100%;
+  height: auto; }
+
+.callie_britt_about_title {
+  text-align: left;
+  margin-top: 0;
+  line-height: 1.5em; }
+
+.callie_britt_about_description {
+  color: #888;
+  margin-bottom: 3em;
+  line-height: 1.5em; }
+
+.callie_britt_about_description p {
+  font-size: 1.1538em;
+  line-height: 1.5em;
+  margin: 0.5em 0 0; }
+
+@media (max-width: 1279px) {
+  .callie_britt_about_description p {
+    font-size: 1em;
+    line-height: 1.7em; } }
+.callie_britt_about_description b,
+.callie_britt_about_description strong {
+  color: #333; }
+
+/* Tabs */
+#callie_britt_about_tabs > ul > li > a {
+  background-color: #eee;
+  font-size: 1.1538em; }
+
+#callie_britt_about_tabs > ul > li.ui-state-active > a {
+  background-color: #f7f7f7; }
+
+/* Sections */
+#callie_britt_about_tabs .callie_britt_about_section {
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  background-color: #f7f7f7;
+  padding: 2em; }
+
+/* Blocks */
+.callie_britt_about_block {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 1.1538em;
+  width: 25%;
+  padding: 0 2em 2em 0;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box; }
+
+@media (max-width: 1679px) {
+  .callie_britt_about_block {
+    width: 33.3333%; } }
+@media (max-width: 1439px) {
+  .callie_britt_about_block {
+    width: 50%; } }
+@media (max-width: 1279px) {
+  #callie_britt_about_tabs > ul > li > a {
+    font-size: 1em; }
+
+  .callie_britt_about_block {
+    font-size: 1em; } }
+@media (max-width: 767px) {
+  .callie_britt_about_block {
+    width: 100%;
+    padding-right: 0; } }
+.callie_britt_about_block_inner {
+  display: inline-block;
+  vertical-align: top;
+  padding: 2em;
+  width: 100%;
+  height: 100%;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  -webkit-transition: box-shadow 0.5s ease;
+  -webkit-transition: -webkit-box-shadow 0.5s ease;
+  transition: -webkit-box-shadow 0.5s ease;
+  transition: box-shadow 0.5s ease;
+  transition: box-shadow 0.5s ease, -webkit-box-shadow 0.5s ease; }
+
+.callie_britt_about_block_inner:hover {
+  -webkit-box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+  -ms-box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2); }
+
+.callie_britt_about_block_title {
+  margin: 0; }
+
+.callie_britt_about_block_image {
+  max-width: 100%;
+  height: auto;
+  margin: 1em 0; }
+
+.callie_britt_about_block_description {
+  margin: 1em 0;
+  line-height: 1.7em; }
+
+.callie_britt_about_block a.callie_britt_about_block_link,
+.callie_britt_about_block span.callie_britt_about_block_link {
+  font-size: 1em;
+  line-height: 1.7em;
+  padding: 0.5em 1em;
+  height: auto;
+  display: inline-block;
+  margin: 0.5em 0.5em 0.5em 0;
+  vertical-align: middle;
+  -webkit-transition: border 0.3s ease, background 0.3s ease, color 0.3s ease;
+  transition: border 0.3s ease, background 0.3s ease, color 0.3s ease; }
+
+.callie_britt_about_block span.callie_britt_about_block_link_active {
+  cursor: default;
+  pointer-events: none; }
+
+/* Section 'Required actions' */
+#callie_britt_about_section_actions .callie_britt_about_block {
+  width: 100%;
+  padding-right: 0; }
+
+#callie_britt_about_section_actions .callie_britt_about_block_inner {
+  border-width: 0 0 0 3px;
+  border-color: red;
+  border-radius: 0; }
+
+/* Section Free vs Pro */
+table.callie_britt_about_table {
+  border-collapse: collapse;
+  width: 100%; }
+
+.callie_britt_about_table tr {
+  border-bottom: 1px solid #ddd; }
+
+.callie_britt_about_table td {
+  padding: 2em 0; }
+
+.callie_britt_about_table td + td {
+  padding: 2em 1em;
+  text-align: center; }
+
+.callie_britt_about_table_info {
+  width: 70%; }
+
+.callie_britt_about_table_check {
+  width: 15%; }
+
+.callie_britt_about_table_info_title {
+  margin-top: 0;
+  margin-bottom: 0.3em; }
+
+.callie_britt_about_table thead td.callie_britt_about_table_check {
+  font-size: 1.1538em;
+  font-weight: bold; }
+
+.callie_britt_about_table td.callie_britt_about_table_check .dashicons {
+  font-size: 2em;
+  line-height: 1em;
+  width: 1em;
+  height: 1em; }
+
+.callie_britt_about_table td.callie_britt_about_table_check .dashicons:before {
+  font-size: 1em; }
+
+.callie_britt_about_table td.callie_britt_about_table_check .dashicons-yes:before {
+  color: #00aa00; }
+
+.callie_britt_about_table td.callie_britt_about_table_check .dashicons-no:before {
+  color: #aa0000; }
+
+table.callie_britt_about_table .callie_britt_about_block_link {
+  float: none; }
+
+/*# sourceMappingURL=theme-about.css.map */

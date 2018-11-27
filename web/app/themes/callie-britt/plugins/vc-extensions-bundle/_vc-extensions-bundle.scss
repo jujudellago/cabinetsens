@@ -1,0 +1,57 @@
+/* WPBakery PageBuilder Extension Bundle
+----------------------------------------------------------------- */
+
+/* Tooltip */
+.tooltipster-base.tooltipster-light {
+	border: none;
+	@include border-sharp;
+	@include box-shadow(0 0 14px rgba(0, 0, 0, 0.3));
+}
+.tooltipster-base.tooltipster-light .tooltipster-content {
+	padding: 1em 1em;
+	border: none;
+	background-color: #13162b;
+	color: #fff;
+}
+.tooltipster-base.tooltipster-light .tooltipster-arrow span {
+	border-top-color: #13162b !important;
+}
+.cq-hotspots .hotspot-item a.cq-tooltip span {
+	@include box(10px, 10px);
+	margin: -5px 0 0 -5px;
+}
+
+// Materialslider on "About me style2"
+.cq-materialslider.cq-materialslider-6 .cq-materialslider-container {
+	width: 85%;
+}
+.cq-materialslider.cq-materialslider-6 .cq-materialslider-title {
+	font-weight: 500;
+    margin-bottom: 0.5em;
+}
+.cq-materialslider.cq-materialslider-6 .cq-materialslider-text {
+    padding: 0;
+    text-align: left;
+    margin-top: -0.8em;
+}
+.cq-materialslider.cq-materialslider-6 .cq-materialslider-description {
+	line-height: 1.8em;
+}
+.cq-materialslider.cq-materialslider-6 .cq-materialslider-navigation {
+	left: 0;
+	transform: initial;
+}
+.cq-materialslider.cq-materialslider-6 .cq-materialslider-bar {
+    height: 0.6em;
+    width: 0.6em;
+    margin: 0 0.7em;
+    border-radius: 50%;
+    //margin-left: 0;
+}
+.cq-materialslider.cq-materialslider-6 .cq-materialslider-dot {
+	width: 0.6em;
+	height: 0.6em;
+    margin: 0 0.7em;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 1);
+}
