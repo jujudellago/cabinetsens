@@ -104,14 +104,10 @@ $xs_grid_max_columns: 1;	// Max columns in the row of the grid
 @import "../components/shortcodes/countdown/_countdown.responsive.scss";
 @import "../components/shortcodes/form/_form.responsive.scss";
 @import "../components/shortcodes/googlemap/_googlemap.responsive.scss";
-@import "../components/shortcodes/icons/_icons.responsive.scss";
 @import "../components/shortcodes/price/_price.responsive.scss";
-@import "../components/shortcodes/promo/_promo.responsive.scss";
 @import "../components/shortcodes/skills/_skills.responsive.scss";
 @import "../components/shortcodes/socials/_socials.responsive.scss";
 @import "../components/widgets/categories_list/_categories_list.responsive.scss";
-@import "../components/widgets/instagram/_instagram.responsive.scss";
-@import "../components/widgets/recent_news/_recent_news.responsive.scss";
 @import "../components/widgets/slider/_slider.responsive.scss";
 @import "../components/cpt/layouts/shortcodes/logo/_logo.responsive.scss";
 @import "../components/cpt/layouts/shortcodes/menu/_menu.responsive.scss";
@@ -151,8 +147,6 @@ $xs_grid_max_columns: 1;	// Max columns in the row of the grid
 	@include sc_services--xl();
 	@include sc_blogger--xl();
 	@include sc_content--xl();
-	@include sc_promo--xl();
-	@include recent_news--xl();
 	@include layouts_logo--xl();
 }
 
@@ -163,9 +157,6 @@ $xs_grid_max_columns: 1;	// Max columns in the row of the grid
 	@include layouts--lg();
 	@include sc_blogger--lg();
 	@include sc_content--lg();
-	@include sc_icons--lg();
-	@include sc_promo--lg();
-	@include recent_news--lg();
 	@include slider--lg();
 	@include layouts_menu--lg();
 }
@@ -182,10 +173,8 @@ $xs_grid_max_columns: 1;	// Max columns in the row of the grid
 	@include sc_content--md();
 	@include sc_googlemap--md();
 	@include sc_price--md();
-	@include sc_promo--md();
 	@include sc_skills--md();
 	@include categories_list--md();
-	@include recent_news--md();
 	@include slider--md();
 	@include layouts_menu--md();
 }
@@ -202,11 +191,8 @@ $xs_grid_max_columns: 1;	// Max columns in the row of the grid
 	@include sc_content--sm();
 	@include sc_countdown--sm();
 	@include sc_form--sm();
-	@include sc_promo--sm();
 	@include sc_socials--sm();
 	@include categories_list--sm();
-	@include categories_list--sm();
-	@include recent_news--sm();
 	@include slider--sm();
 	@include layouts_menu--sm();
 }
@@ -229,10 +215,7 @@ $xs_grid_max_columns: 1;	// Max columns in the row of the grid
 	@include sc_countdown--xs();
 	@include sc_form--xs();
 	@include sc_price--xs();
-	@include sc_promo--xs();
 	@include sc_skills--xs();
-	@include categories_list--xs();
-	@include recent_news--xs();
 	@include slider--xs();
 }
 

@@ -15,6 +15,7 @@ web/app/plugins/*
 !web/app/plugins/trx_addons
 !web/app/plugins/essential-grid
 !web/app/plugins/vc-extensions-bundle
+!web/app/plugins/LayerSlider
 !web/robots.txt
 web/app/mu-plugins/*/
 web/app/upgrade
