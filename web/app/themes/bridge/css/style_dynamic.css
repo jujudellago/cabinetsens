@@ -807,15 +807,15 @@ input.wpcf7-form-control.wpcf7-submit:not([disabled]),
 
 
 	.footer_top_holder,	footer #lang_sel > ul > li > a,	footer #lang_sel_click > ul > li > a{
-		background-color: #882518;
+		background-color: #444444;
 	}
 	footer #lang_sel ul ul a,footer #lang_sel_click ul ul a,footer #lang_sel ul ul a:visited,footer #lang_sel_click ul ul a:visited{
-		background-color: #882518 !important;
+		background-color: #444444 !important;
 	}
 
     .footer_top,
     .footer_top.footer_top_full{
-     padding-top: 80px;padding-right: 0px;padding-bottom: 73px;padding-left: 0px 
+     padding-top: 40px;padding-right: 0px;padding-bottom: 73px;padding-left: 0px 
  }
 
 .footer_top .column_inner > div h2,
@@ -889,6 +889,9 @@ font-size: 15px;letter-spacing: 0px;line-height: 35px;font-weight: 500;text-tran
 		text-align: left;
 	}
 	.footer_top .footer_col3{
+		text-align: left;
+	}
+	.footer_top .footer_col4{
 		text-align: left;
 	}
 

@@ -64,3 +64,8 @@ font-size:1.2em;
 h1 span{
 	font-size: 30px;
 }
+
+.full-width img{
+	width:100%!important;
+	max-width:100%!important;
+}
