@@ -50,9 +50,9 @@ if (version_compare(qode_get_vc_version(), '5.0') >= 0) {
 }
 
 if(!qode_vc_grid_elements_enabled()) {
-	vc_remove_element('vc_button2');
-	vc_remove_element("vc_custom_heading");
-	vc_remove_element("vc_btn");
+#	vc_remove_element('vc_button2');
+#	vc_remove_element("vc_custom_heading");
+#	vc_remove_element("vc_btn");
 }
 
 /*** Remove unused parameters ***/

@@ -31,8 +31,14 @@
 	
 	
 	
+			.title.title_size_small h1 {
+			font-size: 20px; 					}
 	
+			.title.title_size_medium h1 {
+			font-size: 20px; 					}
 	
+			.title.title_size_large h1 {
+			font-size: 20px!important; 					}
 	
 }
 @media only screen and (max-width: 600px) {
