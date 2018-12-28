@@ -11,7 +11,7 @@ Template: bridge
 
 .blog-list{}
 .blog-list .single-post{
-	
+	margin-bottom:25px;
 }	
 
 .blog-list .single-post a:first-child{
