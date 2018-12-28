@@ -63,6 +63,7 @@ font-size:1.2em;
 .title_subtitle_holder_inner
 h1 span{
 	font-size: 30px;
+	line-height:2em;
 }
 
 @media only screen and (max-width: 1000px) {
