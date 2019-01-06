@@ -522,7 +522,7 @@ header.scrolled .drop_down .second{
 
         header.fixed_hiding .q_logo a,
         header.fixed_hiding .q_logo{
-            max-height: 70px;
+            max-height: 140px;
         }
 
 
@@ -638,7 +638,7 @@ h1,
 .h1,
 .title h1 {
 			font-family: 'Nunito', sans-serif;
-				font-style: normal; 	font-weight: 400;         }
+		font-size: 40pxpx; 	line-height: 60pxpx; 	font-style: normal; 	font-weight: 400;         text-transform: none; }
 .title h1{
 	color: #ffffff; 				font-style: normal; 		}
 
@@ -1055,6 +1055,7 @@ footer #lang_sel_list.lang_sel_list_vertical a,
 	.header_top,
 	.fixed_top_header .top_header{
 	border-width: 0px;	}
+
 
 
 
