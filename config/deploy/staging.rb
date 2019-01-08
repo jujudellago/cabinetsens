@@ -52,7 +52,7 @@ set :wpcli_args, "--skip-plugins=wp_redirect,w3-total-cache"
 namespace :deploy do
   before :starting, :remove_previous_path do
     on roles(:web) do
-      execute :rsync, "-av", "/bedrock/staging/current/web/app/uploads", "/bedrock/staging/shared/web/app/uploads"
+      execute :rsync, "-av", "/bedrock/staging/current/web/app/uploads", "/bedrock/staging/shared/web/app/"
       execute :mv, "/bedrock/staging/current", "/bedrock/staging/current_previous"
     end
   end
