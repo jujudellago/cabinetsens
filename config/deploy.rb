@@ -93,25 +93,7 @@ set :local_app_path, Pathname.new(File.dirname(__FILE__)).join('../')
 # configuration.
 
 # or define in block
-namespace :deploy do
-  before :starting, :remove_previous_path do
-    on roles(:web) do
-      execute :rsync, "-av", "/bedrock/staging/current/web/app/uploads", "/bedrock/staging/shared/web/app/uploads"
-      execute :mv, "/bedrock/staging/current", "/bedrock/staging/current_previous"
-    end
-  end
 
-end
-# or define in block
-namespace :deploy do
-
-  after :finishing, :notify do
-    #
-    on roles(:web) do
-      execute :sh, "/set_staging.sh"
-    end
-  end
-end
 
 
 

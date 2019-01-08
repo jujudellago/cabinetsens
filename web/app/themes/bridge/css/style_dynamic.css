@@ -458,7 +458,7 @@
 		.content .container .container_inner.default_template_holder,
 		.content .container .container_inner.page_container_inner
 		{
-			padding-top:72px;
+			padding-top:52px;
 		}
 	}
 header.fixed.scrolled .header_bottom,
@@ -486,10 +486,11 @@ header.sticky .header_top{
 
 
 
-.content{
-	margin-top: 0;
-}
-
+						.content{
+				margin-top: -140px;
+			}
+				
+	
 .logo_wrapper,
 .side_menu_button,
 .shopping_cart_inner
@@ -522,7 +523,7 @@ header.scrolled .drop_down .second{
 
         header.fixed_hiding .q_logo a,
         header.fixed_hiding .q_logo{
-            max-height: 140px;
+            max-height: 103.5px;
         }
 
 
@@ -596,6 +597,12 @@ nav.main_menu ul li:hover a {
 .drop_down .wide .second .inner ul li.sub ul li.menu-item-has-children > a:hover{
 	color: #882518 !important;
 }
+	.drop_down .wide .second .inner>ul>li>a
+	{
+	 color: #ffffff; 								}
+	.drop_down .wide .second .inner>ul>li>a:hover{
+	color: #882518 !important;
+	}
 .drop_down .wide .second .inner ul li.sub ul li a,
 .drop_down .wide .second ul li ul li a,
 .drop_down .second .inner ul li.sub ul li a,
@@ -604,15 +611,62 @@ nav.main_menu ul li:hover a {
 .drop_down .wide .second .inner ul li .flexslider ul li .menu_recent_post a,
 .drop_down .wide .second .inner ul li .flexslider ul li .menu_recent_post,
 .drop_down .wide .second .inner ul li .flexslider ul li .menu_recent_post a{
-			font-family: 'Nunito', sans-serif;
+	 color: #ffffff;  		font-family: 'Nunito', sans-serif;
 							}
 .drop_down .wide.icons .second i{
-    }
+     color: #ffffff;  }
+.drop_down .second .inner ul li.sub ul li a:hover,
+.drop_down .wide .second ul li.show_widget_area_in_popup:hover .popup_wrapper > a,
+.drop_down .second .inner ul li ul li a:hover,
+.drop_down .wide.icons .second a:hover i
+{
+	color: #882518 !important;
+}
 
 
+header.scrolled nav.main_menu > ul > li > a,
+header.light.scrolled nav.main_menu > ul > li > a,
+header.dark.scrolled nav.main_menu > ul > li > a{
+	 color: #ffffff; 							}
+header.scrolled .side_menu_button a {
+     color: #ffffff !important; }
+header.scrolled nav.main_menu > ul > li > a:hover > span,
+header.scrolled nav.main_menu > ul > li:hover > a > span,
+header.scrolled nav.main_menu > ul > li.active > a > span,
+header.scrolled nav.main_menu > ul > li > a:hover > i,
+header.scrolled nav.main_menu > ul > li:hover > a > i,
+header.scrolled nav.main_menu > ul > li.active > a > i,
+header.scrolled .side_menu_button a:hover,
+.light.scrolled nav.main_menu > ul > li > a:hover,
+.light.scrolled nav.main_menu > ul > li.active > a,
+.light.scrolled .side_menu_button a:hover,
+.dark.scrolled nav.main_menu > ul > li > a:hover,
+.dark.scrolled nav.main_menu > ul > li.active > a,
+.dark.scrolled .side_menu_button a:hover {
+	color: #882518 !important;
+}
 
+header.sticky nav.main_menu > ul > li > a, 
+header.light.sticky nav.main_menu > ul > li > a, 
+header.dark.sticky nav.main_menu > ul > li > a{
+	 color: #ffffff; 							}
 
+header.sticky .side_menu_button a, 
+header.sticky .side_menu_button a:hover{
+     color: #ffffff; }
 
+header.sticky nav.main_menu > ul > li > a:hover span, 
+header.sticky nav.main_menu > ul > li.active > a span,
+header.sticky nav.main_menu > ul > li:hover > a > span,
+header.sticky nav.main_menu > ul > li > a:hover > i, 
+header.sticky nav.main_menu > ul > li:hover > a > i,
+header.sticky nav.main_menu > ul > li.active > a > i,
+.light.sticky nav.main_menu > ul > li > a:hover, 
+.light.sticky nav.main_menu > ul > li.active > a, 
+.dark.sticky nav.main_menu > ul > li > a:hover, 
+.dark.sticky nav.main_menu > ul > li.active > a{
+	color: #882518 !important;
+}
 
 nav.mobile_menu ul li a,
 nav.mobile_menu ul li h3{
@@ -1059,7 +1113,6 @@ footer #lang_sel_list.lang_sel_list_vertical a,
 
 
 
-
 	.cf7_custom_style_1  input.wpcf7-form-control.wpcf7-submit,
 	.cf7_custom_style_1 input.wpcf7-form-control.wpcf7-submit:not([disabled]) {
 		background-color: #ffe522;border-width: 0px;border-top-left-radius: 0px;border-top-right-radius: 0px;border-bottom-right-radius: 0px;border-bottom-left-radius: 0px;color: #2a2a2a;font-family: Catamaran;font-size: 15px;font-style: normal;font-weight: 500;letter-spacing: 0px;text-transform: none;height: 55px;line-height: 55px;padding: 0 29px;	}
@@ -1344,4 +1397,3 @@ footer #lang_sel_list.lang_sel_list_vertical a,
 .qode-btn { text-transform: none;font-style: normal;font-weight: 100;}
 
 .latest_post_holder.image_on_the_left_boxed .date_hour_holder, .latest_post_holder.image_on_the_left_boxed .featured .read_more:before { background-color: #882518;}
-
