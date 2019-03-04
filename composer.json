@@ -57,6 +57,8 @@
     "wpackagist-plugin/youtube-embed" : "*",
     "wpackagist-plugin/compact-wp-audio-player" : "*",
     "wpackagist-plugin/kirki" : "*",
+	"wpackagist-plugin/w3-total-cache" : "*",
+	"wpackagist-plugin/gzip-ninja-speed-compression" : "*",
     "wpackagist-plugin/show-hidecollapse-expand" : "*",
     "oscarotero/env": "^1.1.0",
     "roots/wp-password-bcrypt": "1.0.0",
