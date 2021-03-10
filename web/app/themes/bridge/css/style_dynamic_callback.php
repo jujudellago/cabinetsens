@@ -1,11 +1,11 @@
 <?php
 $root = dirname(dirname(dirname(dirname(dirname(__FILE__)))));
-if ( file_exists( $root.'/wp-load.php' ) ) {
-	require_once( $root.'/wp-load.php' );
+if ( file_exists( $root.'/wp/wp-load.php' ) ) {
+	require_once( $root.'/wp/wp-load.php' );
 } else {
 	$root = dirname(dirname(dirname(dirname(dirname(dirname(__FILE__))))));
-	if ( file_exists( $root.'/wp-load.php' ) ) {
-		require_once( $root.'/wp-load.php' );
+	if ( file_exists( $root.'/wp/wp-load.php' ) ) {
+		require_once( $root.'/wp/wp-load.php' );
 	}
 }
 $header_bottom_border_width = 1;
