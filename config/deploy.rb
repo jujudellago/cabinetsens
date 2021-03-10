@@ -104,6 +104,7 @@ namespace :deploy do
       execute :find, release_path.to_s, ' -type f -name  "*" -exec chmod 644 {} \;'
       execute :find, release_path.to_s, ' -type d -name  "cache" -exec chmod 777 {} \;'
       execute :find, release_path.to_s, ' -type d -name  "w3tc-config" -exec chmod 777 {} \;'
+      execute :find, release_path.to_s+"/web/app/themes/bridge/", ' -type d -name  "js" -exec chmod 777 {} \;'
       
       # execute "/bin/sh /set_staging.sh"
     end
