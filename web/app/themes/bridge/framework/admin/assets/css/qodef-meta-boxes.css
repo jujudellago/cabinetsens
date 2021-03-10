@@ -161,6 +161,12 @@ position: absolute;
 	padding-left: 20px;
 	background: #F2F4F5;
 }
+.qodef-meta-box .iris-picker,
+.qodef-meta-box .iris-picker * {
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
 
 .qodef-page .qodef-page-section-subtitle {
     color:#a2a9af;

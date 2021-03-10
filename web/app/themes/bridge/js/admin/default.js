@@ -33,7 +33,7 @@ jQuery(document).ready(function($) {
 				jQuery.ajax({
 					type: "post",
 					url: ajaxurl,
-					data: "action=qode_gallery_upload_get_images&ids=" + ids,
+					data: "action=bridge_qode_gallery_upload_get_images&ids=" + ids,
 					success: function(data) {
 
 						$thumbs_wrap.empty().html(data);
@@ -48,7 +48,7 @@ jQuery(document).ready(function($) {
 
 		init: function() {
 
-			$upload_button.click(function(event) {
+			$upload_button.on('click', function(event) {
 
 				$thumbs_wrap = $(this).next();
 				$input_gallery_items = $thumbs_wrap.next();
@@ -306,7 +306,7 @@ $j(document).ready(function() {
 	});
 	
 	$j(document).on('click', '.upload_button', function(event) {
-		$j(this).siblings('input').click();
+		$j(this).siblings('input').trigger("click");
 	});
 	
 	/* ------PORTFOLIO PART START------- */

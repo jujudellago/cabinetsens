@@ -153,12 +153,8 @@ class Vc_Frontend_Editor {
 	 *
 	 */
 	public function adminInit() {
-		if ( Vc_Frontend_Editor::frontendEditorEnabled() ) {
-			$this->setPost();
-			if ( vc_check_post_type() ) {
-				$this->renderEditor();
-			}
-		}
+		$this->setPost();
+		$this->renderEditor();
 	}
 
 	/**

@@ -23,15 +23,15 @@ if ( ! wc_coupons_enabled() ) { // @codingStandardsIgnoreLine.
 ?>
 
 <div class="woocommerce-form-coupon-toggle">
-    <?php wc_print_notice( apply_filters( 'woocommerce_checkout_coupon_message', __( 'Have a coupon?', 'woocommerce' ) . ' <a href="#" class="showcoupon">' . __( 'Click here to enter your code', 'woocommerce' ) . '</a>' ), 'notice' ); ?>
+    <?php wc_print_notice( apply_filters( 'woocommerce_checkout_coupon_message', esc_html__( 'Have a coupon?', 'bridge' ) . ' <a href="#" class="showcoupon">' . esc_html__( 'Click here to enter your code', 'bridge' ) . '</a>' ), 'notice' ); ?>
 </div>
 
 <form class="checkout_coupon woocommerce-form-coupon" method="post" style="display:none">
 	
 	<?php /*** Our code modification inside Woo template - begin ***/ ?>
 	<div class="coupon">
-		<input type="text" name="coupon_code" class="input-text" placeholder="<?php esc_attr_e( 'Coupon code', 'woocommerce' ); ?>" id="coupon_code" value="" />
-		<input type="submit" class="button" name="apply_coupon" value="<?php esc_attr_e( 'Apply coupon', 'woocommerce' ); ?>" />
+		<input type="text" name="coupon_code" class="input-text" placeholder="<?php esc_attr_e( 'Coupon code', 'bridge' ); ?>" id="coupon_code" value="" />
+		<input type="submit" class="button" name="apply_coupon" value="<?php esc_attr_e( 'Apply coupon', 'bridge' ); ?>" />
 	</div>
 	<?php /*** Our code modification inside Woo template - end ***/ ?>
 	

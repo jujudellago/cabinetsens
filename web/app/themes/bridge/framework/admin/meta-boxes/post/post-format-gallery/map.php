@@ -1,30 +1,30 @@
 <?php
 
-if ( ! function_exists( 'qode_map_post_gallery_meta' ) ) {
+if ( ! function_exists('bridge_qode_map_post_gallery_meta') ) {
 	
-	function qode_map_post_gallery_meta() {
-		$gallery_post_format_meta_box = qode_add_meta_box(
+	function bridge_qode_map_post_gallery_meta() {
+		$gallery_post_format_meta_box = bridge_qode_create_meta_box(
 			array(
 				'scope' => array( 'post' ),
-				'title' => esc_html__( 'Gallery Post Format', 'qode' ),
+				'title' => esc_html__( 'Gallery Post Format', 'bridge' ),
 				'name'  => 'post_format_gallery_meta'
 			)
 		);
 
-		qode_add_meta_box_field(
+		bridge_qode_create_meta_box_field(
 			array(
 				'name'          => 'gallery_type',
 				'type'          => 'select',
-				'label'         => esc_html__('Gallery Type', 'qode'),
-				'description'   => esc_html__('Choose gallery type for Blog Compound list', 'qode'),
+				'label'         => esc_html__('Gallery Type', 'bridge'),
+				'description'   => esc_html__('Choose gallery type for Blog Compound list', 'bridge'),
 				'parent'        => $gallery_post_format_meta_box,
 				'options'       => array(
-					'slider'	=> esc_html__('Slider', 'qode'),
-					'masonry'	=> esc_html__('Masonry', 'qode'),
+					'slider'	=> esc_html__('Slider', 'bridge'),
+					'masonry'	=> esc_html__('Masonry', 'bridge'),
 				)
 			)
 		);
 	}
 	
-	add_action( 'qode_meta_boxes_map', 'qode_map_post_gallery_meta', 21 );
+	add_action( 'bridge_qode_action_meta_boxes_map', 'bridge_qode_map_post_gallery_meta', 21 );
 }

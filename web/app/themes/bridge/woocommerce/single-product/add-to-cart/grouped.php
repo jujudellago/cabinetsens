@@ -12,7 +12,7 @@
  *
  * @see         https://docs.woocommerce.com/document/template-structure/
  * @package     WooCommerce/Templates
- * @version     3.4.0
+ * @version     4.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -23,11 +23,11 @@ do_action( 'woocommerce_before_add_to_cart_form' );
 
 /*** Our code modification inside Woo template - begin ***/
 
-global $qode_options_proya;
+$bridge_qode_options = bridge_qode_return_global_options();
 
 $button_classes = 'single_add_to_cart_button qbutton button alt';
-if (isset($qode_options_proya['woo_products_add_to_cart_hover_type']) && $qode_options_proya['woo_products_add_to_cart_hover_type'] !== ''){
-	$button_classes .= ' '.$qode_options_proya['woo_products_add_to_cart_hover_type'];
+if (isset($bridge_qode_options['woo_products_add_to_cart_hover_type']) && $bridge_qode_options['woo_products_add_to_cart_hover_type'] !== ''){
+	$button_classes .= ' '.$bridge_qode_options['woo_products_add_to_cart_hover_type'];
 }
 /*** Our code modification inside Woo template - end ***/
 ?>
@@ -44,10 +44,12 @@ if (isset($qode_options_proya['woo_products_add_to_cart_hover_type']) && $qode_o
 			'price',
 		), $product );
 
+        do_action( 'woocommerce_grouped_product_list_before', $grouped_product_columns, $quantites_required, $product );
+
         foreach ( $grouped_products as $grouped_product_child ) {
             $post_object        = get_post( $grouped_product_child->get_id() );
             $quantites_required = $quantites_required || ( $grouped_product_child->is_purchasable() && ! $grouped_product_child->has_options() );
-            $post               = $post_object; // WPCS: override ok.
+            $post               = $post_object; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
             setup_postdata( $post );
 
             echo '<tr id="product-' . esc_attr( $grouped_product_child->get_id() ) . '" class="woocommerce-grouped-product-list-item ' . esc_attr( implode( ' ', wc_get_product_class( '', $grouped_product_child->get_id() ) ) ) . '">';
@@ -69,9 +71,10 @@ if (isset($qode_options_proya['woo_products_add_to_cart_hover_type']) && $qode_o
 
                             woocommerce_quantity_input( array(
                                 'input_name'  => 'quantity[' . $grouped_product_child->get_id() . ']',
-                                'input_value' => isset( $_POST['quantity'][ $grouped_product_child->get_id() ] ) ? wc_stock_amount( wc_clean( wp_unslash( $_POST['quantity'][ $grouped_product_child->get_id() ] ) ) ) : 0, // WPCS: CSRF ok, input var okay, sanitization ok.
+                                'input_value' => isset( $_POST['quantity'][ $grouped_product_child->get_id() ] ) ? wc_stock_amount( wc_clean( wp_unslash( $_POST['quantity'][ $grouped_product_child->get_id() ] ) ) ) : 0, // phpcs:ignore WordPress.Security.NonceVerification.Missing
                                 'min_value'   => apply_filters( 'woocommerce_quantity_input_min', 0, $grouped_product_child ),
                                 'max_value'   => apply_filters( 'woocommerce_quantity_input_max', $grouped_product_child->get_max_purchase_quantity(), $grouped_product_child ),
+                                'placeholder' => '0',
                             ) );
 
                             do_action( 'woocommerce_after_add_to_cart_quantity' );
@@ -99,8 +102,10 @@ if (isset($qode_options_proya['woo_products_add_to_cart_hover_type']) && $qode_o
 
             echo '</tr>';
         }
-		$post = $previous_post; // WPCS: override ok.
+		$post = $previous_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		setup_postdata( $post );
+
+        do_action( 'woocommerce_grouped_product_list_after', $grouped_product_columns, $quantites_required, $product );
 		?>
 		</tbody>
 	</table>

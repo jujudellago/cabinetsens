@@ -1,25 +1,25 @@
 <?php
 
-if ( ! function_exists( 'qode_map_post_quote_meta' ) ) {
-	function qode_map_post_quote_meta() {
-		$quote_post_format_meta_box = qode_add_meta_box(
+if ( ! function_exists('bridge_qode_map_post_quote_meta') ) {
+	function bridge_qode_map_post_quote_meta() {
+		$quote_post_format_meta_box = bridge_qode_create_meta_box(
 			array(
 				'scope' => array( 'post' ),
-				'title' => esc_html__( 'Quote Post Format', 'qode' ),
+				'title' => esc_html__( 'Quote Post Format', 'bridge' ),
 				'name'  => 'post_format_quote_meta'
 			)
 		);
 		
-		qode_add_meta_box_field(
+		bridge_qode_create_meta_box_field(
 			array(
 				'name'        => 'quote_format',
 				'type'        => 'text',
-				'label'       => esc_html__( 'Quote', 'qode' ),
-				'description' => esc_html__( 'Enter Quote text', 'qode' ),
+				'label'       => esc_html__( 'Quote', 'bridge' ),
+				'description' => esc_html__( 'Enter Quote text', 'bridge' ),
 				'parent'      => $quote_post_format_meta_box
 			)
 		);
 	}
 	
-	add_action( 'qode_meta_boxes_map', 'qode_map_post_quote_meta', 25 );
+	add_action( 'bridge_qode_action_meta_boxes_map', 'bridge_qode_map_post_quote_meta', 25 );
 }

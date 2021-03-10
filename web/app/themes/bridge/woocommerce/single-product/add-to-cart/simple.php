@@ -25,11 +25,11 @@ if ( ! $product->is_purchasable() ) {
 
 /*** Our code modification inside Woo template - begin ***/
 
-global $qode_options_proya;
+$bridge_qode_options = bridge_qode_return_global_options();
 
 $button_classes = 'single_add_to_cart_button qbutton button alt';
-if (isset($qode_options_proya['woo_products_add_to_cart_hover_type']) && $qode_options_proya['woo_products_add_to_cart_hover_type'] !== ''){
-	$button_classes .= ' '.$qode_options_proya['woo_products_add_to_cart_hover_type'];
+if (isset($bridge_qode_options['woo_products_add_to_cart_hover_type']) && $bridge_qode_options['woo_products_add_to_cart_hover_type'] !== ''){
+	$button_classes .= ' '.$bridge_qode_options['woo_products_add_to_cart_hover_type'];
 }
 
 /*** Our code modification inside Woo template - end ***/

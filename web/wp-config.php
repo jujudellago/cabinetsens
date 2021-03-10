@@ -8,4 +8,6 @@
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 require_once dirname(__DIR__) . '/config/application.php';
 require_once ABSPATH . 'wp-settings.php';
+/** Enable W3 Total Cache */
 define('WP_CACHE', true); // Added by W3 Total Cache
+
