@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /*
+Disallow: /wp-login.php
+Disallow: */trackback
+Disallow: /*/feed
+Disallow: /*/comments
+Disallow: /cgi-bin
+Disallow: /*.php$
+Disallow: /*.inc$
+Disallow: /*.gz
+Disallow: /*.cgi
+
+User-agent: Googlebot-Image
+Disallow:
+
+User-agent: Mediapartners-Google
+Disallow:
+
+User-agent: *
+Disallow: /wp/wp-admin/
+Allow: /wp/wp-admin/admin-ajax.php
+
+
+Sitemap: http://www.cabinetsens.ch/sitemap_index.xml
+

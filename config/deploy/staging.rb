@@ -48,6 +48,7 @@ set :wpcli_local_uploads_dir, 'web/app/uploads/'
 set :wpcli_remote_uploads_dir, "#{shared_path.to_s}/web/app/uploads/"
 
 set :wpcli_args, "--skip-plugins=wp_redirect,w3-total-cache"
+set :linked_files, fetch(:linked_files, []).push('.env','web/.htaccess')
 
 namespace :deploy do
   before :starting, :remove_previous_path do
