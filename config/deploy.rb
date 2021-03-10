@@ -102,6 +102,9 @@ namespace :deploy do
     on roles(:web) do
       execute :find, release_path.to_s, ' -type d -name  "*" -exec chmod 755 {} \;'
       execute :find, release_path.to_s, ' -type f -name  "*" -exec chmod 644 {} \;'
+      execute :find, release_path.to_s, ' -type d -name  "cache" -exec chmod 777 {} \;'
+      execute :find, release_path.to_s, ' -type d -name  "w3tc-config" -exec chmod 777 {} \;'
+      
       # execute "/bin/sh /set_staging.sh"
     end
   end
