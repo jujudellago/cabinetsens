@@ -1,3 +1,32 @@
+22.02.2021 - ver 6.6.0
+  - New: prettyPhoto removed and Lightbox2 added to the plugin (prettyPhoto will stay for backward compatibility)
+  - New: Call to Action element allows to align titles and select tags
+  - New: FlexSlider updated to 2.7.2 version and RTL support improved in WooCommerce products
+  - Update: $post variable added to the grid items filter ‘vc_gitem_post_data_get_link_real_title’
+  - Update: Catalan translation added
+  - Fix: Frontend editor initialization works properly
+  - Fix: Drag and drop for section element works properly in the backend editor
+  - Fix: WPBakery button in the Gutenberg editor works properly
+  - Fix: Request element parameters are passed properly in the edit form
+
+16.12.2020 - ver 6.5.0
+  - Update: Compatibility with WordPress 5.6
+  - Update: Compatibility with PHP8
+  - Fix: Template saving works properly
+  - Fix: Super admin editor access in multisite works properly
+  - Fix: setPost() method do_action_ref_array passes arguments correctly
+  - Fix: Modify with selected grid template loads properly
+  - Fix: Edit with WPBakery in Gutenberg control appears correctly
+  - Fix: Edit form loading spinner displayed correctly
+
+17.11.2020 - ver 6.4.2
+  - Fix: WooCommerce 4.7 compatibility issues resolved
+
+24.09.2020 - ver 6.4.1
+  - Fix: Role manager unfiltered html access improved
+  - Fix: Role manager Frontend editor access improved
+  - Update: German translation updated
+
 11.09.2020 - ver 6.4.0
   - New: Rank Math SEO compatibility introduced
   - New: Option to exclude categories in the loop parameters

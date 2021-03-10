@@ -363,7 +363,7 @@ if ( ! function_exists( 'wpb_resize' ) ) {
 	 * @return array
 	 * @since 4.2
 	 */
-	function wpb_resize( $attach_id = null, $img_url = null, $width, $height, $crop = false ) {
+	function wpb_resize( $attach_id, $img_url, $width, $height, $crop = false ) {
 		// this is an attachment, so we have the ID
 		$image_src = array();
 		if ( $attach_id ) {
@@ -1434,8 +1434,7 @@ function wpb_remove_custom_html( $content ) {
 }
 
 function wpb_remove_custom_onclick( $match ) {
-	$atts = shortcode_parse_atts( $match[3] );
-	if ( isset( $atts['custom_onclick'] ) || isset( $atts['custom_onclick_code'] ) ) {
+	if ( strpos( $match[3], 'custom_onclick' ) !== false ) {
 		return '';
 	}
 
