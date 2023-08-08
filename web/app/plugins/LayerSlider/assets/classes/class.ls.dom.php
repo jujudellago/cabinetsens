@@ -154,7 +154,7 @@ class DOM {
 
 		// Setter
 		if( is_string( $attr ) ) {
-			$attr = array($attr => $value);
+			$attr = [ $attr => $value ];
 		}
 
 		$i = $this->length;

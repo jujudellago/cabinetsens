@@ -283,8 +283,8 @@
 
 						$thisDatepicker.datepicker({
 							dateFormat: dateFormat,
-							prevText: '<span class="dripicon dripicons-chevron-left"></span>',
-							nextText: '<span class="dripicon dripicons-chevron-right"></span>',
+							prevText: '',
+							nextText: '',
 							beforeShowDay: function(date) {
 								var availableDates = qodeTourData.data.availableDays;
 								var formattedDate = $.datepicker.formatDate('yy-mm-dd', date);

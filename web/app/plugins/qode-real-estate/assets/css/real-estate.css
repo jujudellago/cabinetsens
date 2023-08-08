@@ -2027,6 +2027,39 @@ aside.qodef-sidebar .widget.qodef-add-property-widget,
   color: #b3b2b2;
 }
 
+.qodef-re-profile-favorites-holder .qodef-re-profile-favorite-item {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: stretch;
+  border-bottom: 1px solid #e1e1e1;
+  padding: 24px 0;
+  box-sizing: border-box;
+}
+
+.qodef-re-profile-favorites-holder .qodef-re-profile-favorite-item:last-child {
+  border-bottom: 0;
+}
+
+.qodef-re-profile-favorites-holder .qodef-re-profile-favorite-item .qodef-re-profile-favorite-item-image-title {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: stretch;
+}
+
+.qodef-re-profile-favorites-holder .qodef-re-profile-favorite-item .qodef-re-profile-favorite-item-image img {
+  display: block;
+}
+
+.qodef-re-profile-favorites-holder .qodef-re-profile-favorite-item .qodef-re-profile-favorite-item-title {
+  margin-left: 36px;
+}
+
 .qodef-re-profile-all-properties-holder .qodef-re-profile-property-item {
   display: flex;
   flex-direction: row;
@@ -2277,7 +2310,7 @@ aside.qodef-sidebar .widget.qodef-add-property-widget,
   box-sizing: border-box;
 }
 
-.touch .qodef-property-list-holder article {
+.touchevents .qodef-property-list-holder article {
   cursor: pointer;
 }
 

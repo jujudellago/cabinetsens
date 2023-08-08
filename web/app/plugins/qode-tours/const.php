@@ -1,6 +1,6 @@
 <?php
 
-define('QODE_TOURS_VERSION', '3.0.2');
+define('QODE_TOURS_VERSION', '3.0.8');
 define('QODE_TOURS_ABS_PATH', dirname(__FILE__));
 define('QODE_TOURS_REL_PATH', dirname(plugin_basename(__FILE__)));
 define('QODE_TOURS_URL_PATH', plugin_dir_url( __FILE__ ));

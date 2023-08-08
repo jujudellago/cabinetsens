@@ -50,15 +50,17 @@ abstract class WC_Product_Qodef_Abstract extends WC_Abstract_Legacy_Product {
     public function get_cache_group() {
         return $this->cache_group;
     }
-
-    protected $data = array(
-        'name'               => '',
-        'price'              => '',
-        'sold_individually'  => false,
-        'status'             => true,
-        'stock_status'       => 'instock',
-        'stock_quantity'     => null,
-    );
+	
+	protected $data = array(
+		'name'              => '',
+		'price'             => '',
+		'sold_individually' => false,
+		'status'            => true,
+		'stock_status'      => 'instock',
+		'stock_quantity'    => null,
+		'tax_status'        => 'taxable',
+		'tax_class'         => ''
+	);
 
     /**
      * Get the product if ID is passed, otherwise the product is new and empty.
@@ -211,24 +213,26 @@ abstract class WC_Product_Qodef_Abstract extends WC_Abstract_Legacy_Product {
     public function managing_stock() {
         return false;
     }
-
-    /**
-     * Returns the tax class.
-     *
-     * @return string
-     */
-    public function get_tax_class() {
-        return '';
-    }
-
-    /**
-     * Returns the tax status.
-     *
-     * @return string
-     */
-    public function get_tax_status() {
-        return 'none';
-    }
+	
+	/**
+	 * Returns the tax status.
+	 *
+	 * @param  string $context What the value is for. Valid values are view and edit.
+	 * @return string
+	 */
+	public function get_tax_status( $context = 'view' ) {
+		return $this->get_prop( 'tax_status', $context );
+	}
+	
+	/**
+	 * Returns the tax class.
+	 *
+	 * @param  string $context What the value is for. Valid values are view and edit.
+	 * @return string
+	 */
+	public function get_tax_class( $context = 'view' ) {
+		return $this->get_prop( 'tax_class', $context );
+	}
 
     /**
      * If the stock level comes from another product ID, this should be modified.
@@ -285,12 +289,12 @@ abstract class WC_Product_Qodef_Abstract extends WC_Abstract_Legacy_Product {
     public function get_stock_quantity( $context = 'view' ) {
         return $this->get_prop( 'stock_quantity', $context );
     }
-	
+
 	/**
 	 * Checks if an order needs display the shipping address, based on shipping method.
 	 * @return bool
 	 */
-	
+
 	public function needs_shipping() {
 		return false;
 	}
@@ -316,35 +320,35 @@ abstract class WC_Product_Qodef_Abstract extends WC_Abstract_Legacy_Product {
         
         return apply_filters( 'qodef_checkout_get_image', wc_get_relative_url( $image ), $this, $size, $attr, $placeholder );
     }
-	
-	/**
-	 * Get main image ID.
-	 *
-	 * @since 3.0.0
-	 * @param  string $context What the value is for. Valid values are view and edit.
-	 * @return string
-	 */
-	public function get_image_id( $context = 'view' ) {
-		return bridge_qode_get_attachment_id_from_url($this->get_image());
-	}
-	
-	/**
-	 * Checks if a product is downloadable.
-	 *
-	 * @return bool
-	 */
-	public function is_downloadable() {
-		return false;
-	}
+
+    /**
+     * Get main image ID.
+     *
+     * @since 3.0.0
+     * @param  string $context What the value is for. Valid values are view and edit.
+     * @return string
+     */
+    public function get_image_id( $context = 'view' ) {
+        return bridge_qode_get_attachment_id_from_url($this->get_image());
+    }
+
+    /**
+     * Checks if a product is downloadable.
+     *
+     * @return bool
+     */
+    public function is_downloadable() {
+        return false;
+    }
 
     /**
      * Returns whether or not the product is taxable.
      *
      * @return bool
      */
-    public function is_taxable() {
-        return false;
-    }
+	public function is_taxable() {
+		return apply_filters( 'woocommerce_product_is_taxable', $this->get_tax_status() === 'taxable' && wc_tax_enabled(), $this );
+	}
 
     /**
      * Get cross sell IDs.
@@ -364,17 +368,6 @@ abstract class WC_Product_Qodef_Abstract extends WC_Abstract_Legacy_Product {
      * @return string
      */
     public function get_name( $context = 'view' ) {
-        return $this->get_prop( 'name', $context );
-    }
-
-    /**
-     * Get product title.
-     *
-     * @since 3.0.0
-     * @param  string $context
-     * @return string
-     */
-    public function get_title( $context = 'view' ) {
         return $this->get_prop( 'name', $context );
     }
 
@@ -416,7 +409,7 @@ abstract class WC_Product_Qodef_Abstract extends WC_Abstract_Legacy_Product {
      * @return string
      */
     public function single_add_to_cart_text() {
-        return apply_filters( 'qodef_wci_' . $this->get_object_type() . '_single_add_to_cart_text', esc_html__( 'Add to cart', 'qode-woocommerce-checkout-integration' ), $this );
+        return apply_filters( 'qodef_checkout_' . $this->get_object_type() . '_single_add_to_cart_text', esc_html__( 'Add to cart', 'qodef-checkout' ), $this );
     }
 
     /**
@@ -427,7 +420,7 @@ abstract class WC_Product_Qodef_Abstract extends WC_Abstract_Legacy_Product {
      * @return string
      */
     public function add_to_cart_text() {
-        return apply_filters( 'qodef_wci_' . $this->get_object_type() . '_product_add_to_cart_text', esc_html__( 'Read more', 'qode-woocommerce-checkout-integration' ), $this );
+        return apply_filters( 'qodef_checkout_' . $this->get_object_type() . '_product_add_to_cart_text', esc_html__( 'Read more', 'qodef-checkout' ), $this );
     }
 
 }

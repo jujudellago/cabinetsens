@@ -17,7 +17,7 @@ class QodeToursElementorToursFilter extends \Elementor\Widget_Base{
 		return [ 'qode-tours' ];
 	}
 	
-	protected function _register_controls() {
+	protected function register_controls() {
 		
 		$this->start_controls_section(
 			'design',
@@ -191,4 +191,4 @@ class QodeToursElementorToursFilter extends \Elementor\Widget_Base{
 	
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new QodeToursElementorToursFilter() );
+\Elementor\Plugin::instance()->widgets_manager->register( new QodeToursElementorToursFilter() );

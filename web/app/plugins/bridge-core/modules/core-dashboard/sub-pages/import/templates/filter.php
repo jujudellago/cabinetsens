@@ -13,10 +13,12 @@
 					<li class="qodef-cd-dlf-item qodef-cd-demos-filter qodef-cd-demos-current" data-filter="">
 						<span class="qode-dlf-item-name"><?php esc_html_e('All', 'bridge-core'); ?></span>
 					</li>
-					<?php foreach($filter_categories as $category_key => $category) { ?>
-						<li class="qodef-cd-dlf-item qodef-cd-demos-filter" data-filter-title="<?php echo esc_html($category); ?>" data-filter=".demo-category-<?php echo esc_attr($category_key); ?>">
-							<span class="qode-dlf-item-name"><?php echo esc_html($category); ?></span>
-						</li>
+					<?php foreach($filter_categories as $category_key => $category) {
+						if( $category_key !== 'elementor' ) { ?>
+							<li class="qodef-cd-dlf-item qodef-cd-demos-filter" data-filter-title="<?php echo esc_html($category); ?>" data-filter=".demo-category-<?php echo esc_attr($category_key); ?>">
+								<span class="qode-dlf-item-name"><?php echo esc_html($category); ?></span>
+							</li>
+						<?php } ?>
 					<?php } ?>
 				</ul>
 			<?php } ?>

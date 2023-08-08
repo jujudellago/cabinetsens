@@ -1,6 +1,6 @@
 <?php
 
-define('QODE_RE_VERSION', '1.0');
+define('QODE_RE_VERSION', '1.1.3');
 define('QODE_RE_ABS_PATH', dirname(__FILE__));
 define('QODE_RE_REL_PATH', dirname(plugin_basename(__FILE__ )));
 define('QODE_RE_URL_PATH', plugin_dir_url( __FILE__ ));

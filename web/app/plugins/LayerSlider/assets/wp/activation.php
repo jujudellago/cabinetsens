@@ -4,6 +4,7 @@
 defined( 'LS_ROOT_FILE' ) || exit;
 
 // Activation events
+add_action('admin_init', 'layerslider_v7_redirect');
 add_action('admin_init', 'layerslider_activation_redirect');
 
 // Activation and de-activation hooks
@@ -16,18 +17,42 @@ register_uninstall_hook(LS_ROOT_FILE, 'layerslider_uninstall_scripts');
 // Update handler
 $oldVersion = get_option( 'ls-plugin-version', '1.0.0' );
 if( $oldVersion !== LS_PLUGIN_VERSION ) {
+
 	update_option( 'ls-plugin-version', LS_PLUGIN_VERSION );
-	layerslider_update_scripts( $oldVersion, LS_PLUGIN_VERSION );
+
+	add_action('init', function() use ( $oldVersion ) {
+		layerslider_update_scripts( $oldVersion, LS_PLUGIN_VERSION );
+	});
+}
+
+function layerslider_v7_redirect() {
+
+	if( ! empty( $_GET['page'] ) && $_GET['page'] === 'layerslider' ) {
+
+		$capability = get_option('layerslider_custom_capability', 'manage_options');
+
+		if( is_admin() && current_user_can( $capability ) ) {
+
+			$lastWelcome = get_user_meta( get_current_user_id(), 'ls-v7-welcome-screen-date', true );
+
+			if( ! $lastWelcome  ) {
+				update_user_meta( get_current_user_id(), 'ls-v7-welcome-screen-date', time() );
+				wp_redirect( admin_url( 'admin.php?page=layerslider&section=about' ) );
+				exit;
+			}
+		}
+	}
 }
 
 // Redirect to LayerSlider's main admin page after plugin activation.
 // Should not trigger on multisite bulk activation or after upgrading
 // the plugin to a newer versions.
 function layerslider_activation_redirect() {
-	if(get_option('layerslider_do_activation_redirect', false)) {
-		delete_option('layerslider_do_activation_redirect');
-		if(isset($_GET['activate']) && !isset($_GET['activate-multi'])) {
-			wp_redirect( admin_url( 'admin.php?page=layerslider-options&section=about' ) );
+	if( get_option( 'layerslider_do_activation_redirect', false ) ) {
+		delete_option( 'layerslider_do_activation_redirect' );
+		if( isset( $_GET['activate'] ) && ! isset( $_GET['activate-multi'] ) ) {
+			wp_redirect( admin_url( 'admin.php?page=layerslider&section=about' ) );
+			exit;
 		}
 	}
 }
@@ -61,20 +86,25 @@ function layerslider_activation_routine( ) {
 	layerslider_create_db_table();
 	update_option('ls-db-version', LS_DB_VERSION);
 
+	// Install date
+	if( ! get_option('ls-date-installed', 0) ) {
+
+		// Subtracting a few seconds to offset some timing
+		// issues that may occur in rare situations.
+		update_option('ls-date-installed', time()-500 );
+	}
+
 	// Fresh installation
-	if( ! get_option('ls-installed') ) {
+	if( ! get_option('ls-installed', false ) ) {
 		update_option('ls-installed', 1);
 
+		// Try to auto register license
+		$GLOBALS['LS_AutoUpdate']->attemptAutoActivation();
 
 		// Call "installed" hook
 		if(has_action('layerslider_installed')) {
 			do_action('layerslider_installed');
 		}
-	}
-
-	// Install date
-	if( ! get_option('ls-date-installed', 0) ) {
-		update_option('ls-date-installed', time());
 	}
 }
 
@@ -96,7 +126,6 @@ function layerslider_update_scripts( $oldVersion, $currentVersion ) {
 	// provide for the affected versions.
 	layerslider_run_upgrade_scripts( $oldVersion );
 
-
 	// Attempt to empty all 3rd party plugin
 	// caches when it's enabled. It can help
 	// when there are changes in the markup
@@ -104,6 +133,11 @@ function layerslider_update_scripts( $oldVersion, $currentVersion ) {
 	if( get_option('ls_clear_3rd_party_caches', true ) ) {
 		ls_empty_3rd_party_caches();
 	}
+
+	// Update remote data such as the quick release log
+	// displayed on LayerSlider's main screen to make sure
+	// the new version already has an entry there.
+	LS_RemoteData::update();
 
 	// Trigger 'layerslider_updated' action
 	// hook, so 3rd parties can run their own
@@ -155,12 +189,25 @@ function layerslider_create_db_table() {
 			  date_m int(10) NOT NULL,
 			  schedule_start int(10) NOT NULL DEFAULT 0,
 			  schedule_end int(10) NOT NULL DEFAULT 0,
+			  flag_dirty tinyint(1) NOT NULL DEFAULT 0,
 			  flag_hidden tinyint(1) NOT NULL DEFAULT 0,
 			  flag_deleted tinyint(1) NOT NULL DEFAULT 0,
 			  flag_popup tinyint(1) NOT NULL DEFAULT 0,
 			  flag_group tinyint(1) NOT NULL DEFAULT 0,
 			  PRIMARY KEY  (id)
 			) $charset_collate;");
+
+	// Table for Slider Drafts
+	dbDelta("CREATE TABLE {$wpdb->prefix}layerslider_drafts (
+		  id int(10) NOT NULL AUTO_INCREMENT,
+		  slider_id int(10) NOT NULL,
+		  author int(10) NOT NULL DEFAULT 0,
+		  data mediumtext NOT NULL,
+		  date_c int(10) NOT NULL,
+		  date_m int(10) NOT NULL,
+		  PRIMARY KEY  (id),
+		  UNIQUE KEY slider_id (slider_id)
+		) $charset_collate;");
 
 
 	// Table for Slider Revisions
@@ -216,10 +263,6 @@ function layerslider_deactivation_scripts() {
 	// Remove capability option, so a user can restore
 	// his access to the plugin if set the wrong capability
 	// delete_option('layerslider_custom_capability');
-
-	// Remove the help pointer entry to remind a user for the
-	// help menu when start to use the plugin again
-	delete_user_meta(get_current_user_id(), 'layerslider_help_wp_pointer');
 
 	// Call user hooks
 	if(has_action('layerslider_deactivated')) {

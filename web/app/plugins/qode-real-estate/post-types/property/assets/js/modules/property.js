@@ -7,6 +7,7 @@
     property.qodefShowHideEnquiryForm = qodefShowHideEnquiryForm;
     property.qodefSubmitEnquiryForm = qodefSubmitEnquiryForm;
     property.qodefMortgageCalculator = qodefMortgageCalculator;
+    property.qodefWishlist = qodefWishlist;
 
     property.qodefOnDocumentReady = qodefOnDocumentReady;
     property.qodefOnWindowLoad = qodefOnWindowLoad;
@@ -26,6 +27,7 @@
         qodefSubmitEnquiryForm();
         qodefMortgageCalculator();
         qodefDeleteProperty();
+        qodefWishlist();
     }
 
     /*
@@ -199,6 +201,44 @@
     			});
     		});
     	}
+    }
+
+    function qodefWishlist() {
+        var favouritesLinks = $( '.qodef-re-item-favorites' );
+
+        if( favouritesLinks.length ) {
+            favouritesLinks.each( function() {
+                var favouritesLink = $(this),
+                    itemID = favouritesLink.data( 'item-id' );
+
+                favouritesLink.on( 'click', function() {
+                    var ajaxData = {
+                        action: 'qodef_re_add_item_to_favorites',
+                        item_id : itemID
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        data: ajaxData,
+                        url: QodeAdminAjax.ajaxurl,
+                        success: function (data) {
+                            var response = JSON.parse(data);
+
+                            if(response.status === 'success') {
+                                favouritesLink.find('span').text(response.data.message);
+                                favouritesLink.find('.qodef-re-favorites-icon').removeClass('fa-heart fa-heart-o').addClass(response.data.icon);
+
+                                if( favouritesLink.parents( '.qodef-re-profile-favorite-item' ).length ) {
+                                    favouritesLink.parents( '.qodef-re-profile-favorite-item' ).remove();
+                                }
+                            }
+                        }
+                    });
+
+                    return false;
+                } );
+            } );
+        }
     }
 
 })(jQuery);

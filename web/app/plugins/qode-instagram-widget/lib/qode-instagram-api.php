@@ -42,21 +42,22 @@ class QodeInstagramApi {
      * Private constructor because of singletone pattern. It sets all necessary properties
      */
     public function __construct() {
-        $this->instagramClientID             = '3313811702014223';
-        $this->instagramSecret               = 'be95d86b900c8e3427a7bb6a05509856';
-        $this->instagramRedirectUri          = 'https://demo.qodeinteractive.com/instagram-app/instagram-redirect.php';
-        $this->instagramCode                 = get_option( self::INSTAGRAM_CODE );
-        $this->instagramUserID               = get_option( self::INSTAGRAM_USER_ID );
-        $this->instagramAccessToken          = get_option( self::INSTAGRAM_TOKEN );
-        $this->instagramAccessTokenLongLived = get_option( self::INSTAGRAM_TOKEN_LONG_LIVED );
+	    $this->instagramClientID             = '3961337950544094';
+	    $this->instagramSecret               = 'c40450f40895f8862b216aa46495f308';
+	    $this->instagramRedirectUri          = 'https://demo.qodeinteractive.com/instagram-app/instagram-redirect.php';
+	    $this->instagramCode                 = get_option( self::INSTAGRAM_CODE );
+	    $this->instagramUserID               = get_option( self::INSTAGRAM_USER_ID );
+	    $this->instagramAccessToken          = get_option( self::INSTAGRAM_TOKEN );
+	    $this->instagramAccessTokenLongLived = get_option( self::INSTAGRAM_TOKEN_LONG_LIVED );
 
-        $this->facebookClientID    = '376827366657784';
-        $this->facebookSecret      = '';
-        $this->facebookRedirectUri = 'https://demo.qodeinteractive.com/facebook-app/facebook-redirect.php';
-        $this->facebookCode        = '';
-        $this->facebookAccessToken = get_option( self::FACEBOOK_TOKEN );
+	    $this->facebookClientID             = '132128361763786';
+	    $this->facebookSecret               = '';
+	    $this->facebookRedirectUri          = 'https://demo.qodeinteractive.com/facebook-app/facebook-redirect.php';
+	    $this->facebookCode                 = '';
+	    $this->facebookAccessToken          = get_option( self::FACEBOOK_TOKEN );
+	    //$this->facebookAccessTokenLongLived = get_option( self::FACEBOOK_TOKEN_LONG_LIVED );
 
-        $this->helper = new QodeInstagramHelper();
+	    $this->helper = new QodeInstagramHelper();
     }
 
     /**

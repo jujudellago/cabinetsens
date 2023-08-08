@@ -520,7 +520,7 @@ class ButtonV2 implements ShortcodeInterface {
         }
 
         if ($params['enable_icon_square'] == 'yes'){
-        	$buttonClasses[] = 'qodef-btn-icon-square';
+        	$buttonClasses[] = 'qode-btn-icon-square';
         }
 
         if($params['hover_effect'] === '') {

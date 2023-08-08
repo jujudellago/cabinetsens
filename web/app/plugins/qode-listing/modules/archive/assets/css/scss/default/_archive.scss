@@ -78,6 +78,7 @@
 
 				article {
 					width: 100% / ($i+2);
+					float: left;
 				}
 
 				@if ($i > 1) { // set different break point for four and five columns

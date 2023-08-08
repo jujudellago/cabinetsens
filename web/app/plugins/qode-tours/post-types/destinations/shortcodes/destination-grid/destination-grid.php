@@ -148,7 +148,7 @@ class DestinationGrid implements ShortcodeInterface {
 	}
 
 	private function buildQueryObject($params) {
-		$queryArray['post_status'] = 'published';
+		$queryArray['post_status'] = 'publish';
 		$queryArray['post_type'] = 'destinations';
 
 		if(!empty($params['orderby'])) {

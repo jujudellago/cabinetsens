@@ -2,10 +2,9 @@
 $query_results = new \WP_Query($query_args);
 ?>
 <div class="qodef-re-profile-all-properties-holder">
-    <h2 class="qodef-membership-page-title"><?php esc_html_e('My Properties', 'qode-real-estate'); ?></h2>
-    <p><?php esc_html_e('My properties', 'qode-real-estate'); ?></p>
-    <?php if ($query_results->have_posts()) {
-        while ($query_results->have_posts()) {
+    <?php if ($query_results->have_posts()) { ?>
+        <h5 class="qodef-membership-page-title"><?php esc_html_e('My Properties', 'qode-real-estate'); ?></h5>
+        <?php while ($query_results->have_posts()) {
             $query_results->the_post(); ?>
             <div class="qodef-re-profile-property-item">
                 <div class="qodef-re-profile-property-item-image-title">
@@ -61,6 +60,6 @@ $query_results = new \WP_Query($query_args);
         <?php
         }
     } else { ?>
-        <h3><?php esc_html_e( 'You haven\'t added any property yet.', 'qode-real-estate' ) ?> </h3>
+        <h5><?php esc_html_e( 'You haven\'t added any property yet.', 'qode-real-estate' ) ?> </h5>
     <?php } ?>
 </div>

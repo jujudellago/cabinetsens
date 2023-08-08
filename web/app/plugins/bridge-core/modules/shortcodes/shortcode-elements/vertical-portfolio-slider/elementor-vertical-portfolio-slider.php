@@ -17,7 +17,7 @@ class BridgeCoreElementorVerticalPortfolioSlider extends \Elementor\Widget_Base{
 		return [ 'qode' ];
 	}
 
-	protected function _register_controls(){
+	protected function register_controls(){
 		$this->start_controls_section(
 			'general',
 			[
@@ -191,7 +191,7 @@ class BridgeCoreElementorVerticalPortfolioSlider extends \Elementor\Widget_Base{
 		);
 		
 		if ( ! empty( $params['category'] ) ) {
-			$query_array['portfolio-category'] = $params['category'];
+			$query_array['portfolio_category'] = $params['category'];
 		}
 		
 		$project_ids = null;
@@ -260,4 +260,4 @@ class BridgeCoreElementorVerticalPortfolioSlider extends \Elementor\Widget_Base{
 	}
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorVerticalPortfolioSlider() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorVerticalPortfolioSlider() );

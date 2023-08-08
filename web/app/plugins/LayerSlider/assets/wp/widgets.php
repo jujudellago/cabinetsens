@@ -17,13 +17,13 @@ class LayerSlider_Widget extends WP_Widget {
 		parent::__construct(
 			'layerslider_widget',
 			__('LayerSlider', 'LayerSlider'),
-			array(
+			[
 				'classname' => 'layerslider_widget',
-				'description' => __('Insert sliders with the LayerSlider Widget', 'LayerSlider')
-			),
-			array(
+				'description' => __('Insert projects with the LayerSlider Widget', 'LayerSlider')
+			],
+			[
 				'id_base' => 'layerslider_widget'
-			)
+			]
 		);
 	}
 
@@ -37,7 +37,7 @@ class LayerSlider_Widget extends WP_Widget {
 		if( empty( $instance['id'] ) ) {
 
 			// Get latest slider
-			$sliders = LS_Sliders::find( array( 'limit' => 1 ) );
+			$sliders = LS_Sliders::find( [ 'limit' => 1 ] );
 
 			// Set latest slider (if any)
 			if( ! empty( $sliders[0] ) ) {
@@ -65,45 +65,45 @@ class LayerSlider_Widget extends WP_Widget {
 
 	function form( $instance ) {
 
-		$defaults = array(
+		$defaults = [
 			'id' => '',
 			'title' => '',
 			'filters' => '',
 			'firstslide' => ''
-		);
+		];
 		$instance = wp_parse_args( (array) $instance, $defaults );
-		$sliders = LS_Sliders::find( array( 'limit' => 100 ) );
+		$sliders = LS_Sliders::find( [ 'limit' => 100 ] );
 		?>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e('Title:', 'LayerSlider'); ?></label>
-			<input type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" class="widefat" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo $instance['title']; ?>">
+			<label for="<?= $this->get_field_id( 'title' ); ?>"><?= __('Title:', 'LayerSlider'); ?></label>
+			<input type="text" id="<?= $this->get_field_id( 'title' ); ?>" class="widefat" name="<?= $this->get_field_name( 'title' ); ?>" value="<?= $instance['title']; ?>">
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'id' ); ?>"><?php _e('Choose a slider:', 'LayerSlider') ?></label><br>
+			<label for="<?= $this->get_field_id( 'id' ); ?>"><?= __('Choose a project:', 'LayerSlider') ?></label><br>
 			<?php if( $sliders != null && !empty($sliders) ) { ?>
-			<select id="<?php echo $this->get_field_id( 'id' ); ?>" class="widefat" name="<?php echo $this->get_field_name( 'id' ); ?>">
+			<select id="<?= $this->get_field_id( 'id' ); ?>" class="widefat" name="<?= $this->get_field_name( 'id' ); ?>">
 				<?php foreach($sliders as $item) : ?>
 				<?php $name = empty($item['name']) ? 'Unnamed' : htmlspecialchars($item['name']); ?>
 				<?php if($item['id'] == $instance['id']) { ?>
-				<option value="<?php echo $item['id'] ?>" selected="selected"><?php echo $name ?> | #<?php echo $item['id'] ?></option>
+				<option value="<?= $item['id'] ?>" selected="selected"><?= $name ?> | #<?= $item['id'] ?></option>
 				<?php } else { ?>
-				<option value="<?php echo $item['id'] ?>"><?php echo $name ?> | #<?php echo $item['id'] ?></option>
+				<option value="<?= $item['id'] ?>"><?= $name ?> | #<?= $item['id'] ?></option>
 				<?php } ?>
 				<?php endforeach; ?>
 			</select>
 			<?php } else { ?>
-			<?php _e('You have not created any slider yet.', 'LayerSlider') ?>
+			<?= __('You haven’t created any project yet.', 'LayerSlider') ?>
 			<?php } ?>
 		</p>
 		<p style="margin-top: 20px; padding-top: 10px; border-top: 1px dashed #dedede; margin-bottom: 20px;">
-			<label for="<?php echo $this->get_field_id( 'filters' ); ?>"><?php _e('Optional filters:', 'LayerSlider'); ?></label>
-			<a href="https://layerslider.kreaturamedia.com/documentation/#publish-filters" target="_blank" style="float: right;"><?php _e('Learn more', 'LayerSlider') ?></a>
-			<input type="text" id="<?php echo $this->get_field_id( 'filters' ); ?>" placeholder="<?php _e('e.g. homepage', 'LayerSlider') ?>" class="widefat" name="<?php echo $this->get_field_name( 'filters' ); ?>" value="<?php echo $instance['filters']; ?>">
+			<label for="<?= $this->get_field_id( 'filters' ); ?>"><?= __('Optional filters:', 'LayerSlider'); ?></label>
+			<a href="https://layerslider.com/documentation/#publish-filters" target="_blank" style="float: right;"><?= __('Learn more', 'LayerSlider') ?></a>
+			<input type="text" id="<?= $this->get_field_id( 'filters' ); ?>" placeholder="<?= __('e.g. homepage', 'LayerSlider') ?>" class="widefat" name="<?= $this->get_field_name( 'filters' ); ?>" value="<?= $instance['filters']; ?>">
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'firstslide' ); ?>"><?php _e('Override starting slide:', 'LayerSlider'); ?></label>
-			<input type="text" id="<?php echo $this->get_field_id( 'firstslide' ); ?>" placeholder="<?php _e('leave it empty to use default', 'LayerSlider') ?>" class="widefat" name="<?php echo $this->get_field_name( 'firstslide' ); ?>" value="<?php echo $instance['firstslide']; ?>">
+			<label for="<?= $this->get_field_id( 'firstslide' ); ?>"><?= __('Override starting slide:', 'LayerSlider'); ?></label>
+			<input type="text" id="<?= $this->get_field_id( 'firstslide' ); ?>" placeholder="<?= __('leave it empty to use default', 'LayerSlider') ?>" class="widefat" name="<?= $this->get_field_name( 'firstslide' ); ?>" value="<?= $instance['firstslide']; ?>">
 		</p>
 	<?php
 	}

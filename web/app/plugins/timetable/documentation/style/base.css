@@ -28,6 +28,12 @@
         color:#1122CC;
         text-decoration:underline;
     }
+	
+	.ui-widget-content
+	{
+		background: #FFF;
+		color: #222;
+	}
 
     .clear-fix
     {
@@ -69,6 +75,11 @@
         padding:0px;
         list-style-type:none;		
     }
+	
+	ol ol
+	{
+		list-style-type: lower-alpha;
+	}
     
     /**************************************************************************/
     /*	Layouts                                                               */
@@ -317,13 +328,13 @@
                 border-bottom:solid 1px #C7C7C7;
             }
         
-        div.content .ui-tabs .ui-tabs-nav li.ui-tabs-selected
+        div.content .ui-tabs .ui-tabs-nav li.ui-tabs-active
         {
             padding:0px;
             background:#1271B4 !important;
         }
         
-            div.content .ui-tabs .ui-tabs-nav li.ui-tabs-selected a
+            div.content .ui-tabs .ui-tabs-nav li.ui-tabs-active a
             {
                 cursor:default;
                 text-shadow:none;

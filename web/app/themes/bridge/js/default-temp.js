@@ -186,7 +186,7 @@ $j(window).on('load', function(){
 	"use strict";
 
     qodeBrowserDetection();
-	$j('.touch .main_menu li:has(div.second)').doubleTapToGo(); // load script to close menu on touch devices
+	$j('.touchevents .main_menu li:has(div.second)').doubleTapToGo(); // load script to close menu on touch devices
     setLeftPostionedMenuPadding();
     initSmallImageBlogHeight();
 	setDropDownMenuPosition();
@@ -244,7 +244,7 @@ $j(window).on('load', function(){
 	    qodeBlogGalleryAnimation();
         checkAnchorOnLoad(); // it has to be after content top margin initialization to know where to scroll
         checkHeaderStyleOnScroll(); //moved to window load because sections are not fully initialized on dom ready and calculations are wrong
-        if($j('.no-touch .carousel').length){skrollr_slider.refresh();} //in order to reload rest of scroll animation on same page after page loads
+        if($j('.no-touchevents .carousel').length){skrollr_slider.refresh();} //in order to reload rest of scroll animation on same page after page loads
     },700); //timeout is set because of some function that interferes with calculating
     qodePanelArea();
 	initDropDownAfterWPMLReplaceMenu();
@@ -266,8 +266,8 @@ $j(window).scroll(function() {
     checkVerticalMenuTransparency();
     qodeLazyImages();
 
-	$j('.touch .drop_down > ul > li').mouseleave();
-	$j('.touch .drop_down > ul > li').blur();
+	$j('.touchevents .drop_down > ul > li').mouseleave();
+	$j('.touchevents .drop_down > ul > li').blur();
 });
 
 $j(window).resize(function() {
@@ -1535,7 +1535,7 @@ function initQodeSlider(){
 
 		});
 
-        if ($j('.no-touch .carousel').length) {
+        if ($j('.no-touchevents .carousel').length) {
             skrollr_slider = skrollr.init({
                 edgeStrategy: 'set',
                 smoothScrolling: true,
@@ -2140,9 +2140,9 @@ function initDropDownMenu(){
 function initVerticalMenu(){
 	"use strict";
 
-	if ($j('.no-touch .vertical_menu_toggle').length) {
-		var menu_items = $j('.no-touch .vertical_menu_toggle > ul > li');
-		var menu_items_2 = $j('.no-touch .vertical_menu_toggle ul li ul li');
+	if ($j('.no-touchevents .vertical_menu_toggle').length) {
+		var menu_items = $j('.no-touchevents .vertical_menu_toggle > ul > li');
+		var menu_items_2 = $j('.no-touchevents .vertical_menu_toggle ul li ul li');
 
 		menu_items.each( function(i) {
 			if($j(menu_items[i]).hasClass('has_sub')){
@@ -2236,10 +2236,10 @@ function initVerticalMenu(){
 			}
 		});
 	}
-	else if ($j('.no-touch .vertical_menu_float').length){
+	else if ($j('.no-touchevents .vertical_menu_float').length){
         //show dropdown to content on menu item hover, link is available on menu item click
-        var menu_items = $j('.no-touch .vertical_menu_float > ul > li');
-        var menu_items_2 = $j('.no-touch .vertical_menu_float ul li ul li');
+        var menu_items = $j('.no-touchevents .vertical_menu_float > ul > li');
+        var menu_items_2 = $j('.no-touchevents .vertical_menu_float ul li ul li');
         menu_items.each( function(i) {
             if($j(menu_items[i]).hasClass('has_sub')){
                 $j(menu_items[i]).hoverIntent({
@@ -2285,7 +2285,7 @@ function initVerticalMobileMenu(){
 
 	if ($j('.vertical_menu_toggle').length) {
 		//register tap / click event for main menu item plus icon
-		$j('.touch .vertical_menu_toggle > ul > li.has_sub > a .plus').on('tap click', function(e){
+		$j('.touchevents .vertical_menu_toggle > ul > li.has_sub > a .plus').on('tap click', function(e){
 			//first prevent event propagation and it's default behavior
 			e.stopPropagation();
 			e.preventDefault();
@@ -2293,17 +2293,17 @@ function initVerticalMobileMenu(){
 			//is dropdown for clicked item visible?
 			if($j(this).parent().next('div.second').is(":visible")){
 				//if it is remove 'open' class and slide it up
-				$j(this).parents('.touch .vertical_menu_toggle > ul > li.has_sub').removeClass('open');
+				$j(this).parents('.touchevents .vertical_menu_toggle > ul > li.has_sub').removeClass('open');
 				$j(this).parent().next('div.second').slideUp(200);
 			} else {
 				//if it's not visible add 'open' class and slide it down
-				$j(this).parents('.touch .vertical_menu_toggle > ul > li.has_sub').addClass('open');
+				$j(this).parents('.touchevents .vertical_menu_toggle > ul > li.has_sub').addClass('open');
 				$j(this).parent().next('div.second').slideDown(200);
 			}
 		});
 
 		//register tap / click event for second level main menu item plus icon
-		$j('.touch .vertical_menu_toggle ul li ul li > a .plus').on('tap click', function(e){
+		$j('.touchevents .vertical_menu_toggle ul li ul li > a .plus').on('tap click', function(e){
 			//first prevent event propagation and it's default behavior
 			e.stopPropagation();
 			e.preventDefault();
@@ -2311,17 +2311,17 @@ function initVerticalMobileMenu(){
 			//is dropdown for clicked item visible?
 			if($j(this).parent().next('ul').is(":visible")){
 				//if it is remove 'open' class and slide it up
-				$j(this).parents('.touch .vertical_menu_toggle ul li ul li').removeClass('open');
+				$j(this).parents('.touchevents .vertical_menu_toggle ul li ul li').removeClass('open');
 				$j(this).parent().next('ul').slideUp(200);
 			} else {
 				//if it's not visible add 'open' class and slide it down
-				$j(this).parents('.touch .vertical_menu_toggle ul li ul li').addClass('open');
+				$j(this).parents('.touchevents .vertical_menu_toggle ul li ul li').addClass('open');
 				$j(this).parent().next('ul').slideDown(200);
 			}
 		});
 	}
 	else if ($j('.vertical_menu_float').length){
-		$j('.touch .vertical_menu_float > ul > li.has_sub > a .plus').on('tap click', function(e){
+		$j('.touchevents .vertical_menu_float > ul > li.has_sub > a .plus').on('tap click', function(e){
 			//first prevent event propagation and it's default behavior
 			e.stopPropagation();
 			e.preventDefault();
@@ -2329,15 +2329,15 @@ function initVerticalMobileMenu(){
 			//is dropdown for clicked item visible?
 			if($j(this).parent().next('div.second').hasClass('vertical_menu_start')){
 				//if it is remove 'open' class and 'vertical_menu_start'
-				$j(this).parents('.touch .vertical_menu_float > ul > li.has_sub').removeClass('open');
-				$j(this).parents('.touch .vertical_menu_float > ul > li.has_sub').find('.second').removeClass('vertical_menu_start');
+				$j(this).parents('.touchevents .vertical_menu_float > ul > li.has_sub').removeClass('open');
+				$j(this).parents('.touchevents .vertical_menu_float > ul > li.has_sub').find('.second').removeClass('vertical_menu_start');
 			} else {				//if it's not visible add 'open' class and 'vertical_menu_start'
-				$j(this).parents('.touch .vertical_menu_float > ul > li.has_sub').addClass('open');
-				$j(this).parents('.touch .vertical_menu_float > ul > li.has_sub').find('.second').addClass('vertical_menu_start');
+				$j(this).parents('.touchevents .vertical_menu_float > ul > li.has_sub').addClass('open');
+				$j(this).parents('.touchevents .vertical_menu_float > ul > li.has_sub').find('.second').addClass('vertical_menu_start');
 			}
 		});
 		//register tap / click event for second level main menu item plus icon
-		$j('.touch .vertical_menu_float ul li ul li > a .plus').on('tap click', function(e){
+		$j('.touchevents .vertical_menu_float ul li ul li > a .plus').on('tap click', function(e){
 			//first prevent event propagation and it's default behavior
 			e.stopPropagation();
 			e.preventDefault();
@@ -2345,13 +2345,13 @@ function initVerticalMobileMenu(){
 			//is dropdown for clicked item visible?
 			if($j(this).parent().next('ul').hasClass('vertical_submenu_start')){
 				//if it is remove 'open' class and slide it up
-				$j(this).parents('.touch .vertical_menu_float ul li ul li').removeClass('open');
-				$j(this).parents('.touch .vertical_menu_float ul li ul li').find('ul').removeClass('vertical_submenu_start');
+				$j(this).parents('.touchevents .vertical_menu_float ul li ul li').removeClass('open');
+				$j(this).parents('.touchevents .vertical_menu_float ul li ul li').find('ul').removeClass('vertical_submenu_start');
 
 			} else {
 				//if it's not visible add 'open' class and slide it down
-				$j(this).parents('.touch .vertical_menu_float ul li ul li').addClass('open');
-				$j(this).parents('.touch .vertical_menu_float ul li ul li').find('ul').addClass('vertical_submenu_start');
+				$j(this).parents('.touchevents .vertical_menu_float ul li ul li').addClass('open');
+				$j(this).parents('.touchevents .vertical_menu_float ul li ul li').find('ul').addClass('vertical_submenu_start');
 			}
 		});
 	}
@@ -3425,7 +3425,7 @@ function initTitleAreaAnimation(){
 function initParallaxTitle(){
 	"use strict";
 
-	if(($j('.title').length > 0) && ($j('.touch').length === 0)){
+	if(($j('.title').length > 0) && ($j('.touchevents').length === 0)){
 
 		if($j('.title.has_fixed_background').length){
 
@@ -3766,7 +3766,7 @@ function initInsideMobileMenu(){
 	"use strict";
 
 
-	$j(".mobile_menu > ul > li.has_sub > span.mobile_arrow, .mobile_menu > ul > li.has_sub > h3, .mobile_menu > ul > li.has_sub > a[href*='#']").on('tap click', function(e){
+	$j(".mobile_menu > ul > li.has_sub > span.mobile_arrow, .mobile_menu > ul > li.has_sub > h3, .mobile_menu > ul > li.has_sub:not(.qode-is-anchor-item) > a[href*='#']").on('tap click', function(e){
         e.preventDefault();
 
         if ($j(this).closest('li.has_sub').find("> ul.sub_menu").is(":visible")){
@@ -3778,7 +3778,7 @@ function initInsideMobileMenu(){
 		}
 	});
 
-	$j(".mobile_menu > ul > li.has_sub > ul.sub_menu > li.has_sub > span.mobile_arrow, .mobile_menu > ul > li.has_sub > ul.sub_menu > li.has_sub > h3, .mobile_menu > ul > li.has_sub > ul.sub_menu > li.has_sub > a[href*='#']").on('tap click', function(e){
+	$j(".mobile_menu > ul > li.has_sub > ul.sub_menu > li.has_sub > span.mobile_arrow, .mobile_menu > ul > li.has_sub > ul.sub_menu > li.has_sub > h3, .mobile_menu > ul > li.has_sub > ul.sub_menu > li.has_sub:not(.qode-is-anchor-item) > a[href*='#']").on('tap click', function(e){
         e.preventDefault();
 
         if ($j(this).parent().find("ul.sub_menu").is(":visible")){
@@ -4004,7 +4004,7 @@ function qodeInitAdvancedTabsIcons(){
 
 			var tabNav = thisTabContent.parents('.qode-advanced-tabs').find('.qode-advanced-tabs-nav > li a[href="#'+id+'"]');
 			if(typeof(tabNav) !== 'undefined') {
-				tabNav.children('.qode-advanced-icon-frame').append(icon);
+				tabNav.children('.qode-advanced-icon-frame').html(icon);
 			}
 		});
 	}
@@ -5781,7 +5781,7 @@ function initVideoBackgroundSize(){
 		$j(this).scrollTop(($j(this).find('video').height() - ($sectionHeight)) / 2);
 
 		$j(this).css('opacity', 1);
-		$j('.no-touch .section .mobile-video-image ').css('display', 'none');
+		$j('.no-touchevents .section .mobile-video-image ').css('display', 'none');
 	});
 
 	$j('.carousel .item .video .video-wrap').each(function(i){
@@ -5920,17 +5920,13 @@ function initSearchButton(){
 				}
 				if ($j('.qode_search_form').height() == "0") {
 					$j('.qode_search_form input[type="text"]').focus();
-					$j('.header_top_bottom_holder').stop().animate({top:"50px"},150);
-					$j('.qode_search_form').stop().animate({height:"50px"},150);
-					$j('.content_inner').stop().animate({marginTop:"50px"},150);
+					$j('body').addClass('qode-search-slides-from-top-opened');
 					if($scroll < 34){ $j('header.page_header').stop().animate({top:0},150); }
 					$j('.title.has_fixed_background').animate({
 						'background-position-y': (yPos + 50)+'px'
 					}, 150);
 				} else {
-					$j('.qode_search_form').stop().animate({height:"0"},150);
-					$j('.header_top_bottom_holder').stop().animate({top:"0px"},150);
-					$j('.content_inner').stop().animate({marginTop:"0"},150);
+					$j('body').removeClass('qode-search-slides-from-top-opened');
 					if($scroll < 34){ $j('header.page_header').stop().animate({top:-$scroll},150);}
 					$j('.title.has_fixed_background').animate({
 						'background-position-y': (yPos - 50)+'px'
@@ -5939,18 +5935,14 @@ function initSearchButton(){
 
 				$j(window).scroll(function() {
 					if ($j('.qode_search_form').height() != "0" && $scroll > 50) {
-						$j('.qode_search_form').stop().animate({height:"0"},150);
-						$j('.header_top_bottom_holder').stop().animate({top:"0px"},150);
-						$j('.content_inner').stop().animate({marginTop:"0"},150);
+						$j('body').removeClass('qode-search-slides-from-top-opened');
 						$j('.title.has_fixed_background').css('backgroundPosition', 'center '+(yPos)+'px');
 					}
 				});
 
 				$j('.qode_search_close').on('click', function(e){
 					e.preventDefault();
-					$j('.qode_search_form').stop().animate({height:"0"},150);
-					$j('.content_inner').stop().animate({marginTop:"0"},150);
-					$j('.header_top_bottom_holder').stop().animate({top:"0px"},150);
+					$j('body').removeClass('qode-search-slides-from-top-opened');
 					if($scroll < 34){ $j('header.page_header').stop().animate({top:-$scroll},150);}
 					$j('.title.has_fixed_background').animate({
 						'background-position-y': (yPos)+'px'
@@ -6051,7 +6043,8 @@ function initSearchButton(){
 			});
 
 			$j('.qode_search_close, .content, footer').on('click', function(e){
-					$j('.qode_search_form_3').stop(true).fadeOut(450,'easeOutExpo');
+				e.preventDefault();
+				$j('.qode_search_form_3').stop(true).fadeOut(450,'easeOutExpo');
 			});
 
 			$j('.qode_search_form_3').blur(function(e){
@@ -6456,6 +6449,18 @@ function initButtonHover() {
             if(typeof $j(this).data('hover-background-color') !== 'undefined' && $j(this).data('hover-background-color') !== false) {
                 var hover_background_color = $j(this).data('hover-background-color');
                 var initial_background_color = $j(this).css('background-color');
+
+				// TODO
+                if ( hover_background_color.startsWith("#") && hover_background_color.length === 9 ) {
+					var colorCode = hover_background_color.replace('#',''),
+						r = parseInt(colorCode.substring(0,2), 16),
+						g = parseInt(colorCode.substring(2,4), 16),
+						b = parseInt(colorCode.substring(4,6), 16),
+						a = parseFloat(parseInt((parseInt(colorCode.substring(6,8), 16)/255)*100)/100);
+
+					hover_background_color = 'rgba('+r+','+g+','+b+','+a+')';
+				}
+
                 $j(this).hover(
                 function() {
                     $j(this).css('background-color', hover_background_color);
@@ -6991,6 +6996,12 @@ function initFullScreenTemplate(){
         });
 
         var section_number = $j('.full_screen_inner > .full_screen_section').length;
+
+        //if already instanciated destroy it so Elementor can instanciate it again with new settings
+        if( $j('html').hasClass('qode-initialized-fss') ){
+			$j.fn.fullpage.destroy('all');
+		}
+
 		$j('.full_screen_inner').fullpage({
 			sectionSelector: '.full_screen_section',
 			scrollOverflow: true,
@@ -6999,6 +7010,7 @@ function initFullScreenTemplate(){
                 checkFullScreenSectionsForHeaderStyle(index, default_header_style);
 			},
             afterRender: function(){
+				$j('html').addClass('qode-initialized-fss');
             	$j(this).addClass('qode-initialized');
                 checkActiveArrowsOnFullScrrenTemplate(section_number, 1);
                 checkFullScreenSectionsForHeaderStyle(1, default_header_style);
@@ -8234,7 +8246,7 @@ SVGEl.prototype.draw = function() {
 function initPageTitleAnimation(){
     "use strict";
 
-    if($j('.title_outer').data('animation') === 'yes' && $j('.no-touch .title_outer').length > 0) {
+    if($j('.title_outer').data('animation') === 'yes' && $j('.no-touchevents .title_outer').length > 0) {
         var skrollr_title = skrollr.init({
             edgeStrategy: 'set',
             smoothScrolling: false,
@@ -8333,9 +8345,9 @@ function initElementsHolderResponsiveStyle(){
 
 function initQodeElementAnimationSkrollr() {
     "use strict";
-    if($j('.no-touch .carousel').length === 0) {
+    if($j('.no-touchevents .carousel').length === 0) {
 
-        var elementItemAnimation = $j('.no-touch .q_elements_holder > .q_elements_item');
+        var elementItemAnimation = $j('.no-touchevents .q_elements_holder > .q_elements_item');
         elementItemAnimation.each(function(){
 
             if((typeof($j(this).data('animation')) !== 'undefined' || typeof($j('.title_outer').data('animation')) !== 'undefined') && $j(this).data('animation') === 'yes') {
@@ -8936,7 +8948,7 @@ function qodeInitStickyWidget() {
 
         stickyWidgets.each(function(){
             var widget = $j(this),
-                parent =  '.full_section_inner, .section_inner, .two_columns_75_25, .two_columns_25_75, .two_columns_66_33, .two_columns_33_66, .elementor-row',
+                parent =  '.full_section_inner, .section_inner, .two_columns_75_25, .two_columns_25_75, .two_columns_66_33, .two_columns_33_66, .elementor-row, .elementor-section',
                 stickyHeight = 0,
                 widgetOffset = widget.offset().top;
 
@@ -9671,7 +9683,11 @@ function qodeInitAccordions(){
 						thisTitle.toggleClass("ui-state-hover");
 					});
 
-					thisTitle.on('click',function(){
+					thisTitle.on('click',function(e){
+
+						e.preventDefault();
+						e.stopImmediatePropagation();
+
 						thisTitle.toggleClass('ui-accordion-header-active ui-state-active ui-state-default ui-corner-bottom');
 						thisTitle.next().toggleClass('ui-accordion-content-active').slideToggle(300);
 					});
@@ -10032,56 +10048,57 @@ function qodeOwlSlider() {
                 responsiveMargin = 20;
             }
 
-            slider.owlCarousel({
-                items: numberOfItems,
-                loop: loop,
-                autoplay: autoplay,
-                autoplayHoverPause: autoplayHoverPause,
-                autoplayTimeout: sliderSpeed,
-                smartSpeed: sliderSpeedAnimation,
-                margin: margin,
-                stagePadding: stagePadding,
-                center: center,
-                autoWidth: autoWidth,
-                animateInClass: animateInClass,
-                animateOut: animateOut,
-                dots: pagination,
-                nav: navigation,
-                navText: [
-                    '<span class="qode-prev-icon fa fa-angle-left"></span>',
-                    '<span class="qode-next-icon fa fa-angle-right"></span>'
-                ],
-                responsive: {
-                    0: {
-                        items: responsiveNumberOfItems1,
-                        margin: responsiveMargin,
-                        stagePadding: 0,
-                        center: false,
-                        autoWidth: false
-                    },
-                    681: {
-                        items: responsiveNumberOfItems2
-                    },
-                    769: {
-                        items: responsiveNumberOfItems3
-                    },
-                    1025: {
-                        items: responsiveNumberOfItems4
-                    },
-                    1281: {
-                        items: numberOfItems
-                    }
-                },
-                onInitialize: function () {
-                    slider.css('visibility', 'visible');
-                },
-                onChanged: function () {
-                    if(slider.parent().length && slider.parent().hasClass('qode-image-behavior-lightbox')){
-                        prettyPhoto();
-                    }
-                }
-            });
-
+			slider.waitForImages(function() {
+				slider.owlCarousel({
+					items: numberOfItems,
+					loop: loop,
+					autoplay: autoplay,
+					autoplayHoverPause: autoplayHoverPause,
+					autoplayTimeout: sliderSpeed,
+					smartSpeed: sliderSpeedAnimation,
+					margin: margin,
+					stagePadding: stagePadding,
+					center: center,
+					autoWidth: autoWidth,
+					animateInClass: animateInClass,
+					animateOut: animateOut,
+					dots: pagination,
+					nav: navigation,
+					navText: [
+						'<span class="qode-prev-icon fa fa-angle-left"></span>',
+						'<span class="qode-next-icon fa fa-angle-right"></span>'
+					],
+					responsive: {
+						0: {
+							items: responsiveNumberOfItems1,
+							margin: responsiveMargin,
+							stagePadding: 0,
+							center: false,
+							autoWidth: false
+						},
+						681: {
+							items: responsiveNumberOfItems2
+						},
+						769: {
+							items: responsiveNumberOfItems3
+						},
+						1025: {
+							items: responsiveNumberOfItems4
+						},
+						1281: {
+							items: numberOfItems
+						}
+					},
+					onInitialize: function () {
+						slider.css('visibility', 'visible');
+					},
+					onChanged: function () {
+						if(slider.parent().length && slider.parent().hasClass('qode-image-behavior-lightbox')){
+							prettyPhoto();
+						}
+					}
+				});
+			});
         });
     }
 }
@@ -10195,17 +10212,8 @@ function qodeCustomFontTypeOut() {
 				typedWrap = thisTyped.parent('.qode-cf-typed-wrap'),
 				customFontHolder = typedWrap.parent('.custom_font_holder'),
 				str = [],
-				strings = thisTyped.find('.qode-cf-typed');
-
-			if (strings.length) {
-				strings.each(function () {
-					str.push($j(this).text());
-				});
-
-			}
-
-			customFontHolder.appear(function () {
-				thisTyped.typed({
+				strings = thisTyped.find('.qode-cf-typed'),
+				options = {
 					strings: str,
 					typeSpeed: 90,
 					backDelay: 700,
@@ -10213,7 +10221,19 @@ function qodeCustomFontTypeOut() {
 					contentType: 'text',
 					loopCount: false,
 					cursorChar: '_'
+				}
+
+			if (strings.length) {
+				strings.each(function () {
+					str.push($j(this).text());
 				});
+			}
+
+			customFontHolder.appear(function () {
+				var typed = new Typed(
+					thisTyped[0],
+					options
+				);
 			}, {accX: 0, accY: 200});
 		});
 	}

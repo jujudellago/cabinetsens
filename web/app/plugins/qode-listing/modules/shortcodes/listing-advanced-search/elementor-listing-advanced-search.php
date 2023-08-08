@@ -73,7 +73,7 @@ class QodeListingElementorAdvancedSearch extends \Elementor\Widget_Base{
         return [ 'qode-listing' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -285,7 +285,7 @@ class QodeListingElementorAdvancedSearch extends \Elementor\Widget_Base{
             $classes[] = 'qode-ls-adv-with-map';
         }
 
-        return implode($classes, ' ');
+        return implode(' ', $classes);
 
     }
 
@@ -383,8 +383,7 @@ class QodeListingElementorAdvancedSearch extends \Elementor\Widget_Base{
         $html = '';
 
         $banner_flag = $this->getBasicParamByKey('enable_banner') === 'yes' ? true : false;
-        $banner_image_id = $this->getBasicParamByKey('banner_image');
-        $banner_image = wp_get_attachment_image_src( $banner_image_id, 'full' );
+        $banner_image = $this->getBasicParamByKey('banner_image');
         $banner_text = $this->getBasicParamByKey('banner_text');
         $banner_title = $this->getBasicParamByKey('banner_title');
         $banner_link = $this->getBasicParamByKey('banner_link');
@@ -397,7 +396,7 @@ class QodeListingElementorAdvancedSearch extends \Elementor\Widget_Base{
                 $html .= '<div class="qode-ls-adv-search-banner-holder">';
 
                 $html .= '<div class="qode-ls-banner-image">';
-                $html .= '<img src="'.esc_url($banner_image[0]).'" alt="qode-ls-adv-banner-image" title="qode-ls-adv-banner-image" />';
+                $html .= '<img src="'.esc_url($banner_image['url']).'" alt="qode-ls-adv-banner-image" title="qode-ls-adv-banner-image" />';
                 $html .= '</div>';
 
                 if($banner_title !== ''){
@@ -436,4 +435,4 @@ class QodeListingElementorAdvancedSearch extends \Elementor\Widget_Base{
 
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new QodeListingElementorAdvancedSearch() );
+\Elementor\Plugin::instance()->widgets_manager->register( new QodeListingElementorAdvancedSearch() );

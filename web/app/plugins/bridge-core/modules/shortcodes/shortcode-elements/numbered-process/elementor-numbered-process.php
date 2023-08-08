@@ -17,7 +17,7 @@ class BridgeCoreElementorNumberedProcess extends \Elementor\Widget_Base{
         return [ 'qode' ];
     }
 
-    protected function _register_controls(){
+    protected function register_controls(){
         $this->start_controls_section(
             'general',
             [
@@ -61,9 +61,9 @@ class BridgeCoreElementorNumberedProcess extends \Elementor\Widget_Base{
                 'label' => esc_html__('Line Between Process Items', 'bridge-core'),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'options' => [
-                    "solid" => esc_html__("Default", 'bridge-core'),
-                    "dashed" => esc_html__("Small", 'bridge-core'),
-                    "none" => esc_html__("Medium", 'bridge-core'),
+                    "solid" => esc_html__("Solid", 'bridge-core'),
+                    "dashed" => esc_html__("Dashed", 'bridge-core'),
+                    "none" => esc_html__("None", 'bridge-core'),
                 ],
                 'default' => 'solid'
             ]
@@ -318,4 +318,4 @@ class BridgeCoreElementorNumberedProcess extends \Elementor\Widget_Base{
     }
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorNumberedProcess() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorNumberedProcess() );

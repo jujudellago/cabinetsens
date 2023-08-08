@@ -17,7 +17,7 @@ class QodeListingBlogList extends \Elementor\Widget_Base{
         return [ 'qode-listing' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -141,4 +141,4 @@ class QodeListingBlogList extends \Elementor\Widget_Base{
     }
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new QodeListingBlogList() );
+\Elementor\Plugin::instance()->widgets_manager->register( new QodeListingBlogList() );

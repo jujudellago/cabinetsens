@@ -1195,7 +1195,7 @@ if ( ! function_exists( 'bridge_qode_add_style_dynamic' ) ) {
 			$parallax_onoff = $bridge_qode_options['parallax_onoff'];
 		if ($parallax_onoff == "off"){
 			?>
-			.touch section.parallax_section_holder{
+			.touchevents section.parallax_section_holder{
 			height: auto !important;
 			min-height: 300px;
 			background-position: center top !important;
@@ -10090,7 +10090,8 @@ if ( ! function_exists( 'bridge_qode_add_style_dynamic' ) ) {
 		<?php if($sidebar_title_styles !== ""){ ?>
 			aside .widget h5:not(.latest_post_title),
 			.wpb_widgetised_column .widget h5:not(.latest_post_title),
-            .elementor-widget.elementor-widget-sidebar .widget h5:not(.latest_post_title){
+            .elementor-widget.elementor-widget-sidebar .widget h5:not(.latest_post_title),
+            .elementor-widget.elementor-widget-sidebar .widget h5:not(.qode-post-title) {
 			<?php echo esc_attr($sidebar_title_styles); ?>
 			}
 		<?php } ?>
@@ -10290,7 +10291,7 @@ if ( ! function_exists( 'bridge_qode_add_style_dynamic_responsive' ) ) {
 		<?php } ?>
 
 		<?php if ((isset($bridge_qode_options['h5_fontsize_tablet']) && $bridge_qode_options['h5_fontsize_tablet'] !== '') || (isset($bridge_qode_options['h5_lineheight_tablet']) && $bridge_qode_options['h5_lineheight_tablet'] !== '') || (isset($bridge_qode_options['h5_letterspacing_tablet']) && $bridge_qode_options['h5_letterspacing_tablet'] !== '')) { ?>
-			h5, h5 a, body.qode-overridden-elementors-fonts .elementor-widget-heading h5.elementor-heading-title {
+			h5, h5 a, body.qode-overridden-elementors-fonts .elementor-widget-heading h5.elementor-heading-title, .q_icon_with_title .icon_text_holder h5.icon_title {
 			<?php if (isset($bridge_qode_options['h5_fontsize_tablet']) && $bridge_qode_options['h5_fontsize_tablet'] !== '') { ?>font-size: <?php echo intval($bridge_qode_options['h5_fontsize_tablet']); ?>px; <?php } ?>
 			<?php if (isset($bridge_qode_options['h5_lineheight_tablet']) && $bridge_qode_options['h5_lineheight_tablet'] !== '') { ?>line-height: <?php echo intval($bridge_qode_options['h5_lineheight_tablet']); ?>px; <?php } ?>
 			<?php if (isset($bridge_qode_options['h5_letterspacing_tablet']) && $bridge_qode_options['h5_letterspacing_tablet'] !== '') { ?>letter-spacing: <?php echo esc_attr($bridge_qode_options['h5_letterspacing_tablet']); ?>px; <?php } ?>
@@ -10402,7 +10403,7 @@ if ( ! function_exists( 'bridge_qode_add_style_dynamic_responsive' ) ) {
 		<?php } ?>
 
 		<?php if ((isset($bridge_qode_options['h5_fontsize_mobile']) && $bridge_qode_options['h5_fontsize_mobile'] !== '') || (isset($bridge_qode_options['h5_lineheight_mobile']) && $bridge_qode_options['h5_lineheight_mobile'] !== '') || (isset($bridge_qode_options['h5_letterspacing_mobile']) && $bridge_qode_options['h5_letterspacing_mobile'] !== '')) { ?>
-			h5, h5 a, body.qode-overridden-elementors-fonts .elementor-widget-heading h5.elementor-heading-title {
+			h5, h5 a, body.qode-overridden-elementors-fonts .elementor-widget-heading h5.elementor-heading-title, .q_icon_with_title .icon_text_holder h5.icon_title {
 			<?php if (isset($bridge_qode_options['h5_fontsize_mobile']) && $bridge_qode_options['h5_fontsize_mobile'] !== '') { ?>font-size: <?php echo intval($bridge_qode_options['h5_fontsize_mobile']); ?>px; <?php } ?>
 			<?php if (isset($bridge_qode_options['h5_lineheight_mobile']) && $bridge_qode_options['h5_lineheight_mobile'] !== '') { ?>line-height: <?php echo intval($bridge_qode_options['h5_lineheight_mobile']); ?>px; <?php } ?>
 			<?php if (isset($bridge_qode_options['h5_letterspacing_mobile']) && $bridge_qode_options['h5_letterspacing_mobile'] !== '') { ?>letter-spacing: <?php echo esc_attr($bridge_qode_options['h5_letterspacing_mobile']); ?>px; <?php } ?>

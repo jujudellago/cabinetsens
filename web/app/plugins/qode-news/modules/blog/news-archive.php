@@ -23,6 +23,7 @@ if(isset($bridge_qode_options['blog_page_range']) && $bridge_qode_options['blog_
 <?php } ?>
 <?php get_template_part( 'title' ); ?>
     <div class="container">
+        
 		<?php if(isset($bridge_qode_options['overlapping_content']) && $bridge_qode_options['overlapping_content'] == 'yes') {?>
         <div class="overlapping_content"><div class="overlapping_content_inner">
 				<?php } ?>

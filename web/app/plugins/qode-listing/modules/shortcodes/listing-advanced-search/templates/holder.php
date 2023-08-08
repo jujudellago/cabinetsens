@@ -93,6 +93,9 @@ $html = '';	?>
 					print $html; ?>
 			</div>
 			<?php
+                if( isset( $is_elementor ) && $is_elementor ) {
+                    $params['is_elementor'] = $is_elementor;
+                }
 				echo qode_listing_get_shortcode_module_template_part('templates/load-more-template', 'listing-advanced-search', '', $params);
 			?>
 		</div>

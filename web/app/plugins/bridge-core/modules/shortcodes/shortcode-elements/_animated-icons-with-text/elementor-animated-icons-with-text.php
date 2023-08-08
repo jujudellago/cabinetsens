@@ -17,7 +17,7 @@ class BridgeCoreElementorAnimatedIconsWithText extends \Elementor\Widget_Base{
         return [ 'qode' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -57,7 +57,7 @@ class BridgeCoreElementorAnimatedIconsWithText extends \Elementor\Widget_Base{
             [
                 'label' => esc_html__( "Title Tag", 'bridge-core'),
                 'type' => \Elementor\Controls_Manager::SELECT,
-                'options' => bridge_qode_get_title_tag(true),
+                'options' => bridge_qode_get_title_tag(),
                 'default' => 'h5'
             ]
         );
@@ -214,4 +214,4 @@ class BridgeCoreElementorAnimatedIconsWithText extends \Elementor\Widget_Base{
 
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorAnimatedIconsWithText() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorAnimatedIconsWithText() );

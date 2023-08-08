@@ -188,7 +188,7 @@ class VerticalPortfolioSlider implements ShortcodeInterface {
 		);
 		
 		if ( ! empty( $params['category'] ) ) {
-			$query_array['portfolio-category'] = $params['category'];
+			$query_array['portfolio_category'] = $params['category'];
 		}
 		
 		$project_ids = null;

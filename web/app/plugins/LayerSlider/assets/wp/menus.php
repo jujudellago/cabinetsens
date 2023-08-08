@@ -3,69 +3,93 @@
 // Prevent direct file access
 defined( 'LS_ROOT_FILE' ) || exit;
 
+add_filter( 'admin_body_class', function( $classes ) {
+
+	if( ! empty( $_GET['page'] ) && false !== strpos( $_GET['page'], 'layerslider' ) ) {
+		if( ! empty( $_GET['section'] ) && $_GET['section'] === 'about' ) {
+
+			$classes = explode(' ', $classes );
+			$classes = array_merge( $classes, [
+				'folded'
+			]);
+
+			$classes = implode(' ', $classes );
+		}
+	}
+
+	return $classes;
+});
+
 // Admin menu bar entries
 add_action('admin_bar_menu', function( $admin_bar ) {
 
 	// Hook into the "New" menu
-	$admin_bar->add_menu(array(
+	$admin_bar->add_menu([
 		'parent' => 'new-content',
 		'id'    => 'ab-ls-add-new',
 		'title' => 'LayerSlider',
 		'href'  => wp_nonce_url( admin_url('admin.php?page=layerslider&action=create-slider'), 'create-slider')
-	));
+	]);
 
 	// Display LayerSlider's recents on the front-end
 	$capability = get_option('layerslider_custom_capability', 'manage_options');
 	if( ! is_admin() && current_user_can( $capability ) ) {
 
-		$admin_bar->add_menu( array(
+		$admin_bar->add_menu([
 			'id'    => 'ab-layerslider',
 			'title' => 'LayerSlider',
 			'href'  => admin_url('admin.php?page=layerslider')
-		));
+		]);
 
-		$admin_bar->add_menu( array(
+		$admin_bar->add_menu([
+			'parent' => 'ab-layerslider',
+			'id'    => 'ab-layerslider-dashboard',
+			'title' => __('Dashboard', 'LayerSlider'),
+			'href'  => wp_nonce_url( admin_url('admin.php?page=layerslider'), 'create-slider')
+		]);
+
+		$admin_bar->add_menu([
 			'parent' => 'ab-layerslider',
 			'id'    => 'ab-layerslider-new',
 			'title' => __('Add New', 'LayerSlider'),
 			'href'  => wp_nonce_url( admin_url('admin.php?page=layerslider&action=create-slider'), 'create-slider')
-		));
+		]);
 
-		$admin_bar->add_menu( array(
+		$admin_bar->add_menu([
 			'id'    	=> 'ab-ls-recently-created',
 			'parent'    => 'ab-layerslider',
 			'title' 	=> __('Recently Created', 'LayerSlider')
-		));
+		]);
 
-		$sliders = LS_Sliders::find( array( 'limit' => 10 ) );
+		$sliders = LS_Sliders::find( [ 'limit' => 10 ] );
 
 		if( ! empty( $sliders ) ) {
 			foreach( $sliders as $slider ) {
-				$admin_bar->add_menu(array(
+				$admin_bar->add_menu([
 					'parent' => 'ab-ls-recently-created',
 					'id'    => 'ab-ls-recently-created-'.$slider['id'],
-					'title' => $slider['name'],
+					'title' => ! empty( $slider['name'] ) ? htmlentities( stripslashes( $slider['name'] ) ) : __('Unnamed', 'LayerSlider'),
 					'href'  => admin_url('admin.php?page=layerslider&action=edit&id='.$slider['id'])
-				));
+				]);
 			}
 		}
 
-		$admin_bar->add_menu( array(
+		$admin_bar->add_menu( [
 			'id'    	=> 'ab-ls-recently-modified',
 			'parent'    => 'ab-layerslider',
 			'title' 	=> __('Recently Modified', 'LayerSlider')
-		));
+		]);
 
-		$sliders = LS_Sliders::find( array( 'limit' => 10, 'orderby' => 'date_m' ) );
+		$sliders = LS_Sliders::find( [ 'limit' => 10, 'orderby' => 'date_m' ] );
 
 		if( ! empty( $sliders ) ) {
 			foreach( $sliders as $slider ) {
-				$admin_bar->add_menu(array(
+				$admin_bar->add_menu([
 					'parent' => 'ab-ls-recently-modified',
 					'id'    => 'ab-ls-recently-modified-'.$slider['id'],
-					'title' => $slider['name'],
+					'title' => ! empty( $slider['name'] ) ? htmlentities( stripslashes( $slider['name'] ) ) : __('Unnamed', 'LayerSlider'),
 					'href'  => admin_url('admin.php?page=layerslider&action=edit&id='.$slider['id'])
-				));
+				]);
 			}
 		}
 
@@ -85,64 +109,29 @@ function layerslider_settings_menu() {
 
 	// Add main page
 	$layerslider_hook = add_menu_page(
-		'LayerSlider WP', 'LayerSlider WP',
+		'LayerSlider', 'LayerSlider',
 		$capability, 'layerslider', 'layerslider_router',
 		$icon
 	);
 
 	// Add "All Sliders" submenu
 	add_submenu_page(
-		'layerslider', 'LayerSlider WP', __('Sliders', 'LayerSlider'),
+		'layerslider', 'LayerSlider', __('Sliders', 'LayerSlider'),
 		$capability, 'layerslider', 'layerslider_router'
-	);
-
-
-	// Add "Settings" submenu
-	add_submenu_page(
-		'layerslider', 'LayerSlider Options', __('Options', 'LayerSlider'),
-		$capability, 'layerslider-options', 'layerslider_router'
-	);
-
-	// Add "Add-Ons" submenu
-	add_submenu_page(
-		'layerslider', 'LayerSlider Add-Ons', __('Add-Ons', 'LayerSlider'),
-		$capability, 'layerslider-addons', 'layerslider_router'
 	);
 
 }
 
-// Help menu
-add_action( 'admin_head', function() {
-	$screen = get_current_screen();
-
-	if( strpos( $screen->base, 'layerslider') !== false ) {
-		$screen->add_help_tab(array(
-			'id' => 'help',
-			'title' => __('Getting Help', 'LayerSlider'),
-			'content' => '<p>'. sprintf(__('Please read our  %sOnline Documentation%s carefully, it will likely answer all of your questions.<br><br>You can also check the %sFAQs%s for additional information, including our support policies and licensing rules.', 'LayerSlider'), '<a href="https://layerslider.kreaturamedia.com/documentation/" target="_blank">', '</a>', '<a href="https://layerslider.kreaturamedia.com/help/" target="_blank">', '</a>').'</p>'
-		));
-	}
-});
-
 
 function layerslider_router() {
 
-	// Get current screen details
-	$screen = get_current_screen();
+	$section = ! empty( $_GET['section'] ) ? $_GET['section'] : false;
 
-
-	if( strpos( $screen->base, 'layerslider-options' ) !== false ) {
-
-		// Avoid PHP undef notice
-		$section = ! empty( $_GET['section'] ) ? $_GET['section'] : false;
+	if( $section ) {
 
 		switch( $section ) {
 			case 'system-status':
-				include(LS_ROOT_PATH.'/views/system_status.php');
-				break;
-
-			case 'revisions':
-				include(LS_ROOT_PATH.'/views/revisions.php');
+				include(LS_ROOT_PATH.'/views/system-status.php');
 				break;
 
 			case 'about':
@@ -150,31 +139,26 @@ function layerslider_router() {
 				break;
 
 			case 'skin-editor':
-				include(LS_ROOT_PATH.'/views/skin_editor.php');
+				include(LS_ROOT_PATH.'/views/skin-editor.php');
 				break;
 
 			case 'css-editor':
-				include(LS_ROOT_PATH.'/views/css_editor.php');
+				include(LS_ROOT_PATH.'/views/css-editor.php');
 				break;
 
 			case 'transition-builder':
-				include(LS_ROOT_PATH.'/views/transition_builder.php');
+				include(LS_ROOT_PATH.'/views/transition-builder.php');
 				break;
 
 			default:
-				include(LS_ROOT_PATH.'/views/settings.php');
 				break;
 		}
 
-
-	} elseif( strpos( $screen->base, 'layerslider-addons') !== false ) {
-		include(LS_ROOT_PATH.'/views/addons.php');
-
 	} elseif(isset($_GET['action']) && $_GET['action'] == 'edit') {
-		include(LS_ROOT_PATH.'/views/slider_edit.php');
+		include(LS_ROOT_PATH.'/views/project-editor.php');
 
 	} else {
-		include(LS_ROOT_PATH.'/views/slider_list.php');
+		include(LS_ROOT_PATH.'/views/dashboard.php');
 	}
 }
 

@@ -1,20 +1,21 @@
-# Copyright (C) 2020 Qode Themes
+# Copyright (C) 2022 Qode Themes
 # This file is distributed under the same license as the Qode Real Estate plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Qode Real Estate 1.0\n"
+"Project-Id-Version: Qode Real Estate 1.1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/qode-real-estate\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-11-27T14:43:17+01:00\n"
+"POT-Creation-Date: 2022-06-13T14:21:36+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.3.0\n"
+"X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: qode-real-estate\n"
 
 #. Plugin Name of the plugin
+#: main.php:182
 msgid "Qode Real Estate"
 msgstr ""
 
@@ -1045,6 +1046,7 @@ msgstr ""
 #: lib/helpers-functions.php:638
 #: post-types/property/admin/meta-boxes/property-contact-map.php:30
 #: post-types/property/admin/options/archive-map.php:135
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:282
 #: post-types/property/shortcodes/property-list/property-list.php:209
 msgid "None"
 msgstr ""
@@ -1102,6 +1104,7 @@ msgstr ""
 #: post-types/property/profile/templates/edit-property.php:637
 #: post-types/property/profile/templates/searches-list.php:14
 #: post-types/property/shortcodes/property-list/templates/filter/specification.php:8
+#: post-types/property/shortcodes/property-single/elementor-property-single.php:88
 #: post-types/property/shortcodes/property-single/property-single.php:94
 #: post-types/property/templates/single/parts/basic-info.php:5
 #: post-types/property/templates/single/parts/multi-unit.php:19
@@ -1769,17 +1772,23 @@ msgid "Show Agents of Agency"
 msgstr ""
 
 #: modules/roles/shortcodes/agency-and-agent-list/agency-and-agent.php:66
+#: post-types/package/shortcodes/package-list/elementor-package-list.php:43
 #: post-types/package/shortcodes/package-list/package-list.php:39
 #: post-types/property/admin/options/archive-map.php:62
 #: post-types/property/admin/options/single-map.php:138
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:50
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:44
+#: post-types/property/shortcodes/property-city-list/elementor-property-city-list.php:50
 #: post-types/property/shortcodes/property-city-list/property-city-list.php:44
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:76
 #: post-types/property/shortcodes/property-list/property-list.php:55
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:46
 #: post-types/property/shortcodes/property-slider/property-slider.php:43
 msgid "Number of Columns"
 msgstr ""
 
 #: modules/roles/shortcodes/agency-and-agent-list/agency-and-agent.php:68
+#: post-types/package/shortcodes/package-list/elementor-package-list.php:46
 #: post-types/package/shortcodes/package-list/package-list.php:41
 #: post-types/property/admin/meta-boxes/property-masonry-map.php:36
 #: post-types/property/admin/meta-boxes/property-masonry-map.php:53
@@ -1795,71 +1804,113 @@ msgstr ""
 #: post-types/property/profile/templates/add-property.php:339
 #: post-types/property/profile/templates/edit-property.php:215
 #: post-types/property/profile/templates/edit-property.php:244
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:53
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:46
+#: post-types/property/shortcodes/property-city-list/elementor-property-city-list.php:53
 #: post-types/property/shortcodes/property-city-list/property-city-list.php:46
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:79
 #: post-types/property/shortcodes/property-list/property-list.php:57
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:91
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:136
 #: post-types/property/shortcodes/property-search/property-search.php:77
 #: post-types/property/shortcodes/property-search/property-search.php:106
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:49
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:169
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:195
 #: post-types/property/shortcodes/property-slider/property-slider.php:45
 #: post-types/property/shortcodes/property-slider/property-slider.php:135
 #: post-types/property/shortcodes/property-slider/property-slider.php:155
+#: post-types/property/shortcodes/property-type-list/elementor-property-type-list.php:53
 #: post-types/property/shortcodes/property-type-list/property-type-list.php:40
 msgid "Default"
 msgstr ""
 
 #: modules/roles/shortcodes/agency-and-agent-list/agency-and-agent.php:69
+#: post-types/package/shortcodes/package-list/elementor-package-list.php:47
 #: post-types/package/shortcodes/package-list/package-list.php:42
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:54
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:47
+#: post-types/property/shortcodes/property-city-list/elementor-property-city-list.php:54
 #: post-types/property/shortcodes/property-city-list/property-city-list.php:47
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:80
 #: post-types/property/shortcodes/property-list/property-list.php:58
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:50
 #: post-types/property/shortcodes/property-slider/property-slider.php:46
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:63
 #: post-types/property/shortcodes/property-type-slider/property-type-slider.php:52
 msgid "One"
 msgstr ""
 
 #: modules/roles/shortcodes/agency-and-agent-list/agency-and-agent.php:70
+#: post-types/package/shortcodes/package-list/elementor-package-list.php:48
 #: post-types/package/shortcodes/package-list/package-list.php:43
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:55
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:48
+#: post-types/property/shortcodes/property-city-list/elementor-property-city-list.php:55
 #: post-types/property/shortcodes/property-city-list/property-city-list.php:48
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:81
 #: post-types/property/shortcodes/property-list/property-list.php:59
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:51
 #: post-types/property/shortcodes/property-slider/property-slider.php:47
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:64
 #: post-types/property/shortcodes/property-type-slider/property-type-slider.php:53
 msgid "Two"
 msgstr ""
 
 #: modules/roles/shortcodes/agency-and-agent-list/agency-and-agent.php:71
+#: post-types/package/shortcodes/package-list/elementor-package-list.php:49
 #: post-types/package/shortcodes/package-list/package-list.php:44
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:56
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:49
+#: post-types/property/shortcodes/property-city-list/elementor-property-city-list.php:56
 #: post-types/property/shortcodes/property-city-list/property-city-list.php:49
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:82
 #: post-types/property/shortcodes/property-list/property-list.php:60
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:52
 #: post-types/property/shortcodes/property-slider/property-slider.php:48
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:65
 #: post-types/property/shortcodes/property-type-slider/property-type-slider.php:54
 msgid "Three"
 msgstr ""
 
 #: modules/roles/shortcodes/agency-and-agent-list/agency-and-agent.php:72
+#: post-types/package/shortcodes/package-list/elementor-package-list.php:50
 #: post-types/package/shortcodes/package-list/package-list.php:45
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:57
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:50
+#: post-types/property/shortcodes/property-city-list/elementor-property-city-list.php:57
 #: post-types/property/shortcodes/property-city-list/property-city-list.php:50
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:83
 #: post-types/property/shortcodes/property-list/property-list.php:61
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:53
 #: post-types/property/shortcodes/property-slider/property-slider.php:49
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:66
 #: post-types/property/shortcodes/property-type-slider/property-type-slider.php:55
 msgid "Four"
 msgstr ""
 
 #: modules/roles/shortcodes/agency-and-agent-list/agency-and-agent.php:73
+#: post-types/package/shortcodes/package-list/elementor-package-list.php:51
 #: post-types/package/shortcodes/package-list/package-list.php:46
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:58
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:51
+#: post-types/property/shortcodes/property-city-list/elementor-property-city-list.php:58
 #: post-types/property/shortcodes/property-city-list/property-city-list.php:51
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:84
 #: post-types/property/shortcodes/property-list/property-list.php:62
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:54
 #: post-types/property/shortcodes/property-slider/property-slider.php:50
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:67
 #: post-types/property/shortcodes/property-type-slider/property-type-slider.php:56
 msgid "Five"
 msgstr ""
 
 #: modules/roles/shortcodes/agency-and-agent-list/agency-and-agent.php:74
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:59
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:52
+#: post-types/property/shortcodes/property-city-list/elementor-property-city-list.php:59
 #: post-types/property/shortcodes/property-city-list/property-city-list.php:52
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:68
 #: post-types/property/shortcodes/property-type-slider/property-type-slider.php:57
 msgid "Six"
 msgstr ""
@@ -1908,6 +1959,7 @@ msgstr ""
 #: post-types/property/admin/meta-boxes/property-specification-map.php:20
 #: post-types/property/profile/templates/add-property.php:34
 #: post-types/property/profile/templates/edit-property.php:94
+#: post-types/property/shortcodes/property-video-tour/elementor-property-video-tour.php:52
 #: post-types/property/shortcodes/property-video-tour/property-video-tour.php:40
 msgid "Property ID"
 msgstr ""
@@ -2051,7 +2103,18 @@ msgid "Package Settings"
 msgstr ""
 
 #: post-types/package/admin/meta-boxes/settings-meta-boxes.php:24
+#: post-types/package/shortcodes/package-list/elementor-package-list.php:25
 #: post-types/property/admin/meta-boxes/property-meta-boxes.php:18
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:42
+#: post-types/property/shortcodes/property-city-list/elementor-property-city-list.php:42
+#: post-types/property/shortcodes/property-large-slider/elementor-property-large-slider.php:25
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:42
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:25
+#: post-types/property/shortcodes/property-single/elementor-property-single.php:44
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:25
+#: post-types/property/shortcodes/property-type-list/elementor-property-type-list.php:42
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:42
+#: post-types/property/shortcodes/property-video-tour/elementor-property-video-tour.php:44
 msgid "General"
 msgstr ""
 
@@ -2281,6 +2344,25 @@ msgstr ""
 msgid "Buy Package"
 msgstr ""
 
+#: post-types/package/shortcodes/package-list/elementor-package-list.php:9
+msgid "Package List"
+msgstr ""
+
+#: post-types/package/shortcodes/package-list/elementor-package-list.php:33
+#: post-types/package/shortcodes/package-list/package-list.php:32
+msgid "Package Category"
+msgstr ""
+
+#: post-types/package/shortcodes/package-list/elementor-package-list.php:60
+#: post-types/package/shortcodes/package-list/package-list.php:54
+msgid "Space Between Packages"
+msgstr ""
+
+#: post-types/package/shortcodes/package-list/elementor-package-list.php:69
+#: post-types/package/shortcodes/package-list/package-list.php:61
+msgid "Enable Item Border"
+msgstr ""
+
 #: post-types/package/shortcodes/package-list/helper-functions.php:36
 msgid "Unlimited listings"
 msgstr ""
@@ -2289,22 +2371,10 @@ msgstr ""
 msgid "Qode Package List"
 msgstr ""
 
-#: post-types/package/shortcodes/package-list/package-list.php:32
-msgid "Package Category"
-msgstr ""
-
 #: post-types/package/shortcodes/package-list/package-list.php:48
 #: post-types/property/shortcodes/property-list/property-list.php:64
 #: post-types/property/shortcodes/property-slider/property-slider.php:52
 msgid "Default value is Three"
-msgstr ""
-
-#: post-types/package/shortcodes/package-list/package-list.php:54
-msgid "Space Between Packages"
-msgstr ""
-
-#: post-types/package/shortcodes/package-list/package-list.php:61
-msgid "Enable Item Border"
 msgstr ""
 
 #: post-types/package/shortcodes/package-list/templates/layout-collections/standard.php:21
@@ -2791,7 +2861,9 @@ msgstr ""
 
 #: post-types/property/admin/options/archive-map.php:91
 #: post-types/property/admin/options/single-map.php:167
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:112
 #: post-types/property/shortcodes/property-list/property-list.php:84
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:77
 #: post-types/property/shortcodes/property-type-slider/property-type-slider.php:65
 msgid "Image Proportions"
 msgstr ""
@@ -2802,28 +2874,36 @@ msgstr ""
 
 #: post-types/property/admin/options/archive-map.php:96
 #: post-types/property/admin/options/single-map.php:172
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:115
 #: post-types/property/shortcodes/property-list/property-list.php:86
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:81
 #: post-types/property/shortcodes/property-type-slider/property-type-slider.php:67
 msgid "Original"
 msgstr ""
 
 #: post-types/property/admin/options/archive-map.php:97
 #: post-types/property/admin/options/single-map.php:173
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:117
 #: post-types/property/shortcodes/property-list/property-list.php:88
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:83
 #: post-types/property/shortcodes/property-type-slider/property-type-slider.php:69
 msgid "Landscape"
 msgstr ""
 
 #: post-types/property/admin/options/archive-map.php:98
 #: post-types/property/admin/options/single-map.php:174
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:118
 #: post-types/property/shortcodes/property-list/property-list.php:89
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:84
 #: post-types/property/shortcodes/property-type-slider/property-type-slider.php:70
 msgid "Portrait"
 msgstr ""
 
 #: post-types/property/admin/options/archive-map.php:99
 #: post-types/property/admin/options/single-map.php:175
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:116
 #: post-types/property/shortcodes/property-list/property-list.php:87
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:82
 #: post-types/property/shortcodes/property-type-slider/property-type-slider.php:68
 msgid "Square"
 msgstr ""
@@ -2841,18 +2921,23 @@ msgid "Pagination"
 msgstr ""
 
 #: post-types/property/admin/options/archive-map.php:136
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:66
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:283
 #: post-types/property/shortcodes/property-list/property-list.php:46
 #: post-types/property/shortcodes/property-list/property-list.php:210
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:36
 #: post-types/property/shortcodes/property-slider/property-slider.php:34
 msgid "Standard"
 msgstr ""
 
 #: post-types/property/admin/options/archive-map.php:137
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:284
 #: post-types/property/shortcodes/property-list/property-list.php:211
 msgid "Load More"
 msgstr ""
 
 #: post-types/property/admin/options/archive-map.php:138
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:285
 #: post-types/property/shortcodes/property-list/property-list.php:212
 msgid "Infinite Scroll"
 msgstr ""
@@ -3093,7 +3178,7 @@ msgid "Property"
 msgstr ""
 
 #: post-types/property/helper-functions.php:55
-#: post-types/property/helper-functions.php:1095
+#: post-types/property/helper-functions.php:1100
 msgid "Show Social Share for Property Items"
 msgstr ""
 
@@ -3243,36 +3328,40 @@ msgstr ""
 msgid "Please fix your message content"
 msgstr ""
 
-#: post-types/property/helper-functions.php:928
+#: post-types/property/helper-functions.php:929
 #: post-types/property/shortcodes/property-list/templates/filter/price-range.php:11
 msgid "From"
 msgstr ""
 
-#: post-types/property/helper-functions.php:929
+#: post-types/property/helper-functions.php:930
 msgid "Message"
 msgstr ""
 
-#: post-types/property/helper-functions.php:930
+#: post-types/property/helper-functions.php:931
 msgid "Message sent via enquiry form on"
 msgstr ""
 
-#: post-types/property/helper-functions.php:932
+#: post-types/property/helper-functions.php:933
 msgid "New Enquiry Form"
 msgstr ""
 
-#: post-types/property/helper-functions.php:943
-msgid "Thank you for sending message. You will be contacted soon."
+#: post-types/property/helper-functions.php:936
+msgid " regarding property"
 msgstr ""
 
 #: post-types/property/helper-functions.php:948
+msgid "Thank you for sending message. You will be contacted soon."
+msgstr ""
+
+#: post-types/property/helper-functions.php:953
 msgid "An error occurred during message sending. Please try again."
 msgstr ""
 
-#: post-types/property/helper-functions.php:955
+#: post-types/property/helper-functions.php:960
 msgid "Bad form data sent"
 msgstr ""
 
-#: post-types/property/helper-functions.php:1094
+#: post-types/property/helper-functions.php:1099
 msgid "Property Item"
 msgstr ""
 
@@ -3335,6 +3424,7 @@ msgstr ""
 
 #: post-types/property/profile/templates/add-property.php:53
 #: post-types/property/profile/templates/edit-property.php:110
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:146
 #: post-types/property/shortcodes/property-list/property-list.php:108
 #: post-types/property/shortcodes/property-type-list/property-type-list.php:160
 #: post-types/property/shortcodes/property-type-list/property-type-list.php:188
@@ -3350,6 +3440,7 @@ msgstr ""
 
 #: post-types/property/profile/templates/add-property.php:79
 #: post-types/property/profile/templates/edit-property.php:128
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:155
 #: post-types/property/shortcodes/property-list/property-list.php:115
 msgid "Property Status"
 msgstr ""
@@ -3361,10 +3452,15 @@ msgstr ""
 
 #: post-types/property/profile/templates/add-property.php:105
 #: post-types/property/profile/templates/edit-property.php:146
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:308
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:336
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:185
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:213
+#: post-types/property/shortcodes/property-city-list/elementor-property-city-list.php:254
+#: post-types/property/shortcodes/property-city-list/elementor-property-city-list.php:282
 #: post-types/property/shortcodes/property-city-list/property-city-list.php:255
 #: post-types/property/shortcodes/property-city-list/property-city-list.php:283
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:164
 #: post-types/property/shortcodes/property-list/property-list.php:122
 msgid "Property City"
 msgstr ""
@@ -3587,43 +3683,38 @@ msgstr ""
 msgid "Tags"
 msgstr ""
 
-#: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:35
-msgid "Qode Property City Slider"
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:9
+msgid "Property City List Slider"
 msgstr ""
 
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:68
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:60
+#: post-types/property/shortcodes/property-city-list/elementor-property-city-list.php:68
 #: post-types/property/shortcodes/property-city-list/property-city-list.php:60
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:63
 msgid "Space Between Cities"
 msgstr ""
 
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:77
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:67
+#: post-types/property/shortcodes/property-city-list/elementor-property-city-list.php:87
 #: post-types/property/shortcodes/property-city-list/property-city-list.php:74
 msgid "Show Only Cities with Listed Slugs"
 msgstr ""
 
-#: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:73
-#: post-types/property/shortcodes/property-city-list/property-city-list.php:80
-#: post-types/property/shortcodes/property-type-list/property-type-list.php:54
-#: post-types/property/shortcodes/property-type-slider/property-type-slider.php:45
-msgid "Delimit slugs by comma (leave empty for all)"
-msgstr ""
-
-#: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:78
-#: post-types/property/shortcodes/property-large-slider/property-large-slider.php:58
-#: post-types/property/shortcodes/property-slider/property-slider.php:94
-msgid "Enable Slider Loop"
-msgstr ""
-
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:89
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:81
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:90
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:97
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:104
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:112
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:120
+#: post-types/property/shortcodes/property-large-slider/elementor-property-large-slider.php:71
 #: post-types/property/shortcodes/property-large-slider/property-large-slider.php:61
 #: post-types/property/shortcodes/property-large-slider/property-large-slider.php:70
 #: post-types/property/shortcodes/property-large-slider/property-large-slider.php:77
 #: post-types/property/shortcodes/property-large-slider/property-large-slider.php:84
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:113
 #: post-types/property/shortcodes/property-slider/property-slider.php:97
 #: post-types/property/shortcodes/property-slider/property-slider.php:106
 #: post-types/property/shortcodes/property-slider/property-slider.php:113
@@ -3637,90 +3728,302 @@ msgstr ""
 msgid "Slider Settings"
 msgstr ""
 
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:97
+#: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:78
+#: post-types/property/shortcodes/property-large-slider/elementor-property-large-slider.php:79
+#: post-types/property/shortcodes/property-large-slider/property-large-slider.php:58
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:121
+#: post-types/property/shortcodes/property-slider/property-slider.php:94
+msgid "Enable Slider Loop"
+msgstr ""
+
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:106
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:87
+#: post-types/property/shortcodes/property-large-slider/elementor-property-large-slider.php:88
 #: post-types/property/shortcodes/property-large-slider/property-large-slider.php:67
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:130
 #: post-types/property/shortcodes/property-slider/property-slider.php:103
 msgid "Enable Slider Autoplay"
 msgstr ""
 
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:115
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:95
+#: post-types/property/shortcodes/property-large-slider/elementor-property-large-slider.php:97
 #: post-types/property/shortcodes/property-large-slider/property-large-slider.php:75
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:139
 #: post-types/property/shortcodes/property-slider/property-slider.php:111
 msgid "Slide Duration"
 msgstr ""
 
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:116
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:96
+#: post-types/property/shortcodes/property-large-slider/elementor-property-large-slider.php:98
 #: post-types/property/shortcodes/property-large-slider/property-large-slider.php:76
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:140
 #: post-types/property/shortcodes/property-slider/property-slider.php:112
 msgid "Default value is 5000 (ms)"
 msgstr ""
 
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:124
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:102
+#: post-types/property/shortcodes/property-large-slider/elementor-property-large-slider.php:106
 #: post-types/property/shortcodes/property-large-slider/property-large-slider.php:82
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:148
 #: post-types/property/shortcodes/property-slider/property-slider.php:118
 msgid "Slide Animation Duration"
 msgstr ""
 
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:125
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:103
+#: post-types/property/shortcodes/property-large-slider/elementor-property-large-slider.php:107
 #: post-types/property/shortcodes/property-large-slider/property-large-slider.php:83
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:149
 #: post-types/property/shortcodes/property-slider/property-slider.php:119
 msgid "Speed of slide animation in milliseconds. Default value is 600."
 msgstr ""
 
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:133
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:109
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:157
 #: post-types/property/shortcodes/property-slider/property-slider.php:125
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:96
 #: post-types/property/shortcodes/property-type-slider/property-type-slider.php:80
 msgid "Enable Slider Navigation Arrows"
 msgstr ""
 
+#: post-types/property/shortcodes/property-city-list-slider/elementor-property-city-list-slider.php:142
 #: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:117
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:183
 #: post-types/property/shortcodes/property-slider/property-slider.php:145
 msgid "Enable Slider Pagination"
+msgstr ""
+
+#: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:35
+msgid "Qode Property City Slider"
+msgstr ""
+
+#: post-types/property/shortcodes/property-city-list-slider/property-city-list-slider.php:73
+#: post-types/property/shortcodes/property-city-list/property-city-list.php:80
+#: post-types/property/shortcodes/property-type-list/property-type-list.php:54
+#: post-types/property/shortcodes/property-type-slider/property-type-slider.php:45
+msgid "Delimit slugs by comma (leave empty for all)"
+msgstr ""
+
+#: post-types/property/shortcodes/property-city-list/elementor-property-city-list.php:9
+msgid "Property City List"
+msgstr ""
+
+#: post-types/property/shortcodes/property-city-list/elementor-property-city-list.php:77
+#: post-types/property/shortcodes/property-city-list/property-city-list.php:67
+msgid "Title tag"
 msgstr ""
 
 #: post-types/property/shortcodes/property-city-list/property-city-list.php:35
 msgid "Qode Property City List"
 msgstr ""
 
-#: post-types/property/shortcodes/property-city-list/property-city-list.php:67
-msgid "Title tag"
-msgstr ""
-
 #: post-types/property/shortcodes/property-city-list/templates/parts/posts-not-found.php:1
 msgid "Sorry, no property cities found."
+msgstr ""
+
+#: post-types/property/shortcodes/property-large-slider/elementor-property-large-slider.php:9
+msgid "Property Large Slider"
+msgstr ""
+
+#: post-types/property/shortcodes/property-large-slider/elementor-property-large-slider.php:33
+#: post-types/property/shortcodes/property-large-slider/property-large-slider.php:32
+msgid "Slider Height"
+msgstr ""
+
+#: post-types/property/shortcodes/property-large-slider/elementor-property-large-slider.php:41
+#: post-types/property/shortcodes/property-large-slider/property-large-slider.php:37
+msgid "Number of Properties"
+msgstr ""
+
+#: post-types/property/shortcodes/property-large-slider/elementor-property-large-slider.php:42
+#: post-types/property/shortcodes/property-large-slider/property-large-slider.php:38
+msgid "Set number of items for your property slider. Enter -1 to show all."
+msgstr ""
+
+#: post-types/property/shortcodes/property-large-slider/elementor-property-large-slider.php:51
+#: post-types/property/shortcodes/property-large-slider/property-large-slider.php:44
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:173
+#: post-types/property/shortcodes/property-list/property-list.php:129
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:81
+#: post-types/property/shortcodes/property-slider/property-slider.php:72
+msgid "Order By"
+msgstr ""
+
+#: post-types/property/shortcodes/property-large-slider/elementor-property-large-slider.php:60
+#: post-types/property/shortcodes/property-large-slider/property-large-slider.php:51
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:182
+#: post-types/property/shortcodes/property-list/property-list.php:136
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:90
+#: post-types/property/shortcodes/property-slider/property-slider.php:79
+msgid "Order"
 msgstr ""
 
 #: post-types/property/shortcodes/property-large-slider/property-large-slider.php:23
 msgid "Qode Property Large Slider"
 msgstr ""
 
-#: post-types/property/shortcodes/property-large-slider/property-large-slider.php:32
-msgid "Slider Height"
-msgstr ""
-
-#: post-types/property/shortcodes/property-large-slider/property-large-slider.php:37
-msgid "Number of Properties"
-msgstr ""
-
-#: post-types/property/shortcodes/property-large-slider/property-large-slider.php:38
-msgid "Set number of items for your property slider. Enter -1 to show all."
-msgstr ""
-
-#: post-types/property/shortcodes/property-large-slider/property-large-slider.php:44
-#: post-types/property/shortcodes/property-list/property-list.php:129
-#: post-types/property/shortcodes/property-slider/property-slider.php:72
-msgid "Order By"
-msgstr ""
-
-#: post-types/property/shortcodes/property-large-slider/property-large-slider.php:51
-#: post-types/property/shortcodes/property-list/property-list.php:136
-#: post-types/property/shortcodes/property-slider/property-slider.php:79
-msgid "Order"
-msgstr ""
-
 #: post-types/property/shortcodes/property-large-slider/templates/posts-not-found.php:1
 #: post-types/property/shortcodes/property-list/templates/parts/posts-not-found.php:1
 msgid "No properties found."
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:9
+#: post-types/property/templates/author/layout-collections/default.php:21
+msgid "Property List"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:50
+#: post-types/property/shortcodes/property-list/property-list.php:33
+msgid "Property List Template"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:53
+#: post-types/property/shortcodes/property-list/property-list.php:35
+msgid "Gallery"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:54
+#: post-types/property/shortcodes/property-list/property-list.php:36
+msgid "Masonry"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:63
+#: post-types/property/shortcodes/property-list/property-list.php:44
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:33
+#: post-types/property/shortcodes/property-slider/property-slider.php:32
+msgid "Item Layout"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:67
+#: post-types/property/shortcodes/property-list/property-list.php:47
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:37
+#: post-types/property/shortcodes/property-slider/property-slider.php:35
+msgid "Info Over"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:93
+msgid "Space Between"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:103
+#: post-types/property/shortcodes/property-list/property-list.php:77
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:72
+#: post-types/property/shortcodes/property-slider/property-slider.php:65
+msgid "Number of Properties Per Page"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:104
+#: post-types/property/shortcodes/property-list/property-list.php:78
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:73
+#: post-types/property/shortcodes/property-slider/property-slider.php:66
+msgid "Set number of items for your property list. Enter -1 to show all."
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:119
+#: post-types/property/shortcodes/property-list/property-list.php:90
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:85
+#: post-types/property/shortcodes/property-type-slider/property-type-slider.php:71
+msgid "Thumbnail"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:120
+#: post-types/property/shortcodes/property-list/property-list.php:91
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:138
+#: post-types/property/shortcodes/property-search/property-search.php:108
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:86
+#: post-types/property/shortcodes/property-type-slider/property-type-slider.php:72
+msgid "Medium"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:121
+#: post-types/property/shortcodes/property-list/property-list.php:92
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:139
+#: post-types/property/shortcodes/property-search/property-search.php:109
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:87
+#: post-types/property/shortcodes/property-type-slider/property-type-slider.php:73
+msgid "Large"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:133
+#: post-types/property/shortcodes/property-list/property-list.php:100
+msgid "Enable Fixed Image Proportions"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:191
+#: post-types/property/shortcodes/property-list/property-list.php:143
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:99
+#: post-types/property/shortcodes/property-slider/property-slider.php:86
+msgid "Title Tag"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:203
+#: post-types/property/shortcodes/property-list/property-list.php:151
+msgid "Use Featured Meta"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:212
+#: post-types/property/shortcodes/property-list/property-list.php:158
+msgid "Floating price"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:221
+#: post-types/property/shortcodes/property-list/property-list.php:165
+msgid "Content alignment"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:224
+#: post-types/property/shortcodes/property-list/property-list.php:167
+msgid "Left"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:225
+#: post-types/property/shortcodes/property-list/property-list.php:168
+msgid "Center"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:226
+#: post-types/property/shortcodes/property-list/property-list.php:169
+msgid "Right"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:235
+#: post-types/property/shortcodes/property-list/property-list.php:176
+msgid "Show Compare"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:236
+#: post-types/property/shortcodes/property-list/property-list.php:179
+msgid "Compare is displayed if option inside Qode Options -> Real Estate is enabled."
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:248
+#: post-types/property/shortcodes/property-list/property-list.php:185
+msgid "Enable Map"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:257
+#: post-types/property/shortcodes/property-list/property-list.php:192
+msgid "Hide List"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:270
+#: post-types/property/shortcodes/property-list/property-list.php:200
+msgid "Enable Filter"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:279
+#: post-types/property/shortcodes/property-list/property-list.php:207
+msgid "Pagination Type"
+msgstr ""
+
+#: post-types/property/shortcodes/property-list/elementor-property-list.php:294
+#: post-types/property/shortcodes/property-list/property-list.php:219
+msgid "Load More Top Margin (px or %)"
 msgstr ""
 
 #: post-types/property/shortcodes/property-list/helper-functions.php:96
@@ -3747,75 +4050,17 @@ msgstr ""
 msgid "Qode Property List"
 msgstr ""
 
-#: post-types/property/shortcodes/property-list/property-list.php:33
-msgid "Property List Template"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:35
-msgid "Gallery"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:36
-msgid "Masonry"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:44
-#: post-types/property/shortcodes/property-slider/property-slider.php:32
-msgid "Item Layout"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:47
-#: post-types/property/shortcodes/property-slider/property-slider.php:35
-msgid "Info Over"
-msgstr ""
-
 #: post-types/property/shortcodes/property-list/property-list.php:70
 #: post-types/property/shortcodes/property-slider/property-slider.php:58
 msgid "Space Between properties"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:77
-#: post-types/property/shortcodes/property-slider/property-slider.php:65
-msgid "Number of Properties Per Page"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:78
-#: post-types/property/shortcodes/property-slider/property-slider.php:66
-msgid "Set number of items for your property list. Enter -1 to show all."
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:90
-#: post-types/property/shortcodes/property-type-slider/property-type-slider.php:71
-msgid "Thumbnail"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:91
-#: post-types/property/shortcodes/property-search/property-search.php:108
-#: post-types/property/shortcodes/property-type-slider/property-type-slider.php:72
-msgid "Medium"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:92
-#: post-types/property/shortcodes/property-search/property-search.php:109
-#: post-types/property/shortcodes/property-type-slider/property-type-slider.php:73
-msgid "Large"
 msgstr ""
 
 #: post-types/property/shortcodes/property-list/property-list.php:94
 msgid "Set image proportions for your property list."
 msgstr ""
 
-#: post-types/property/shortcodes/property-list/property-list.php:100
-msgid "Enable Fixed Image Proportions"
-msgstr ""
-
 #: post-types/property/shortcodes/property-list/property-list.php:102
 msgid "Set predefined image proportions for your masonry property list. This option will apply image proportions you set in Property Single page - dimensions for masonry option."
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:143
-#: post-types/property/shortcodes/property-slider/property-slider.php:86
-msgid "Title Tag"
 msgstr ""
 
 #: post-types/property/shortcodes/property-list/property-list.php:146
@@ -3826,34 +4071,6 @@ msgstr ""
 msgid "Content Layout"
 msgstr ""
 
-#: post-types/property/shortcodes/property-list/property-list.php:151
-msgid "Use Featured Meta"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:158
-msgid "Floating price"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:165
-msgid "Content alignment"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:167
-msgid "Left"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:168
-msgid "Center"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:169
-msgid "Right"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:176
-msgid "Show Compare"
-msgstr ""
-
 #: post-types/property/shortcodes/property-list/property-list.php:178
 #: post-types/property/shortcodes/property-list/property-list.php:187
 #: post-types/property/shortcodes/property-list/property-list.php:195
@@ -3861,30 +4078,6 @@ msgstr ""
 #: post-types/property/shortcodes/property-list/property-list.php:214
 #: post-types/property/shortcodes/property-list/property-list.php:221
 msgid "Additional Features"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:179
-msgid "Compare is displayed if option inside Qode Options -> Real Estate is enabled."
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:185
-msgid "Enable Map"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:192
-msgid "Hide List"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:200
-msgid "Enable Filter"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:207
-msgid "Pagination Type"
-msgstr ""
-
-#: post-types/property/shortcodes/property-list/property-list.php:219
-msgid "Load More Top Margin (px or %)"
 msgstr ""
 
 #: post-types/property/shortcodes/property-list/templates/filter/button.php:6
@@ -3957,64 +4150,144 @@ msgstr ""
 msgid "bath"
 msgstr ""
 
-#: post-types/property/shortcodes/property-search/property-search.php:23
-msgid "Qode Property Search"
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:9
+msgid "Property Search"
 msgstr ""
 
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:33
 #: post-types/property/shortcodes/property-search/property-search.php:32
 msgid "Full Height Search"
 msgstr ""
 
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:42
 #: post-types/property/shortcodes/property-search/property-search.php:39
 msgid "Search subtitle"
 msgstr ""
 
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:50
 #: post-types/property/shortcodes/property-search/property-search.php:45
 msgid "Search title"
 msgstr ""
 
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:58
 #: post-types/property/shortcodes/property-search/property-search.php:51
 msgid "Enable Type"
 msgstr ""
 
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:59
 #: post-types/property/shortcodes/property-search/property-search.php:52
 msgid "Enable type as parameter for search"
 msgstr ""
 
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:68
 #: post-types/property/shortcodes/property-search/property-search.php:59
 msgid "Enable City"
 msgstr ""
 
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:69
 #: post-types/property/shortcodes/property-search/property-search.php:60
 msgid "Enable city as parameter for search"
 msgstr ""
 
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:78
 #: post-types/property/shortcodes/property-search/property-search.php:67
 msgid "Enable Status"
 msgstr ""
 
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:79
 #: post-types/property/shortcodes/property-search/property-search.php:68
 msgid "Enable status as parameter for search"
 msgstr ""
 
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:88
 #: post-types/property/shortcodes/property-search/property-search.php:75
+#: post-types/property/shortcodes/property-type-list/elementor-property-type-list.php:50
 #: post-types/property/shortcodes/property-type-list/property-type-list.php:38
 msgid "Skin"
 msgstr ""
 
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:92
 #: post-types/property/shortcodes/property-search/property-search.php:78
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:170
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:196
 #: post-types/property/shortcodes/property-slider/property-slider.php:136
 #: post-types/property/shortcodes/property-slider/property-slider.php:156
+#: post-types/property/shortcodes/property-type-list/elementor-property-type-list.php:54
 #: post-types/property/shortcodes/property-type-list/property-type-list.php:41
 msgid "Light"
 msgstr ""
 
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:103
+msgid "Button Styles"
+msgstr ""
+
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:111
 #: post-types/property/shortcodes/property-search/property-search.php:85
 msgid "Button Text"
 msgstr ""
 
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:113
 #: post-types/property/shortcodes/property-search/property-search.php:86
 msgid "Search Places"
+msgstr ""
+
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:120
+#: post-types/property/shortcodes/property-search/property-search.php:93
+msgid "Button Type"
+msgstr ""
+
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:123
+#: post-types/property/shortcodes/property-search/property-search.php:95
+msgid "Solid"
+msgstr ""
+
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:124
+#: post-types/property/shortcodes/property-search/property-search.php:96
+msgid "Outline"
+msgstr ""
+
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:133
+#: post-types/property/shortcodes/property-search/property-search.php:104
+msgid "Button Size"
+msgstr ""
+
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:137
+#: post-types/property/shortcodes/property-search/property-search.php:107
+msgid "Small"
+msgstr ""
+
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:148
+#: post-types/property/shortcodes/property-search/property-search.php:118
+msgid "Button Color"
+msgstr ""
+
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:156
+#: post-types/property/shortcodes/property-search/property-search.php:124
+msgid "Button Hover Color"
+msgstr ""
+
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:164
+#: post-types/property/shortcodes/property-search/property-search.php:130
+msgid "Button Background Color"
+msgstr ""
+
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:175
+#: post-types/property/shortcodes/property-search/property-search.php:137
+msgid "Button Hover Background Color"
+msgstr ""
+
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:183
+#: post-types/property/shortcodes/property-search/property-search.php:143
+msgid "Button Border Color"
+msgstr ""
+
+#: post-types/property/shortcodes/property-search/elementor-property-search.php:191
+#: post-types/property/shortcodes/property-search/property-search.php:149
+msgid "Button Hover Border Color"
+msgstr ""
+
+#: post-types/property/shortcodes/property-search/property-search.php:23
+msgid "Qode Property Search"
 msgstr ""
 
 #: post-types/property/shortcodes/property-search/property-search.php:88
@@ -4029,65 +4302,27 @@ msgstr ""
 msgid "Button Style"
 msgstr ""
 
-#: post-types/property/shortcodes/property-search/property-search.php:93
-msgid "Button Type"
+#: post-types/property/shortcodes/property-single/elementor-property-single.php:9
+msgid "Property Single"
 msgstr ""
 
-#: post-types/property/shortcodes/property-search/property-search.php:95
-msgid "Solid"
+#: post-types/property/shortcodes/property-single/elementor-property-single.php:52
+#: post-types/property/shortcodes/property-single/property-single.php:40
+msgid "Show Only Property with ID"
 msgstr ""
 
-#: post-types/property/shortcodes/property-search/property-search.php:96
-msgid "Outline"
-msgstr ""
-
-#: post-types/property/shortcodes/property-search/property-search.php:104
-msgid "Button Size"
-msgstr ""
-
-#: post-types/property/shortcodes/property-search/property-search.php:107
-msgid "Small"
-msgstr ""
-
-#: post-types/property/shortcodes/property-search/property-search.php:118
-msgid "Button Color"
-msgstr ""
-
-#: post-types/property/shortcodes/property-search/property-search.php:124
-msgid "Button Hover Color"
-msgstr ""
-
-#: post-types/property/shortcodes/property-search/property-search.php:130
-msgid "Button Background Color"
-msgstr ""
-
-#: post-types/property/shortcodes/property-search/property-search.php:137
-msgid "Button Hover Background Color"
-msgstr ""
-
-#: post-types/property/shortcodes/property-search/property-search.php:143
-msgid "Button Border Color"
-msgstr ""
-
-#: post-types/property/shortcodes/property-search/property-search.php:149
-msgid "Button Hover Border Color"
+#: post-types/property/shortcodes/property-single/elementor-property-single.php:88
+#: post-types/property/shortcodes/property-single/property-single.php:94
+#: post-types/property/templates/single/parts/basic-info.php:5
+msgid "Bedroom"
 msgstr ""
 
 #: post-types/property/shortcodes/property-single/property-single.php:30
 msgid "Qode Property Single"
 msgstr ""
 
-#: post-types/property/shortcodes/property-single/property-single.php:40
-msgid "Show Only Property with ID"
-msgstr ""
-
 #: post-types/property/shortcodes/property-single/property-single.php:46
 msgid "Delimit ID numbers by comma (leave empty for all)"
-msgstr ""
-
-#: post-types/property/shortcodes/property-single/property-single.php:94
-#: post-types/property/templates/single/parts/basic-info.php:5
-msgid "Bedroom"
 msgstr ""
 
 #: post-types/property/shortcodes/property-single/property-single.php:129
@@ -4102,33 +4337,53 @@ msgstr ""
 msgid "Structure:"
 msgstr ""
 
-#: post-types/property/shortcodes/property-slider/property-slider.php:23
-msgid "Qode Property Slider"
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:9
+msgid "Property Slider"
 msgstr ""
 
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:166
 #: post-types/property/shortcodes/property-slider/property-slider.php:133
 msgid "Navigation Skin"
 msgstr ""
 
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:171
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:197
 #: post-types/property/shortcodes/property-slider/property-slider.php:137
 #: post-types/property/shortcodes/property-slider/property-slider.php:157
 msgid "Dark"
 msgstr ""
 
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:192
 #: post-types/property/shortcodes/property-slider/property-slider.php:153
 msgid "Pagination Skin"
 msgstr ""
 
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:209
 #: post-types/property/shortcodes/property-slider/property-slider.php:165
 msgid "Pagination Position"
 msgstr ""
 
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:212
 #: post-types/property/shortcodes/property-slider/property-slider.php:167
 msgid "Below Slider"
 msgstr ""
 
+#: post-types/property/shortcodes/property-slider/elementor-property-slider.php:213
 #: post-types/property/shortcodes/property-slider/property-slider.php:168
 msgid "On Slider"
+msgstr ""
+
+#: post-types/property/shortcodes/property-slider/property-slider.php:23
+msgid "Qode Property Slider"
+msgstr ""
+
+#: post-types/property/shortcodes/property-type-list/elementor-property-type-list.php:9
+msgid "Property Type List"
+msgstr ""
+
+#: post-types/property/shortcodes/property-type-list/elementor-property-type-list.php:63
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:50
+msgid "Show Only Certain Property Types"
 msgstr ""
 
 #: post-types/property/shortcodes/property-type-list/property-type-list.php:29
@@ -4145,16 +4400,26 @@ msgstr ""
 msgid "Sorry, no property types found."
 msgstr ""
 
-#: post-types/property/shortcodes/property-type-slider/property-type-slider.php:30
-msgid "Qode Property Type Slider"
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:9
+msgid "Property Type Slider"
 msgstr ""
 
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:60
 #: post-types/property/shortcodes/property-type-slider/property-type-slider.php:50
 msgid "Number Of Visible Items"
 msgstr ""
 
+#: post-types/property/shortcodes/property-type-slider/elementor-property-type-slider.php:79
 #: post-types/property/shortcodes/property-type-slider/property-type-slider.php:75
 msgid "Set image proportions for your property type slider."
+msgstr ""
+
+#: post-types/property/shortcodes/property-type-slider/property-type-slider.php:30
+msgid "Qode Property Type Slider"
+msgstr ""
+
+#: post-types/property/shortcodes/property-video-tour/elementor-property-video-tour.php:9
+msgid "Property Video Tour"
 msgstr ""
 
 #: post-types/property/shortcodes/property-video-tour/property-video-tour.php:30
@@ -4226,10 +4491,6 @@ msgstr ""
 
 #: post-types/property/tax-custom-fields.php:215
 msgid "Choose city from the list."
-msgstr ""
-
-#: post-types/property/templates/author/layout-collections/default.php:21
-msgid "Property List"
 msgstr ""
 
 #: post-types/property/templates/author/parts/address.php:9

@@ -2163,3 +2163,33 @@ if ( ! function_exists( 'bridge_qode_init_global_option' ) ) {
 
 	add_action( 'after_setup_theme', 'bridge_qode_init_global_option' );
 }
+
+if ( ! function_exists( 'bridge_qode_hubspot_affiliate_code' ) ) {
+	/**
+	 * Function that return hubspot affiliate code
+	 *
+	 *
+	 * @return string
+	 */
+	function bridge_qode_hubspot_affiliate_code() {
+		
+		return 'kjnW53';
+		
+	}
+	
+	add_filter( 'leadin_impact_code', 'bridge_qode_hubspot_affiliate_code' );
+}
+
+if ( ! function_exists( 'bridge_qode_hubspot_disable_redirect' ) ) {
+	/**
+	 * Function that return hubspot affiliate code
+	 *
+	 */
+	function bridge_qode_hubspot_disable_redirect() {
+		
+		remove_all_actions( 'leadin_redirect' );
+		
+	}
+	
+	add_action( 'leadin_activate', 'bridge_qode_hubspot_disable_redirect' );
+}

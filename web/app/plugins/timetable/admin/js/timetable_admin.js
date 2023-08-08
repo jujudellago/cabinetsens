@@ -1,12 +1,12 @@
 jQuery(document).ready(function($){
-	
+	"use strict";
 	var tt_fields = timetable_fields();
 	
 	if($("#timetable_settings").length)
 		$("#timetable_settings")[0].reset();
 	$(".tt_shortcode").val($(".tt_shortcode").data("default"));
 	//events hours
-	$("#add_event_hours").click(function(event){
+	$("#add_event_hours").on("click", function(event){
 		event.preventDefault();
 		if($("#start_hour").val()!="" && $("#end_hour").val()!="")
 		{
@@ -42,7 +42,7 @@ jQuery(document).ready(function($){
 			}
 		}
 	});
-	$(document.body).on("click", "#event_hours_list .delete_event_hour", function(event) {
+	$(document.body).on("click", "#event_hours_list .delete_button", function(event) {
 		if(typeof($(this).parent().attr("id"))!="undefined")
 			$("#event_hours_list").after('<input type="hidden" name="delete_event_hours_ids[]" value="' + $(this).parent().attr("id").substr(12) + '" />');
 		$(this).parent().remove();
@@ -126,6 +126,88 @@ jQuery(document).ready(function($){
 				}
 		});
 	});
+
+	if(typeof(wp.data)!="undefined")
+	{
+		var intervalCheckPostIsSaved;
+		wp.data.subscribe(function () {
+			var editor = wp.data.select('core/editor');
+			if(editor!=null && editor.isSavingPost() && !editor.isAutosavingPost() && editor.didPostSaveRequestSucceed())
+			{
+				if(!intervalCheckPostIsSaved)
+				{
+					intervalCheckPostIsSaved = setInterval(function()
+					{
+						if(!wp.data.select('core/editor').isSavingPost())
+						{
+							$("[name='weekday_ids[]'], [name='start_hours[]'], [name='end_hours[]'], [name='tooltips[]'], [name='event_hours_category[]'], [name='before_hour_texts[]'], [name='after_hour_texts[]'], [name='available_places_array[]'], [name='slots_per_user_array[]'], [name='event_hours_ids[]']").remove();
+							clearInterval(intervalCheckPostIsSaved);
+							intervalCheckPostIsSaved = null;
+						}
+					}, 500);
+				}
+			}
+		});
+	}
+	
+	//widget
+	$(document).on("change", ".widget-content [name$='[time_format]']", function(){
+		if($(this).val()!="custom")
+		{
+			$(this).parent().siblings("input:last").val($(this).val());
+			$(this).parent().siblings(".example").html($(this).next().html());
+		}
+	});
+	$(document).on("focus", ".widget-content [name$='[time_format_custom]']", function(){
+		$(this).prev().children().prop("checked", true);
+	});
+	$(document).on("change", ".widget-content [name$='[time_format_custom]']", function(){
+		var format = $(this).val();
+		var self = $(this);
+		$.ajax({
+				url: ajaxurl,
+				type: 'post',
+				data: {
+					action: 'time_format',
+					date: format
+				},
+				success: function(data){
+					self.next().html(data);
+				}
+		});
+	});
+	$(document).on("change", ".widget-content [name$='[display_settings]']", function(){
+		if($(this).val()=="all")
+			$(this).parent().next().css("display", "block");
+		else
+			$(this).parent().next().css("display", "none");
+	});
+	$(document).on("widget-added widget-updated", function(event, widget){
+		//colorpicker
+		if($(".color").length)
+		{
+			$(".color").ColorPicker({
+				onChange: function(hsb, hex, rgb, el) {
+					$(el).val(hex).trigger("change");
+					$(el).prev(".color_preview").css("background-color", "#" + hex);
+				},
+				onSubmit: function(hsb, hex, rgb, el){
+					$(el).val(hex).trigger("change");
+					$(el).ColorPickerHide();
+				},
+				onBeforeShow: function (){
+					var color = (this.value!="" ? this.value : $(this).attr("data-default-color"));
+					$(this).ColorPickerSetColor(color);
+					$(this).prev(".color_preview").css("background-color", color);
+				}
+			}).on('keyup', function(event, param){
+				$(this).ColorPickerSetColor(this.value);
+				
+				var default_color = $(this).attr("data-default-color");
+				$(this).prev(".color_preview").css("background-color", (this.value!="none" ? (this.value!="" ? "#" + (typeof(param)=="undefined" ? $(".colorpicker:visible .colorpicker_hex input").val() : this.value) : (default_color!="transparent" ? "#" + default_color : default_color)) : "transparent"));
+			});
+		}
+    });
 	
 	//colorpicker
 	if($(".color").length)
@@ -136,7 +218,7 @@ jQuery(document).ready(function($){
 				$(el).prev(".color_preview").css("background-color", "#" + hex);
 				if($(el).attr("id")=="row1_color" || $(el).attr("id")=="row2_color" || $(el).attr("id")=="box_bg_color" || $(el).attr("id")=="box_hover_bg_color" || $(el).attr("id")=="box_txt_color" || $(el).attr("id")=="box_hover_txt_color" || $(el).attr("id")=="box_hours_txt_color" || $(el).attr("id")=="box_hours_hover_txt_color" || $(el).attr("id")=="filter_color" || $(el).attr("id")=="generate_pdf_text_color" || $(el).attr("id")=="generate_pdf_bg_color" || $(el).attr("id")=="generate_pdf_hover_text_color" || $(el).attr("id")=="generate_pdf_hover_bg_color" || $(el).attr("id")=="booking_text_color" || $(el).attr("id")=="booking_bg_color" || $(el).attr("id")=="booking_hover_text_color" || $(el).attr("id")=="booking_hover_bg_color" || $(el).attr("id")=="booked_text_color" || $(el).attr("id")=="booked_bg_color" || $(el).attr("id")=="unavailable_text_color" || $(el).attr("id")=="unavailable_bg_color" || $(el).attr("id")=="available_slots_color")
 				{
-					generateShortcode();
+					timetable_generateShortcode();
 				}
 			},
 			onSubmit: function(hsb, hex, rgb, el){
@@ -149,7 +231,7 @@ jQuery(document).ready(function($){
 				$(this).prev(".color_preview").css("background-color", color);
 				if($(this).attr("id")=="row1_color" || $(this).attr("id")=="row2_color" || $(this).attr("id")=="box_bg_color" || $(this).attr("id")=="box_hover_bg_color" || $(this).attr("id")=="box_txt_color" || $(this).attr("id")=="box_hover_txt_color" || $(this).attr("id")=="box_hours_txt_color" || $(this).attr("id")=="box_hours_hover_txt_color" || $(this).attr("id")=="filter_color" || $(this).attr("id")=="generate_pdf_text_color" || $(this).attr("id")=="generate_pdf_bg_color" || $(this).attr("id")=="generate_pdf_hover_text_color" || $(this).attr("id")=="generate_pdf_hover_bg_color" || $(this).attr("id")=="booking_text_color" || $(this).attr("id")=="booking_bg_color" || $(this).attr("id")=="booking_hover_text_color" || $(this).attr("id")=="booking_hover_bg_color" || $(this).attr("id")=="booked_text_color" || $(this).attr("id")=="booked_bg_color" || $(this).attr("id")=="unavailable_text_color" || $(this).attr("id")=="unavailable_bg_color" || $(this).attr("id")=="available_slots_color")
 				{
-					generateShortcode();
+					timetable_generateShortcode();
 				}
 			}
 		}).on("keyup", function(event, param){
@@ -159,7 +241,7 @@ jQuery(document).ready(function($){
 			$(this).prev(".color_preview").css("background-color", (this.value!="none" ? (this.value!="" ? "#" + (typeof(param)=="undefined" ? $(".colorpicker:visible .colorpicker_hex input").val() : this.value) : (default_color!="transparent" ? "#" + default_color : default_color)) : "transparent"));
 			if(($(this).attr("id")=="row1_color" || $(this).attr("id")=="row2_color" || $(this).attr("id")=="box_bg_color" || $(this).attr("id")=="box_hover_bg_color" || $(this).attr("id")=="box_txt_color" || $(this).attr("id")=="box_hover_txt_color" || $(this).attr("id")=="box_hours_txt_color" || $(this).attr("id")=="box_hours_hover_txt_color" || $(this).attr("id")=="filter_color" || $(this).attr("id")=="generate_pdf_text_color" || $(this).attr("id")=="generate_pdf_bg_color" || $(this).attr("id")=="generate_pdf_hover_text_color" || $(this).attr("id")=="generate_pdf_hover_bg_color" || $(this).attr("id")=="booking_text_color" || $(this).attr("id")=="booking_bg_color" || $(this).attr("id")=="booking_hover_text_color" || $(this).attr("id")=="booking_hover_bg_color" || $(this).attr("id")=="booked_text_color" || $(this).attr("id")=="booked_bg_color" || $(this).attr("id")=="unavailable_text_color" || $(this).attr("id")=="unavailable_bg_color" || $(this).attr("id")=="available_slots_color") && typeof(param)=="undefined")
 			{
-				generateShortcode();
+				timetable_generateShortcode();
 			}
 		});
 	}
@@ -172,7 +254,7 @@ jQuery(document).ready(function($){
 			return;
 		if($(this).attr("id")!="timetable_font" || ($(this).attr("id")=="timetable_font" && typeof(param)=="undefined"))
 		{
-			generateShortcode();
+			timetable_generateShortcode();
 		}
 	});
 	$("#filter_label, #filter_label_2, #generate_pdf_label, #available_slots_singular_label, #available_slots_plural_label, #booking_label, #booked_label, #unavailable_label, #booking_popup_label, #login_popup_label, #cancel_popup_label, #continue_popup_label, #terms_message, #row_height, #id, #timetable_font_custom, #timetable_font_size, #booking_popup_message, #booking_popup_thank_you_message, #timetable_custom_css").on('change keyup', function(event, param){
@@ -180,7 +262,7 @@ jQuery(document).ready(function($){
 			return;
 		else
 		{
-			generateShortcode();
+			timetable_generateShortcode();
 		}
 	});
 	
@@ -234,7 +316,7 @@ jQuery(document).ready(function($){
 				if(tt_atts[prop].val!=null)
 				{
 					if(["tinymce"].indexOf(field.type)!==-1)
-						setTinyMCEContent(field.selector, tt_atts[prop].val);
+						timetable_setTinyMCEContent(field.selector, tt_atts[prop].val);
 					if(["textfield", "textarea", "dropdown"].indexOf(field.type)!==-1)
 						$field.val(tt_atts[prop].val).trigger("change", ["skip"]);
 					if(["font"].indexOf(field.type)!==-1)
@@ -364,7 +446,7 @@ jQuery(document).ready(function($){
 						self.parent().parent().next().css("display", "table-row");
 						if(param!="skip")
 						{
-							for(val in param)
+							for(var val in param)
 								self.parent().parent().next().find("[value='" + param[val] + "']").attr("selected", "selected");
 						}
 					}
@@ -375,7 +457,7 @@ jQuery(document).ready(function($){
 	});
 	
 	//dummy content import
-	$("#import_dummy").click(function(event){
+	$("#import_dummy").on("click", function(event){
 		event.preventDefault();
 		var self = $(this);
 		$("#dummy_content_tick").css("display", "none");
@@ -1121,13 +1203,13 @@ function timetable_fields()
 	};
 }
 
-function generateShortcode()
+function timetable_generateShortcode()
 {
 	var $ = jQuery;
 	var params = "";
-	var booking_popup_message = getTinyMCEContent("booking_popup_message").replace(/'/g, '"');
+	var booking_popup_message = timetable_getTinyMCEContent("booking_popup_message").replace(/'/g, '"');
 	var booking_popup_message_default = $('<input [type="text"]/>').val(config.booking_popup_message).val().replace(/'/g, '"');
-	var booking_popup_thank_you_message = getTinyMCEContent("booking_popup_thank_you_message").replace(/'/g, '"');
+	var booking_popup_thank_you_message = timetable_getTinyMCEContent("booking_popup_thank_you_message").replace(/'/g, '"');
 	var booking_popup_thank_you_message_default =$('<input [type="text"]/>').val(config.booking_popup_thank_you_message).val().replace(/'/g, '"');
 	
 	$(".tt_shortcode").val("[tt_timetable" + 
@@ -1214,14 +1296,14 @@ function generateShortcode()
 	"]");
 }
 
-function getTinyMCEContent(editor_id)
+function timetable_getTinyMCEContent(editor_id)
 {
 	var $ = jQuery;
 	var content = $("#" + editor_id).val().trim();
 	return $('<input [type="text"]/>').val(content).val();
 }
 
-function setTinyMCEContent(editor_id, content)
+function timetable_setTinyMCEContent(editor_id, content)
 {
 	var $ = jQuery;
 	$('#' + editor_id).val(content);

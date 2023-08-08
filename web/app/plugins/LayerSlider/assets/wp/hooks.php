@@ -13,23 +13,24 @@ add_filter('ls_get_image', 'ls_get_image', 10, 2);
 add_filter('ls_parse_defaults', 'ls_parse_defaults', 10, 2);
 
 function ls_filter_slider_title($sliderName = '', $maxLength = 50) {
-	$name = empty($sliderName) ? 'Unnamed' : htmlspecialchars(stripslashes($sliderName));
+	$name = empty($sliderName) ? 'Unnamed' : htmlspecialchars(stripslashes($sliderName), ENT_COMPAT);
+	$name = str_replace('&amp;', '&', $name);
 	$return = isset($name[$maxLength]) ? substr($name, 0, $maxLength) . ' ...' : $name;
 
 	return $return;
 }
 
-function ls_preview_for_slider( $slider = array() ) {
+function ls_preview_for_slider( $slider = [] ) {
 
 	// Attempt to find pre-defined slider banner by upload ID
-	if( ! empty($slider['data']['meta']) && ! empty($slider['data']['meta']['previewId']) ) {
+	if( ! empty($slider['data']['meta']['previewId']) ) {
 		if( $src = wp_get_attachment_image_src( $slider['data']['meta']['previewId'], 'large' ) ) {
 			return $src[0];
 		}
 	}
 
 	// Fallback to preview URL
-	if( ! empty($slider['data']['meta']) && ! empty($slider['data']['meta']['preview']) ) {
+	if( ! empty($slider['data']['meta']['preview']) ) {
 		return $slider['data']['meta']['preview'];
 	}
 
@@ -104,13 +105,13 @@ function ls_get_image($id = null, $url = null) {
 }
 
 
-function ls_parse_defaults($defaults = array(), $raw = array()) {
+function ls_parse_defaults($defaults = [], $raw = []) {
 
 
 	$activated 	= LS_Config::isActivatedSite();
 	$capability = get_option('layerslider_custom_capability', 'manage_options');
 	$permission = current_user_can( $capability );
-	$ret = array();
+	$ret = [];
 
 
 	foreach($defaults as $key => $default) {
@@ -201,14 +202,14 @@ function ls_parse_defaults($defaults = array(), $raw = array()) {
 
 function ls_array_to_attr($arr, $mode = '') {
 	if(!empty($arr) && is_array($arr)) {
-		$ret = array();
+		$ret = [];
 		foreach($arr as $key => $val) {
 			if($mode == 'css' && is_numeric($val) ) {
 				$ret[] = ''.$key.':'.layerslider_check_unit($val, $key).';';
 			} elseif(is_bool($val)) {
 				$bool = $val ? 'true' : 'false';
 				$ret[] = "$key:$bool;";
-			} else {
+			} elseif( ! is_array( $val ) ) {
 				$ret[] = "$key:$val;";
 			}
 		}

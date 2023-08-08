@@ -122,7 +122,7 @@
 		}
 
 	}
-
+    
 
     $bridge_qode_pagination_masonry = "pagination";
     if(isset($bridge_qode_options['pagination_masonry'])){
@@ -239,7 +239,7 @@
         if($bridge_qode_pagination_masonry == "load_more") {
             if (get_next_posts_link()) { ?>
                 <?php if( is_front_page() || is_home() ){
-                    bridge_qode_set_global_paged_variable( $blog_query->query['paged'] );
+                    bridge_qode_set_global_paged_variable( $bridge_qode_wp_query->query['paged'] );
                 } ?>
                 <div class="blog_load_more_button_holder">
                     <div class="blog_load_more_button"><span rel="<?php echo esc_attr($bridge_qode_wp_query->max_num_pages); ?>"><?php echo get_next_posts_link(esc_html__('Show more', 'bridge')); ?></span></div>
@@ -261,4 +261,5 @@
         <?php } ?>
     <?php } ?>
 <?php } ?>
+
 <?php wp_reset_postdata(); ?>

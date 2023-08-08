@@ -22,7 +22,7 @@
     function qodeInitElementorComparisonSlider() {
         $(window).on('elementor/frontend/init', function () {
             elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_comparison_slider.default', function() {
-                qode.modules.imageGallery.qodeInitAdvancedImageGalleryMasonry();
+                qode.modules.comparisonSlider.qodeInitComparisonSlider();
             } );
         });
     }

@@ -10,7 +10,7 @@ defined( 'LS_ROOT_FILE' ) || exit;
  * @package LS_ExportUtil
  * @since 5.0.3
  * @author John Gera
- * @copyright Copyright (c) 2021  John Gera, George Krupa, and Kreatura Media Kft.
+ * @copyright Copyright (c) 2023  John Gera, George Krupa, and Kreatura Media Kft.
  */
 
 class LS_ExportUtil {
@@ -79,26 +79,35 @@ class LS_ExportUtil {
 	 * @access public
 	 * @param mixed $files Image path or an array of image paths to be added
 	 * @param string $folder Sub-folder name
-	 * @param string $imgFolder Name of the folder that stores the images
+	 * @param string $imagesDir Name of the folder that stores the images
+	 * @param string $forceDir Forces the provided directory name
 	 * @return void
 	 */
-	public function addImage($files, $folder = '', $imgFolder = 'uploads') {
+	public function addImage($files, $folder = '', $imagesDir = 'uploads', $forceDir = false ) {
 
 		// Check file
-		if(empty($files)) { return false; }
+		if( empty( $files ) ) {
+			return false;
+		}
 
 		// Check file type
-		if(!is_array($files)) { $files = array($files); }
-
-		// Check folder
-		$folder = is_string($folder) ? $folder."/$imgFolder/" : "$imgFolder/";
+		if( ! is_array( $files ) ) {
+			$files = [ $files ];
+		}
 
 		// Add contents to ZIP
-		foreach($files as $file) {
-			if(!empty($file) && is_string($file)) {
-				$this->zip->addFile($file,
-					$folder.sanitize_file_name(basename($file))
-				);
+		foreach( $files as $file ) {
+
+			if( ! empty( $file ) && is_string( $file ) ) {
+
+				if( ! $forceDir ) {
+					$isAsset = ( strpos( $file, '/layerslider/assets/' ) !== false );
+					$imagesDir = $isAsset ? 'assets' : 'uploads';
+				}
+
+				$projectDir = is_string($folder) ? $folder."/$imagesDir/" : "$imagesDir/";
+
+				$this->zip->addFile( $file, $projectDir.basename( $file ) );
 			}
 		}
 	}
@@ -119,7 +128,7 @@ class LS_ExportUtil {
 		if(empty($files)) { return false; }
 
 		// Check file type
-		if(!is_array($files)) { $files = array($files); }
+		if(!is_array($files)) { $files = [ $files ]; }
 
 		// Add contents to ZIP
 		foreach($files as $file) {
@@ -179,7 +188,7 @@ class LS_ExportUtil {
 	public function getImagesForSlider($data) {
 
 		// Array to hold image URLs
-		$this->imageList = array();
+		$this->imageList = [];
 
 		// Slider Preview
 		if( ! empty($data['meta'] ) ) {
@@ -187,7 +196,6 @@ class LS_ExportUtil {
 		}
 
 		$this->_addImageToList( $data['properties'], 'backgroundimageId', 'backgroundimage' );
-		$this->_addImageToList( $data['properties'], 'yourlogoId', 'yourlogo' );
 
 
 		// Slides
@@ -216,55 +224,10 @@ class LS_ExportUtil {
 	}
 
 
-
+	// DEPRECATED: Should not be used
+	// Returns empty array as a compatibility measure.
 	public function fontsForSlider( $data ) {
-
-		$ret = array();
-		$usedFonts = array();
-		$googleFonts = get_option('ls-google-fonts', array());
-
-		if( !empty($data['layers']) && is_array($data['layers'])) {
-			foreach($data['layers'] as $slide) {
-
-				if( !empty($slide['sublayers']) && is_array($data['layers'])) {
-					foreach($slide['sublayers'] as $layer) {
-
-						if( !empty($layer['styles']) ) {
-
-							// Ensure that magic quotes will not mess with JSON data
-							if(function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc()) {
-								$layer['styles'] = stripslashes($layer['styles']);
-							}
-
-							$styles = !empty($layer['styles']) ? json_decode(stripslashes($layer['styles']), true) : new stdClass;
-
-							if( !empty($styles['font-family']) ) {
-								$families = explode(',', $styles['font-family']);
-								foreach( $families as $family ) {
-									$family = trim( $family, " \"'\t\n\r\0\x0B");
-
-									if( !empty($family) ) {
-										$usedFonts[] = strtolower($family);
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		foreach( $googleFonts as $font ) {
-			list($family, $weights) = explode(':', $font['param']);
-			$family = strtolower( str_replace('+', ' ', $family) );
-
-			if( array_search($family, $usedFonts) !== false) {
-				$font['admin'] = false;
-				$ret[] = $font;
-			}
-		}
-
-		return $ret;
+		return [];
 	}
 
 
@@ -272,7 +235,7 @@ class LS_ExportUtil {
 
 		if(!empty($urls) && is_array($urls)) {
 
-			$paths 		= array();
+			$paths 		= [];
 			$upload 	= wp_upload_dir();
 			$uploadDir 	= basename($upload['basedir']);
 
@@ -302,7 +265,7 @@ class LS_ExportUtil {
 			return $paths;
 		}
 
-		return array();
+		return [];
 	}
 
 	protected function _addImageToList( $data, $idKey = '', $urlKey = '' ) {

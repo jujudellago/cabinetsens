@@ -16,11 +16,13 @@ if (isset($bridge_qode_options['blog_hide_comments']))
 
 	
 		<?php get_template_part( 'title' ); ?>
+		
 		<div class="container">
             <?php if(isset($bridge_qode_options['overlapping_content']) && $bridge_qode_options['overlapping_content'] == 'yes') {?>
                 <div class="overlapping_content"><div class="overlapping_content_inner">
             <?php } ?>
 			<div class="container_inner default_template_holder clearfix">
+			
 				<?php if(($bridge_qode_sidebar == "default")||($bridge_qode_sidebar == "")) : ?>
 					<?php 
 						get_template_part('templates/blog', 'structure');

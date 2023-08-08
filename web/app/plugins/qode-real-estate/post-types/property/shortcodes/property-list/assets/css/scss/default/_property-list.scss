@@ -11,7 +11,7 @@
         @include qodeRelativeHolderLayout();
         box-sizing: border-box;
 
-        .touch & {
+        .touchevents & {
             cursor: pointer;
         }
 

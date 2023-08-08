@@ -3,7 +3,7 @@
 Plugin Name: Qode News
 Description: Plugin that adds news shortcodes and functionalities
 Author: Qode Themes
-Version: 3.0.2
+Version: 3.0.4
 */
 
 require_once 'load.php';

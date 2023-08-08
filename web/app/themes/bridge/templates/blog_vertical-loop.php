@@ -1,7 +1,8 @@
 <?php
 $bridge_qode_options = bridge_qode_return_global_options();
+$bridge_qode_template_name = bridge_qode_return_template_name();
 $bridge_qode_blog_hide_comments = "";
-$bridge_qode_blog_query = bridge_qode_get_blog_query_posts();
+$bridge_qode_blog_query = bridge_qode_get_blog_query_posts( $bridge_qode_template_name );
 $bridge_qode_id = bridge_qode_get_page_id();
 $bridge_qode_post_number = get_post_meta($bridge_qode_id, "qode_show-posts-per-page", true);
 

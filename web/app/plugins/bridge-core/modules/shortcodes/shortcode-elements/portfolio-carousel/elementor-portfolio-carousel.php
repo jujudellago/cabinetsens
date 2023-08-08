@@ -17,7 +17,7 @@ class BridgeCoreElementorPortfolioCarousel extends \Elementor\Widget_Base{
 		return [ 'qode' ];
 	}
 	
-	protected function _register_controls(){
+	protected function register_controls(){
 		$this->start_controls_section(
 			'general',
 			[
@@ -188,7 +188,7 @@ class BridgeCoreElementorPortfolioCarousel extends \Elementor\Widget_Base{
 		);
 		
 		if ( ! empty( $params['category'] ) ) {
-			$query_array['portfolio-category'] = $params['category'];
+			$query_array['portfolio_category'] = $params['category'];
 		}
 		
 		$project_ids = null;
@@ -198,7 +198,7 @@ class BridgeCoreElementorPortfolioCarousel extends \Elementor\Widget_Base{
 		}
 		
 		if ( ! empty( $params['tag'] ) ) {
-			$query_array['portfolio-tag'] = $params['tag'];
+			$query_array['portfolio_tag'] = $params['tag'];
 		}
 		
 		if ( ! empty( $params['next_page'] ) ) {
@@ -272,4 +272,4 @@ class BridgeCoreElementorPortfolioCarousel extends \Elementor\Widget_Base{
 	}
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorPortfolioCarousel() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorPortfolioCarousel() );

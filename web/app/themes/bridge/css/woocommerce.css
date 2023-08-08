@@ -917,6 +917,10 @@ div.pp_woocommerce .pp_content_container {
   line-height: 37px;
 }
 
+.woocommerce div.product .cart .quantity.hidden {
+  margin-right: 0;
+}
+
 .woocommerce .quantity .minus,
 .woocommerce #content .quantity .minus,
 .woocommerce-page .quantity .minus,

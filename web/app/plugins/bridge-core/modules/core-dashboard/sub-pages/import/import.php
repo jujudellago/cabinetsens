@@ -50,6 +50,7 @@ class BridgeCoreImport {
 		add_action('wp_ajax_populate_single_pages', array(&$this, 'populate_single_pages'));
 		add_action('wp_ajax_demo_import_popup', array(&$this, 'demo_import_popup'));
 		add_action('wp_ajax_plugins_to_install', array(&$this, 'plugins_to_install'));
+		add_action('wp_ajax_install_plugin_per_demo', array(&$this, 'install_plugin_per_demo'));
 
 	}
 
@@ -293,6 +294,47 @@ class BridgeCoreImport {
 		}
 	}
 
+	public function import_qi_blocks_options( $file ) {
+		$options_file = $file . 'qi_blocks_options.txt';
+		$options       = $this->unserialized_content( $options_file );
+
+		if(is_array($options) && count($options) > 0){
+			$new_ids       = get_transient( '_bridge_core_imported_posts' );
+			$options_posts = ! empty( $options['posts'] ) ? $options['posts'] : '';
+
+			//First update array indices ( if imported post ids are different from exported ones )
+			if ( ! empty( $options_posts ) && is_array( $new_ids ) && count( $new_ids ) > 0 ) {
+				foreach ( $new_ids as $old_post_id => $new_post_id ) {
+					if ( $old_post_id !== $new_post_id ) {
+						$options_posts = $this->change_array_indices( $options_posts, $old_post_id, $new_post_id );
+					}
+				}
+			}
+
+			//Then update options entries
+			update_option('qi_blocks_global_styles', $options);
+
+			return array(
+				'status' => 'imported'
+			);
+		} else {
+			return array(
+				'status' => 'empty'
+			);
+		}
+	}
+
+	function change_array_indices( $array, $old_key, $new_key ) {
+		if ( ! array_key_exists( $old_key, $array ) ) {
+			return $array;
+		}
+
+		$keys = array_keys( $array );
+		$keys[ array_search( $old_key, $keys ) ] = $new_key;
+
+		return array_combine( $keys, $array );
+	}
+
     public function import_settings_pages( $file ) {
 
         $settings_file = $file . 'settingpages.txt';
@@ -428,6 +470,16 @@ class BridgeCoreImport {
 
 		if($xml == 'bridge_content_10.xml') {
 			$this->update_meta_fields_after_import($file);
+
+			if( bridge_core_is_installed( 'qi-blocks' ) ) {
+				$status = $this->import_qi_blocks_options($file);
+				if(is_array($status) && isset($status['status']) && $status['status']) {
+					/*** Hook if user has installed Qi Blocks but import WP Bakery or Elementor demo ***/
+					$this->set_status('success');
+					$this->set_message(esc_html__('File imported successfully', 'bridge-core') . ' ' . $xml);
+				}
+			}
+
 			if(bridge_core_is_installed('elementor')) {
 				$status = $this->import_elementor_options($file);
 				if(is_array($status) && isset($status['status']) && $status['status']) {
@@ -816,8 +868,10 @@ class BridgeCoreImport {
 
 	function demo_import_popup(){
 		$demo_id = $_POST['demoId'];
+		$original_demo_id = $_POST['originalDemoId'];
 		$params = array(
-			'demo_id' => $demo_id
+			'demo_id' => $demo_id,
+			'original_demo_id' => $original_demo_id,
 		);
 
 		$html = '';
@@ -844,6 +898,156 @@ class BridgeCoreImport {
 		echo json_encode($response);
 
 		die();
+	}
+
+	function required_plugins_per_demo($demo){
+
+		//if theme is installed
+		if( bridge_core_is_installed('theme') ) {
+			$plugins = array();
+			$html = '';
+
+
+			$demos = bridge_core_demos_list();
+			$plugins = bridge_qode_plugins_list($demos[$demo]['required-plugins']);
+
+			$tgmpa = $GLOBALS['tgmpa'];
+
+			if (!empty($plugins)) {
+				$required_demo_plugins = array();
+
+				$html .= "<p class='qode-demo-plugins-install-main-title'>" . esc_html__('Following plugins should be installed and activated before demo import:', 'bridge-core') . "</p>";
+				foreach ($plugins as $key => $value) {
+
+					$tgmpa->register(array('slug' => $key, 'name' => $value));
+
+					$is_plugin_active = $tgmpa->is_plugin_active($key);
+					$is_plugin_installed = $tgmpa->is_plugin_installed($key);
+
+					if (!$is_plugin_active) {
+						if($is_plugin_installed) {
+							$status = "<a class='qodef-install-plugin-link' href='#' data-plugin-action='activate' data-plugin-slug='". $key ."'>" . esc_html__('Activate', 'bridge-core') . "</a>";
+						} else {
+							$status = "<a class='qodef-install-plugin-link' href='#' data-plugin-action='install' data-plugin-slug='". $key ."'>" . esc_html__('Install', 'bridge-core') . "</a>";
+						}
+
+					} else {
+						$status = "<span class='qode-demo-plugin-installed'>" . esc_html__('Activated', 'bridge-core') . "</span>";
+					}
+
+					$html .= "<p>" . $value . " - " . $status . "<span class='spinner'></span></p>";
+
+					array_push($required_demo_plugins, $key);
+				}
+				$html .= "<span style='visibility:hidden;' data-required-demo-plugins='" . json_encode($required_demo_plugins) . "' class='qode-required-demo-plugins-list'></span>";
+			}
+
+			return $html;
+		}
+
+	}
+	function install_plugin_per_demo(){
+
+		global $default_plugins_array_to_install;
+
+//		$additional_plugins_to_install = $_POST['requiredPlugins'];
+//		update_option("qode_required_plugins", array_unique(array_merge($additional_plugins_to_install,$default_plugins_array_to_install)));
+
+		if(isset($_POST)){
+
+			$download_url = '';
+			$plugins		= bridge_qode_plugins_list();
+			$install_action	= $_POST['pluginAction'];
+			$plugin_slug	= $_POST['pluginSlug'];
+			$tgmpa			= $GLOBALS['tgmpa'];
+
+			foreach ($plugins as $key => $plugin) {
+
+				if($plugin_slug == $plugin['slug']){
+
+					$source = empty( $plugin['source'] ) ? 'repo' : $plugin['source'];
+
+					if ( 'repo' === $source || preg_match( $tgmpa::WP_REPO_REGEX, $source ) ) {
+						$source_type = 'repo';
+					} elseif ( preg_match( $tgmpa::IS_URL_REGEX, $source ) ) {
+						$source_type =  'external';
+					} else {
+						$source_type =  'bundled';
+					}
+
+					switch ( $source_type ) {
+						case 'repo':
+							$download_url = $this->get_api_plugin_download_url( $plugin_slug );
+							break;
+						case 'external':
+							$download_url = $plugin['source'];
+							break;
+						case 'bundled':
+							$download_url = $plugin['source'];
+							break;
+					}
+					break;
+				}
+			}
+
+			if($install_action === 'install'){
+				ob_start();
+				include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+				wp_cache_flush();
+
+				$skin     = new WP_Ajax_Upgrader_Skin();
+				$upgrader = new Plugin_Upgrader( $skin );
+				$install_result = $upgrader->install( $download_url );
+
+				if( ! is_wp_error( $install_result ) &&  $install_result){
+					bridge_qode_ajax_status('success', esc_html__('Activate', 'bridge-core'), array());
+				}
+
+			} else {
+
+				$html = "<span class='qode-demo-plugin-installed'>" . esc_html__('Activated', 'bridge-core') . "</span>";
+
+
+				if ( ! function_exists( 'get_plugins' ) ) {
+					require_once ABSPATH . 'wp-admin/includes/plugin.php';
+				}
+
+				$plugins =  get_plugins();
+				$plugins_keys = array_keys( $plugins );
+
+				foreach ( $plugins_keys as $key ) {
+					if ( preg_match( '|^' . $plugin_slug . '/|', $key ) ) {
+						$plugin_path =  $key;
+					}
+				}
+
+				$activate = activate_plugin( $plugin_path, '', false, true );
+
+				if($activate == null){
+					bridge_qode_ajax_status('success', esc_html__('Activated', 'bridge-core'), array('html'=> $html));
+				}
+
+			}
+			wp_die();
+
+		}
+
+	}
+	function get_api_plugin_download_url( $slug ) {
+
+		$download_url  = '';
+
+		if ( ! function_exists( 'plugins_api' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+		}
+
+		$api = plugins_api( 'plugin_information', array( 'slug' => $slug ) );
+
+		if ( false !== $api && isset( $api->download_link ) ) {
+			$download_url = $api->download_link;
+		}
+
+		return $download_url;
 	}
 
 }

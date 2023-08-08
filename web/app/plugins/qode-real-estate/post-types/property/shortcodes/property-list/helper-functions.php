@@ -182,3 +182,11 @@ if( !function_exists('qodef_re_property_ajax_remove_query') ) {
     add_action( 'wp_ajax_nopriv_qodef_re_property_ajax_remove_query', 'qodef_re_property_ajax_remove_query' );
     add_action( 'wp_ajax_qodef_re_property_ajax_remove_query', 'qodef_re_property_ajax_remove_query' );
 }
+
+if(!function_exists('qodef_re_include_elementor_property_list_shortcode')) {
+	function qodef_re_include_elementor_property_list_shortcode() {
+		include_once QODE_RE_CPT_PATH.'/property/shortcodes/property-list/elementor-property-list.php';
+	}
+
+	add_action('bridge_core_load_elementor_shortcodes_from_plugins', 'qodef_re_include_elementor_property_list_shortcode');
+}

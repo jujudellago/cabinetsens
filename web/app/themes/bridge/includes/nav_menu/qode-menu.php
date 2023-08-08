@@ -321,8 +321,10 @@ if (!class_exists('BridgeQodeType2WalkerNavMenu')) {
 			$class_names = esc_attr( implode( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item ) ) );
 			
 			$anchor = '';
+            $anchor_class = '';
 			if($item->anchor != ""){
 				$anchor = '#'.esc_attr($item->anchor);
+                $anchor_class = ' qode-is-anchor-item';
 			}
 
 			 $active = "";
@@ -332,7 +334,7 @@ if (!class_exists('BridgeQodeType2WalkerNavMenu')) {
 			 endif;
 
 			// build html
-			$output .= $indent . '<li id="mobile-menu-item-'. $item->ID . '" class="' . $class_names . ' ' . $active . $sub .'">';
+			$output .= $indent . '<li id="mobile-menu-item-'. $item->ID . '" class="' . $class_names . ' ' . $active . $sub . $anchor_class . '">';
 			
 			$current_a = "";
 			// link attributes

@@ -28,7 +28,7 @@ class QodeTourListWidget extends BridgeQodeWidget {
             ),
             array(
                 'type'  => 'textfield',
-                'name'  => 'category',
+                'name'  => 'tour_category',
                 'title'       => esc_html__( 'Category Slug', 'qode-tours' ),
                 'description' => esc_html__( 'Leave empty for all or use comma for list', 'qode-tours' )
             ),
@@ -75,7 +75,7 @@ class QodeTourListWidget extends BridgeQodeWidget {
         foreach($instance as $key => $value) {
             $params .= " $key='$value' ";
         }
-
+        
         echo '<div class="widget qode-tour-list-widget">';
         if ( ! empty( $instance['widget_title'] ) ) {
             echo wp_kses_post( $args['before_title'] ) . esc_html( $instance['widget_title'] ) . wp_kses_post( $args['after_title'] );

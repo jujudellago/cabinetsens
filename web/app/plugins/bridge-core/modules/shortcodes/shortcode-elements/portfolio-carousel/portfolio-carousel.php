@@ -186,7 +186,7 @@ class PortfolioCarousel implements ShortcodeInterface {
 		);
 		
 		if ( ! empty( $params['category'] ) ) {
-			$query_array['portfolio-category'] = $params['category'];
+			$query_array['portfolio_category'] = $params['category'];
 		}
 		
 		$project_ids = null;
@@ -196,7 +196,7 @@ class PortfolioCarousel implements ShortcodeInterface {
 		}
 		
 		if ( ! empty( $params['tag'] ) ) {
-			$query_array['portfolio-tag'] = $params['tag'];
+			$query_array['portfolio_tag'] = $params['tag'];
 		}
 		
 		if ( ! empty( $params['next_page'] ) ) {
@@ -234,7 +234,7 @@ class PortfolioCarousel implements ShortcodeInterface {
 		$post_meta_infos = $wpdb->get_results( $wpdb->prepare( "SELECT a.slug AS slug, a.name AS portfolio_category_title
 					FROM {$wpdb->terms} AS a
 					LEFT JOIN ( SELECT term_id, taxonomy  FROM {$wpdb->term_taxonomy} ) AS b ON b.term_id = a.term_id
-					WHERE b.taxonomy = 'portfolio-category' AND a.name LIKE '%%%s%%'", stripslashes( $query ) ), ARRAY_A );
+					WHERE b.taxonomy = 'portfolio_category' AND a.name LIKE '%%%s%%'", stripslashes( $query ) ), ARRAY_A );
 		
 		$results = array();
 		if ( is_array( $post_meta_infos ) && ! empty( $post_meta_infos ) ) {
@@ -261,7 +261,7 @@ class PortfolioCarousel implements ShortcodeInterface {
 		$query = trim( $query['value'] ); // get value from requested
 		if ( ! empty( $query ) ) {
 			// get portfolio category
-			$portfolio_category = get_term_by( 'slug', $query, 'portfolio-category' );
+			$portfolio_category = get_term_by( 'slug', $query, 'portfolio_category' );
 			if ( is_object( $portfolio_category ) ) {
 				
 				$portfolio_category_slug  = $portfolio_category->slug;
@@ -362,7 +362,7 @@ class PortfolioCarousel implements ShortcodeInterface {
 		$post_meta_infos = $wpdb->get_results( $wpdb->prepare( "SELECT a.slug AS slug, a.name AS portfolio_tag_title
 					FROM {$wpdb->terms} AS a
 					LEFT JOIN ( SELECT term_id, taxonomy  FROM {$wpdb->term_taxonomy} ) AS b ON b.term_id = a.term_id
-					WHERE b.taxonomy = 'portfolio-tag' AND a.name LIKE '%%%s%%'", stripslashes( $query ) ), ARRAY_A );
+					WHERE b.taxonomy = 'portfolio_tag' AND a.name LIKE '%%%s%%'", stripslashes( $query ) ), ARRAY_A );
 		
 		$results = array();
 		if ( is_array( $post_meta_infos ) && ! empty( $post_meta_infos ) ) {
@@ -389,7 +389,7 @@ class PortfolioCarousel implements ShortcodeInterface {
 		$query = trim( $query['value'] ); // get value from requested
 		if ( ! empty( $query ) ) {
 			// get portfolio category
-			$portfolio_tag = get_term_by( 'slug', $query, 'portfolio-tag' );
+			$portfolio_tag = get_term_by( 'slug', $query, 'portfolio_tag' );
 			if ( is_object( $portfolio_tag ) ) {
 				
 				$portfolio_tag_slug  = $portfolio_tag->slug;

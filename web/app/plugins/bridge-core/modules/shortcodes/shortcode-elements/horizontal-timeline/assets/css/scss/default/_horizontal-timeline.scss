@@ -125,7 +125,7 @@ $L:     1100px;
 					@include qodeBoxShadowCustom(0.5px 0.866px 1px 0px rgba( 0, 0, 0, 0.1 ));
 				}
 
-				.no-touch &:hover .circle-outer {
+				.no-touchevents &:hover .circle-outer {
 					background-color: $first-main-color;
 				}
 

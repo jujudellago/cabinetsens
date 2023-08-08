@@ -17,6 +17,8 @@ class BridgeQodeIconsFontDripicons implements iIconCollection
     public $title;
     public $param;
     public $styleUrl;
+	public $socialIcons;
+	public $backTopTopIcons;
 
     public function __construct($title = "", $param = "")
     {

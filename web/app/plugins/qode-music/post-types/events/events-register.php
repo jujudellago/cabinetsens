@@ -12,6 +12,7 @@ class EventsRegister implements PostTypeInterface {
      * @var string
      */
     private $base;
+    private $taxBase;
 
     public function __construct() {
         $this->base		= 'qode-event';

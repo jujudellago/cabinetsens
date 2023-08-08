@@ -444,6 +444,30 @@ function slideInNewPage(text, direction, direction2, animationTime, callbacks, u
 	newContent.find('.animate_title_text .title h1').css({visibility: 'hidden'});
 	viewport.append(newContent);
 
+	/*
+	 Adjust footer widgets if neccessary i.e. when WPML is active and
+	 widgets are different from language to language due to translation
+	*/
+	var newFooter = newHTML.find('footer'),
+		footer = $j('footer'),
+		isWPMLEnabled = qode_body.hasClass('qode-wpml-enabled');
+
+	if( isWPMLEnabled && newFooter.length ) {
+		var $newFooterColumns = newFooter.find('.column_inner'),
+			$oldFooterColumns = footer.find('.column_inner');
+
+		if( $newFooterColumns.length && $oldFooterColumns.length && $newFooterColumns.length === $oldFooterColumns.length ) {
+			$newFooterColumns.each( function(i) {
+				var $thisColumn = $j(this);
+
+				if( $thisColumn.html() !== $oldFooterColumns.eq(i).html() ) {
+					$oldFooterColumns.eq(i).html('');
+					$oldFooterColumns.eq(i).append( $thisColumn.html() )
+				}
+			} )
+		}
+	}
+
 	$j('.side_menu_button a').removeClass('opened');
 	newHTML.filter('script').each(function(){
 			$j.globalEval(this.text || this.textContent || this.innerHTML || '');

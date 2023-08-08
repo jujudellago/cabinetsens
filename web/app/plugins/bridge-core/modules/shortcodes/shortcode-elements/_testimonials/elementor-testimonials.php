@@ -17,7 +17,7 @@ class BridgeCoreElementorTestimonials extends \Elementor\Widget_Base{
         return [ 'qode' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -152,7 +152,7 @@ class BridgeCoreElementorTestimonials extends \Elementor\Widget_Base{
 	    $this->add_control(
 		    'navigation_style',
 		    [
-			    'label' => esc_html__( 'Link Target', 'bridge-core' ),
+			    'label' => esc_html__( 'Navigation Style', 'bridge-core' ),
 			    'type' => \Elementor\Controls_Manager::SELECT,
 			    'options' => array(
 				   'dark'   => esc_html__( 'Dark', 'bridge-core' ),
@@ -214,4 +214,4 @@ class BridgeCoreElementorTestimonials extends \Elementor\Widget_Base{
 
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorTestimonials() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorTestimonials() );

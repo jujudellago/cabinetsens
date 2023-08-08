@@ -267,7 +267,7 @@ if ( ! function_exists( 'qode_tours_post_reviews_html' ) ) {
                     $comment_class .= ' qode-pingback-comment';
                 }
                 $review_rating = get_comment_meta( $comment->comment_ID, 'qode_rating', true );
-                $review_rating_style  = 'width: '.esc_attr($review_rating*20).'%';
+                $review_rating_style  = 'width: '.esc_attr( (int)$review_rating * 20 ) . '%';
                 $review_title = get_comment_meta( $comment->comment_ID, 'qode_comment_title', true );
                 $rating_criteria = bridge_core_rating_criteria(get_post_type());
 

@@ -12,7 +12,7 @@
  *
  * @see         https://docs.woocommerce.com/document/template-structure/
  * @package     WooCommerce/Templates
- * @version     4.0.0
+ * @version     7.0.1
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -65,8 +65,9 @@ if (isset($bridge_qode_options['woo_products_add_to_cart_hover_type']) && $bridg
                         if ( ! $grouped_product_child->is_purchasable() || $grouped_product_child->has_options() || ! $grouped_product_child->is_in_stock() ) {
                             woocommerce_template_loop_add_to_cart();
                         } elseif ( $grouped_product_child->is_sold_individually() ) {
-                            echo '<input type="checkbox" name="' . esc_attr( 'quantity[' . $grouped_product_child->get_id() . ']' ) . '" value="1" class="wc-grouped-product-add-to-cart-checkbox" />';
-                        } else {
+                            echo '<input type="checkbox" name="' . esc_attr( 'quantity[' . $grouped_product_child->get_id() . ']' ) . '" value="1" class="wc-grouped-product-add-to-cart-checkbox" id="' . esc_attr( 'quantity-' . $grouped_product_child->get_id() ) . '" />';
+	                        echo '<label for="' . esc_attr( 'quantity-' . $grouped_product_child->get_id() ) . '" class="screen-reader-text">' . esc_html__( 'Buy one of this item', 'bridge' ) . '</label>';
+						} else {
                             do_action( 'woocommerce_before_add_to_cart_quantity' );
 
                             woocommerce_quantity_input( array(
@@ -117,7 +118,7 @@ if (isset($bridge_qode_options['woo_products_add_to_cart_hover_type']) && $bridg
 		<?php do_action( 'woocommerce_before_add_to_cart_button' ); ?>
 		
 		<?php /*** Our code modification inside Woo template - begin ***/ ?>
-		<button type="submit" class="single_add_to_cart_button button alt <?php echo esc_attr($button_classes); ?>"><?php echo esc_html( $product->single_add_to_cart_text() ); ?></button>
+		<button type="submit" class="single_add_to_cart_button button alt <?php echo esc_attr($button_classes); ?><?php echo esc_attr( wc_wp_theme_get_element_class_name( 'button' ) ? ' ' . wc_wp_theme_get_element_class_name( 'button' ) : '' ); ?>"><?php echo esc_html( $product->single_add_to_cart_text() ); ?></button>
 		<?php /*** Our code modification inside Woo template - end ***/ ?>
 		
 		<?php do_action( 'woocommerce_after_add_to_cart_button' ); ?>

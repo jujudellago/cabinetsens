@@ -35,19 +35,19 @@ class LS_Popups {
 		}
 
 		// Init Popups data
-		self::$index = get_option( self::$optionKey, array());
-		self::$popups = array();
+		self::$index = get_option( self::$optionKey, [] );
+		self::$popups = [];
 
 		// Make sure that the Popup Index is an array
 		if( ! is_array( self::$index ) ) {
-			self::$index = array();
+			self::$index = [];
 		}
 
 		// Examine the Popup Index, see if there are popups
 		// that needs to be automatically included on page
 		// based on the user settings.
 		if( ! is_admin() ) {
-			add_action('wp', array(__CLASS__, 'setup'));
+			add_action('wp', [ __CLASS__, 'setup' ] );
 		}
 	}
 
@@ -59,7 +59,7 @@ class LS_Popups {
 		self::autoinclude();
 		self::display();
 
-		add_action('wp_footer', array(__CLASS__, 'render'), 1);
+		add_action('wp_footer', [ __CLASS__, 'render' ], 1);
 	}
 
 
@@ -71,7 +71,7 @@ class LS_Popups {
 		}
 
 		if( ! is_array( self::$index ) ) {
-			self::$index = array();
+			self::$index = [];
 		}
 
 		self::$index[ $data['id'] ] = $data;
@@ -83,7 +83,7 @@ class LS_Popups {
 	public static function removeIndex( $id ) {
 
 		if( ! is_array( self::$index ) ) {
-			self::$index = array();
+			self::$index = [];
 		}
 
 		if( empty( $id ) || empty( self::$index[ $id ] ) ) {
@@ -172,7 +172,19 @@ class LS_Popups {
 		if( ! empty( $pages ) ) {
 			$pages = explode(',', $pages);
 			foreach( $pages as $page ) {
-				if( is_category( trim( $page ) ) || is_page( trim( $page ) ) || is_single( trim( $page ) ) ) {
+
+				$page = trim( $page );
+
+				// Test for regular WP pages
+				if( is_category( $page ) || is_page( $page ) || is_single( $page ) ) {
+					return true;
+				}
+
+				// Test for WooCommerce pages
+				if(
+					( function_exists('is_product_category') && is_product_category( $page ) ) ||
+					( function_exists('is_product_tag') && is_product_tag( $page ) )
+				) {
 					return true;
 				}
 			}
@@ -204,7 +216,7 @@ class LS_Popups {
 
 		if( ! empty(self::$popups) && is_array(self::$popups) ) {
 			foreach( self::$popups as $popup ) {
-				layerslider( $popup['id'], '', array( 'popup' => true ) );
+				layerslider( $popup['id'], '', [ 'popup' => true ] );
 			}
 
 		}

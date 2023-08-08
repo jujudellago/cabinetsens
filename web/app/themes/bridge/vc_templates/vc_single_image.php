@@ -226,13 +226,16 @@ if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
 		}
 	}
 
-	if ( 'yes' === $add_caption && '' !== $caption ) {
+	if( 'yes' === $add_caption ) {
 		$html = '
 		<figure class="vc_figure">
-			' . $html . '
-			<figcaption class="vc_figure-caption">' . esc_html( $caption ) . '</figcaption>
-		</figure>
-	';
+			' . $html;
+
+		if( '' !== $caption ){
+			$html = $html . '<figcaption class="vc_figure-caption">' . esc_html( $caption ) . '</figcaption>';
+		}
+
+		$html = $html . '</figure>';
 	}
 
 	if($qode_css_animation != ""){

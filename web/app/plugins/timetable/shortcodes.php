@@ -13,7 +13,7 @@ function tt_event_items_list($atts, $content)
 	
 	$output = '';
 	$output .= '
-	<ul class="tt_event_items_list' . ($class!='' ? ' ' . $class : '') . '">
+	<ul class="tt_event_items_list' . ($class!='' ? ' ' . esc_attr($class) : '') . '">
 		' . tt_remove_wpautop($content) . '
 	</ul>';
 	return $output;
@@ -32,8 +32,8 @@ function tt_event_item($atts, $content)
 	
 	$output = '';
 	$output .= '
-	<li' . ($type=="info" ? ' class="timetable_clearfix type_info"' : '') . ($border_color!='' ? ' style="border-bottom: ' . ($border_color=='none' ? 'none' : '1px solid #' . $border_color . '') . ';"' : '') . '>
-		<' . ($type=="info" ? 'label' : 'span') . ($text_color!='' ? ' style="color: #' . $text_color . ';"' : '') . '>' . tt_remove_wpautop($content) . '</' . ($type=="info" ? 'label' : 'span') . '>';
+	<li' . ($type=="info" ? ' class="timetable_clearfix type_info"' : '') . ($border_color!='' ? ' style="border-bottom: ' . ($border_color=='none' ? 'none' : '1px solid #' . esc_attr($border_color) . '') . ';"' : '') . '>
+		<' . ($type=="info" ? 'label' : 'span') . ($text_color!='' ? ' style="color: #' . esc_attr($text_color) . ';"' : '') . '>' . tt_remove_wpautop($content) . '</' . ($type=="info" ? 'label' : 'span') . '>';
 		if($value!="")
 			$output .= '<div class="tt_event_text">' . $value . '</div>';
 	$output .= '
@@ -48,7 +48,7 @@ function tt_event_columns($atts, $content)
 	extract(shortcode_atts(array(
 		"class" => ""
 	), $atts));
-	return '<div class="tt_event_columns' . ($class!='' ? ' ' . $class : '') . '">' . tt_remove_wpautop($content) . '</div>';
+	return '<div class="tt_event_columns' . ($class!='' ? ' ' . esc_attr($class) : '') . '">' . tt_remove_wpautop($content) . '</div>';
 }
 add_shortcode("tt_columns", "tt_event_columns");
 
@@ -88,9 +88,9 @@ function tt_event_hours($atts, $content)
 		'show_available_slots' => 'no',
 		'available_slots_singular_label' => '{number_available}/{number_total} slot available',
 		'available_slots_plural_label' => '{number_available}/{number_total} slots available',
-		'booking_label' => __('Book now', 'timetable'),
-		'booked_label' => __('Booked', 'timetable'),
-		'unavailable_label' => __('Unavailable', 'timetable'),
+		'booking_label' => esc_html__('Book now', 'timetable'),
+		'booked_label' => esc_html__('Booked', 'timetable'),
+		'unavailable_label' => esc_html__('Unavailable', 'timetable'),
 		'booking_text_color' => 'FFFFFF',
 		'booking_bg_color' => '05BB90',
 		'booking_hover_text_color' => 'FFFFFF',
@@ -161,16 +161,16 @@ function tt_event_hours($atts, $content)
 	}
 	
 	$output .= '
-	<ul id="event_hours_list" class="timetable_clearfix tt_event_hours' . ($class!="" ? ' ' . $class : '') . '">';
+	<ul id="event_hours_list" class="timetable_clearfix tt_event_hours' . ($class!="" ? ' ' . esc_attr($class) : '') . '">';
 		for($i=0; $i<$event_hours_count; $i++)
 		{
 			//get event color
 			if($border_color=="")
 				$border_color = "#" . get_post_meta($event_hours[$i]->event_id, "timetable_color", true);
-			$output .= '<li' . ($border_color!="" ? ' style="border-left-color:' . $border_color . ';"' : '') . ' id="event_hours_' . $event_hours[$i]->event_hours_id . '" class="event_hours_' . ($i%2==0 ? 'left' : 'right') . '"><h4' . ($text_color!="" ? ' style="color:' . $text_color . ';"' : '') . '>' . $event_hours[$i]->weekday . '</h4><h4' . ($text_color!="" ? ' style="color:' . $text_color . ';"' : '') . '>' . date($time_format, strtotime($event_hours[$i]->start)) . ' - ' . date($time_format, strtotime($event_hours[$i]->end)) . '</h4>';
+			$output .= '<li' . ($border_color!="" ? ' style="border-left-color:' . esc_attr($border_color) . ';"' : '') . ' id="event_hours_' . esc_attr($event_hours[$i]->event_hours_id) . '" class="event_hours_' . ($i%2==0 ? 'left' : 'right') . '"><h4' . ($text_color!="" ? ' style="color:' . esc_attr($text_color) . ';"' : '') . '>' . $event_hours[$i]->weekday . '</h4><h4' . ($text_color!="" ? ' style="color:' . esc_attr($text_color) . ';"' : '') . '>' . date($time_format, strtotime($event_hours[$i]->start)) . ' - ' . date($time_format, strtotime($event_hours[$i]->end)) . '</h4>';
 			if($event_hours[$i]->before_hour_text!="" || $event_hours[$i]->after_hour_text!="")
 			{
-				$output .= '<p' . ($text_color!="" ? ' style="color:' . $text_color . ';"' : '') . ' class="tt_event_padding_bottom_0">';
+				$output .= '<p' . ($text_color!="" ? ' style="color:' . esc_attr($text_color) . ';"' : '') . ' class="tt_event_padding_bottom_0">';
 				if($event_hours[$i]->before_hour_text!="")
 					$output .= $event_hours[$i]->before_hour_text;
 				if($event_hours[$i]->after_hour_text!="")
@@ -184,7 +184,7 @@ function tt_event_hours($atts, $content)
 				$total_slots = $event_hours[$i]->available_places;
 				$available_slots = $total_slots-$taken_slots;
 				
-				$booking_content = prepare_booking_button(array(
+				$booking_content = timetable_prepare_booking_button(array(
 					'timetable_page_id' => $timetable_page_id,
 					'redirect' => 'yes',
 					'current_user_booking_count' => $event_hours[$i]->current_user_booking_count,
@@ -207,7 +207,7 @@ function tt_event_hours($atts, $content)
 				$booking_slots_label = '';
 				if($show_available_slots=='yes' && $total_slots>0)
 				{
-					$booking_slots_label = prepare_booking_slots_label(array(
+					$booking_slots_label = timetable_prepare_booking_slots_label(array(
 						'available_slots' => $available_slots,
 						'taken_slots' => $taken_slots,
 						'total_slots' => $total_slots,
@@ -216,7 +216,7 @@ function tt_event_hours($atts, $content)
 					));
 					$booking_slots_label = 
 						"<p class='available_slots_wrapper'>
-							<span class='available_slots id-" . $event_hours[$i]->event_hours_id . "'>" . 
+							<span class='available_slots id-" . esc_attr($event_hours[$i]->event_hours_id) . "'>" . 
 								$booking_slots_label .
 							"</span>
 						</p>";

@@ -247,7 +247,7 @@ class TourPriceHelper {
 			return false;
 		}
 
-		$price = round($price, 2);
+		$price = round( floatval( $price ), 2);
 
 		$currencySymbol   = apply_filters('qode_tours_currency_symbol', $this->getCurrencySymbol());
 		$currencyPosition = apply_filters('qode_tours_currency_position', $this->getCurrencyPosition());

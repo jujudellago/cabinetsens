@@ -186,7 +186,7 @@ $j(window).on('load', function(){
 	"use strict";
 
     qodeBrowserDetection();
-	$j('.touch .main_menu li:has(div.second)').doubleTapToGo(); // load script to close menu on touch devices
+	$j('.touchevents .main_menu li:has(div.second)').doubleTapToGo(); // load script to close menu on touch devices
     setLeftPostionedMenuPadding();
     initSmallImageBlogHeight();
 	setDropDownMenuPosition();
@@ -244,7 +244,7 @@ $j(window).on('load', function(){
 	    qodeBlogGalleryAnimation();
         checkAnchorOnLoad(); // it has to be after content top margin initialization to know where to scroll
         checkHeaderStyleOnScroll(); //moved to window load because sections are not fully initialized on dom ready and calculations are wrong
-        if($j('.no-touch .carousel').length){skrollr_slider.refresh();} //in order to reload rest of scroll animation on same page after page loads
+        if($j('.no-touchevents .carousel').length){skrollr_slider.refresh();} //in order to reload rest of scroll animation on same page after page loads
     },700); //timeout is set because of some function that interferes with calculating
     qodePanelArea();
 	initDropDownAfterWPMLReplaceMenu();
@@ -266,8 +266,8 @@ $j(window).scroll(function() {
     checkVerticalMenuTransparency();
     qodeLazyImages();
 
-	$j('.touch .drop_down > ul > li').mouseleave();
-	$j('.touch .drop_down > ul > li').blur();
+	$j('.touchevents .drop_down > ul > li').mouseleave();
+	$j('.touchevents .drop_down > ul > li').blur();
 });
 
 $j(window).resize(function() {
@@ -1535,7 +1535,7 @@ function initQodeSlider(){
 
 		});
 
-        if ($j('.no-touch .carousel').length) {
+        if ($j('.no-touchevents .carousel').length) {
             skrollr_slider = skrollr.init({
                 edgeStrategy: 'set',
                 smoothScrolling: true,
@@ -2140,9 +2140,9 @@ function initDropDownMenu(){
 function initVerticalMenu(){
 	"use strict";
 
-	if ($j('.no-touch .vertical_menu_toggle').length) {
-		var menu_items = $j('.no-touch .vertical_menu_toggle > ul > li');
-		var menu_items_2 = $j('.no-touch .vertical_menu_toggle ul li ul li');
+	if ($j('.no-touchevents .vertical_menu_toggle').length) {
+		var menu_items = $j('.no-touchevents .vertical_menu_toggle > ul > li');
+		var menu_items_2 = $j('.no-touchevents .vertical_menu_toggle ul li ul li');
 
 		menu_items.each( function(i) {
 			if($j(menu_items[i]).hasClass('has_sub')){
@@ -2236,10 +2236,10 @@ function initVerticalMenu(){
 			}
 		});
 	}
-	else if ($j('.no-touch .vertical_menu_float').length){
+	else if ($j('.no-touchevents .vertical_menu_float').length){
         //show dropdown to content on menu item hover, link is available on menu item click
-        var menu_items = $j('.no-touch .vertical_menu_float > ul > li');
-        var menu_items_2 = $j('.no-touch .vertical_menu_float ul li ul li');
+        var menu_items = $j('.no-touchevents .vertical_menu_float > ul > li');
+        var menu_items_2 = $j('.no-touchevents .vertical_menu_float ul li ul li');
         menu_items.each( function(i) {
             if($j(menu_items[i]).hasClass('has_sub')){
                 $j(menu_items[i]).hoverIntent({
@@ -2285,7 +2285,7 @@ function initVerticalMobileMenu(){
 
 	if ($j('.vertical_menu_toggle').length) {
 		//register tap / click event for main menu item plus icon
-		$j('.touch .vertical_menu_toggle > ul > li.has_sub > a .plus').on('tap click', function(e){
+		$j('.touchevents .vertical_menu_toggle > ul > li.has_sub > a .plus').on('tap click', function(e){
 			//first prevent event propagation and it's default behavior
 			e.stopPropagation();
 			e.preventDefault();
@@ -2293,17 +2293,17 @@ function initVerticalMobileMenu(){
 			//is dropdown for clicked item visible?
 			if($j(this).parent().next('div.second').is(":visible")){
 				//if it is remove 'open' class and slide it up
-				$j(this).parents('.touch .vertical_menu_toggle > ul > li.has_sub').removeClass('open');
+				$j(this).parents('.touchevents .vertical_menu_toggle > ul > li.has_sub').removeClass('open');
 				$j(this).parent().next('div.second').slideUp(200);
 			} else {
 				//if it's not visible add 'open' class and slide it down
-				$j(this).parents('.touch .vertical_menu_toggle > ul > li.has_sub').addClass('open');
+				$j(this).parents('.touchevents .vertical_menu_toggle > ul > li.has_sub').addClass('open');
 				$j(this).parent().next('div.second').slideDown(200);
 			}
 		});
 
 		//register tap / click event for second level main menu item plus icon
-		$j('.touch .vertical_menu_toggle ul li ul li > a .plus').on('tap click', function(e){
+		$j('.touchevents .vertical_menu_toggle ul li ul li > a .plus').on('tap click', function(e){
 			//first prevent event propagation and it's default behavior
 			e.stopPropagation();
 			e.preventDefault();
@@ -2311,17 +2311,17 @@ function initVerticalMobileMenu(){
 			//is dropdown for clicked item visible?
 			if($j(this).parent().next('ul').is(":visible")){
 				//if it is remove 'open' class and slide it up
-				$j(this).parents('.touch .vertical_menu_toggle ul li ul li').removeClass('open');
+				$j(this).parents('.touchevents .vertical_menu_toggle ul li ul li').removeClass('open');
 				$j(this).parent().next('ul').slideUp(200);
 			} else {
 				//if it's not visible add 'open' class and slide it down
-				$j(this).parents('.touch .vertical_menu_toggle ul li ul li').addClass('open');
+				$j(this).parents('.touchevents .vertical_menu_toggle ul li ul li').addClass('open');
 				$j(this).parent().next('ul').slideDown(200);
 			}
 		});
 	}
 	else if ($j('.vertical_menu_float').length){
-		$j('.touch .vertical_menu_float > ul > li.has_sub > a .plus').on('tap click', function(e){
+		$j('.touchevents .vertical_menu_float > ul > li.has_sub > a .plus').on('tap click', function(e){
 			//first prevent event propagation and it's default behavior
 			e.stopPropagation();
 			e.preventDefault();
@@ -2329,15 +2329,15 @@ function initVerticalMobileMenu(){
 			//is dropdown for clicked item visible?
 			if($j(this).parent().next('div.second').hasClass('vertical_menu_start')){
 				//if it is remove 'open' class and 'vertical_menu_start'
-				$j(this).parents('.touch .vertical_menu_float > ul > li.has_sub').removeClass('open');
-				$j(this).parents('.touch .vertical_menu_float > ul > li.has_sub').find('.second').removeClass('vertical_menu_start');
+				$j(this).parents('.touchevents .vertical_menu_float > ul > li.has_sub').removeClass('open');
+				$j(this).parents('.touchevents .vertical_menu_float > ul > li.has_sub').find('.second').removeClass('vertical_menu_start');
 			} else {				//if it's not visible add 'open' class and 'vertical_menu_start'
-				$j(this).parents('.touch .vertical_menu_float > ul > li.has_sub').addClass('open');
-				$j(this).parents('.touch .vertical_menu_float > ul > li.has_sub').find('.second').addClass('vertical_menu_start');
+				$j(this).parents('.touchevents .vertical_menu_float > ul > li.has_sub').addClass('open');
+				$j(this).parents('.touchevents .vertical_menu_float > ul > li.has_sub').find('.second').addClass('vertical_menu_start');
 			}
 		});
 		//register tap / click event for second level main menu item plus icon
-		$j('.touch .vertical_menu_float ul li ul li > a .plus').on('tap click', function(e){
+		$j('.touchevents .vertical_menu_float ul li ul li > a .plus').on('tap click', function(e){
 			//first prevent event propagation and it's default behavior
 			e.stopPropagation();
 			e.preventDefault();
@@ -2345,13 +2345,13 @@ function initVerticalMobileMenu(){
 			//is dropdown for clicked item visible?
 			if($j(this).parent().next('ul').hasClass('vertical_submenu_start')){
 				//if it is remove 'open' class and slide it up
-				$j(this).parents('.touch .vertical_menu_float ul li ul li').removeClass('open');
-				$j(this).parents('.touch .vertical_menu_float ul li ul li').find('ul').removeClass('vertical_submenu_start');
+				$j(this).parents('.touchevents .vertical_menu_float ul li ul li').removeClass('open');
+				$j(this).parents('.touchevents .vertical_menu_float ul li ul li').find('ul').removeClass('vertical_submenu_start');
 
 			} else {
 				//if it's not visible add 'open' class and slide it down
-				$j(this).parents('.touch .vertical_menu_float ul li ul li').addClass('open');
-				$j(this).parents('.touch .vertical_menu_float ul li ul li').find('ul').addClass('vertical_submenu_start');
+				$j(this).parents('.touchevents .vertical_menu_float ul li ul li').addClass('open');
+				$j(this).parents('.touchevents .vertical_menu_float ul li ul li').find('ul').addClass('vertical_submenu_start');
 			}
 		});
 	}
@@ -3425,7 +3425,7 @@ function initTitleAreaAnimation(){
 function initParallaxTitle(){
 	"use strict";
 
-	if(($j('.title').length > 0) && ($j('.touch').length === 0)){
+	if(($j('.title').length > 0) && ($j('.touchevents').length === 0)){
 
 		if($j('.title.has_fixed_background').length){
 
@@ -3766,7 +3766,7 @@ function initInsideMobileMenu(){
 	"use strict";
 
 
-	$j(".mobile_menu > ul > li.has_sub > span.mobile_arrow, .mobile_menu > ul > li.has_sub > h3, .mobile_menu > ul > li.has_sub > a[href*='#']").on('tap click', function(e){
+	$j(".mobile_menu > ul > li.has_sub > span.mobile_arrow, .mobile_menu > ul > li.has_sub > h3, .mobile_menu > ul > li.has_sub:not(.qode-is-anchor-item) > a[href*='#']").on('tap click', function(e){
         e.preventDefault();
 
         if ($j(this).closest('li.has_sub').find("> ul.sub_menu").is(":visible")){
@@ -3778,7 +3778,7 @@ function initInsideMobileMenu(){
 		}
 	});
 
-	$j(".mobile_menu > ul > li.has_sub > ul.sub_menu > li.has_sub > span.mobile_arrow, .mobile_menu > ul > li.has_sub > ul.sub_menu > li.has_sub > h3, .mobile_menu > ul > li.has_sub > ul.sub_menu > li.has_sub > a[href*='#']").on('tap click', function(e){
+	$j(".mobile_menu > ul > li.has_sub > ul.sub_menu > li.has_sub > span.mobile_arrow, .mobile_menu > ul > li.has_sub > ul.sub_menu > li.has_sub > h3, .mobile_menu > ul > li.has_sub > ul.sub_menu > li.has_sub:not(.qode-is-anchor-item) > a[href*='#']").on('tap click', function(e){
         e.preventDefault();
 
         if ($j(this).parent().find("ul.sub_menu").is(":visible")){
@@ -4004,7 +4004,7 @@ function qodeInitAdvancedTabsIcons(){
 
 			var tabNav = thisTabContent.parents('.qode-advanced-tabs').find('.qode-advanced-tabs-nav > li a[href="#'+id+'"]');
 			if(typeof(tabNav) !== 'undefined') {
-				tabNav.children('.qode-advanced-icon-frame').append(icon);
+				tabNav.children('.qode-advanced-icon-frame').html(icon);
 			}
 		});
 	}
@@ -5781,7 +5781,7 @@ function initVideoBackgroundSize(){
 		$j(this).scrollTop(($j(this).find('video').height() - ($sectionHeight)) / 2);
 
 		$j(this).css('opacity', 1);
-		$j('.no-touch .section .mobile-video-image ').css('display', 'none');
+		$j('.no-touchevents .section .mobile-video-image ').css('display', 'none');
 	});
 
 	$j('.carousel .item .video .video-wrap').each(function(i){
@@ -5920,17 +5920,13 @@ function initSearchButton(){
 				}
 				if ($j('.qode_search_form').height() == "0") {
 					$j('.qode_search_form input[type="text"]').focus();
-					$j('.header_top_bottom_holder').stop().animate({top:"50px"},150);
-					$j('.qode_search_form').stop().animate({height:"50px"},150);
-					$j('.content_inner').stop().animate({marginTop:"50px"},150);
+					$j('body').addClass('qode-search-slides-from-top-opened');
 					if($scroll < 34){ $j('header.page_header').stop().animate({top:0},150); }
 					$j('.title.has_fixed_background').animate({
 						'background-position-y': (yPos + 50)+'px'
 					}, 150);
 				} else {
-					$j('.qode_search_form').stop().animate({height:"0"},150);
-					$j('.header_top_bottom_holder').stop().animate({top:"0px"},150);
-					$j('.content_inner').stop().animate({marginTop:"0"},150);
+					$j('body').removeClass('qode-search-slides-from-top-opened');
 					if($scroll < 34){ $j('header.page_header').stop().animate({top:-$scroll},150);}
 					$j('.title.has_fixed_background').animate({
 						'background-position-y': (yPos - 50)+'px'
@@ -5939,18 +5935,14 @@ function initSearchButton(){
 
 				$j(window).scroll(function() {
 					if ($j('.qode_search_form').height() != "0" && $scroll > 50) {
-						$j('.qode_search_form').stop().animate({height:"0"},150);
-						$j('.header_top_bottom_holder').stop().animate({top:"0px"},150);
-						$j('.content_inner').stop().animate({marginTop:"0"},150);
+						$j('body').removeClass('qode-search-slides-from-top-opened');
 						$j('.title.has_fixed_background').css('backgroundPosition', 'center '+(yPos)+'px');
 					}
 				});
 
 				$j('.qode_search_close').on('click', function(e){
 					e.preventDefault();
-					$j('.qode_search_form').stop().animate({height:"0"},150);
-					$j('.content_inner').stop().animate({marginTop:"0"},150);
-					$j('.header_top_bottom_holder').stop().animate({top:"0px"},150);
+					$j('body').removeClass('qode-search-slides-from-top-opened');
 					if($scroll < 34){ $j('header.page_header').stop().animate({top:-$scroll},150);}
 					$j('.title.has_fixed_background').animate({
 						'background-position-y': (yPos)+'px'
@@ -6051,7 +6043,8 @@ function initSearchButton(){
 			});
 
 			$j('.qode_search_close, .content, footer').on('click', function(e){
-					$j('.qode_search_form_3').stop(true).fadeOut(450,'easeOutExpo');
+				e.preventDefault();
+				$j('.qode_search_form_3').stop(true).fadeOut(450,'easeOutExpo');
 			});
 
 			$j('.qode_search_form_3').blur(function(e){
@@ -6456,6 +6449,18 @@ function initButtonHover() {
             if(typeof $j(this).data('hover-background-color') !== 'undefined' && $j(this).data('hover-background-color') !== false) {
                 var hover_background_color = $j(this).data('hover-background-color');
                 var initial_background_color = $j(this).css('background-color');
+
+				// TODO
+                if ( hover_background_color.startsWith("#") && hover_background_color.length === 9 ) {
+					var colorCode = hover_background_color.replace('#',''),
+						r = parseInt(colorCode.substring(0,2), 16),
+						g = parseInt(colorCode.substring(2,4), 16),
+						b = parseInt(colorCode.substring(4,6), 16),
+						a = parseFloat(parseInt((parseInt(colorCode.substring(6,8), 16)/255)*100)/100);
+
+					hover_background_color = 'rgba('+r+','+g+','+b+','+a+')';
+				}
+
                 $j(this).hover(
                 function() {
                     $j(this).css('background-color', hover_background_color);
@@ -6991,6 +6996,12 @@ function initFullScreenTemplate(){
         });
 
         var section_number = $j('.full_screen_inner > .full_screen_section').length;
+
+        //if already instanciated destroy it so Elementor can instanciate it again with new settings
+        if( $j('html').hasClass('qode-initialized-fss') ){
+			$j.fn.fullpage.destroy('all');
+		}
+
 		$j('.full_screen_inner').fullpage({
 			sectionSelector: '.full_screen_section',
 			scrollOverflow: true,
@@ -6999,6 +7010,7 @@ function initFullScreenTemplate(){
                 checkFullScreenSectionsForHeaderStyle(index, default_header_style);
 			},
             afterRender: function(){
+				$j('html').addClass('qode-initialized-fss');
             	$j(this).addClass('qode-initialized');
                 checkActiveArrowsOnFullScrrenTemplate(section_number, 1);
                 checkFullScreenSectionsForHeaderStyle(1, default_header_style);
@@ -8234,7 +8246,7 @@ SVGEl.prototype.draw = function() {
 function initPageTitleAnimation(){
     "use strict";
 
-    if($j('.title_outer').data('animation') === 'yes' && $j('.no-touch .title_outer').length > 0) {
+    if($j('.title_outer').data('animation') === 'yes' && $j('.no-touchevents .title_outer').length > 0) {
         var skrollr_title = skrollr.init({
             edgeStrategy: 'set',
             smoothScrolling: false,
@@ -8333,9 +8345,9 @@ function initElementsHolderResponsiveStyle(){
 
 function initQodeElementAnimationSkrollr() {
     "use strict";
-    if($j('.no-touch .carousel').length === 0) {
+    if($j('.no-touchevents .carousel').length === 0) {
 
-        var elementItemAnimation = $j('.no-touch .q_elements_holder > .q_elements_item');
+        var elementItemAnimation = $j('.no-touchevents .q_elements_holder > .q_elements_item');
         elementItemAnimation.each(function(){
 
             if((typeof($j(this).data('animation')) !== 'undefined' || typeof($j('.title_outer').data('animation')) !== 'undefined') && $j(this).data('animation') === 'yes') {
@@ -8936,7 +8948,7 @@ function qodeInitStickyWidget() {
 
         stickyWidgets.each(function(){
             var widget = $j(this),
-                parent =  '.full_section_inner, .section_inner, .two_columns_75_25, .two_columns_25_75, .two_columns_66_33, .two_columns_33_66, .elementor-row',
+                parent =  '.full_section_inner, .section_inner, .two_columns_75_25, .two_columns_25_75, .two_columns_66_33, .two_columns_33_66, .elementor-row, .elementor-section',
                 stickyHeight = 0,
                 widgetOffset = widget.offset().top;
 
@@ -9671,7 +9683,11 @@ function qodeInitAccordions(){
 						thisTitle.toggleClass("ui-state-hover");
 					});
 
-					thisTitle.on('click',function(){
+					thisTitle.on('click',function(e){
+
+						e.preventDefault();
+						e.stopImmediatePropagation();
+
 						thisTitle.toggleClass('ui-accordion-header-active ui-state-active ui-state-default ui-corner-bottom');
 						thisTitle.next().toggleClass('ui-accordion-content-active').slideToggle(300);
 					});
@@ -10032,56 +10048,57 @@ function qodeOwlSlider() {
                 responsiveMargin = 20;
             }
 
-            slider.owlCarousel({
-                items: numberOfItems,
-                loop: loop,
-                autoplay: autoplay,
-                autoplayHoverPause: autoplayHoverPause,
-                autoplayTimeout: sliderSpeed,
-                smartSpeed: sliderSpeedAnimation,
-                margin: margin,
-                stagePadding: stagePadding,
-                center: center,
-                autoWidth: autoWidth,
-                animateInClass: animateInClass,
-                animateOut: animateOut,
-                dots: pagination,
-                nav: navigation,
-                navText: [
-                    '<span class="qode-prev-icon fa fa-angle-left"></span>',
-                    '<span class="qode-next-icon fa fa-angle-right"></span>'
-                ],
-                responsive: {
-                    0: {
-                        items: responsiveNumberOfItems1,
-                        margin: responsiveMargin,
-                        stagePadding: 0,
-                        center: false,
-                        autoWidth: false
-                    },
-                    681: {
-                        items: responsiveNumberOfItems2
-                    },
-                    769: {
-                        items: responsiveNumberOfItems3
-                    },
-                    1025: {
-                        items: responsiveNumberOfItems4
-                    },
-                    1281: {
-                        items: numberOfItems
-                    }
-                },
-                onInitialize: function () {
-                    slider.css('visibility', 'visible');
-                },
-                onChanged: function () {
-                    if(slider.parent().length && slider.parent().hasClass('qode-image-behavior-lightbox')){
-                        prettyPhoto();
-                    }
-                }
-            });
-
+			slider.waitForImages(function() {
+				slider.owlCarousel({
+					items: numberOfItems,
+					loop: loop,
+					autoplay: autoplay,
+					autoplayHoverPause: autoplayHoverPause,
+					autoplayTimeout: sliderSpeed,
+					smartSpeed: sliderSpeedAnimation,
+					margin: margin,
+					stagePadding: stagePadding,
+					center: center,
+					autoWidth: autoWidth,
+					animateInClass: animateInClass,
+					animateOut: animateOut,
+					dots: pagination,
+					nav: navigation,
+					navText: [
+						'<span class="qode-prev-icon fa fa-angle-left"></span>',
+						'<span class="qode-next-icon fa fa-angle-right"></span>'
+					],
+					responsive: {
+						0: {
+							items: responsiveNumberOfItems1,
+							margin: responsiveMargin,
+							stagePadding: 0,
+							center: false,
+							autoWidth: false
+						},
+						681: {
+							items: responsiveNumberOfItems2
+						},
+						769: {
+							items: responsiveNumberOfItems3
+						},
+						1025: {
+							items: responsiveNumberOfItems4
+						},
+						1281: {
+							items: numberOfItems
+						}
+					},
+					onInitialize: function () {
+						slider.css('visibility', 'visible');
+					},
+					onChanged: function () {
+						if(slider.parent().length && slider.parent().hasClass('qode-image-behavior-lightbox')){
+							prettyPhoto();
+						}
+					}
+				});
+			});
         });
     }
 }
@@ -10195,17 +10212,8 @@ function qodeCustomFontTypeOut() {
 				typedWrap = thisTyped.parent('.qode-cf-typed-wrap'),
 				customFontHolder = typedWrap.parent('.custom_font_holder'),
 				str = [],
-				strings = thisTyped.find('.qode-cf-typed');
-
-			if (strings.length) {
-				strings.each(function () {
-					str.push($j(this).text());
-				});
-
-			}
-
-			customFontHolder.appear(function () {
-				thisTyped.typed({
+				strings = thisTyped.find('.qode-cf-typed'),
+				options = {
 					strings: str,
 					typeSpeed: 90,
 					backDelay: 700,
@@ -10213,7 +10221,19 @@ function qodeCustomFontTypeOut() {
 					contentType: 'text',
 					loopCount: false,
 					cursorChar: '_'
+				}
+
+			if (strings.length) {
+				strings.each(function () {
+					str.push($j(this).text());
 				});
+			}
+
+			customFontHolder.appear(function () {
+				var typed = new Typed(
+					thisTyped[0],
+					options
+				);
 			}, {accX: 0, accY: 200});
 		});
 	}
@@ -10451,6 +10471,35 @@ function qodePanelArea(){
 (function($) {
     'use strict';
 
+    var elementorBlogSlider = {};
+    qode.modules.elementorBlogSlider = elementorBlogSlider;
+
+    elementorBlogSlider.qodeInitElementorBlogSlider = qodeInitElementorBlogSlider;
+
+
+    elementorBlogSlider.qodeOnWindowLoad = qodeOnWindowLoad;
+
+    $(window).on('load', qodeOnWindowLoad);
+
+    /*
+     ** All functions to be called on $(window).load() should be in this function
+     */
+    function qodeOnWindowLoad() {
+        qodeInitElementorBlogSlider();
+    }
+
+    function qodeInitElementorBlogSlider(){
+        $j(window).on('elementor/frontend/init', function () {
+            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_blog_slider.default', function() {
+                initBlogSlider();
+            } );
+        });
+    }
+
+})(jQuery);
+(function($) {
+    'use strict';
+
     var elementorButton = {};
     qode.modules.elementorButton = elementorButton;
 
@@ -10473,35 +10522,6 @@ function qodePanelArea(){
             elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_button.default', function() {
                 initButtonHover();
                 initEnlargeButton();
-            } );
-        });
-    }
-
-})(jQuery);
-(function($) {
-    'use strict';
-
-    var elementorBlogSlider = {};
-    qode.modules.elementorBlogSlider = elementorBlogSlider;
-
-    elementorBlogSlider.qodeInitElementorBlogSlider = qodeInitElementorBlogSlider;
-
-
-    elementorBlogSlider.qodeOnWindowLoad = qodeOnWindowLoad;
-
-    $(window).on('load', qodeOnWindowLoad);
-
-    /*
-     ** All functions to be called on $(window).load() should be in this function
-     */
-    function qodeOnWindowLoad() {
-        qodeInitElementorBlogSlider();
-    }
-
-    function qodeInitElementorBlogSlider(){
-        $j(window).on('elementor/frontend/init', function () {
-            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_blog_slider.default', function() {
-                initBlogSlider();
             } );
         });
     }
@@ -10569,35 +10589,6 @@ function qodePanelArea(){
 (function($) {
     'use strict';
 
-    var elementorCountdown = {};
-    qode.modules.elementorCountdown = elementorCountdown;
-
-    elementorCountdown.qodeInitElementorCountdown = qodeInitElementorCountdown;
-
-
-    elementorCountdown.qodeOnWindowLoad = qodeOnWindowLoad;
-
-    $(window).on('load', qodeOnWindowLoad);
-
-    /*
-     ** All functions to be called on $(window).load() should be in this function
-     */
-    function qodeOnWindowLoad() {
-        qodeInitElementorCountdown();
-    }
-
-    function qodeInitElementorCountdown(){
-        $j(window).on('elementor/frontend/init', function () {
-            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_countdown.default', function() {
-                initCountdown();
-            } );
-        });
-    }
-
-})(jQuery);
-(function($) {
-    'use strict';
-
     var elementorCounter = {};
     qode.modules.elementorCounter = elementorCounter;
 
@@ -10624,6 +10615,35 @@ function qodePanelArea(){
         });
     }
 
+
+})(jQuery);
+(function($) {
+    'use strict';
+
+    var elementorCustomFont = {};
+    qode.modules.elementorCustomFont = elementorCustomFont;
+
+    elementorCustomFont.qodeInitElementorCustomFont = qodeInitElementorCustomFont;
+
+
+    elementorCustomFont.qodeOnWindowLoad = qodeOnWindowLoad;
+
+    $(window).on('load', qodeOnWindowLoad);
+
+    /*
+     ** All functions to be called on $(window).load() should be in this function
+     */
+    function qodeOnWindowLoad() {
+        qodeInitElementorCustomFont();
+    }
+
+    function qodeInitElementorCustomFont(){
+        $j(window).on('elementor/frontend/init', function () {
+            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_custom_font.default', function() {
+                qodeCustomFontTypeOut();
+            } );
+        });
+    }
 
 })(jQuery);
 (function($) {
@@ -10658,13 +10678,13 @@ function qodePanelArea(){
 (function($) {
     'use strict';
 
-    var elementorCustomFont = {};
-    qode.modules.elementorCustomFont = elementorCustomFont;
+    var elementorCountdown = {};
+    qode.modules.elementorCountdown = elementorCountdown;
 
-    elementorCustomFont.qodeInitElementorCustomFont = qodeInitElementorCustomFont;
+    elementorCountdown.qodeInitElementorCountdown = qodeInitElementorCountdown;
 
 
-    elementorCustomFont.qodeOnWindowLoad = qodeOnWindowLoad;
+    elementorCountdown.qodeOnWindowLoad = qodeOnWindowLoad;
 
     $(window).on('load', qodeOnWindowLoad);
 
@@ -10672,13 +10692,13 @@ function qodePanelArea(){
      ** All functions to be called on $(window).load() should be in this function
      */
     function qodeOnWindowLoad() {
-        qodeInitElementorCustomFont();
+        qodeInitElementorCountdown();
     }
 
-    function qodeInitElementorCustomFont(){
+    function qodeInitElementorCountdown(){
         $j(window).on('elementor/frontend/init', function () {
-            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_custom_font.default', function() {
-                qodeCustomFontTypeOut();
+            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_countdown.default', function() {
+                initCountdown();
             } );
         });
     }
@@ -10979,6 +10999,153 @@ function qodePanelArea(){
 
 })(jQuery);
 (function($) {
+	'use strict';
+
+	$(window).on('load', qodeOnWindowLoad);
+
+	/*
+	 ** All functions to be called on $(window).load() should be in this function
+	 */
+	function qodeOnWindowLoad() {
+        qodeInitElementorLineGraph();
+	}
+
+	function qodeInitElementorLineGraph(){
+		$(window).on('elementor/frontend/init', function () {
+			elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_line_graph.default', function() {
+				qode.modules.lineGraph.qodeLineGraph();
+			} );
+		});
+	}
+
+})(jQuery);
+
+(function ($) {
+	'use strict';
+	
+	var lineGraph = {};
+	qode.modules.lineGraph = lineGraph;
+
+	lineGraph.qodeLineGraph = qodeLineGraph;
+	lineGraph.qodeOnDocumentReady = qodeOnDocumentReady;
+
+	 $(document).ready(qodeOnDocumentReady);
+
+	/*
+	 All functions to be called on $(document).ready() should be in this function
+	 */
+	function qodeOnDocumentReady() {
+		qodeLineGraph();
+	}
+	
+	
+	function qodeLineGraph() {
+		
+		var holder = $('.q_line_graf_holder');
+		
+		if (holder.length) {
+			holder.each(function () {
+				var lineGraph = $(this).find('.q_line_graf'),
+					canvasLineGraph = lineGraph.find('canvas');
+
+				var scaleStepWidth = typeof lineGraph.data('scale-step-width') !== 'undefined' ? lineGraph.data('scale-step-width') : {},
+					scaleSteps = typeof lineGraph.data('scale-steps') !== 'undefined' ? lineGraph.data('scale-steps') : {},
+					bezierCurve = typeof lineGraph.data('bezier-curve') !== 'undefined' ? lineGraph.data('bezier-curve') : {},
+					scaleFontColor = typeof lineGraph.data('scale-font-color') !== 'undefined' ? lineGraph.data('scale-font-color') : {},
+					scaleFontSize = typeof lineGraph.data('scale-font-size') !== 'undefined' ? lineGraph.data('scale-font-size') : {},
+					values = typeof lineGraph.data('values') !== 'undefined' ? lineGraph.data('values') : {},
+					labels = typeof lineGraph.data('labels') !== 'undefined' ? lineGraph.data('labels') : {},
+					backgroundColors = typeof lineGraph.data('background-colors') !== 'undefined' ? lineGraph.data('background-colors') : {};
+
+				var datasets = [];
+				values.forEach(
+					function ( item, index ) {
+						var dataset_item = {};
+						dataset_item.data                   = values[index].split( ',' );
+						dataset_item.borderWidth            = 1;
+						dataset_item.pointRadius  			= 0;
+						dataset_item.pointBorderWidth  		= 0;
+						dataset_item.backgroundColor  		= backgroundColors[index];
+						dataset_item.cubicInterpolationMode = "default";
+						dataset_item.fill					= true;
+
+						datasets.push( dataset_item );
+					}
+				);
+
+				var data = {
+					type: 'line',
+					data: {
+						labels: labels,
+						datasets: datasets
+					},
+					options: {
+						responsive: true,
+						hover: {
+							mode: 'nearest',
+							intersect: true
+						},
+						plugins: {
+							legend: {
+								display: false,
+							},
+							tooltips: {
+								enabled: false,
+							},
+						},
+						scales: {
+							x: {
+								display: true,
+								scaleLabel: {
+									display: true
+								},
+								gridLines:{
+									zeroLineColor: "#505050",
+									drawOnChartArea: false
+								},
+								ticks:{
+									color: scaleFontColor,
+									font: {
+										size: scaleFontSize,
+									}
+								}
+								// barPercentage: barSize,
+								// categoryPercentage: catSize,
+							},
+							y: {
+								display: true,
+								scaleLabel: {
+									display: true,
+								},
+								gridLines:{
+									zeroLineColor: "#505050"
+								},
+								ticks: {
+									color: scaleFontColor,
+									font: {
+										size: scaleFontSize,
+									},
+									stepSize: scaleStepWidth
+								},
+								suggestedMax: scaleSteps*scaleStepWidth,
+							}
+						},
+						elements: {
+							line: {
+								tension: 0.4 // disables bezier curves
+							}
+						}
+					}
+				};
+
+				var lineGraphObject = new Chart(canvasLineGraph[0].getContext('2d'), data);
+			});
+		}
+	}
+
+})(jQuery);
+
+(function($) {
     'use strict';
 
     var elementorMasonryBlog = {};
@@ -11183,6 +11350,206 @@ function qodePanelArea(){
 
 })(jQuery);
 (function($) {
+	'use strict';
+
+	$(window).on('load', qodeOnWindowLoad);
+
+	/*
+	 ** All functions to be called on $(window).load() should be in this function
+	 */
+	function qodeOnWindowLoad() {
+        qodeInitElementorPieChartFull();
+	}
+
+	function qodeInitElementorPieChartFull(){
+		$(window).on('elementor/frontend/init', function () {
+			elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_pie_chart_full.default', function() {
+				qode.modules.pieChartFull.qodePieChartFull();
+			} );
+		});
+	}
+
+})(jQuery);
+
+(function ($) {
+	'use strict';
+	
+	var pieChartFull = {};
+	qode.modules.pieChartFull = pieChartFull;
+
+	pieChartFull.qodePieChartFull = qodePieChartFull;
+	pieChartFull.qodeOnDocumentReady = qodeOnDocumentReady;
+
+	 $(document).ready(qodeOnDocumentReady);
+
+	/*
+	 All functions to be called on $(document).ready() should be in this function
+	 */
+	function qodeOnDocumentReady() {
+		qodePieChartFull();
+	}
+	
+	
+	function qodePieChartFull() {
+		
+		var holder = $('.q-pie-chart-full');
+		
+		if (holder.length) {
+
+			holder.each(function () {
+				var pieChart = $(this).find('.q_pie_graf'),
+					canvasPieChart = pieChart.find('canvas');
+
+				var pieChartValues = typeof pieChart.data('values') !== 'undefined' ? pieChart.data('values') : [],
+					pieChartColors = typeof pieChart.data('colors') !== 'undefined' ? pieChart.data('colors') : [],
+					pieChartElementAppearance = typeof pieChart.data('element-appearance') !== 'undefined' ? pieChart.data('element-appearance') : 200;
+
+
+				var data = {
+					datasets: [{
+						data: pieChartValues,
+						backgroundColor: pieChartColors,
+						hoverBackgroundColor: pieChartColors,
+						borderWidth: 0,
+					}]
+				};
+
+				canvasPieChart.appear(function () {
+
+					var pieChartFullObject = new Chart(canvasPieChart[0].getContext('2d'), {
+						type: 'pie',
+						data: data,
+						options: {
+							responsive: true,
+							aspectRatio: 1,
+							plugins: {
+								legend: {
+									display: false,
+								},
+								tooltips: {
+									enabled: false,
+								},
+							},
+							animation: {
+								easing: "easeOutBounce",
+								duration: 1500
+							},
+						}
+					});
+
+				},{accX: 0, accY: -pieChartElementAppearance});
+
+			});
+		}
+	}
+
+})(jQuery);
+
+(function($) {
+	'use strict';
+
+	$(window).on('load', qodeOnWindowLoad);
+
+	/*
+	 ** All functions to be called on $(window).load() should be in this function
+	 */
+	function qodeOnWindowLoad() {
+        qodeInitElementorPieChartDoughnut();
+	}
+
+	function qodeInitElementorPieChartDoughnut(){
+		$(window).on('elementor/frontend/init', function () {
+			elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_pie_chart_doughnut.default', function() {
+				qode.modules.pieChartDoughnut.qodePieChartDoughnut();
+			} );
+		});
+	}
+
+})(jQuery);
+
+(function ($) {
+	'use strict';
+	
+	var pieChartDoughnut = {};
+	qode.modules.pieChartDoughnut = pieChartDoughnut;
+
+	pieChartDoughnut.qodePieChartDoughnut = qodePieChartDoughnut;
+	pieChartDoughnut.qodeOnDocumentReady = qodeOnDocumentReady;
+
+	 $(document).ready(qodeOnDocumentReady);
+
+	/*
+	 All functions to be called on $(document).ready() should be in this function
+	 */
+	function qodeOnDocumentReady() {
+		qodePieChartDoughnut();
+	}
+	
+	
+	function qodePieChartDoughnut() {
+		
+		var holder = $('.q-pie-chart-doughnut');
+		
+		if (holder.length) {
+
+			holder.each(function () {
+				var pieChart = $(this).find('.q_pie_graf'),
+					canvasPieChart = pieChart.find('canvas');
+
+				var pieChartValues = typeof pieChart.data('values') !== 'undefined' ? pieChart.data('values') : [],
+				 	pieChartColors = typeof pieChart.data('colors') !== 'undefined' ? pieChart.data('colors') : [];
+
+				// var pieChartDoughnutObject = new Chart(
+				// 	canvasPieChart[0].getContext('2d')).Doughnut( pieChartOptions, {
+				// 		segmentStrokeColor : 'transparent'
+				// 	});
+
+				var data = {
+					datasets: [{
+						data: pieChartValues,
+						backgroundColor: pieChartColors,
+						hoverBackgroundColor: pieChartColors,
+						borderWidth: 0,
+					}]
+				};
+
+				canvasPieChart.appear(function () {
+
+					var pieChartDoughnutObject = new Chart(canvasPieChart[0].getContext('2d'), {
+						type: 'doughnut',
+						data: data,
+						options: {
+							responsive: true,
+							aspectRatio: 1,
+							plugins: {
+								legend: {
+									display: false,
+								},
+								tooltips: {
+									enabled: false,
+								},
+							},
+							animation: {
+								easing: "easeOutBounce",
+								duration: 1500
+							}
+						},
+						segmentStrokeColor : 'transparent'
+					});
+
+				},{accX: 0, accY: -200});
+
+				});
+
+
+
+		}
+
+	}
+
+})(jQuery);
+
+(function($) {
     'use strict';
 
     var elementorPieChartWithIcon = {};
@@ -11385,31 +11752,6 @@ function qodePanelArea(){
     'use strict';
 
 
-    $(window).on('load', qodeOnWindowLoad ) ;
-
-    /*
-     ** All functions to be called on $(window).load() should be in this function
-     */
-    function qodeOnWindowLoad() {
-	    qodeElementorInitProgressBar();
-    }
-
-    /*
-     ** Testimonials
-     */
-    function qodeElementorInitProgressBar(){
-        $j(window).on('elementor/frontend/init', function () {
-            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_progress_bar.default', function() {
-	            initProgressBars();
-            } );
-        });
-    }
-
-})(jQuery);
-(function($) {
-    'use strict';
-
-
     $(window).on('load', qodeOnWindowLoad );
 
     /*
@@ -11426,6 +11768,31 @@ function qodePanelArea(){
         $j(window).on('elementor/frontend/init', function () {
             elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_progress_bar_icon.default', function() {
 	            initProgressBarsIcon();
+            } );
+        });
+    }
+
+})(jQuery);
+(function($) {
+    'use strict';
+
+
+    $(window).on('load', qodeOnWindowLoad ) ;
+
+    /*
+     ** All functions to be called on $(window).load() should be in this function
+     */
+    function qodeOnWindowLoad() {
+	    qodeElementorInitProgressBar();
+    }
+
+    /*
+     ** Testimonials
+     */
+    function qodeElementorInitProgressBar(){
+        $j(window).on('elementor/frontend/init', function () {
+            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_progress_bar.default', function() {
+	            initProgressBars();
             } );
         });
     }
@@ -11541,14 +11908,16 @@ function qodePanelArea(){
      ** All functions to be called on $(window).load() should be in this function
      */
     function qodeOnWindowLoad() {
-	    qodeInitTextMarque();
+	    qodeInitUnorderedListAnimation();
     }
 
-
-    function qodeInitTextMarque(){
+    /*
+     ** Init Unordered List shortcode
+     */
+    function qodeInitUnorderedListAnimation(){
         $j(window).on('elementor/frontend/init', function () {
-            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_text_marquee.default', function() {
-	            initTextMarquee();
+            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_unordered_list.default', function() {
+	            initListAnimation();
             } );
         });
     }
@@ -11564,16 +11933,14 @@ function qodePanelArea(){
      ** All functions to be called on $(window).load() should be in this function
      */
     function qodeOnWindowLoad() {
-	    qodeInitUnorderedListAnimation();
+	    qodeInitTextMarque();
     }
 
-    /*
-     ** Init Unordered List shortcode
-     */
-    function qodeInitUnorderedListAnimation(){
+
+    function qodeInitTextMarque(){
         $j(window).on('elementor/frontend/init', function () {
-            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_unordered_list.default', function() {
-	            initListAnimation();
+            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_text_marquee.default', function() {
+	            initTextMarquee();
             } );
         });
     }
@@ -11603,35 +11970,6 @@ function qodePanelArea(){
         $j(window).on('elementor/frontend/init', function () {
             elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_vertical_split_slider.default', function() {
                 initVerticalSplitSlider();
-            } );
-        });
-    }
-
-})(jQuery);
-(function($) {
-    'use strict';
-
-    var elementorAccordion = {};
-    qode.modules.elementorAccordion = elementorAccordion;
-
-    elementorAccordion.qodeInitElementorAccordion = qodeInitElementorAccordion;
-
-
-    elementorAccordion.qodeOnWindowLoad = qodeOnWindowLoad;
-
-    $(window).on('load', qodeOnWindowLoad );
-
-    /*
-     ** All functions to be called on $(window).load() should be in this function
-     */
-    function qodeOnWindowLoad() {
-        qodeInitElementorAccordion();
-    }
-
-    function qodeInitElementorAccordion(){
-        $j(window).on('elementor/frontend/init', function () {
-            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_accordion.default', function() {
-                qodeInitAccordions();
             } );
         });
     }
@@ -12047,7 +12385,37 @@ function qodePanelArea(){
     function qodeInitElementorComparisonSlider() {
         $(window).on('elementor/frontend/init', function () {
             elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_comparison_slider.default', function() {
-                qode.modules.imageGallery.qodeInitAdvancedImageGalleryMasonry();
+                qode.modules.comparisonSlider.qodeInitComparisonSlider();
+            } );
+        });
+    }
+
+})(jQuery);
+
+(function($) {
+    'use strict';
+
+    var elementorAccordion = {};
+    qode.modules.elementorAccordion = elementorAccordion;
+
+    elementorAccordion.qodeInitElementorAccordion = qodeInitElementorAccordion;
+
+
+    elementorAccordion.qodeOnWindowLoad = qodeOnWindowLoad;
+
+    $(window).on('load', qodeOnWindowLoad );
+
+    /*
+     ** All functions to be called on $(window).load() should be in this function
+     */
+    function qodeOnWindowLoad() {
+        qodeInitElementorAccordion();
+    }
+
+    function qodeInitElementorAccordion(){
+        $j(window).on('elementor/frontend/init', function () {
+            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_accordion.default', function() {
+                qodeInitAccordions();
             } );
         });
     }
@@ -12500,35 +12868,6 @@ function qodePanelArea(){
 (function($) {
     'use strict';
 
-    var elementorInfoCardWithIcon = {};
-    qode.modules.elementorInfoCardWithIcon = elementorInfoCardWithIcon;
-
-    elementorInfoCardWithIcon.qodeInitElementorInfoCardWithIcon = qodeInitElementorInfoCardWithIcon;
-
-
-    elementorInfoCardWithIcon.qodeOnWindowLoad = qodeOnWindowLoad;
-
-    $(window).on('load', qodeOnWindowLoad);
-
-    /*
-     ** All functions to be called on $(window).load() should be in this function
-     */
-    function qodeOnWindowLoad() {
-        qodeInitElementorInfoCardWithIcon();
-    }
-
-    function qodeInitElementorInfoCardWithIcon(){
-        $j(window).on('elementor/frontend/init', function () {
-            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_info_card_with_icon.default', function() {
-                qodeIcon().init();
-            } );
-        });
-    }
-
-})(jQuery);
-(function($) {
-    'use strict';
-
     var elementorInteractiveIconShowcase = {};
     qode.modules.elementorInteractiveIconShowcase = elementorInteractiveIconShowcase;
 
@@ -12556,6 +12895,35 @@ function qodePanelArea(){
 
 })(jQuery);
 
+(function($) {
+    'use strict';
+
+    var elementorInfoCardWithIcon = {};
+    qode.modules.elementorInfoCardWithIcon = elementorInfoCardWithIcon;
+
+    elementorInfoCardWithIcon.qodeInitElementorInfoCardWithIcon = qodeInitElementorInfoCardWithIcon;
+
+
+    elementorInfoCardWithIcon.qodeOnWindowLoad = qodeOnWindowLoad;
+
+    $(window).on('load', qodeOnWindowLoad);
+
+    /*
+     ** All functions to be called on $(window).load() should be in this function
+     */
+    function qodeOnWindowLoad() {
+        qodeInitElementorInfoCardWithIcon();
+    }
+
+    function qodeInitElementorInfoCardWithIcon(){
+        $j(window).on('elementor/frontend/init', function () {
+            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_info_card_with_icon.default', function() {
+                qodeIcon().init();
+            } );
+        });
+    }
+
+})(jQuery);
 (function ($) {
     'use strict';
 
@@ -12626,6 +12994,334 @@ function qodePanelArea(){
     }
 
 })(jQuery);
+(function($) {
+    'use strict';
+
+    var elementorInterestRateCalculator = {};
+    qode.modules.elementorInterestRateCalculator = elementorInterestRateCalculator;
+
+    elementorInterestRateCalculator.qodeInitElementorInterestRateCalculator = qodeInitElementorInterestRateCalculator;
+
+
+    elementorInterestRateCalculator.qodeOnWindowLoad = qodeOnWindowLoad;
+
+    $(window).on('load', qodeOnWindowLoad);
+
+    /*
+     ** All functions to be called on $(window).load() should be in this function
+     */
+    function qodeOnWindowLoad() {
+        qodeInitElementorInterestRateCalculator();
+    }
+
+    function qodeInitElementorInterestRateCalculator(){
+        $j(window).on('elementor/frontend/init', function () {
+            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_interest_rate_calculator.default', function() {
+                qode.modules.interestRateCalculator.qodeInitInterestRateCalculator();
+            } );
+        });
+    }
+
+})(jQuery);
+
+(function($) {
+    'use strict';
+	
+	var interestRateCalculator = {};
+	qode.modules.interestRateCalculator = interestRateCalculator;
+	
+	interestRateCalculator.qodeInitInterestRateCalculator = qodeInitInterestRateCalculator;
+	
+	
+	interestRateCalculator.qodeOnWindowLoad = qodeOnWindowLoad;
+	
+	$(document).ready(qodeOnWindowLoad);
+	
+	/*
+	 All functions to be called on $(window).load() should be in this function
+	 */
+	function qodeOnWindowLoad() {
+		qodeInitInterestRateCalculator();
+	}
+
+
+	function qodeInitInterestRateCalculator(){
+		qodeInitRangeSlider();
+	}
+
+	function qodeInitRangeSlider(){
+
+		var holder =  $('.qode-irc-holder');
+
+		if(holder.length){		
+			holder.each(function(){
+				var holder1 = $(this);
+				var slider = holder1.find('.irc-range-slider');
+				var interestRate;
+
+				if(holder1.data('rate')!=''){
+					interestRate = parseFloat(holder1.data('rate'));
+				}
+
+				// Rangeslider initialization
+				slider.rangeslider({
+					polyfill: false,
+					onInit: function(position, value) {
+						if(holder1.data('active-color')!=''){
+							var activeColor = holder1.data('active-color');
+							holder1.find('.rangeslider__fill').css('background-color',activeColor);
+							holder1.find('.rangeslider__handle').css('background-color',activeColor);
+						}
+						qodeInterestRateCalculate(holder1, interestRate);
+					},
+					onSlide: function(position, value) {
+						qodeInterestRateCalculate(holder1, interestRate);
+					}
+				});
+			})
+		}
+
+	}
+
+	function qodeInterestRateCalculate(holder, interestRate){
+
+		var loanSlider = holder.find('.irc-range-slider-loan');
+		var periodSlider = holder.find('.irc-range-slider-period');
+		var borrowHolder = holder.find('.qode-irc-borrow-row .qode-irc-value');
+		var interestHolder = holder.find('.qode-irc-interest-row .qode-irc-value');
+		var totalHolder = holder.find('.qode-irc-total-row .qode-irc-value');
+		var currentLoanHolder = holder.find('.qode-irc-slider-loan-value.irc-current .irc-current-value');
+		var currentPeriodHolder = holder.find('.qode-irc-slider-period-value.irc-current .irc-current-value');
+		var loanValue, periodValue, interest, borrow, total;
+
+		loanValue = parseFloat(loanSlider.val());
+		periodValue = parseFloat(periodSlider.val());
+		interest = loanValue * interestRate / 100;
+		total = loanValue + interest;
+		if(periodValue != 0){
+			borrow = total / periodValue;
+		}
+		borrowHolder.html(Math.round(borrow*100)/100);
+		interestHolder.html(Math.round(interest*100)/100);
+		totalHolder.html(Math.round(total*100)/100);
+		currentLoanHolder.html(loanValue);
+		currentPeriodHolder.html(periodValue);
+
+	}
+
+})(jQuery);
+(function($) {
+    'use strict';
+
+    var elementorIntroSection = {};
+    qode.modules.elementorIntroSection = elementorIntroSection;
+
+    elementorIntroSection.qodeInitElementorIntroSection = qodeInitElementorIntroSection;
+
+
+    elementorIntroSection.qodeOnWindowLoad = qodeOnWindowLoad;
+
+    $(window).on('load', qodeOnWindowLoad);
+
+    /*
+     ** All functions to be called on $(window).load() should be in this function
+     */
+    function qodeOnWindowLoad() {
+        qodeInitElementorIntroSection();
+    }
+
+    function qodeInitElementorIntroSection(){
+        $j(window).on('elementor/frontend/init', function () {
+            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_intro_section.default', function() {
+                qode.modules.introSection.qodeIntroSection();
+            } );
+        });
+    }
+
+})(jQuery);
+
+(function($) {
+	'use strict';
+
+	var introSection = {};
+	qode.modules.introSection = introSection;
+	introSection.qodeIntroSection = qodeIntroSection;
+
+	introSection.qodeOnDocumentReady = qodeOnDocumentReady;
+
+	$(document).ready(qodeOnDocumentReady);
+
+	/*
+	 ** All functions to be called on $(window).load() should be in this function
+	 */
+	function qodeOnDocumentReady() {
+		qodeIntroSection();
+	}
+
+	/**
+	 * Intro Section object that initializes intro section animations
+	 * @type {Function}
+	 */
+	function qodeIntroSection() {
+		var $introSection = $('.qode-intro-section'),
+			$params = {
+				start: 1.3,
+				end: 1.5
+			};
+
+		var updateParams = function () {
+			$params.y = $introSection.offset().top;
+			$params.h = $introSection.outerHeight();
+		};
+
+		var setSizes = function () {
+			var $bgHolder = $('.qode-is-bg-wrapper');
+
+			$bgHolder.css({
+				/*'top': $params.y + 'px',*/
+				'height': $params.h + 'px'
+			});
+		};
+
+		if ($introSection.length) {
+			zIndexes($introSection);
+			scrollAnimation($introSection,$params);
+			appearAnimation($introSection);
+			$introSection.waitForImages(function () {
+				updateParams();
+				setSizes();
+			});
+			$(window).on('resize', function () {
+				updateParams();
+				setSizes();
+			});
+		}
+	}
+
+	function zIndexes($introSection) {
+		$introSection
+		.closest('.elementor-section')
+		.siblings().length
+		&&
+		$introSection
+		.closest('.elementor-section')
+		.siblings()
+		.css({
+			'position': 'relative',
+			'z-index': 10
+		});
+	}
+
+	function appearAnimation($introSection) {
+		var $introTitle = $introSection.find('.qode-is-content');
+
+		if ($introTitle.length) {
+			$introTitle.addClass('qode--appear');
+		}
+	}
+
+	function scrollAnimation($introSection, $params) {
+		var buffer = 0,
+			$contentW = $('.qode-is-content-wrapper'),
+			$content = $('.qode-is-content'),
+			$subtitle = $('.qode-is-subtitle'),
+			$title = $('.qode-is-title');
+
+
+		var scrollDirection = function () {
+			$params.downwards = $scroll >= buffer ? true : false;
+			buffer = $scroll;
+
+			/*console.log($params.downwards);*/
+			return $params.downwards;
+		}
+
+		var fadeBg = function () {
+			var scrollSectionHeight = $introSection.outerHeight() / 2.5,
+				fadeBgOpacity = 1 - ($scroll / scrollSectionHeight) + 1.7,
+				title = $introSection.find('.qode-is-title'),
+				titleInitColor = title.attr( 'data-color' ),
+				titleColorAfterScroll = title.attr( 'data-color-after-scroll' ),
+				titleColor = '',
+				tagline = $introSection.find('.qode-is-subtitle'),
+				taglineInitColor = title.attr( 'data-color' ),
+				taglineColorAfterScroll = title.attr( 'data-color-after-scroll' ),
+				taglineColor = '',
+				introText = $introSection.find('.qode-is-content-btm'),
+				textInitColor = title.attr( 'data-color' ),
+				textColorAfterScroll = title.attr( 'data-color-after-scroll' ),
+				textColor = '';
+
+			fadeBgOpacity > 1 ? fadeBgOpacity = 1 : null;
+			fadeBgOpacity < 0 ? fadeBgOpacity = 0 : null;
+
+			if (fadeBgOpacity >= 1 ){
+				titleColor = titleInitColor;
+				taglineColor = taglineInitColor;
+				textColor = textInitColor;
+			} else {
+				titleColor = titleColorAfterScroll;
+				taglineColor = taglineColorAfterScroll;
+				textColor = textColorAfterScroll;
+			}
+
+			fadeBgOpacity >= 1 ? titleColor = titleInitColor : null;
+			fadeBgOpacity < 1 ? titleColor = titleColorAfterScroll : null;
+
+			$introSection.find('.qode-is-bg-wrapper').css('opacity', fadeBgOpacity);
+			/* title.css({
+			 'color': titleColor,
+			 'transition': '.5s ease',
+			 });
+			 tagline.css({
+			 'color': taglineColor,
+			 'transition': '.5s ease',
+			 });
+			 introText.css({
+			 'color': textColor,
+			 'transition': '.5s ease',
+			 });*/
+
+			/*$introSection.find('.qode-is-title').css('background-position', textGradientValue + '% 50%')*/
+
+		}
+
+		var changeContentColor = function () {
+			var cW = {
+				y: $contentW.offset().top,
+				h: $contentW.height()
+			}
+
+			var c = cW.y <= $params.y + $params.h / 2 ? (cW.y - $params.y) / 2 : $params.y + $params.h / 2;
+
+			if ($scroll >= c &&
+				$scroll < cW.y + cW.h) {
+				var coeff = ($scroll - c) / (cW.y + cW.h - c);
+
+				coeff = Math.min(coeff, 1);
+				coeff = Math.max(coeff, 0);
+
+				var opacityVal = 1 - coeff.toFixed(2),
+					yVal = !Modernizr.touch ? coeff * 50 : 0;
+
+				$content.css({
+					'opacity': opacityVal,
+					'transform': 'translate3d(0px, ' + yVal + '%, 0px)',
+				});
+			}
+
+			$scroll === 0 && $content.css({'opacity': 1, 'transform': 'translate3d(0px, 0%, 0px)'});
+		}
+
+		$(window).on('scroll', function () {
+			scrollDirection();
+			fadeBg();
+			/*changeContentColor();*/
+		});
+	}
+
+})(jQuery);
+
 (function($) {
 	'use strict';
 	
@@ -12763,122 +13459,6 @@ function qodePanelArea(){
 		}
 	}
 	
-})(jQuery);
-(function($) {
-    'use strict';
-
-    var elementorInterestRateCalculator = {};
-    qode.modules.elementorInterestRateCalculator = elementorInterestRateCalculator;
-
-    elementorInterestRateCalculator.qodeInitElementorInterestRateCalculator = qodeInitElementorInterestRateCalculator;
-
-
-    elementorInterestRateCalculator.qodeOnWindowLoad = qodeOnWindowLoad;
-
-    $(window).on('load', qodeOnWindowLoad);
-
-    /*
-     ** All functions to be called on $(window).load() should be in this function
-     */
-    function qodeOnWindowLoad() {
-        qodeInitElementorInterestRateCalculator();
-    }
-
-    function qodeInitElementorInterestRateCalculator(){
-        $j(window).on('elementor/frontend/init', function () {
-            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_interest_rate_calculator.default', function() {
-                qode.modules.interestRateCalculator.qodeInitInterestRateCalculator();
-            } );
-        });
-    }
-
-})(jQuery);
-
-(function($) {
-    'use strict';
-	
-	var interestRateCalculator = {};
-	qode.modules.interestRateCalculator = interestRateCalculator;
-	
-	interestRateCalculator.qodeInitInterestRateCalculator = qodeInitInterestRateCalculator;
-	
-	
-	interestRateCalculator.qodeOnWindowLoad = qodeOnWindowLoad;
-	
-	$(document).ready(qodeOnWindowLoad);
-	
-	/*
-	 All functions to be called on $(window).load() should be in this function
-	 */
-	function qodeOnWindowLoad() {
-		qodeInitInterestRateCalculator();
-	}
-
-
-	function qodeInitInterestRateCalculator(){
-		qodeInitRangeSlider();
-	}
-
-	function qodeInitRangeSlider(){
-
-		var holder =  $('.qode-irc-holder');
-
-		if(holder.length){		
-			holder.each(function(){
-				var holder1 = $(this);
-				var slider = holder1.find('.irc-range-slider');
-				var interestRate;
-
-				if(holder1.data('rate')!=''){
-					interestRate = parseFloat(holder1.data('rate'));
-				}
-
-				// Rangeslider initialization
-				slider.rangeslider({
-					polyfill: false,
-					onInit: function(position, value) {
-						if(holder1.data('active-color')!=''){
-							var activeColor = holder1.data('active-color');
-							holder1.find('.rangeslider__fill').css('background-color',activeColor);
-							holder1.find('.rangeslider__handle').css('background-color',activeColor);
-						}
-						qodeInterestRateCalculate(holder1, interestRate);
-					},
-					onSlide: function(position, value) {
-						qodeInterestRateCalculate(holder1, interestRate);
-					}
-				});
-			})
-		}
-
-	}
-
-	function qodeInterestRateCalculate(holder, interestRate){
-
-		var loanSlider = holder.find('.irc-range-slider-loan');
-		var periodSlider = holder.find('.irc-range-slider-period');
-		var borrowHolder = holder.find('.qode-irc-borrow-row .qode-irc-value');
-		var interestHolder = holder.find('.qode-irc-interest-row .qode-irc-value');
-		var totalHolder = holder.find('.qode-irc-total-row .qode-irc-value');
-		var currentLoanHolder = holder.find('.qode-irc-slider-loan-value.irc-current .irc-current-value');
-		var currentPeriodHolder = holder.find('.qode-irc-slider-period-value.irc-current .irc-current-value');
-		var loanValue, periodValue, interest, borrow, total;
-
-		loanValue = parseFloat(loanSlider.val());
-		periodValue = parseFloat(periodSlider.val());
-		interest = loanValue * interestRate / 100;
-		total = loanValue + interest;
-		if(periodValue != 0){
-			borrow = total / periodValue;
-		}
-		borrowHolder.html(Math.round(borrow*100)/100);
-		interestHolder.html(Math.round(interest*100)/100);
-		totalHolder.html(Math.round(total*100)/100);
-		currentLoanHolder.html(loanValue);
-		currentPeriodHolder.html(periodValue);
-
-	}
-
 })(jQuery);
 (function($) {
 	'use strict';
@@ -13573,6 +14153,50 @@ function qodePanelArea(){
                 Modernizr.touch && holder[0].addEventListener('touchstart', touchStart);
                 Modernizr.touch && holder[0].addEventListener('touchmove', touchMove);
             }
+
+            if (qode.windowWidth < 1025) {
+                var dragEvent = {
+                    down: 'touchstart',
+                    up: 'touchend',
+                    target: 'srcElement',
+                }
+
+                var getXPos = function (e) {
+                    return e.originalEvent.changedTouches[0].clientX;
+                }
+
+                var touchScrolling = function (oldEvent, newEvent) {
+                    var oldY = oldEvent.originalEvent.changedTouches[0].clientY,
+                        newY = newEvent.originalEvent.changedTouches[0].clientY;
+
+                    if (Math.abs(newY - oldY) > 100) { // 100 is drag sensitivity
+                        return true;
+                    };
+                    return false;
+                }
+
+                var mouseDown = false;
+                holder.on(dragEvent.down, function (e) {
+                    if (!mouseDown && !$(e[dragEvent.target]).is('a, span')) {
+                        var oldEvent = e,
+                            xPos = getXPos(e);
+                        mouseDown = true;
+
+                        holder.one(dragEvent.up, function (e) {
+                            var xPosNew = getXPos(e);
+                            if (Math.abs(xPos - xPosNew) > 10 && !touchScrolling(oldEvent, e)) {
+                                var activeIndex = holder.data('active-index');
+                                if (xPos > xPosNew) {
+                                    activeIndex < holder.data('items') && slideTo(holder, swiper, 'next');
+                                } else {
+                                    activeIndex > 1 && slideTo(holder, swiper, 'prev');
+                                }
+                            }
+                            mouseDown = false;
+                        });
+                    }
+                });
+            }
         }
 
         return {
@@ -14208,6 +14832,31 @@ function qodePanelArea(){
 
 })(jQuery);
 
+(function($) {
+    'use strict';
+
+
+    $(window).on('load', qodeOnWindowLoad );
+
+    /*
+     ** All functions to be called on $(window).load() should be in this function
+     */
+    function qodeOnWindowLoad() {
+        qodeElementorInitProductList();
+    }
+
+    /*
+     ** Testimonials
+     */
+    function qodeElementorInitProductList(){
+        $j(window).on('elementor/frontend/init', function () {
+            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_product_list.default', function() {
+                qodeInitProductListMasonryShortcode();
+            } );
+        });
+    }
+
+})(jQuery);
 (function($) {
     'use strict';
 

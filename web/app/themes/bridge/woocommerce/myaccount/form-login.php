@@ -12,7 +12,7 @@
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
  * @package WooCommerce/Templates
- * @version 4.1.0
+ * @version 7.0.1
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -52,7 +52,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 				<label class="woocommerce-form__label woocommerce-form__label-for-checkbox inline woo-my-account-rememberme">
 					<input class="woocommerce-form__input woocommerce-form__input-checkbox" name="rememberme" type="checkbox" id="rememberme" value="forever" /> <span><?php esc_html_e( 'Remember me', 'bridge' ); ?></span>
 				</label>
-				<input type="submit" class="woocommerce-Button button" name="login" value="<?php esc_attr_e( 'Log In', 'bridge' ); ?>" />
+				<input type="submit" class="woocommerce-Button button<?php echo esc_attr( wc_wp_theme_get_element_class_name( 'button' ) ? ' ' . wc_wp_theme_get_element_class_name( 'button' ) : '' ); ?>" name="login" value="<?php esc_attr_e( 'Log In', 'bridge' ); ?>" />
 				<a class="lost_password woo-lost_password2" href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php esc_html_e( 'Lost your password?', 'bridge' ); ?></a>
 
 			</p>
@@ -106,7 +106,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 
 			<p class="woocommerce-FormRow woocommerce-form-row form-row">
 				<?php wp_nonce_field( 'woocommerce-register', 'woocommerce-register-nonce' ); ?>
-				<input type="submit" class="woocommerce-Button woocommerce-button button woocommerce-form-register__submit" name="register" value="<?php esc_attr_e( 'Register', 'bridge' ); ?>" />
+				<input type="submit" class="woocommerce-Button woocommerce-button button woocommerce-form-register__submit<?php echo esc_attr( wc_wp_theme_get_element_class_name( 'button' ) ? ' ' . wc_wp_theme_get_element_class_name( 'button' ) : '' ); ?>" name="register" value="<?php esc_attr_e( 'Register', 'bridge' ); ?>" />
 			</p>
 
 			<?php do_action( 'woocommerce_register_form_end' ); ?>

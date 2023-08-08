@@ -19,7 +19,7 @@ if( bridge_core_is_installed('woocommerce') ){
             return [ 'qode' ];
         }
 
-        protected function _register_controls(){
+        protected function register_controls(){
             $this->start_controls_section(
                 'general',
                 [
@@ -667,7 +667,7 @@ if( bridge_core_is_installed('woocommerce') ){
                         foreach ( $termchildren as $child ) {
                             $cat = get_term_by( 'id', $child, 'product_cat' );
                             if($cat->count != 0){
-                                $category_html .= '<li><a class="qode-no-smooth-transitions" data-category="'.$cat->slug.'" href="' . get_term_link($child, 'product_cat') . '">' . $cat->name . '</a></li>';
+                                $category_html .= '<li><a class="qode-no-smooth-transitions" data-category="'.$cat->slug.'" href="' . get_term_link(intval($child), 'product_cat') . '">' . $cat->name . '</a></li>';
                             }
                         }
                     }
@@ -762,5 +762,5 @@ if( bridge_core_is_installed('woocommerce') ){
         }
     }
 
-    \Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorProductList() );
+    \Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorProductList() );
 }

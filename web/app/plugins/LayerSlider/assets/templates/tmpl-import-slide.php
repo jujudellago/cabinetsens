@@ -1,24 +1,26 @@
 <?php defined( 'LS_ROOT_FILE' ) || exit; ?>
 <script type="text/html" id="tmpl-import-slide">
-	<div id="tmpl-import-slide-modal-window" class="ls-import-slider-contents">
-		<h1 class="kmw-modal-title"><?php _e('Import Slide', 'LayerSlider') ?></h1>
 
-		<div class="columns clearfix">
-			<div class="half half-1">
-				<h3><?php _e('Select slider', 'LayerSlider') ?></h3>
-			</div>
-			<div class="half half-2">
-				<h3><?php _e('Click to import slides', 'LayerSlider') ?></h3>
-			</div>
-		</div>
-		<div class="columns clearfix">
-			<div class="half half-1 ls-import-layer-sliders">
-				<?php _e('Loading ...', 'LayerSlider') ?>
-			</div>
-			<div class="half half-2 ls-import-layer-slides">
-				<?php _e('Select a slider first.', 'LayerSlider') ?>
-			</div>
-		</div>
-	</div>
+	<lse-grid id="lse-import-slide-modal-window" class="lse-import-slider-contents">
+
+		<kmw-h1 class="kmw-modal-title"><?= __('Import Slide', 'LayerSlider') ?></kmw-h1>
+
+		<lse-row>
+			<lse-col class="lse-half">
+				<lse-h2><?= __('Select project', 'LayerSlider') ?></lse-h2>
+			</lse-col>
+			<lse-col class="lse-half">
+				<lse-h2><?= __('Click to import slides', 'LayerSlider') ?></lse-h2>
+			</lse-col>
+		</lse-row>
+		<lse-row class="lse-half">
+			<lse-col class="lse-half lse-import-layer-sliders lse-scrollbar lse-scrollbar-dark">
+				<?= __('Loading ...', 'LayerSlider') ?>
+			</lse-col>
+			<lse-col class="lse-half lse-import-layer-slides lse-scrollbar lse-scrollbar-dark">
+				<?= __('Select a project first.', 'LayerSlider') ?>
+			</lse-col>
+		</lse-row>
+	</lse-grid>
 
 </script>

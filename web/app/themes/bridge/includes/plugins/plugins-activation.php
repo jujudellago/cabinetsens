@@ -4,7 +4,7 @@ if(!function_exists('bridge_qode_set_plugins_array_to_install')){
     function bridge_qode_set_plugins_array_to_install(){
         global $default_plugins_array_to_install;
 
-        $default_plugins_array_to_install = array('js_composer', 'elementor', 'bridge-core', 'LayerSlider', 'revslider', 'envato-market', 'qode-twitter-feed', 'qode-instagram-widget');
+        $default_plugins_array_to_install = array( 'js_composer', 'elementor', 'bridge-core', 'LayerSlider', 'revslider', 'envato-market', 'qode-twitter-feed', 'qode-instagram-widget', 'qi-addons-for-elementor', 'qi-blocks', 'leadin' );
     }
 
     add_action('bridge_qode_action_before_options_map', 'bridge_qode_set_plugins_array_to_install');
@@ -17,7 +17,7 @@ if(!function_exists('bridge_qode_plugins_list')) {
                 'name'                  => esc_html__( 'Bridge Core', 'bridge' ),
                 'slug'                  => 'bridge-core',
                 'source'                => get_template_directory() . '/plugins/bridge-core.zip',
-                'version'               => '2.6.8',
+                'version'               => '3.0.9',
                 'required'				=> true,
                 'force_activation'		=> false,
                 'force_deactivation'	=> false,
@@ -28,7 +28,7 @@ if(!function_exists('bridge_qode_plugins_list')) {
                 'slug'					=> 'js_composer',
                 'source'				=> get_template_directory() . '/plugins/js_composer.zip',
                 'required'				=> false,
-                'version'				=> '6.6.0',
+                'version'				=> '6.13.0',
                 'force_activation'		=> false,
                 'force_deactivation'	=> false,
                 'external_url'			=> '',
@@ -38,12 +38,22 @@ if(!function_exists('bridge_qode_plugins_list')) {
 				'slug'					=> 'elementor',
 				'required'				=> false
 			),
+	        array(
+				'name'					=>  esc_html__('QI Addons for Elementor', 'bridge'),
+				'slug'					=> 'qi-addons-for-elementor',
+				'required'				=> false
+			),
+	        array(
+				'name'					=>  esc_html__('QI Blocks', 'bridge'),
+				'slug'					=> 'qi-blocks',
+				'required'				=> false
+			),
             array(
                 'name'     				=> esc_html__('LayerSlider WP', 'bridge'),
                 'slug'     				=> 'LayerSlider',
-                'source'   				=> get_template_directory() . '/plugins/layersliderwp-6.11.5.installable.zip',
-                'required' 				=> true,
-                'version' 				=> '6.11.5',
+                'source'   				=> get_template_directory() . '/plugins/layersliderwp-7.7.7.installable.zip',
+                'required' 				=> false,
+                'version' 				=> '7.7.7',
                 'force_activation' 		=> false,
                 'force_deactivation' 	=> false,
                 'external_url' 			=> ''
@@ -53,7 +63,7 @@ if(!function_exists('bridge_qode_plugins_list')) {
                 'slug'     				=> 'revslider',
                 'source'   				=> get_template_directory() . '/plugins/revslider.zip',
                 'required' 				=> true,
-                'version' 				=> '6.4.2',
+                'version' 				=> '6.6.14',
                 'force_activation' 		=> false,
                 'force_deactivation' 	=> false,
                 'external_url' 			=> ''
@@ -69,7 +79,7 @@ if(!function_exists('bridge_qode_plugins_list')) {
                 'slug'     				=> 'timetable',
                 'source'   				=> get_template_directory() . '/plugins/timetable.zip',
                 'required' 				=> false,
-                'version' 				=> '6.4',
+                'version' 				=> '7.2',
                 'force_activation' 		=> false,
                 'force_deactivation' 	=> false,
                 'external_url' 			=> ''
@@ -91,7 +101,7 @@ if(!function_exists('bridge_qode_plugins_list')) {
                 'slug'     				=> 'qode-instagram-widget',
                 'source'   				=> get_template_directory() . '/plugins/qode-instagram-widget.zip',
                 'required' 				=> false,
-                'version' 				=> '2.1.2',
+                'version' 				=> '2.1.3',
                 'force_activation' 		=> false,
                 'force_deactivation' 	=> false,
                 'external_url' 			=> ''
@@ -101,7 +111,7 @@ if(!function_exists('bridge_qode_plugins_list')) {
                 'slug'     				=> 'qode-twitter-feed',
                 'source'   				=> get_template_directory() . '/plugins/qode-twitter-feed.zip',
                 'required' 				=> false,
-                'version' 				=> '2.0.2',
+                'version' 				=> '2.0.4',
                 'force_activation' 		=> false,
                 'force_deactivation' 	=> false,
                 'external_url' 			=> ''
@@ -121,7 +131,7 @@ if(!function_exists('bridge_qode_plugins_list')) {
                 'slug'     				=> 'qode-listing',
                 'source'   				=> get_template_directory() . '/plugins/qode-listing.zip',
                 'required' 				=> false,
-                'version' 				=> '3.0.2',
+                'version' 				=> '3.0.5',
                 'force_activation' 		=> false,
                 'force_deactivation' 	=> false,
                 'external_url' 			=> '',
@@ -131,7 +141,7 @@ if(!function_exists('bridge_qode_plugins_list')) {
                 'slug'     				=> 'qode-news',
                 'source'   				=> get_template_directory() . '/plugins/qode-news.zip',
                 'required' 				=> false,
-                'version' 				=> '3.0.2',
+                'version' 				=> '3.0.4',
                 'force_activation' 		=> false,
                 'force_deactivation' 	=> false,
                 'external_url' 			=> '',
@@ -141,7 +151,7 @@ if(!function_exists('bridge_qode_plugins_list')) {
                 'slug'     				=> 'qode-restaurant',
                 'source'   				=> get_template_directory() . '/plugins/qode-restaurant.zip',
                 'required' 				=> false,
-                'version' 				=> '3.0.1',
+                'version' 				=> '3.0.2',
                 'force_activation' 		=> false,
                 'force_deactivation' 	=> false,
                 'external_url' 			=> '',
@@ -151,7 +161,7 @@ if(!function_exists('bridge_qode_plugins_list')) {
                 'slug'     				=> 'qode-membership',
                 'source'   				=> get_template_directory() . '/plugins/qode-membership.zip',
                 'required' 				=> false,
-                'version' 				=> '2.0.2',
+                'version' 				=> '2.0.3',
                 'force_activation' 		=> false,
                 'force_deactivation' 	=> false,
                 'external_url' 			=> '',
@@ -161,7 +171,7 @@ if(!function_exists('bridge_qode_plugins_list')) {
                 'slug'     				=> 'qode-music',
                 'source'   				=> get_template_directory() . '/plugins/qode-music.zip',
                 'required' 				=> false,
-                'version' 				=> '2.1.1',
+                'version' 				=> '2.1.4',
                 'force_activation' 		=> false,
                 'force_deactivation' 	=> false,
                 'external_url' 			=> '',
@@ -171,7 +181,7 @@ if(!function_exists('bridge_qode_plugins_list')) {
                 'slug'     				=> 'qode-tours',
                 'source'   				=> get_template_directory() . '/plugins/qode-tours.zip',
                 'required' 				=> false,
-                'version' 				=> '3.0.2',
+                'version' 				=> '3.0.8',
                 'force_activation' 		=> false,
                 'force_deactivation' 	=> false,
                 'external_url' 			=> '',
@@ -181,7 +191,7 @@ if(!function_exists('bridge_qode_plugins_list')) {
                 'slug'     				=> 'qode-lms',
                 'source'   				=> get_template_directory() . '/plugins/qode-lms.zip',
                 'required' 				=> false,
-                'version' 				=> '3.0.2',
+                'version' 				=> '3.0.6',
                 'force_activation' 		=> false,
                 'force_deactivation' 	=> false,
                 'external_url' 			=> '',
@@ -191,7 +201,7 @@ if(!function_exists('bridge_qode_plugins_list')) {
                 'slug'     				=> 'qode-woocommerce-checkout-integration',
                 'source'   				=> get_template_directory() . '/plugins/qode-woocommerce-checkout-integration.zip',
                 'required' 				=> false,
-                'version' 				=> '2.0.1',
+                'version' 				=> '2.0.2',
                 'force_activation' 		=> false,
                 'force_deactivation' 	=> false,
                 'external_url' 			=> '',
@@ -201,7 +211,7 @@ if(!function_exists('bridge_qode_plugins_list')) {
                 'slug'     				=> 'qode-real-estate',
                 'source'   				=> get_template_directory() . '/plugins/qode-real-estate.zip',
                 'required' 				=> false,
-                'version' 				=> '1.0',
+                'version' 				=> '1.1.3',
                 'force_activation' 		=> false,
                 'force_deactivation' 	=> false,
                 'external_url' 			=> '',
@@ -239,6 +249,26 @@ if(!function_exists('bridge_qode_plugins_list')) {
 	        array(
                 'name'     				=> esc_html__('Yith WooCommerce Wishlist', 'bridge'),
                 'slug'     				=> 'yith-woocommerce-wishlist',
+                'source'   				=> '',
+                'required' 				=> false,
+                'version' 				=> '',
+                'force_activation' 		=> false,
+                'force_deactivation' 	=> false,
+                'external_url' 			=> ''
+            ),
+	        array(
+                'name'     				=> esc_html__('Sellkit', 'bridge'),
+                'slug'     				=> 'sellkit',
+                'source'   				=> '',
+                'required' 				=> false,
+                'version' 				=> '',
+                'force_activation' 		=> false,
+                'force_deactivation' 	=> false,
+                'external_url' 			=> ''
+            ),
+            array(
+                'name'     				=> esc_html__('HubSpot', 'bridge'),
+                'slug'     				=> 'leadin',
                 'source'   				=> '',
                 'required' 				=> false,
                 'version' 				=> '',

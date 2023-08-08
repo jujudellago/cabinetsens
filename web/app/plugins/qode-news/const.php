@@ -1,6 +1,6 @@
 <?php
 
-define('QODE_NEWS_VERSION', '3.0.2');
+define('QODE_NEWS_VERSION', '3.0.4');
 define('QODE_NEWS_ABS_PATH', dirname(__FILE__));
 define('QODE_NEWS_REL_PATH', dirname(plugin_basename(__FILE__ )));
 define('QODE_NEWS_URL_PATH', plugin_dir_url( __FILE__ ));

@@ -18,7 +18,7 @@ if( bridge_core_is_installed('contact-form-7') ){
             return [ 'qode' ];
         }
 
-        protected function _register_controls(){
+        protected function register_controls(){
             $this->start_controls_section(
                 'general',
                 [
@@ -88,5 +88,5 @@ if( bridge_core_is_installed('contact-form-7') ){
         }
     }
 
-    \Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreContactForm7() );
+    \Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreContactForm7() );
 }

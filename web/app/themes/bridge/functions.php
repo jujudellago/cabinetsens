@@ -290,10 +290,9 @@ if (!function_exists('bridge_qode_scripts')) {
         wp_enqueue_script("waitforimages", QODE_ROOT."/js/plugins/jquery.waitforimages.js",array('jquery'),false,true);
         wp_enqueue_script("jquery-form");
         wp_enqueue_script("waypoints", QODE_ROOT."/js/plugins/waypoints.min.js",array('jquery'),false,true);
-        wp_enqueue_script("jplayer", QODE_ROOT."/js/plugins/jplayer.min.js",array('jquery'),false,true);
-        wp_enqueue_script("bootstrapCarousel", QODE_ROOT."/js/plugins/bootstrap.carousel.js",array('jquery'),false,true);
+		wp_enqueue_script("bootstrapCarousel", QODE_ROOT."/js/plugins/bootstrap.carousel.js",array('jquery'),false,true);
         wp_enqueue_script("skrollr", QODE_ROOT."/js/plugins/skrollr.js",array('jquery'),false,true);
-        wp_enqueue_script("charts", QODE_ROOT."/js/plugins/Chart.min.js",array('jquery'),false,true);
+        wp_enqueue_script("chart", QODE_ROOT."/js/plugins/Chart.min.js",array('jquery'),false,true);
         wp_enqueue_script("easing", QODE_ROOT."/js/plugins/jquery.easing.1.3.js",array('jquery'),false,true);
         wp_enqueue_script("abstractBaseClass", QODE_ROOT."/js/plugins/abstractBaseClass.js",array('jquery'),false,true);
         wp_enqueue_script("countdown", QODE_ROOT."/js/plugins/jquery.countdown.js",array('jquery'),false,true);
@@ -303,7 +302,7 @@ if (!function_exists('bridge_qode_scripts')) {
         wp_enqueue_script("stickyKit", QODE_ROOT."/js/plugins/jquery.sticky-kit.min.js",array('jquery'),false,true);
         wp_enqueue_script("owlCarousel", QODE_ROOT."/js/plugins/owl.carousel.min.js",array('jquery'),false,true);
         wp_enqueue_script("typed", QODE_ROOT."/js/plugins/typed.js",array('jquery'),false,true);
-
+        wp_enqueue_script("fluidvids", QODE_ROOT."/js/plugins/fluidvids.min.js",array('jquery'),false,true);
         wp_enqueue_script("carouFredSel", QODE_ROOT."/js/plugins/jquery.carouFredSel-6.2.1.min.js",array('jquery'),false,true);
         wp_enqueue_script("lemmonSlider", QODE_ROOT."/js/plugins/lemmon-slider.min.js",array('jquery'),false,true);
         wp_enqueue_script("one_page_scroll", QODE_ROOT."/js/plugins/jquery.fullPage.min.js",array('jquery'),false,true);
@@ -337,6 +336,7 @@ if (!function_exists('bridge_qode_scripts')) {
 			$google_maps_url = 'https://maps.googleapis.com/maps/api/js';
 			$google_maps_api_key = $bridge_qode_options['google_maps_api_key'];
 			$google_maps_url = add_query_arg( array( 'key' => $google_maps_api_key ), $google_maps_url );
+			$google_maps_url = add_query_arg( array( 'callback' => 'qodeEmptyCallback' ), $google_maps_url );
 
 			$google_maps_get_params = apply_filters('bridge_qode_filter_google_maps_get_params', $google_maps_get_params);
 			if(is_array($google_maps_get_params) && count($google_maps_get_params) > 0){
@@ -345,6 +345,7 @@ if (!function_exists('bridge_qode_scripts')) {
 				}
 			}
 			wp_enqueue_script("google_map_api", $google_maps_url, array('jquery'),false,true);
+			wp_add_inline_script('google_map_api', 'window.qodeEmptyCallback = function () {};','before');
 		}
 
 		if (file_exists(dirname(__FILE__) ."/js/default_dynamic.js") && bridge_qode_is_js_folder_writable() && !is_multisite()) {
@@ -1056,6 +1057,25 @@ if(!function_exists('bridge_qode_disable_responsive_button_padding_change')) {
     add_filter('body_class', 'bridge_qode_disable_responsive_button_padding_change');
 }
 
+if(!function_exists('bridge_qode_enable_button_white_space_wrapping')) {
+    /**
+     * Function that adds transparent content class to body.
+     * @param $classes array of body classes
+     * @return array with transparent content body class added
+     */
+    function bridge_qode_enable_button_white_space_wrapping($classes) {
+	    $button_enable_white_space_wrapping = bridge_qode_options()->getOptionValue('button_enable_white_space_wrapping');
+
+        if( ! empty( $button_enable_white_space_wrapping ) && $button_enable_white_space_wrapping == 'yes' ){
+            $classes[] = 'qode_enable_button_white_space';
+        }
+
+        return $classes;
+    }
+
+    add_filter('body_class', 'bridge_qode_enable_button_white_space_wrapping');
+}
+
 if(!function_exists('bridge_qode_is_title_hidden')) {
 	/**
 	 * Function that check is title hidden on current page
@@ -1238,7 +1258,7 @@ if(!function_exists('bridge_qode_excerpt')) {
                     $excerpt_word_array = explode(' ', $clean_excerpt);
 
                     //cut down that array based on the number of the words option
-                    $excerpt_word_array = array_slice($excerpt_word_array, 0, $word_count);
+                    $excerpt_word_array = array_slice($excerpt_word_array, 0, intval($word_count));
 
                     //add exerpt postfix
                     $excert_postfix = apply_filters('bridge_qode_filter_excerpt_postfix', '...');
@@ -1996,17 +2016,28 @@ if(!function_exists('bridge_qode_get_attachment_id_from_url')) {
 	function bridge_qode_get_attachment_id_from_url($attachment_url) {
 		global $wpdb;
 		$attachment_id = '';
-
-		//is attachment url set?
-		if($attachment_url !== '') {
-			//prepare query
-			$query = "SELECT ID FROM {$wpdb->posts} WHERE guid='$attachment_url'";
-
-			//get attachment id
-			$attachment_id = $wpdb->get_var($query);
+		
+		if ( '' !== $attachment_url ) {
+			
+			$attachment_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE guid=%s", $attachment_url ) );
+			
+			// Additional check for undefined reason when guid is not image src
+			if ( empty( $attachment_id ) ) {
+				
+				// Skip if image is from theme folder ( ex. logo.png )
+				$theme_folder_name      = substr( get_template_directory(), strrpos( get_template_directory(), '/' ) + 1 );
+				$check_theme_files_urls = strpos( $attachment_url, $theme_folder_name . '/assets/img' );
+				
+				if ( false === $check_theme_files_urls ) {
+					
+					$modified_url = substr( $attachment_url, strrpos( $attachment_url, '/' ) + 1 );
+					
+					//get attachment id
+					$attachment_id = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='_wp_attached_file' AND meta_value LIKE %s", '%' . $modified_url . '%' ) );
+				}
+			}
 		}
-
-		//return it
+		
 		return $attachment_id;
 	}
 }
@@ -2395,6 +2426,18 @@ if(!function_exists('bridge_qode_is_main_menu_set')) {
 		$has_divided_nav = has_nav_menu('left-top-navigation') && has_nav_menu('right-top-navigation');
 
 		return $has_top_nav || $has_divided_nav;
+	}
+}
+
+if(!function_exists('bridge_qode_is_mobile_menu_set')) {
+	/**
+	 * Function that checks if any of mobile menu location is set.
+	 * @return bool
+	 *
+	 * @version 0.1
+	 */
+	function bridge_qode_is_mobile_menu_set() {
+		return has_nav_menu( 'mobile-navigation');
 	}
 }
 
@@ -3526,3 +3569,33 @@ if(!function_exists('bridge_qode_enable_wpml_ajax')) {
     add_filter( 'wpml_ls_enable_ajax_navigation', 'bridge_qode_enable_wpml_ajax' );
 }
 
+if( ! function_exists( 'bridge_qode_is_theme_registered' ) ) {
+	function bridge_qode_is_theme_registered() {
+		if( function_exists( 'bridge_core_is_theme_registered' ) ){
+			return bridge_core_is_theme_registered();
+		} else {
+			return false;
+		}
+	}
+}
+
+if( ! function_exists( 'bridge_qode_add_registration_admin_notice' ) ) {
+	function bridge_qode_add_registration_admin_notice() {
+		if( bridge_qode_qode_core_installed() &&  ! bridge_qode_is_theme_registered() ) {
+		?>
+			<div class="error">
+				<p>
+					<?php
+					echo wp_kses_post( sprintf(
+						__( 'Your copy of the theme has not been activated. Please navigate to <a href="%s">Bridge Dashboard</a> where you can input your purchase code and activate your copy of the theme so you can have access to all the theme features, elements & options.', 'bridge' ),
+						admin_url('admin.php?page=bridge_core_dashboard')
+					) );
+					?>
+				</p>
+			</div>
+		<?php
+		}
+	}
+
+	add_action('admin_notices', 'bridge_qode_add_registration_admin_notice');
+}

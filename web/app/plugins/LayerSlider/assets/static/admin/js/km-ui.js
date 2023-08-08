@@ -8,12 +8,151 @@ jQuery( function( $ ){
 
 	window.kmUI  = {
 
+		dropdown: {
+
+			instance: null,
+			options: {},
+			$button: $(),
+			$target: $(),
+
+			defaults: {
+				placement: 'bottom',
+				offsetX: 0,
+				offsetY: 0
+			},
+
+			init: function() {
+
+				$( document ).on('click', '[data-toggle="dropdown"]', function( event ) {
+					event.stopPropagation();
+					kmUI.dropdown.show( this );
+
+				}).on('click', '[data-screen]', function( event ) {
+					kmUI.dropdown.showScreen( $( $( this ).data('screen') ) );
+
+				}).on('click', '.ls-dropdown-screen-back', function() {
+					kmUI.dropdown.hideScreen();
+				});
+			},
+
+
+			show: function( button, showProperties ) {
+
+				showProperties = showProperties || {};
+
+				var self = this;
+
+				var $button 	= $( button ),
+					target 		= $button.data('target'),
+					reference 	= $button.data('reference'),
+					$target 	= target ? $( target ) : $button.parent().find('ls-dropdown-panel'),
+					$refenrece 	= reference ? $( reference ) : $button,
+					options 	= $.extend( {}, self.defaults, $button.data() ),
+					$inner 		= $target.find('ls-dropdown-inner'),
+					$screen 	= $inner.find('ls-dropdown-screen:first');
+
+
+				if( ! showProperties.forceOpen ) {
+					if( self.$button.is( $button ) ) {
+						self.hide();
+						return;
+					}
+				}
+
+				self.hide();
+				self.hideScreen();
+
+				self.options = options;
+				self.$button = $button;
+				self.$target = $target;
+
+
+
+				$target.addClass('ls-dropdown-open');
+				$inner.height( $screen.height() );
+
+				self.instance = Popper.createPopper( $refenrece[0], $target[0], {
+					placement: options.placement,
+					modifiers: [
+						{
+							name: 'offset',
+							options: {
+								offset: [ options.offsetX, options.offsetY ]
+							}
+						}
+					]
+				});
+
+				$( document ).on('click.ls-dropdown-panel', 'body', function( event ) {
+
+					if( kmUI.dropdown.options.stopPropagation ) {
+
+						var $eventTarget = $( event.target );
+						if( $eventTarget.is( kmUI.dropdown.$target ) || $eventTarget.closest( kmUI.dropdown.$target ).length ) {
+							if( ! $eventTarget.hasClass('ls-dismiss-panel') && ! $eventTarget.closest('.ls-dismiss-panel').length ) {
+								return;
+							}
+						}
+					}
+
+					kmUI.dropdown.hide();
+				});
+			},
+
+
+			hide: function() {
+
+				this.hideScreen();
+
+				$( document ).off('click.ls-dropdown-panel')
+				$('.ls-dropdown-open').removeClass('ls-dropdown-open');
+
+				this.options = {};
+				this.$button = $();
+				this.$target = $();
+
+				if( this.instance ) {
+					this.instance.destroy();
+					this.instance = null;
+				}
+			},
+
+			showScreen: function( $screen ) {
+
+				var $panel = $screen.closest('ls-dropdown-panel'),
+					$inner = $panel.find('ls-dropdown-inner');
+
+				$panel.addClass('ls-screen-open');
+				$screen.addClass('ls-screen-visible');
+
+				$inner.height( $screen.height() );
+			},
+
+			hideScreen: function( ) {
+
+				$('.ls-screen-visible').each( function() {
+
+
+					var $this 	= $( this ),
+						$panel 	= $this.closest('ls-dropdown-panel'),
+						$inner 	= $panel.find('ls-dropdown-inner'),
+						$screen = $panel.find('ls-dropdown-screen:first');
+
+					$inner.height( $screen.height() );
+					$this.removeClass('ls-screen-visible');
+					$('ls-dropdown-panel.ls-screen-open').removeClass('ls-screen-open');
+				});
+			}
+		},
+
 		notify: {
+
+			timeout: 0,
 
 			defaults: {
 				maxWidth: 500,
 				spinner: false,
-				icon: 'dashicons-yes',
+				icon: 'check',
 				iconColor: 'inherit',
 				iconSize: null,
 				text: '',
@@ -37,7 +176,7 @@ jQuery( function( $ ){
 					$icon
 						.show()
 						.css('color', settings.iconColor )
-						.html('<i class="dashicons '+settings.icon+'"></i>');
+						.html( LS_InterfaceIcons.notifications[ settings.icon ] );
 
 				} else {
 					$icon.hide();
@@ -46,23 +185,23 @@ jQuery( function( $ ){
 				$text.html( settings.text );
 
 				if( settings.iconSize ) {
-					$icon.find('.dashicons').css('font-size', settings.iconSize );
+					// ...
 				}
 
 				$notification
 					.css('max-width', settings.maxWidth)
-					.addClass('visible');
+					.addClass('ls-visible');
 
 				if( settings.timeout ) {
-					setTimeout(function() {
-						kmUI.notify.close();
+					clearTimeout( kmUI.notify.timeout );
+					kmUI.notify.timeout = setTimeout(function() {
+						kmUI.notify.hide();
 					}, settings.timeout );
 				}
 			},
 
 			hide: function() {
-
-				$('.ls-notify-osd').removeClass('visible');
+				$('.ls-notify-osd').removeClass('ls-visible');
 			}
 		},
 
@@ -113,6 +252,10 @@ jQuery( function( $ ){
 			},
 
 			open : function( el, po ) {
+
+				if( typeof LS_editorSettings != 'undefined' && ! LS_editorSettings.showTooltips ) {
+					return;
+				}
 
 				var $el = $(el);
 
@@ -245,88 +388,6 @@ jQuery( function( $ ){
 						$caller.attr( 'data-km-ui-popover-disabled', 'true' );
 					}
 				}
-			}
-		},
-
-		smartResize: {
-
-			$elements: jQuery(),
-
-			settings: {
-				className: 'km-ui-cols-'
-			},
-
-			init: function( $el ){
-
-				if( $el ){
-					kmUI.smartResize.add( $el );
-				}
-
-				$( window ).on( 'resize.kmUI', function( event ){
-					if( event.target === window ){
-						kmUI.smartResize.set();
-					}
-				});
-
-				kmUI.smartResize.set();
-			},
-
-			add: function( $el ){
-
-				if( $el ){
-
-					if( !( $el instanceof jQuery ) ){
-						$el = $( $el );
-					}
-
-					kmUI.smartResize.put( $el );
-
-				}else{
-
-					$( 'body [data="km-ui-resize"]' ).each(function(){
-
-						kmUI.smartResize.put( $(this) );
-					});
-				}
-			},
-
-			put: function( $el ){
-
-				if( $el.length ) {
-					$el.data( 'km-ui-resize', $el.data( 'km-ui-resize').split( ',') );
-					kmUI.smartResize.$elements = kmUI.smartResize.$elements.add( $el );
-				}
-			},
-
-			set: function(){
-
-				kmUI.smartResize.$elements.each(function(){
-
-					var	$this = $(this),
-						width = $this.width(),
-						resizeData = $this.data( 'km-ui-resize' ),
-						curClass = kmUI.smartResize.settings.className + '1';
-
-					if( resizeData ){
-
-						var length = resizeData.length;
-
-						curClass = kmUI.smartResize.settings.className + ( length + 1 );
-
-						for( var r=0; r<length; r++ ){
-
-							if( width < parseInt( resizeData[r] ) ){
-								curClass = kmUI.smartResize.settings.className + ( r + 1 );
-								break;
-							}
-						}
-					}
-
-					if(	!$this.hasClass( curClass ) ){
-						$this.removeClass( $this.data( 'km-ui-resize-current-cols' ) || '' ).addClass( curClass );
-						$this.data( 'km-ui-resize-current-cols', curClass );
-					}
-				});
 			}
 		}
 	};

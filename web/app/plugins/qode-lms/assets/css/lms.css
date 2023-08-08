@@ -32,30 +32,45 @@
   content: '\e033';
 }
 
-.qode-course-single-holder .qode-course-reviews-list .qode-comments .qode-comment-list li {
+.qode-course-single-holder .qode-course-reviews-list .qode-comments .qode-comment-list li,
+.qode-course-single-holder .qode-course-reviews-list .qode-comments .comment-list li,
+.qode-course-single-holder .qode-course-reviews-list .comments .qode-comment-list li,
+.qode-course-single-holder .qode-course-reviews-list .comments .comment-list li {
   border-top: 1px solid #ebebeb;
   padding: 40px 0;
   margin: 0;
   list-style-type: none;
 }
 
-.qode-course-single-holder .qode-course-reviews-list .qode-comments .qode-comment-list li .qode-comment .qode-comment-image {
+.qode-course-single-holder .qode-course-reviews-list .qode-comments .qode-comment-list li .qode-comment .qode-comment-image,
+.qode-course-single-holder .qode-course-reviews-list .qode-comments .comment-list li .qode-comment .qode-comment-image,
+.qode-course-single-holder .qode-course-reviews-list .comments .qode-comment-list li .qode-comment .qode-comment-image,
+.qode-course-single-holder .qode-course-reviews-list .comments .comment-list li .qode-comment .qode-comment-image {
   display: block;
   width: 76px;
   float: left;
 }
 
-.qode-course-single-holder .qode-course-reviews-list .qode-comments .qode-comment-list li .qode-comment .qode-comment-image img {
+.qode-course-single-holder .qode-course-reviews-list .qode-comments .qode-comment-list li .qode-comment .qode-comment-image img,
+.qode-course-single-holder .qode-course-reviews-list .qode-comments .comment-list li .qode-comment .qode-comment-image img,
+.qode-course-single-holder .qode-course-reviews-list .comments .qode-comment-list li .qode-comment .qode-comment-image img,
+.qode-course-single-holder .qode-course-reviews-list .comments .comment-list li .qode-comment .qode-comment-image img {
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
 }
 
-.qode-course-single-holder .qode-course-reviews-list .qode-comments .qode-comment-list li .qode-comment .qode-comment-text {
+.qode-course-single-holder .qode-course-reviews-list .qode-comments .qode-comment-list li .qode-comment .qode-comment-text,
+.qode-course-single-holder .qode-course-reviews-list .qode-comments .comment-list li .qode-comment .qode-comment-text,
+.qode-course-single-holder .qode-course-reviews-list .comments .qode-comment-list li .qode-comment .qode-comment-text,
+.qode-course-single-holder .qode-course-reviews-list .comments .comment-list li .qode-comment .qode-comment-text {
   padding: 0 0 0 90px;
 }
 
-.qode-course-single-holder .qode-course-reviews-list .qode-comments .qode-comment-list li .qode-comment .qode-comment-text .qode-text-holder {
+.qode-course-single-holder .qode-course-reviews-list .qode-comments .qode-comment-list li .qode-comment .qode-comment-text .qode-text-holder,
+.qode-course-single-holder .qode-course-reviews-list .qode-comments .comment-list li .qode-comment .qode-comment-text .qode-text-holder,
+.qode-course-single-holder .qode-course-reviews-list .comments .qode-comment-list li .qode-comment .qode-comment-text .qode-text-holder,
+.qode-course-single-holder .qode-course-reviews-list .comments .comment-list li .qode-comment .qode-comment-text .qode-text-holder {
   margin: 15px 0;
 }
 
@@ -258,7 +273,7 @@
   box-sizing: border-box;
 }
 
-.touch .qode-course-list-holder article {
+.touchevents .qode-course-list-holder article {
   cursor: pointer;
 }
 
@@ -303,6 +318,7 @@
   table-layout: fixed;
   height: 100%;
   width: 100%;
+  box-sizing: content-box;
 }
 
 .qode-course-list-holder article .qode-cli-text {
@@ -477,7 +493,7 @@
   transition: none;
 }
 
-.touch .qode-course-list-holder.qode-cl-has-animation article {
+.touchevents .qode-course-list-holder.qode-cl-has-animation article {
   opacity: 1;
   -webkit-transform: translateY(0);
   -moz-transform: translateY(0);
@@ -524,6 +540,7 @@
   vertical-align: middle;
   text-align: center;
   width: 65px;
+  box-sizing: content-box;
   text-align: left;
   padding-right: 24px;
   color: #1abc9c;
@@ -1550,28 +1567,34 @@ body.qode-theme-bridge .select2-container--default .select2-results__option[aria
   margin-bottom: 10px;
 }
 
-.qode-course-reviews-list .qode-comment-holder .qode-review-rating {
+.qode-course-reviews-list .qode-comment-holder .qode-review-rating,
+.qode-course-reviews-list .comment_holder .qode-review-rating {
   display: inline-block;
 }
 
-.qode-course-reviews-list .qode-comment-holder .qode-review-rating .qode-rating-label {
+.qode-course-reviews-list .qode-comment-holder .qode-review-rating .qode-rating-label,
+.qode-course-reviews-list .comment_holder .qode-review-rating .qode-rating-label {
   margin-right: 10px;
 }
 
-.qode-course-reviews-list .qode-comment-holder .qode-review-rating .qode-rating-value {
+.qode-course-reviews-list .qode-comment-holder .qode-review-rating .qode-rating-value,
+.qode-course-reviews-list .comment_holder .qode-review-rating .qode-rating-value {
   color: #ffd740;
 }
 
-.qode-course-reviews-list .qode-comment-holder .qode-review-title {
+.qode-course-reviews-list .qode-comment-holder .qode-review-title,
+.qode-course-reviews-list .comment_holder .qode-review-title {
   font-weight: 600;
   font-size: 15px;
 }
 
-.qode-course-reviews-list .qode-comment-holder .qode-comment-name {
+.qode-course-reviews-list .qode-comment-holder .qode-comment-name,
+.qode-course-reviews-list .comment_holder .qode-comment-name {
   margin-bottom: 5px;
 }
 
-.qode-course-reviews-list .qode-comment-holder .qode-text-holder p {
+.qode-course-reviews-list .qode-comment-holder .qode-text-holder p,
+.qode-course-reviews-list .comment_holder .qode-text-holder p {
   margin-top: 3px;
 }
 
@@ -2592,6 +2615,7 @@ body.qode-theme-bridge .select2-container--default .select2-results__option[aria
   text-align: center;
   width: 70px;
   padding-right: 25px;
+  box-sizing: content-box;
 }
 
 .qode-instructor.simple .qode-instructor-image a {

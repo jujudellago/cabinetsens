@@ -10,7 +10,7 @@ defined( 'LS_ROOT_FILE' ) || exit;
  *
  * @since 6.3.0
  * @author John Gera
- * @copyright Copyright (c) 2021  John Gera, George Krupa, and Kreatura Media Kft.
+ * @copyright Copyright (c) 2023  John Gera, George Krupa, and Kreatura Media Kft.
  */
 
 class LS_Revisions {
@@ -36,12 +36,11 @@ class LS_Revisions {
 
 
 	public static function init() {
-		if( LS_Config::isActivatedSite() && get_option('ls-revisions-enabled', true) ) {
+
+		if( LS_Config::isActivatedSite() ) {
 			self::$active = true;
 		}
 
-		$option 		= get_option('ls-revisions-enabled', true);
-		self::$enabled 	= ! empty( $option );
 		self::$limit 	= get_option('ls-revisions-limit', 100);
 		self::$interval = get_option('ls-revisions-interval', 10);
 	}
@@ -187,18 +186,18 @@ class LS_Revisions {
 		}
 
 		$wpdb->insert( $wpdb->prefix.'layerslider_revisions',
-			array(
+			[
 				'slider_id' => $sliderId,
 				'author' => get_current_user_id(),
 				'data' => $sliderData,
 				'date_c' => time()
-			),
-			array(
+			],
+			[
 				'%d',
 				'%d',
 				'%s',
 				'%d'
-			)
+			]
 		);
 
 		return $wpdb->insert_id;
@@ -226,8 +225,8 @@ class LS_Revisions {
 		}
 
 		return $wpdb->delete( $wpdb->prefix.'layerslider_revisions',
-			array( 'id' => $revisionId ),
-			array( '%d' )
+			[ 'id' => $revisionId ],
+			[ '%d' ]
 		);
 	}
 
@@ -280,8 +279,8 @@ class LS_Revisions {
 		}
 
 		return $wpdb->delete( $wpdb->prefix.'layerslider_revisions',
-			array( 'slider_id' => $sliderId ),
-			array( '%d' )
+			[ 'slider_id' => $sliderId ],
+			[ '%d' ]
 		);
 	}
 
@@ -334,7 +333,7 @@ class LS_Revisions {
 
 		if( $revision &&  $data ) {
 			self::add( $sliderId, $data );
-			LS_Sliders::update( $sliderId, $slider['name'], json_decode($data, true), $slider['slug']);
+			LS_Sliders::saveDraft( $sliderId, json_decode($data, true), true );
 		}
 
 		return true;

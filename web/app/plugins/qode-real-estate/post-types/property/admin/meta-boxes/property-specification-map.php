@@ -82,7 +82,7 @@ if(!function_exists('qodef_re_map_property_specifictation_meta')) {
         ));
 
         bridge_qode_create_meta_box_field(array(
-            'name'        => 'qodef_property_size_label_meta',
+            'name'        => 'property_size_label_meta',
             'type'        => 'text',
             'label'       => esc_html__('Size Label', 'qode-real-estate'),
             'description' => esc_html__('Text that will be shown next to size value', 'qode-real-estate'),
@@ -93,7 +93,7 @@ if(!function_exists('qodef_re_map_property_specifictation_meta')) {
         ));
 
         bridge_qode_create_meta_box_field(array(
-            'name'        => 'qodef_property_size_label_position_meta',
+            'name'        => 'property_size_label_position_meta',
             'type'        => 'select',
             'label'       => esc_html__('Size Label Position', 'qode-real-estate'),
             'description' => esc_html__('Chose whether size label will be shown before or after size value', 'qode-real-estate'),

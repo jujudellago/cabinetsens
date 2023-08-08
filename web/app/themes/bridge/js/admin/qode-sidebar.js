@@ -2,12 +2,19 @@
 (function($){
 	var QodeSidebar = function(){
 
-		this.widget_wrap = $('.widget-liquid-right');
+		this.is_block_widget = $('.widget-liquid-right').length ? false : true;
+		this.widget_wrap = $('.widget-liquid-right, .block-editor-writing-flow');
 		this.widget_area = $('#widgets-right');
 		this.widget_add  = $('#qode-add-widget');
 
 		this.create_form();
-		this.add_del_button();
+
+		if( this.is_block_widget ) {
+			this.add_del_button();
+		} else {
+			this.add_del_button_legacy();
+		}
+
 		this.bind_events();
 
 	};
@@ -21,19 +28,46 @@
 		},
 
 		add_del_button: function(){
-			this.widget_area.find('.sidebar-qode-custom').append('<span class="qode-delete-button"></span>');
+			var wrapper = this.widget_wrap.find('[data-widget-area-id*="qode-custom-sidebar-"]');
+
+			if(wrapper.length) {
+				wrapper.parents('.wp-block-widget-area').parent().append('<span class="qode-delete-button"></span>');
+			}
+		},
+
+		add_del_button_legacy: function(){
+			var wrapper = this.widget_wrap.find('.sidebar-qode-custom');
+
+			if( wrapper.length ) {
+				wrapper.append('<span class="qode-delete-button"></span>');
+			}
 		},
 
 		bind_events: function(){
 			this.widget_wrap.on('click', '.qode-delete-button', $.proxy( this.delete_sidebar, this));
+
 		},
 
 		delete_sidebar: function(e){
-			var widget = $(e.currentTarget).parents('.widgets-holder-wrap:eq(0)'),
-			title = widget.find('.sidebar-name h2'),
-			spinner = title.find('.spinner'),
-			widget_name = $.trim(title.text()),
-			obj = this;
+			var responseClick = confirm('Are you sure you want to delete this?');
+			if (responseClick !== true) {
+				return false;
+			}
+
+			var widget,
+				title,
+				widget_name,
+				obj = this;
+
+			if( this.is_block_widget ) {
+				widget = $(e.currentTarget).parent();
+				title = widget.find('[data-widget-area-id*="qode-custom-sidebar-"]');
+				widget_name = $.trim(title.data('widget-area-id').replace('qode-custom-sidebar-', ''));
+			} else {
+				widget = $(e.currentTarget).parents('.widgets-holder-wrap:eq(0)');
+				title = widget.find('.sidebar-name h2');
+				widget_name = $.trim(title.text());
+			}
 
 			$.ajax({
 				type: "POST",
@@ -43,24 +77,11 @@
 					name: widget_name,
 					_wpnonce: obj.nonce
 				},
-
-				beforeSend: function(){
-					spinner.addClass('activate_spinner');
-				},
-				success: function(response){     
-					if(response == 'sidebar-deleted'){
+				success: function( response ){
+					if( response == 'sidebar-deleted' ){
 						widget.slideUp(200, function(){
-
-						$('.widget-control-remove', widget).trigger('click'); //delete all widgets inside
-						widget.remove();
-
-						// obj.widget_area.find('.widgets-holder-wrap .widgets-sortables').each(function(i) //re calculate widget ids
-						// {
-								// $(this).attr('id','sidebar-' + (i + 1));
-						// });
-
-						wpWidgets.saveOrder();
-
+							$('.widget-control-remove', widget).trigger('click'); //delete all widgets inside
+							widget.remove();
 						});
 					}
 				}
@@ -68,10 +89,12 @@
 		}
 
 	};
-	
+
 	$(function()
 	{
-		new QodeSidebar();
- 	});
+		setTimeout(function(){
+			new QodeSidebar();
+		}, 3000);
+	});
 	
-})(jQuery);	 
+})(jQuery);

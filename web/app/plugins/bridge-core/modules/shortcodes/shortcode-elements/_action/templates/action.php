@@ -89,11 +89,6 @@ if($text_size != '') {
     $content_additional_class .= ' font_size_inherit';
 }
 
-if($text_color != '') {
-    $content_styles .= 'color:'.$text_color.';';
-    $content_additional_class .= ' color_inherit';
-}
-
 if($text_font_weight !== '') {
     $content_styles .= 'font-weight: '.$text_font_weight.';';
     $content_additional_class .= ' font_weight_inherit';
@@ -102,6 +97,10 @@ if($text_font_weight !== '') {
 if($text_letter_spacing != '') {
     $content_styles .= 'letter-spacing: '.$text_letter_spacing.'px;';
     $content_additional_class .= ' letter_spacing_inherit';
+}
+
+if($text_color != '') {
+    $content_styles .= 'color: '.$text_color;
 }
 
 $html .= '<div class="text_wrapper '.$text_wrapper_classes.'">';

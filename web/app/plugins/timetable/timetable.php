@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: Timetable Responsive Schedule For WordPress
+Plugin Name: Timetable Responsive Schedule for WordPress
 Plugin URI: https://1.envato.market/timetable-responsive-schedule-for-wordpress
-Description: Timetable Responsive Schedule For WordPress is a powerful and easy-to-use schedule plugin for WordPress. It will help you to create a timetable view of your events in minutes. It is perfect for gym classes, school or kindergarten classes, medical departments, nightclubs, lesson plans, meal plans etc. It comes with Events Manager, Event Occurrences Shortcode, Timetable Shortcode Generator and Upcoming Events Widget.
+Description: Timetable Responsive Schedule for WordPress is a powerful and easy-to-use schedule plugin for WordPress. It will help you to create a timetable view of your events in minutes. It is perfect for gym classes, school or kindergarten classes, medical departments, nightclubs, lesson plans, meal plans etc. It comes with Events Manager, Event Occurrences Shortcode, Timetable Shortcode Generator and Upcoming Events Widget.
 Author: QuanticaLabs
 Author URI: https://1.envato.market/quanticalabs-portfolio-codecanyon
-Version: 6.4
+Version: 7.2
 */
 
 //translation
@@ -59,13 +59,15 @@ function timetable_init()
 		$timetable_contact_form_options = array(
 			"admin_name" => get_option("admin_email"),
 			"admin_email" => get_option("admin_email"),
+			"admin_name_from" => "",
+			"admin_email_from" => "",
 			"mail_debug" => "not",
 			"smtp_host" => "",
 			"smtp_username" => "",
 			"smtp_password" => "",
 			"smtp_port" => "",
 			"smtp_secure" => "",
-			"email_subject_client" => __("You have been booked for event {event_title}", 'timetable'),
+			"email_subject_client" => esc_html__("You have been booked for event {event_title}", 'timetable'),
 			"template_client" => "<html>
 <head>
 </head>
@@ -85,7 +87,7 @@ function timetable_init()
 	<div>{cancel_booking}</div>
 </body>
 </html>",
-			"email_subject_admin" => __("New booking for event: {event_title}", 'timetable'),
+			"email_subject_admin" => esc_html__("New booking for event: {event_title}", 'timetable'),
 			"template_admin" => "<html>
 <head>
 </head>
@@ -154,7 +156,7 @@ function timetable_cancel_booking()
 				if(isset($result[0]['booking_id']) && $result[0]['booking_id']==$bookings_ids[$i])
 					$bookings[] = $result[0];
 				else
-					echo '<b>' . sprintf(__('Error: Booking #%d does not exist or validation code is incorrect.', 'timetable'), $bookings_ids[$i]) . '</b><br>';
+					echo '<b>' . sprintf(esc_html__('Error: Booking #%d does not exist or validation code is incorrect.', 'timetable'), $bookings_ids[$i]) . '</b><br>';
 			}
 		}
 	}
@@ -167,14 +169,14 @@ function timetable_cancel_booking()
 		//delete booking
 		TT_DB::deleteBooking($booking['booking_id']);
 		//display booking information
-		echo '<b>' . sprintf(__('Booking #%d (%s) deleted', 'timetable'), $booking['booking_id'], $booking['booking_datetime']) . '</b><br>';		
-		echo sprintf(__('Title: %s', 'timetable'), $booking['event_title']) . '<br>';
-		echo sprintf(__('Time: %s', 'timetable'), $booking['start'] . '-' . $booking['end']) . '<br>';
-		echo sprintf(__('Column: %s', 'timetable'), $booking['weekday']) . '<br>';
+		echo '<b>' . sprintf(esc_html__('Booking #%d (%s) deleted', 'timetable'), $booking['booking_id'], $booking['booking_datetime']) . '</b><br>';		
+		echo sprintf(esc_html__('Title: %s', 'timetable'), $booking['event_title']) . '<br>';
+		echo sprintf(esc_html__('Time: %s', 'timetable'), $booking['start'] . '-' . $booking['end']) . '<br>';
+		echo sprintf(esc_html__('Column: %s', 'timetable'), $booking['weekday']) . '<br>';
 		if($booking['event_description_1'])
-			echo sprintf(__('Description 1: %s', 'timetable'), $booking['event_description_1']) . '<br>';
+			echo sprintf(esc_html__('Description 1: %s', 'timetable'), $booking['event_description_1']) . '<br>';
 		if($booking['event_description_2'])
-			echo sprintf(__('Description 2: %s', 'timetable'), $booking['event_description_2']) . '<br>';
+			echo sprintf(esc_html__('Description 2: %s', 'timetable'), $booking['event_description_2']) . '<br>';
 		echo '<br>';
 	}
 	
@@ -182,6 +184,8 @@ function timetable_cancel_booking()
 	$timetable_contact_form_options = timetable_stripslashes_deep(get_option("timetable_contact_form_options"));
 	$admin_name = $timetable_contact_form_options['admin_name'];
 	$admin_email = $timetable_contact_form_options['admin_email'];
+	$admin_name_from = $timetable_contact_form_options['admin_name_from'];
+	$admin_email_from = $timetable_contact_form_options['admin_email_from'];
 	$client_name = '';
 	$client_email = '';
 	$client_phone = '';
@@ -199,28 +203,28 @@ function timetable_cancel_booking()
 	
 	$headers = array();
 	$headers[] = 'Reply-To: ' . $client_name . ' <' . $client_email . '>' . "\r\n";
-	$headers[] = 'From: ' . $admin_name . ' <' . $admin_email . '>' . "\r\n";
+	$headers[] = 'From: ' . (!empty($admin_name_from) ? $admin_name_from : $admin_name) . ' <' . (!empty($admin_email_from) ? $admin_email_from : $admin_email) . '>' . "\r\n";
 	$headers[] = 'Content-type: text/html';
-	$subject = __('Bookings canceled', 'timetable');
+	$subject = esc_html__('Bookings canceled', 'timetable');
 	$body = '';
 	
-	$body .= '<h3>' . __('Client details', 'timetable') . '</h3>';
-	$body .= sprintf(__('Name: %s', 'timetable'), $client_name) . '<br>';
-	$body .= sprintf(__('Email: %s', 'timetable'), $client_email) . '<br>';
+	$body .= '<h3>' . esc_html__('Client details', 'timetable') . '</h3>';
+	$body .= sprintf(esc_html__('Name: %s', 'timetable'), $client_name) . '<br>';
+	$body .= sprintf(esc_html__('Email: %s', 'timetable'), $client_email) . '<br>';
 	if($client_phone)
-		$body .= sprintf(__('Phone: %s', 'timetable'), $client_phone) . '<br>';
+		$body .= sprintf(esc_html__('Phone: %s', 'timetable'), $client_phone) . '<br>';
 	$body .= '<br>';
-	$body .= '<h3>' . __('Canceled Bookings', 'timetable') . '</h3>';
+	$body .= '<h3>' . esc_html__('Canceled Bookings', 'timetable') . '</h3>';
 	foreach($bookings as $booking)
 	{
-		$body .= sprintf(__('Booking: #%d (%s)', 'timetable'), $booking['booking_id'], $booking['booking_datetime']) . '<br>';
-		$body .= sprintf(__('Title: %s', 'timetable'), $booking['event_title']) . '<br>';
-		$body .= sprintf(__('Time: %s', 'timetable'), $booking['start'] . '-' . $booking['end']) . '<br>';
-		$body .= sprintf(__('Column: %s', 'timetable'), $booking['weekday']) . '<br>';
+		$body .= sprintf(esc_html__('Booking: #%d (%s)', 'timetable'), $booking['booking_id'], $booking['booking_datetime']) . '<br>';
+		$body .= sprintf(esc_html__('Title: %s', 'timetable'), $booking['event_title']) . '<br>';
+		$body .= sprintf(esc_html__('Time: %s', 'timetable'), $booking['start'] . '-' . $booking['end']) . '<br>';
+		$body .= sprintf(esc_html__('Column: %s', 'timetable'), $booking['weekday']) . '<br>';
 		if($booking['event_description_1'])
-			$body .= sprintf(__('Description 1: %s', 'timetable'), $booking['event_description_1']) . '<br>';
+			$body .= sprintf(esc_html__('Description 1: %s', 'timetable'), $booking['event_description_1']) . '<br>';
 		if($booking['event_description_2'])
-			$body .= sprintf(__('Description 2: %s', 'timetable'), $booking['event_description_2']) . '<br>';
+			$body .= sprintf(esc_html__('Description 2: %s', 'timetable'), $booking['event_description_2']) . '<br>';
 		$body .= '<br>';
 	}
 	
@@ -271,13 +275,13 @@ function timetable_redirect()
 		{
             $return_template = $plugindir . '/' . $templatefilename;
         }
-        do_timetable_redirect($return_template);
+        timetable_do_redirect($return_template);
 
     //A Custom Taxonomy Page
     }
 }
 
-function do_timetable_redirect($url) {
+function timetable_do_redirect($url) {
     global $post, $wp_query;
     if (have_posts()) {
         include($url);
@@ -294,8 +298,8 @@ add_image_size("event-post-thumb-box", 300, 240, true);
 function timetable_image_sizes($sizes)
 {
 	$addsizes = array(
-		"event-post-thumb" => __("Event post thumbnail", 'timetable'),
-		"event-post-thumb-box" => __("Event post box thumbnail", 'timetable')
+		"event-post-thumb" => esc_html__("Event post thumbnail", 'timetable'),
+		"event-post-thumb-box" => esc_html__("Event post box thumbnail", 'timetable')
 	);
 	$newsizes = array_merge($sizes, $addsizes);
 	return $newsizes;
@@ -358,12 +362,12 @@ if(is_admin())
 {
 	function timetable_admin_menu()
 	{
-		$page = add_menu_page(__('Timetable', 'timetable'), __('Timetable', 'timetable'), 'manage_options', 'timetable_admin', 'timetable_admin_page', '', 20);
-		$shortcode_generator_page = add_submenu_page('timetable_admin', __('Shortcode Generator', 'timetable'), __('Shortcode Generator', 'timetable'), 'manage_options', 'timetable_admin', 'timetable_admin_page');
-		$event_config_page = add_submenu_page('timetable_admin', __('Event Post Type', 'timetable'), __('Event Post Type', 'timetable'), 'manage_options', 'timetable_admin_page_event_post_type', 'timetable_admin_page_event_post_type');
-		$email_config_page = add_submenu_page('timetable_admin', __('Email config', 'timetable'), __('Email config', 'timetable'), 'manage_options', 'timetable_admin_page_email_config', 'timetable_admin_page_email_config');
-		$import_dummy_data_page = add_submenu_page('timetable_admin', __('Import Dummy Data', 'timetable'), __('Import Dummy Data', 'timetable'), 'manage_options', 'timetable_admin_page_import_dummy_data', 'timetable_admin_page_import_dummy_data');
-		$google_calendar_page = add_submenu_page('timetable_admin', __('Google Calendar', 'timetable'), __('Google Calendar', 'timetable'), 'manage_options', 'timetable_admin_page_google_calendar', 'timetable_admin_page_google_calendar');
+		$page = add_menu_page(esc_html__('Timetable', 'timetable'), esc_html__('Timetable', 'timetable'), 'manage_options', 'timetable_admin', 'timetable_admin_page', '', 20);
+		$shortcode_generator_page = add_submenu_page('timetable_admin', esc_html__('Shortcode Generator', 'timetable'), esc_html__('Shortcode Generator', 'timetable'), 'manage_options', 'timetable_admin', 'timetable_admin_page');
+		$event_config_page = add_submenu_page('timetable_admin', esc_html__('Event Post Type', 'timetable'), esc_html__('Event Post Type', 'timetable'), 'manage_options', 'timetable_admin_page_event_post_type', 'timetable_admin_page_event_post_type');
+		$email_config_page = add_submenu_page('timetable_admin', esc_html__('Email config', 'timetable'), esc_html__('Email config', 'timetable'), 'manage_options', 'timetable_admin_page_email_config', 'timetable_admin_page_email_config');
+		$import_dummy_data_page = add_submenu_page('timetable_admin', esc_html__('Import Dummy Data', 'timetable'), esc_html__('Import Dummy Data', 'timetable'), 'manage_options', 'timetable_admin_page_import_dummy_data', 'timetable_admin_page_import_dummy_data');
+		$google_calendar_page = add_submenu_page('timetable_admin', esc_html__('Google Calendar', 'timetable'), esc_html__('Google Calendar', 'timetable'), 'manage_options', 'timetable_admin_page_google_calendar', 'timetable_admin_page_google_calendar');
 		
 		add_action('admin_enqueue_scripts', 'timetable_admin_enqueue_scripts');
 	}
@@ -395,7 +399,7 @@ if(is_admin())
 			$data = array(
 				'img_url' => plugins_url("admin/images/", __FILE__),
 				'js_url' => plugins_url("admin/js/", __FILE__),
-				'delete_event_booking_confirmation' => __('Please confirm that you want to delete event bookings.', 'timetable'),
+				'delete_event_booking_confirmation' => esc_html__('Please confirm that you want to delete event bookings.', 'timetable'),
 				'booking_popup_message' => BOOKING_POPUP_MESSAGE,
 				'booking_popup_thank_you_message' => BOOKING_POPUP_THANK_YOU_MESSAGE,
 			);
@@ -451,7 +455,7 @@ if(is_admin())
 				{
 				    for($j=0, $max_j=count((array)$fontsArray->items[$i]->subsets); $j<$max_j; $j++)
 					{
-						$subsets .= '<option value="' . $fontsArray->items[$i]->subsets[$j] . '">' . $fontsArray->items[$i]->subsets[$j] . '</option>';
+						$subsets .= '<option value="' . esc_attr($fontsArray->items[$i]->subsets[$j]) . '">' . $fontsArray->items[$i]->subsets[$j] . '</option>';
 					}
 					break;
 				}
@@ -470,8 +474,8 @@ if(is_admin())
 		
 		if(!(isset($_POST['event_hour_id']) && $event_hour_id=$_POST['event_hour_id']))
 		{
-			$result["msg"] = __("<h2>Invalid event hour</h2>
-<p>Selected event hour doesn't exist.<br>Please select different event.</p>", "timetable");
+			$result["msg"] = wp_kses(__("<h2>Invalid event hour</h2>
+<p>Selected event hour doesn't exist.<br>Please select different event.</p>", "timetable"), array("h2" => array(), "p" => array(), "br" => array()));
 			$result["error"] = 1;
 			timetable_ajax_response($result);
 		}
@@ -496,7 +500,7 @@ if(is_admin())
 		
 		if(!$event_hour_details)
 		{
-			$result['msg'] = __('<h2>Invalid event hour</h2><p>Selected event hour doesn\'t exist.<br>Please select different event.</p>', 'timetable');
+			$result['msg'] = wp_kses(__('<h2>Invalid event hour</h2><p>Selected event hour doesn\'t exist.<br>Please select different event.</p>', 'timetable'), array("h2" => array(), "p" => array(), "br" => array()));
 			$result['error'] = 1;
 			timetable_ajax_response($result);
 		}
@@ -549,7 +553,7 @@ if(is_admin())
 		    if($booking_form_config['default_booking_view']=='guest')
 		        $guestOptionHidden = true;
 		    
-		        $result['msg'] .= sprintf(__('<p class="tt_guest_option ' . ($guestOptionHidden ? 'tt_hide' : '') . '">Don\'t have an account? <a href="%s">Continue as guest</a></p>', 'timetable'), '#');
+		        $result['msg'] .= sprintf(wp_kses(__('<p class="tt_guest_option %s">Don\'t have an account? <a href="%s">Continue as guest</a></p>', 'timetable'), array("a" => array("href" => array()), "p" => array("class" => array()))), ($guestOptionHidden ? 'tt_hide' : ''), '#');
 		}
 		
 		
@@ -560,8 +564,7 @@ if(is_admin())
 		    if($booking_form_config['default_booking_view']=='user')
 		        $loginOptionHidden = true;
 		    
-		        $result['msg'] .= sprintf(__('<p class="tt_login_option ' . ($loginOptionHidden ? 'tt_hide' : '') . '">Got an account? <a href="%s">Login</a></p>', 'timetable'), wp_login_url($redirect_url));
-		    
+		        $result['msg'] .= sprintf(wp_kses(__('<p class="tt_login_option %s">Got an account? <a href="%s">Login</a></p>', 'timetable'), array("a" => array("href" => array()), "p" => array("class" => array()))), ($loginOptionHidden ? 'tt_hide' : ''), wp_login_url($redirect_url));
 		}
 		
 		timetable_ajax_response($result);
@@ -586,8 +589,8 @@ if(is_admin())
 		if(!$user_id && $terms_checkbox_required=='yes' && !$terms_checkbox)
 		{
 			$result['event_hour_active'] = 0;
-			$result['msg'] = __('<h2>Booking couldn\'t be made</h2>
-<p>Please accept terms and conditions checkbox.</p>', 'timetable');
+			$result['msg'] = wp_kses(__('<h2>Booking couldn\'t be made</h2>
+<p>Please accept terms and conditions checkbox.</p>', 'timetable'), array("h2" => array(), "p" => array()));
 			$result['error'] = 1;
 			timetable_ajax_response($result);
 		}
@@ -632,8 +635,8 @@ if(is_admin())
 		if(!($event_hour_details->available_places>0 && $event_hour_details->booking_count<$event_hour_details->available_places))
 		{
 			$result['event_hour_active'] = 0;
-			$result['msg'] = __('<h2>Booking couldn\'t be made</h2>
-<p>No place available for selected event hour.</p>', 'timetable');
+			$result['msg'] = wp_kses(__('<h2>Booking couldn\'t be made</h2>
+<p>No place available for selected event hour.</p>', 'timetable'), array("h2" => array(), "p" => array()));
 			$result['error'] = 1;
 			timetable_ajax_response($result);
 		}
@@ -643,16 +646,16 @@ if(is_admin())
 		
 		if($remaining_slots<1)
 		{
-			$result['msg'] = __('<h2>Booking couldn\'t be made</h2>
-<p>You\'ve already reached maximum number of slots.</p>', 'timetable');
+			$result['msg'] = wp_kses(__('<h2>Booking couldn\'t be made</h2>
+<p>You\'ve already reached maximum number of slots.</p>', 'timetable'), array("h2" => array(), "p" => array()));
 			$result['error'] = 1;
 			timetable_ajax_response($result);
 		}
 		
 		if($slots_number>$remaining_slots)
 		{
-			$result['msg'] = __('<h2>Booking couldn\'t be made</h2>
-<p>You have selected too many slots.</p>', 'timetable');
+			$result['msg'] = wp_kses(__('<h2>Booking couldn\'t be made</h2>
+<p>You have selected too many slots.</p>', 'timetable'), array("h2" => array(), "p" => array()));
 			$result['error'] = 1;
 			timetable_ajax_response($result);
 		}
@@ -661,36 +664,36 @@ if(is_admin())
 		{
 			if($guest_config['guest_name_field_required']=='yes' && $guest_name=='')
 			{
-				$result['msg'] = __('<h2>Error</h2>
-<p>You must fill name field.</p>', 'timetable');
+				$result['msg'] = wp_kses(__('<h2>Error</h2>
+<p>You must fill name field.</p>', 'timetable'), array("h2" => array(), "p" => array()));
 				$result['error'] = 1;
 				timetable_ajax_response($result);
 			}
 			if($guest_email=='')
 			{
-				$result['msg'] = __('<h2>Error</h2>
-<p>You must fill email field.</p>', 'timetable');
+				$result['msg'] = wp_kses(__('<h2>Error</h2>
+<p>You must fill email field.</p>', 'timetable'), array("h2" => array(), "p" => array()));
 				$result['error'] = 1;
 				timetable_ajax_response($result);
 			}
 			if(!filter_var($guest_email, FILTER_VALIDATE_EMAIL))
 			{
-				$result['msg'] = __('<h2>Error</h2>
-<p>Please provide valid email.</p>', 'timetable');
+				$result['msg'] = wp_kses(__('<h2>Error</h2>
+<p>Please provide valid email.</p>', 'timetable'), array("h2" => array(), "p" => array()));
 				$result['error'] = 1;
 				timetable_ajax_response($result);
 			}
 			if($guest_config['guest_phone_field_required']=='yes' && $guest_phone=='')
 			{
-				$result['msg'] = __('<h2>Error</h2>
-<p>You must fill phone field.</p>', 'timetable');
+				$result['msg'] = wp_kses(__('<h2>Error</h2>
+<p>You must fill phone field.</p>', 'timetable'), array("h2" => array(), "p" => array()));
 				$result['error'] = 1;
 				timetable_ajax_response($result);
 			}
 			if($guest_config['guest_message_field_required']=='yes' && $guest_message=='')
 			{
-				$result['msg'] = __('<h2>Error</h2>
-<p>You must fill message field.</p>', 'timetable');
+				$result['msg'] = wp_kses(__('<h2>Error</h2>
+<p>You must fill message field.</p>', 'timetable'), array("h2" => array(), "p" => array()));
 				$result['error'] = 1;
 				timetable_ajax_response($result);
 			}
@@ -708,7 +711,7 @@ if(is_admin())
 		$booking_date = date_i18n('Y-m-d H:i:s');
 		for($i=0; $i<$slots_number; $i++)
 		{
-			$validation_code = md5(time()+$event_hour_id+$user_id+mt_rand()*$i+timetable_random_string());			
+			$validation_code = md5(strval(time()+$event_hour_id+$user_id+mt_rand()*$i).timetable_random_string());			
 			$bookings_ids[] = TT_DB::createBooking(array(
 				'event_hour_id' => $event_hour_id,
 				'user_id' => $user_id,
@@ -726,7 +729,7 @@ if(is_admin())
 			timetable_ajax_response($result);
 		}
 		
-		$result['msg'] = $booking_popup_thank_you_message_template;
+		$result['msg'] = do_shortcode($booking_popup_thank_you_message_template);
 		$result['msg'] = str_replace('{event_title}', $event_hour_details->event_title, $result['msg']);
 		$result['msg'] = str_replace('{column_title}', $event_hour_details->column_title, $result['msg']);
 		$result['msg'] = str_replace('{event_start}', date($time_format, strtotime($event_hour_details->start)), $result['msg']);
@@ -740,7 +743,7 @@ if(is_admin())
 		
 		$current_user_booking_count = ($user_id ? $event_hour_details->current_user_booking_count+$slots_number : 0);
 		
-		$result['booking_button'] = prepare_booking_button(array(
+		$result['booking_button'] = timetable_prepare_booking_button(array(
 			'current_user_booking_count' => $current_user_booking_count,
 			'slots_per_user' => $event_hour_details->slots_per_user,
 			'event_hours_id' => $event_hour_id,
@@ -759,7 +762,7 @@ if(is_admin())
 			'show_booking_button' => $_POST['atts']['show_booking_button'],
 		));
 		
-		$result['available_slots_label'] = prepare_booking_slots_label(array(
+		$result['available_slots_label'] = timetable_prepare_booking_slots_label(array(
 			'available_slots' => $result['remaining_places'],
 			'taken_slots' => $result['booking_count'],
 			'total_slots' => $result['available_places'],
@@ -824,8 +827,7 @@ if(is_admin())
 			'guest_message' => $booking_details['guest_message'],
 		);
 		
-		if(get_magic_quotes_gpc()) 
-			$values = array_map('stripslashes', $values);
+		$values = timetable_stripslashes_deep($values);
 		$values = array_map('htmlspecialchars', $values);
 		
 		$user_name = '';
@@ -852,15 +854,15 @@ if(is_admin())
 		{
 			$booking_ids[] = (int)$booking['booking_id'];
 			$validation_codes[] = $booking['validation_code'];
-			$cancel_booking .= '<a href="' . get_site_url() . '?action=timetable_cancel_booking&booking_id=' . $booking['booking_id'] . '&validation_code=' . $booking['validation_code'] . '">' . sprintf(__('Cancel booking #%d', 'timetable'), $booking['booking_id']) . '</a><br>';
+			$cancel_booking .= '<a href="' . esc_url(get_site_url() . '?action=timetable_cancel_booking&booking_id=' . $booking['booking_id'] . '&validation_code=' . $booking['validation_code']) . '">' . sprintf(esc_html__('Cancel booking #%d', 'timetable'), $booking['booking_id']) . '</a><br>';
 		}
 		if(count($bookings)>1)
-			$cancel_booking .= '<a href="' . get_site_url() . '?action=timetable_cancel_booking&bookings_ids=' . implode(',', $booking_ids) . '&validation_codes=' . implode(',', $validation_codes) . '">' . __('Cancel all bookings', 'timetable') . '</a><br>';
+			$cancel_booking .= '<a href="' . esc_url(get_site_url() . '?action=timetable_cancel_booking&bookings_ids=' . implode(',', $booking_ids) . '&validation_codes=' . implode(',', $validation_codes)) . '">' . esc_html__('Cancel all bookings', 'timetable') . '</a><br>';
 		
 		//SEND EMAIL TO CLIENT
 		$headers = array();
 		$headers[] = 'Reply-To: ' . $timetable_contact_form_options['admin_name'] . ' <' . $timetable_contact_form_options['admin_email'] . '>' . "\r\n";
-		$headers[] = 'From: ' . $timetable_contact_form_options['admin_name'] . ' <' . $timetable_contact_form_options['admin_email'] . '>' . "\r\n";
+		$headers[] = 'From: ' . (!empty($timetable_contact_form_options['admin_name_from']) ? $timetable_contact_form_options['admin_name_from'] : $timetable_contact_form_options['admin_name']) . ' <' . (!empty($timetable_contact_form_options['admin_email_from']) ? $timetable_contact_form_options['admin_email_from'] : $timetable_contact_form_options['admin_email']) . '>' . "\r\n";
 		$headers[] = 'Content-type: text/html';
 		$subject = $timetable_contact_form_options['email_subject_client'];
 		$subject = str_replace('{booking_id}', $values['booking_id'], $subject);
@@ -897,7 +899,7 @@ if(is_admin())
 		//SEND EMAIL TO ADMIN
 		$headers = array();
 		$headers[] = 'Reply-To: ' . $values["user_name"] . ' <' . $values["user_email"] . '>' . "\r\n";
-		$headers[] = 'From: ' . $timetable_contact_form_options["admin_name"] . ' <' . $timetable_contact_form_options["admin_email"] . '>' . "\r\n";
+		$headers[] = 'From: ' . (!empty($timetable_contact_form_options['admin_name_from']) ? $timetable_contact_form_options['admin_name_from'] : $timetable_contact_form_options['admin_name']) . ' <' . (!empty($timetable_contact_form_options['admin_email_from']) ? $timetable_contact_form_options['admin_email_from'] : $timetable_contact_form_options['admin_email']) . '>' . "\r\n";
 		$headers[] = 'Content-type: text/html';
 		$subject = $timetable_contact_form_options["email_subject_admin"];
 		$subject = str_replace("{booking_id}", $values["booking_id"], $subject);
@@ -935,11 +937,11 @@ if(is_admin())
 		{
 			if($result['error']==0)
 			{
-				$result['msg'] .= __('Email message sent.', 'timetable');
+				$result['msg'] .= esc_html__('Email message sent.', 'timetable');
 			}
 			else
 			{
-				$result['msg'] .= sprintf(__('Email message not sent.<br>%s', 'timetable'), $GLOBALS['phpmailer']->ErrorInfo);
+				$result['msg'] .= sprintf(wp_kses(__('Email message not sent.<br>%s', 'timetable'), array("br" => array())), $GLOBALS['phpmailer']->ErrorInfo);
 			}
 		}
 		return $result;
@@ -1024,7 +1026,7 @@ if(is_admin())
 			require_once 'importer/importer.php';
 		else
 		{
-			$result["info"] .= __("Import file: dummy-timetable.xml not found! Please upload import file manually into Media library. You can find this file inside zip archive downloaded from CodeCanyon.", 'timetable');
+			$result["info"] .= esc_html__("Import file: dummy-timetable.xml not found! Please upload import file manually into Media library. You can find this file inside zip archive downloaded from CodeCanyon.", 'timetable');
 			exit();
 		}
 		//widget import
@@ -1098,7 +1100,7 @@ if(is_admin())
 		}
 		else
 		{
-			$result["info"] .= __("Widgets data file not found! Please upload widgets data file manually.", 'timetable');
+			$result["info"] .= esc_html__("Widgets data file not found! Please upload widgets data file manually.", 'timetable');
 			exit();
 		}
 		//import sample hours
@@ -1239,7 +1241,7 @@ if(is_admin())
 		update_option("timetable_shortcodes_list", $timetable_shortcodes_list);
 		
 		if($result["info"]=="")
-			$result["info"] = __("dummy-timetable.xml file content and widgets settings has been imported successfully!", 'timetable');
+			$result["info"] = esc_html__("dummy-timetable.xml file content and widgets settings has been imported successfully!", 'timetable');
 		echo "dummy_import_start" . json_encode($result) . "dummy_import_end";
 		exit();
 	}
@@ -1250,9 +1252,9 @@ if(is_admin())
 		$timetable_events_settings = get_option("timetable_events_settings");
 		$slug_old = $timetable_events_settings["slug"];
 		$timetable_slug_old = $timetable_events_settings["slug"];
-		$timetable_events_settings["slug"] = (!empty($_POST["events_slug"]) ? sanitize_title($_POST["events_slug"]) : __("events", "timetable"));
-		$timetable_events_settings["label_singular"] = (!empty($_POST["events_label_singular"]) ? $_POST["events_label_singular"] : __("Event", "timetable"));
-		$timetable_events_settings["label_plural"] = (!empty($_POST["events_label_plural"]) ? $_POST["events_label_plural"] : __("Events", "timetable"));
+		$timetable_events_settings["slug"] = (!empty($_POST["events_slug"]) ? sanitize_title($_POST["events_slug"]) : esc_html__("events", "timetable"));
+		$timetable_events_settings["label_singular"] = (!empty($_POST["events_label_singular"]) ? $_POST["events_label_singular"] : esc_html__("Event", "timetable"));
+		$timetable_events_settings["label_plural"] = (!empty($_POST["events_label_plural"]) ? $_POST["events_label_plural"] : esc_html__("Events", "timetable"));
 		if(update_option("timetable_events_settings", $timetable_events_settings) && $timetable_slug_old!=$_POST["events_slug"])
 		{
 			require_once("post-type-events.php");
@@ -1339,12 +1341,12 @@ if(is_admin())
 				{
 					for($j=0; $j<$variantsCount; $j++)
 					{
-						$fontsHtml .= '<option value="' . $fontsArray->items[$i]->family . ":" . $fontsArray->items[$i]->variants[$j] . '">' . $fontsArray->items[$i]->family . ":" . $fontsArray->items[$i]->variants[$j] . '</option>';
+						$fontsHtml .= '<option value="' . esc_attr($fontsArray->items[$i]->family . ":" . $fontsArray->items[$i]->variants[$j]) . '">' . $fontsArray->items[$i]->family . ":" . $fontsArray->items[$i]->variants[$j] . '</option>';
 					}
 				}
 				else
 				{
-					$fontsHtml .= '<option value="' . $fontsArray->items[$i]->family . '">' . $fontsArray->items[$i]->family . '</option>';
+					$fontsHtml .= '<option value="' . esc_attr($fontsArray->items[$i]->family) . '">' . $fontsArray->items[$i]->family . '</option>';
 				}
 			}
 		}
@@ -1353,6 +1355,22 @@ if(is_admin())
 	
 	function timetable_admin_page_email_config()
 	{
+		$timetable_contact_form_options = array(
+			"email_subject_client" => "",
+			"email_subject_admin" => "",
+			"admin_name" => "",
+			"admin_email" => "",
+			"admin_name_from" => "",
+			"admin_email_from" => "",
+			"mail_debug" => "",
+			"template_client" => "",
+			"template_admin" => "",
+			"smtp_host" => "",
+			"smtp_username" => "",
+			"smtp_password" => "",
+			"smtp_port" => "",
+			"smtp_secure" => ""
+		);
 		if(isset($_POST["action"]) && $_POST["action"]=="save")
 		{
 			$timetable_contact_form_options = array(
@@ -1360,6 +1378,8 @@ if(is_admin())
 				"email_subject_admin" => $_POST["email_subject_admin"],
 				"admin_name" => $_POST["admin_name"],
 				"admin_email" => $_POST["admin_email"],
+				"admin_name_from" => $_POST["admin_name_from"],
+				"admin_email_from" => $_POST["admin_email_from"],
 				"mail_debug" => $_POST["mail_debug"],
 				"template_client" => $_POST["template_client"],
 				"template_admin" => $_POST["template_admin"],
@@ -1371,7 +1391,7 @@ if(is_admin())
 			);
 			update_option("timetable_contact_form_options", $timetable_contact_form_options);
 		}
-		$timetable_contact_form_options = timetable_stripslashes_deep(get_option("timetable_contact_form_options"));
+		$timetable_contact_form_options = timetable_stripslashes_deep(array_merge($timetable_contact_form_options, (array)get_option("timetable_contact_form_options")));
 		require(__DIR__ . "/admin-page-email-config.php");
 	}
 	
@@ -1496,12 +1516,12 @@ function tt_slots_number($slots_number_config)
 		$max_slosts = ($slots_number_config['remaining_places']<=$slots_number_config['slots_per_user'] ? $slots_number_config['remaining_places'] : $slots_number_config['slots_per_user']);
 		$output .= 
 		'<p>
-			<label>' . __('Slots number', 'timetable') . '</label>
+			<label>' . esc_html__('Slots number', 'timetable') . '</label>
 			<select class="tt_slots_number" name="slots_number">';
 		for($i=1; $i<=$max_slosts; $i++)
 		{
 			$output .= 
-				'<option value="' . $i . '">' . $i . '</option>';
+				'<option value="' . esc_attr($i) . '">' . $i . '</option>';
 		}
 		$output .= 
 			'</select>
@@ -1537,10 +1557,10 @@ function tt_booking_form($args)
     	if($max_slots>1)
     	{
     	    $output .=
-    	    '<div class="tt_field_wrapper " data-max-slots="' . $max_slots . '">
-    			<label for="tt_slots_number">' . __('Slots number', 'timetable') . '</label>
+    	    '<div class="tt_field_wrapper " data-max-slots="' . esc_attr($max_slots) . '">
+    			<label for="tt_slots_number">' . esc_html__('Slots number', 'timetable') . '</label>
     			<div class="tt_slots_number_wrapper">
-    				<input id="tt_slots_number" class="tt_field tt_slots_number" name="slots_number" type="number" min="1" max="' . $max_slots . '" step="1" value="1" autocomplete="off"/>
+    				<input id="tt_slots_number" class="tt_field tt_slots_number" name="slots_number" type="number" min="1" max="' . esc_attr($max_slots) . '" step="1" value="1" autocomplete="off"/>
     				<input type="button" class="tt_slots_number_plus" value="+">
     				<input type="button" class="tt_slots_number_minus" value="-">
     			</div>
@@ -1567,7 +1587,7 @@ function tt_booking_form($args)
     	//name field
     	if($args['show_guest_name_field']=='yes')
     	{
-    		$placeholder = ($args['guest_name_field_required']=='yes' ? __('Name *', 'timetable') : __('Name', 'timetable'));
+    		$placeholder = ($args['guest_name_field_required']=='yes' ? esc_html__('Name *', 'timetable') : esc_html__('Name', 'timetable'));
     		$output .= 
     		'<div class="tt_field_wrapper ">
     			<label for="tt_guest_name">' . $placeholder . '</label>
@@ -1576,7 +1596,7 @@ function tt_booking_form($args)
     	}
     	
     	//email field(required)
-    	$placeholder = __('Email *', 'timetable');
+    	$placeholder = esc_html__('Email *', 'timetable');
     	$output .= 
     	'<div class="tt_field_wrapper ">
     		<label for="tt_guest_email">' . $placeholder . '</label>
@@ -1586,7 +1606,7 @@ function tt_booking_form($args)
     	//phone field
     	if($args['show_guest_phone_field']=='yes')
     	{
-    		$placeholder = ($args['guest_phone_field_required']=='yes' ? __('Phone *', 'timetable') : __('Phone', 'timetable'));
+    		$placeholder = ($args['guest_phone_field_required']=='yes' ? esc_html__('Phone *', 'timetable') : esc_html__('Phone', 'timetable'));
     		$output .= 
     		'<div class="tt_field_wrapper ">
     			<label for="tt_guest_phone">' . $placeholder . '</label>
@@ -1598,10 +1618,10 @@ function tt_booking_form($args)
     	if($max_slots>1)
     	{
     		$output .= 
-    		'<div class="tt_field_wrapper" data-max-slots="'.$max_slots.'">
-    			<label for="tt_slots_number">' . __('Slots number', 'timetable') . '</label>
+    		'<div class="tt_field_wrapper" data-max-slots="'.esc_attr($max_slots).'">
+    			<label for="tt_slots_number">' . esc_html__('Slots number', 'timetable') . '</label>
     			<div class="tt_slots_number_wrapper">
-    				<input id="tt_slots_number" class="tt_field tt_slots_number" name="slots_number" type="number" min="1" max="' . $max_slots . '" step="1" value="1" autocomplete="off"/>
+    				<input id="tt_slots_number" class="tt_field tt_slots_number" name="slots_number" type="number" min="1" max="' . esc_attr($max_slots) . '" step="1" value="1" autocomplete="off"/>
     				<input type="button" class="tt_slots_number_plus" value="+">
     				<input type="button" class="tt_slots_number_minus" value="-">
     			</div>
@@ -1611,7 +1631,7 @@ function tt_booking_form($args)
     	//message field
     	if($args['show_guest_message_field']=='yes')
     	{
-    		$placeholder = ($args['guest_message_field_required']=='yes' ? __('Message *', 'timetable') : __('Message', 'timetable'));
+    		$placeholder = ($args['guest_message_field_required']=='yes' ? esc_html__('Message *', 'timetable') : esc_html__('Message', 'timetable'));
     		$output .= 
     		'<div class="tt_field_wrapper wide ">
     			<label for="tt_guest_message">' . $placeholder . '</label>
@@ -1694,11 +1714,14 @@ function timetable_get_google_fonts()
 	$fontsArray = get_option("timetable_google_fonts");
 	//update if option doesn't exist or it was modified more than 2 weeks ago
 	if($fontsArray===FALSE || count((array)$fontsArray)==0 || (time()-$fontsArray->last_update>2*7*24*60*60)) {
-		$google_api_url = 'http://quanticalabs.com/.tools/GoogleFont/font.txt';
+		$google_api_url = 'https://quanticalabs.com/.tools/GoogleFont/font.txt';
 		$fontsJson = wp_remote_retrieve_body(wp_remote_get($google_api_url, array('sslverify' => false )));
 		$fontsArray = json_decode($fontsJson);
-		$fontsArray->last_update = time();		
-		update_option("timetable_google_fonts", $fontsArray);
+		if(isset($fontsArray))
+		{
+			$fontsArray->last_update = time();		
+			update_option("timetable_google_fonts", $fontsArray);
+		}
 	}
 	return $fontsArray;
 }
@@ -1722,19 +1745,19 @@ function timetable_stripslashes_deep($value)
 	return $value;
 }
 
-function tiny_mce_on_change($settings)
+function timetable_tiny_mce_on_change($settings)
 {
 	if(array_key_exists('selector', $settings) && in_array($settings['selector'], array('#booking_popup_message', '#booking_popup_thank_you_message')))
 	{
 		$settings['setup'] = 'function(ed){
 			ed.on("keyup change", function(){
-				generateShortcode();				
+				timetable_generateShortcode();				
 			});
 		}';
 	}
 	return $settings;
 }
-add_filter('tiny_mce_before_init', 'tiny_mce_on_change');
+add_filter('tiny_mce_before_init', 'timetable_tiny_mce_on_change');
 
 function tt_generate_pdf()
 {
@@ -1752,6 +1775,7 @@ function tt_generate_pdf()
 	$dompdf->loadHtml($timetable_html);
 	$dompdf->setPaper('A4', 'portrait');
 	$dompdf->render();
+	ob_end_clean();
 	$dompdf->stream("timetable.pdf");
 	exit();
 }

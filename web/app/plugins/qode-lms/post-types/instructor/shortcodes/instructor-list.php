@@ -152,6 +152,15 @@ class InstructorList implements Lib\ShortcodeInterface {
 							'dependency'  => array( 'element' => 'instructor_layout', 'value' => array('info-bellow', 'info-hover', 'simple') ),
 							'group'       => esc_html__( 'Content Layout', 'qode-lms' )
 						),
+                        array(
+                            'type'        => 'dropdown',
+                            'param_name'  => 'enable_excerpt',
+                            'heading'     => esc_html__( 'Enable Excerpt', 'qode-lms' ),
+                            'value'       => array_flip(bridge_qode_get_yes_no_select_array(false, true)),
+                            'save_always' => true,
+                            'dependency'  => array( 'element' => 'instructor_layout', 'value' => array('info-bellow') ),
+                            'group'       => esc_html__( 'Content Layout', 'qode-lms' )
+                        ),
 					)
 				)
 			);
@@ -181,7 +190,8 @@ class InstructorList implements Lib\ShortcodeInterface {
 			'slider_navigation'    => 'no',
 			'slider_pagination'    => 'no',
 			'name_title_tag'	   => '',
-			'position_title_tag'   => ''
+			'position_title_tag'   => '',
+			'enable_excerpt'       => 'yes'
 		);
 		$params = shortcode_atts( $args, $atts );
 		

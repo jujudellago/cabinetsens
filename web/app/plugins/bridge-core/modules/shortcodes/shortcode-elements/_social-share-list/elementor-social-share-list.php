@@ -17,7 +17,7 @@ class BridgeCoreElementorSocialShareList extends \Elementor\Widget_Base{
         return [ 'qode' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
         // Add predefined developer tab content for each shortcode element
         $this->start_controls_section(
             'developer_tools',
@@ -82,4 +82,4 @@ class BridgeCoreElementorSocialShareList extends \Elementor\Widget_Base{
 
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorSocialShareList() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorSocialShareList() );

@@ -16,6 +16,7 @@ class BridgeQodeIconsFontLinea implements iIconCollection {
 	public $title;
 	public $param;
 	public $styleUrl;
+	public $backTopTopIcons;
 
 	public function __construct($title = "", $param = "") {
 		$this->icons = array();

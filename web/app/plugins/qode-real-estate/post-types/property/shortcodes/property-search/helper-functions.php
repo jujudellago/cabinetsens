@@ -25,3 +25,11 @@ if( !function_exists('qodef_re_set_property_search_icon_class_name_for_vc_shortc
 
     add_filter('qodef_re_filter_add_vc_shortcodes_custom_icon_class', 'qodef_re_set_property_search_icon_class_name_for_vc_shortcodes');
 }
+
+if(!function_exists('qodef_re_include_elementor_property_search_shortcode')) {
+	function qodef_re_include_elementor_property_search_shortcode() {
+		include_once QODE_RE_CPT_PATH.'/property/shortcodes/property-search/elementor-property-search.php';
+	}
+
+	add_action('bridge_core_load_elementor_shortcodes_from_plugins', 'qodef_re_include_elementor_property_search_shortcode');
+}

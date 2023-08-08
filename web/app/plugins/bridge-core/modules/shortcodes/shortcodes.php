@@ -53,13 +53,15 @@ if(!function_exists('bridge_core_load_shortcodes')) {
      * @see http://php.net/manual/en/function.glob.php
      */
     function bridge_core_load_shortcodes() {
-        foreach(glob(BRIDGE_CORE_MODULES_PATH.'/shortcodes/shortcode-elements/*/load.php') as $shortcode_load) {
-            include_once $shortcode_load;
-        }
+    	if( bridge_core_is_theme_registered() ) {
+		    foreach(glob(BRIDGE_CORE_MODULES_PATH.'/shortcodes/shortcode-elements/*/load.php') as $shortcode_load) {
+			    include_once $shortcode_load;
+		    }
 
-		do_action('bridge_qode_action_include_shortcodes_file');
+		    do_action('bridge_qode_action_include_shortcodes_file');
 
-        include_once BRIDGE_CORE_MODULES_PATH.'/shortcodes/lib/shortcode-loader.php';
+		    include_once BRIDGE_CORE_MODULES_PATH.'/shortcodes/lib/shortcode-loader.php';
+	    }
 
     }
 
@@ -74,10 +76,11 @@ if(!function_exists('bridge_core_load_shortcodes_vc_map')) {
 	 * @see http://php.net/manual/en/function.glob.php
 	 */
 	function bridge_core_load_shortcodes_vc_map() {
-		foreach(glob(BRIDGE_CORE_MODULES_PATH.'/shortcodes/shortcode-elements/*/vc_map.php') as $shortcode_load) {
-			include_once $shortcode_load;
+		if( bridge_core_is_theme_registered() ) {
+			foreach(glob(BRIDGE_CORE_MODULES_PATH.'/shortcodes/shortcode-elements/*/vc_map.php') as $shortcode_load) {
+				include_once $shortcode_load;
+			}
 		}
-
 	}
 
 	add_action('bridge_qode_action_before_options_map', 'bridge_core_load_shortcodes_vc_map');
@@ -87,7 +90,7 @@ if(!function_exists('bridge_core_load_shortcodes_vc_map')) {
 //Load Elementor Shortcodes
 if( ! function_exists('bridge_core_load_elementor_shortcodes') ){
     function bridge_core_load_elementor_shortcodes(){
-        if( bridge_core_is_installed('elementor') ) {
+        if( bridge_core_is_installed('elementor') && bridge_core_is_theme_registered() ) {
             foreach (glob(BRIDGE_CORE_MODULES_PATH . '/shortcodes/shortcode-elements/*/elementor-*.php') as $shortcode_load) {
                 include_once $shortcode_load;
             }

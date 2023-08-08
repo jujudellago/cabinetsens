@@ -14,7 +14,7 @@ class LS_Posts {
 	 * @param  array  	$args Array of WP_Query attributes
 	 * @return bool           Success of the query
 	 */
-	public static function find($args = array()) {
+	public static function find( $args = [] ) {
 
 		// Crate new instance
 		$instance = new self;
@@ -37,7 +37,7 @@ class LS_Posts {
 		// Convert names to plural
 		foreach($postTypes as $key => $item) {
 			if(!empty($item)) {
-				$postTypes[$key] = array();
+				$postTypes[$key] = [];
 				$postTypes[$key]['slug'] = $item;
 				$postTypes[$key]['obj'] = get_post_type_object($item);
 				$postTypes[$key]['name'] = $postTypes[$key]['obj']->labels->name;
@@ -51,7 +51,7 @@ class LS_Posts {
 	public function getParsedObject() {
 
 		if( ! $this->posts ) {
-			return array();
+			return [];
 		}
 
 		foreach($this->posts as $key => $val) {
@@ -200,7 +200,7 @@ class LS_Posts {
 
 		// Meta
 		if(stripos($str, '[meta:') !== false) {
-			$matches = array();
+			$matches = [];
 			preg_match_all('/\[meta:\w(?:[-\w]*\w)?]/', $str, $matches);
 
 			foreach($matches[0] as $match) {
@@ -277,9 +277,9 @@ class LS_Posts {
 
 		if( function_exists( 'get_avatar_url' ) ) {
 
-			return '<img src="'.get_avatar_url( $post->post_author, array(
+			return '<img src="'.get_avatar_url( $post->post_author, [
 				'size' => 256
-			)).'">';
+			]).'">';
 		}
 
 		return '';

@@ -2,17 +2,16 @@
 /**
  * @author    ThemePunch <info@themepunch.com>
  * @link      https://www.themepunch.com/
- * @copyright 2019 ThemePunch
+ * @copyright 2022 ThemePunch
  */
  
 if(!defined('ABSPATH')) exit();
 
 class RevSliderLoadBalancer {
-	
+
 	public $servers = array();
 	 
-	
-	
+
 	/**
 	 * set the server list on construct
 	 **/
@@ -22,7 +21,7 @@ class RevSliderLoadBalancer {
 		
 		
 	}
-	
+
 	/**
 	 * get the url depending on the purpose, here with key, you can switch do a different server
 	 **/
@@ -128,5 +127,3 @@ class RevSliderLoadBalancer {
 		return $request;
 	}
 }
-
-?>

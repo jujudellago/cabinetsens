@@ -2,8 +2,7 @@
     <div class="latest_post">
         <div class="latest_post_image clearfix">
             <a itemprop="url" href="<?php echo get_permalink(); ?>">
-                <?php $featured_image_array = wp_get_attachment_image_src(get_post_thumbnail_id(), $thumb_size); ?>
-                <img itemprop="image" src="<?php echo esc_url($featured_image_array[0]); ?>" alt="" />
+                <?php echo wp_get_attachment_image( get_post_thumbnail_id(), $thumb_size ); ?>
             </a>
         </div>
         <div class="latest_post_text">

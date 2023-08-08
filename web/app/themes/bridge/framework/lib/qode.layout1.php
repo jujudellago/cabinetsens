@@ -372,6 +372,7 @@ class BridgeQodeTitle implements iBridgeQodeRender {
     private $name;
     private $title;
     public $hidden_property;
+    public $hidden_value;
     public $hidden_values = array();
 
     function __construct($name="",$title_class="",$hidden_property="",$hidden_value="") {

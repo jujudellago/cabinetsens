@@ -15,12 +15,12 @@ class TT_DB
 		
 		$query .= 
 		'SELECT 
-			TIME_FORMAT(eh.start, "%H.%i") AS start, 
-			TIME_FORMAT(eh.end, "%H.%i") AS end, 
+			TIME_FORMAT(eh.start, "%%H.%%i") AS start, 
+			TIME_FORMAT(eh.end, "%%H.%%i") AS end, 
 			eh.before_hour_text AS description_1, 
 			eh.after_hour_text AS description_2, 
 			e.post_title AS event_title,
-			w.post_title AS column_title, 
+			w.post_title AS column_title,
 			COUNT(ehb.booking_id) AS booking_count, 
 			eh.available_places,
 			eh.slots_per_user,
@@ -91,8 +91,8 @@ class TT_DB
 			event.ID AS event_id, 
 			event.post_title AS event_title, 
 			event_hour.event_hours_id,
-			TIME_FORMAT(event_hour.start, "%H:%i") AS start,
-			TIME_FORMAT(event_hour.end, "%H:%i") AS end,
+			TIME_FORMAT(event_hour.start, "%%H:%%i") AS start,
+			TIME_FORMAT(event_hour.end, "%%H:%%i") AS end,
 			event_hour.before_hour_text as event_description_1, 
 			event_hour.after_hour_text as event_description_2, 
 			weekday.post_title AS weekday,
@@ -316,8 +316,8 @@ class TT_DB
 		$query .= 
 		'SELECT 
 			eh.event_hours_id AS event_hour_id, 
-			TIME_FORMAT(eh.start, "%H:%i") AS start, 
-			TIME_FORMAT(eh.end, "%H:%i") AS end, 
+			TIME_FORMAT(eh.start, "%%H:%%i") AS start, 
+			TIME_FORMAT(eh.end, "%%H:%%i") AS end, 
 			eh.before_hour_text AS description_1, 
 			eh.after_hour_text AS description_2, 
 			e.ID AS event_id,

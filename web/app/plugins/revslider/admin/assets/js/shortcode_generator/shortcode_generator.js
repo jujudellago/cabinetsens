@@ -95,6 +95,8 @@ RVS.SC = RVS.SC === undefined ? {} : RVS.SC;
 							case "s":block.popup.scroll.use = true;  block.popup.scroll.type="container"; block.popup.scroll.container = v[1]; break;
 							case "so":block.popup.scroll.use = true;  block.popup.scroll.type="offset"; block.popup.scroll.v = v[1]; break;
 							case "e":block.popup.event.use = true; block.popup.event.v = v[1]; break;
+							case "ha":block.popup.hash.use = true; break;
+							case "co":block.popup.cookie.use = true; block.popup.cookie.v = v[1]; break;
 						}
 					} 
 				}
@@ -127,6 +129,8 @@ RVS.SC = RVS.SC === undefined ? {} : RVS.SC;
 					if (RVS.SC.BLOCK.popup.time!==undefined && RVS.SC.BLOCK.popup.time.use) popup += 't:'+RVS.SC.BLOCK.popup.time.v+";";
 					if (RVS.SC.BLOCK.popup.scroll!==undefined && RVS.SC.BLOCK.popup.scroll.use) if(RVS.SC.BLOCK.popup.scroll.type==="offset")  popup += 'so:'+RVS.SC.BLOCK.popup.scroll.v+";"; else popup += 's:'+RVS.SC.BLOCK.popup.scroll.container+";";					
 					if (RVS.SC.BLOCK.popup.event!==undefined && RVS.SC.BLOCK.popup.event.use) popup += 'e:'+RVS.SC.BLOCK.popup.event.v+";";
+					if (RVS.SC.BLOCK.popup.hash!==undefined && RVS.SC.BLOCK.popup.hash.use) popup += 'ha:t;';
+					if (RVS.SC.BLOCK.popup.cookie!==undefined && RVS.SC.BLOCK.popup.cookie.use) popup += 'co:'+RVS.SC.BLOCK.popup.cookie.v+';';
 					if (popup!=='') RVS.SC.BLOCK.content +=' modal="'+popup+'"';
 				}
 			} else {
@@ -219,6 +223,7 @@ RVS.SC = RVS.SC === undefined ? {} : RVS.SC;
 			RVS.F.openObjectLibrary({types: ['modules'], filter: 'all', selected: ['modules'], success: successObj});
 			
 			var folder = RVS.F.getCookie('rs6_wizard_folder');
+			
 			if(folder && folder !== -1 && folder !== '-1' && ((RVS.LIB.OBJ !==undefined && RVS.LIB.OBJ.items!==undefined && RVS.LIB.OBJ.items.modules!==undefined))) RVS.F.changeOLIBToFolder(folder);		
 			
 		},
@@ -245,16 +250,16 @@ RVS.SC = RVS.SC === undefined ? {} : RVS.SC;
 			            RVS.C.RBBS = jQuery('#rbm_blocksettings');				
 						RVS.F.initOnOff(RVS.C.RBBS);
 						RVS.F.RSDialog.create({modalid:'#rbm_blocksettings', bgopacity:0.5});
-						RVS.C.RBBS.RSScroll({wheelPropagation:false, suppressScrollX:true});
-						RVS.F.RSDialog.center();			
+						RVS.C.RBBS.RSScroll({wheelPropagation:false, suppressScrollX:true});						
 						RVS.C.RBBS.find('.origlayout').hide();
 						RVS.C.RBBS.find('.origlayout.origlayout_'+RVS.SC.BLOCK.origlayout).show();		
-						
-						if (RVS.SC.type==="wpbackery") {			
-							setTimeout(RVS.F.RSDialog.center,19);
-							setTimeout(RVS.F.RSDialog.center,50);
-						}
+						RVS.F.RSDialog.center();					
+						setTimeout(RVS.F.RSDialog.center,19);
+						setTimeout(RVS.F.RSDialog.center,50);
+						setTimeout(RVS.F.RSDialog.center,400);					
 						blockSettingsUpdate();
+					
+						
 			          }
 			      });										
 		    } 		
@@ -319,7 +324,10 @@ RVS.SC = RVS.SC === undefined ? {} : RVS.SC;
 			zindex:0,
 			popup: { time : {use:false, v:2000}, 
 					 scroll : {use:false, type:"offset", v:2000,container:""},
-					 event : {use:false, v:"popup_"+alias}},
+					 event : {use:false, v:"popup_"+alias},
+					 hash : {use:false},
+					 cookie:{use:false,v:24}
+					},
 			offset: { d : {top:"0px", bottom:"0px", left:"0px", right:"0px" ,use:false}, 
 					  n : {top:"0px", bottom:"0px", left:"0px", right:"0px",use:false}, 
 					  t : {top:"0px", bottom:"0px", left:"0px", right:"0px",use:false}, 
@@ -335,6 +343,7 @@ RVS.SC = RVS.SC === undefined ? {} : RVS.SC;
 		jQuery('.scblockinput').trigger('init');
 		if (RVS.SC.BLOCK.popup!==undefined) {
 			document.getElementById('srbs_scr_evt').innerHTML = RVS.SC.BLOCK.popup.event.v;
+			document.getElementById('srbs_scr_hash').innerHTML = RVS.SC.BLOCK.alias;
 			if (RVS.ENV.activated!==false) jQuery('.rb_not_on_notactive').removeClass("disabled"); else jQuery('.rb_not_on_notactive').addClass("disabled");
 		}
 	}
@@ -505,6 +514,8 @@ VISUAL COMPOSER HOOKS
 			_str.style.display = 'inline-block';
 			RVS.F.initOnOff(_str);
 		}
+
+		RVS.DOC.on('click','.rs_lib_premium_red',RVS.F.showRegisterSliderInfo);
 		
 		RVS.DOC.on('registrationdone',function() {
 			if (RVS.ENV.activated===false) {
@@ -536,28 +547,55 @@ VISUAL COMPOSER HOOKS
 				currentInput.data('ghost').val(cssColor);
 				currentInput.val(cssColor);
 			}
-		});			
+		});	
 
+		function isSelectWithThemes(sel) {
+			if (sel===undefined || sel.options===undefined) return false;
+			var ret = false;
+			for (var opt in sel.options) {
+				if (!sel.options.hasOwnProperty(opt) || ret) continue;
+				ret = sel.options[opt].value === "../public/views/revslider-page-template.php";
+			}
+			return ret;
+		}	
+
+		function findSelectWithThemes() {
+			var wpsc = document.getElementsByClassName('components-select-control__input'),
+				ret = false;
+			for (var i in wpsc) {
+				if (!wpsc.hasOwnProperty(i) || ret!==false) continue
+				if (isSelectWithThemes(wpsc[i])) ret = wpsc[i];
+			}
+			return ret;
+		}
+				
 		// Page Template , Color Picker, checkbox check only when RevSlider Blank Template
-		jQuery(document.body).on('change', '.editor-page-attributes__template select', function() {
-			if(jQuery(this).val() === "../public/views/revslider-page-template.php"){
+		jQuery(document.body).on('change', '.components-select-control__input, .editor-page-attributes__template select', function() {
+			
+			if (!isSelectWithThemes(this)) return;
+			
+			if(this.value === "../public/views/revslider-page-template.php"){				
 				jQuery('#rs_page_bg_color_column').show(); 
 				jQuery('#rs_blank_template').prop('checked', true);
+				jQuery('#slide_template_row .tponoffwrap').removeClass('off');
 			}
-			else {
+			else {				
 				jQuery('#rs_page_bg_color_column').hide();									
 				jQuery('#rs_blank_template').prop('checked', false);
+				jQuery('#slide_template_row .tponoffwrap').addClass('off');
 			}
 		});
 		
 		// Page Template , checkbox check sync Page Template Selectbox
 		jQuery(document.body).on('change', '#rs_blank_template', function() {
-			if(jQuery(this).prop('checked')){
-				jQuery('.editor-page-attributes__template select').val("../public/views/revslider-page-template.php").change(); 
+			var sel = findSelectWithThemes();
+			if (sel===false) sel = jQuery('.editor-page-attributes__template select'); else sel=jQuery(sel);
+			if(jQuery(this).prop('checked')){			
+				sel.val("../public/views/revslider-page-template.php").change(); 
 				jQuery('#rs_page_bg_color_column').show(); 
 			}
 			else {
-				jQuery('.editor-page-attributes__template select').val("").change();
+				sel.val("").change();
 				jQuery('#rs_page_bg_color_column').hide();
 			}
 		});

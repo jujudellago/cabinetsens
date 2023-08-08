@@ -21,7 +21,7 @@
 							<div class="qode-news-info-holder">
                                 <?php
 								echo bridge_core_get_button_v2_html(array(
-							        'text' => esc_html__('Read More','qode'),
+							        'text' => esc_html__('Read More','qode-news'),
                                     'link' => get_the_permalink()
                                 ));
                                 ?>

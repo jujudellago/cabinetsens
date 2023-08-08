@@ -73,7 +73,7 @@
 }
 
 @media only screen and (max-width: 1300px) {
-  .touch footer.uncover {
+  .touchevents footer.uncover {
     position: relative;
     top: 0;
     -webkit-transition: none;
@@ -82,7 +82,7 @@
     -ms-transition: none;
     transition: none;
   }
-  .touch .content {
+  .touchevents .content {
     margin-bottom: 0 !important;
   }
   .q_elements_holder.responsive_mode_from_1300.two_columns .q_elements_item,
@@ -1726,7 +1726,7 @@
   .have_frame.flexslider .flex-next {
     right: -60px;
   }
-  .touch .content {
+  .touchevents .content {
     margin: 0 !important;
   }
   nav.popup_menu ul li a, nav.popup_menu ul li h6 {
@@ -1915,7 +1915,8 @@
   }
   .gallery_holder ul.gallery_with_space.v4 li:nth-child(2n),
   .gallery_holder ul.gallery_with_space.v3 li:nth-child(3n),
-  .gallery_holder ul.gallery_with_space.v5 li:nth-child(3n) {
+  .gallery_holder ul.gallery_with_space.v5 li:nth-child(3n),
+  .gallery_holder ul.gallery_with_space.v6 li:nth-child(3n) {
     margin-right: 0% !important;
   }
   .gallery_holder ul.v5 li,
@@ -1923,7 +1924,8 @@
     width: 33.33333% !important;
   }
   .gallery_holder ul.gallery_with_space.v3 li,
-  .gallery_holder ul.gallery_with_space.v5 li {
+  .gallery_holder ul.gallery_with_space.v5 li,
+  .gallery_holder ul.gallery_with_space.v6 li {
     width: 32% !important;
     margin-right: 2% !important;
   }
@@ -2747,7 +2749,8 @@
   .gallery_holder ul.gallery_with_space.v2 li,
   .gallery_holder ul.gallery_with_space.v3 li,
   .gallery_holder ul.gallery_with_space.v4 li,
-  .gallery_holder ul.gallery_with_space.v5 li {
+  .gallery_holder ul.gallery_with_space.v5 li,
+  .gallery_holder ul.gallery_with_space.v6 li {
     width: 100% !important;
     margin-right: 0 !important;
     margin-bottom: 2% !important;
@@ -4325,6 +4328,49 @@ Call To Action Section shortcode responsive styles - end
   }
 }
 
+/* ==========================================================================
+   Intro Section shortcode responsive style - begin
+   ========================================================================== */
+@media only screen and (max-width: 1024px) {
+  #qodef-intro-section .qodef-is-content-wrapper {
+    width: 71% !important;
+  }
+  #qodef-intro-section .qodef-is-content-btm {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  #qodef-intro-section .qodef-is-content-wrapper {
+    width: 75% !important;
+  }
+}
+
+@media only screen and (max-width: 736px) {
+  #qodef-intro-section .qodef-btn {
+    margin-top: 75px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  #qodef-intro-section {
+    padding-top: 90px;
+    box-sizing: border-box;
+  }
+  #qodef-intro-section.qodef-is-align-bottom {
+    padding-top: 36vh;
+  }
+  #qodef-intro-section .qodef-is-content-wrapper {
+    width: 80% !important;
+  }
+  #qodef-intro-section.qodef-is-align-center .qodef-is-content-btm {
+    padding-left: 0;
+  }
+}
+
+/* ==========================================================================
+   Intro Section shortcode responsive style - end
+   ========================================================================== */
 /* ==========================================================================
    Numbered Carousel shortcode responsive style - begin
    ========================================================================== */

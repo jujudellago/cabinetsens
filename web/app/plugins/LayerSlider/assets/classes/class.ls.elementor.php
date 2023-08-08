@@ -7,10 +7,8 @@ defined( 'LS_ROOT_FILE' ) || exit;
 
 final class LS_Elementor {
 
-	const MINIMUM_ELEMENTOR_VERSION = '2.0.0';
-
+	const MINIMUM_ELEMENTOR_VERSION = '3.5.0';
 	const MINIMUM_PHP_VERSION = '5.4';
-
 
 	private static $_instance = null;
 
@@ -26,50 +24,26 @@ final class LS_Elementor {
 
 
 	public function widget_scripts() {
-
 		ls_enqueue_slider_library();
 
-		wp_enqueue_style(
-			'ls-elementor',
-			LS_ROOT_URL.'/static/admin/css/elementor.css',
-			array( 'elementor-editor' ),
-			LS_PLUGIN_VERSION
-		);
+		wp_enqueue_style('ls-elementor', LS_ROOT_URL.'/static/admin/css/elementor.css', ['elementor-editor'], LS_PLUGIN_VERSION );
+		wp_enqueue_script( 'ls-elementor-backend', LS_ROOT_URL.'/static/admin/js/elementor-backend.js', ['kreatura-modal'], LS_PLUGIN_VERSION, true);
 
-		wp_enqueue_script(
-			'ls-elementor-backend',
-			LS_ROOT_URL.'/static/admin/js/elementor-backend.js',
-			array( 'kreatura-modal-window' ),
-			LS_PLUGIN_VERSION,
-			true
-		);
-
-		wp_localize_script(
-			'ls-elementor-backend',
-			'LS_Widget', array(
-				'editorUrl'	=> admin_url( 'admin.php?page=layerslider&action=edit&id=' ),
-				'i18n'		=> array(
-					'modalTitle' => __('Quick Edit LayerSlider', 'LayerSlider'),
-					'ChangesYouMadeMayNotBeSaved' => __( 'Changes you made may not be saved. Are you sure you want to continue?', 'LayerSlider' ),
-				),
-			)
-		);
+		wp_localize_script('ls-elementor-backend', 'LS_Widget', [
+			'editorUrl'	=> admin_url( 'admin.php?page=layerslider&action=edit&id=' ),
+			'i18n'		=> [
+				'modalTitle' => __('Quick Edit LayerSlider', 'LayerSlider'),
+				'ChangesYouMadeMayNotBeSaved' => __( 'Changes you made may not be saved. Are you sure you want to continue?', 'LayerSlider' ),
+			]
+		]);
 	}
 
 
-	private function include_widgets_files() {
+	public function register_widgets( $widgets_manager ) {
 
+		// Load Widget class and register it
 		require_once( LS_ROOT_PATH . '/classes/class.ls.elementor.widget.php' );
-	}
-
-
-	public function register_widgets() {
-
-		// Load Widget files
-		$this->include_widgets_files();
-
-		// Register Widget
-		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new Widgets\LS_Elementor_Widget() );
+		$widgets_manager->register( new Widgets\LS_Elementor_Widget() );
 
 		// Override user provided advanced settings in order to
 		// force loading all scripts in the preview window.
@@ -99,16 +73,15 @@ final class LS_Elementor {
 		}
 
 		// Register widget scripts
-		add_action( 'elementor/editor/before_enqueue_scripts', array( $this, 'widget_scripts' ) );
+		add_action( 'elementor/editor/before_enqueue_scripts', [ $this, 'widget_scripts' ] );
 
 		// Register widgets
-		add_action( 'elementor/widgets/widgets_registered', array( $this, 'register_widgets' ) );
+		add_action( 'elementor/widgets/register', [ $this, 'register_widgets' ] );
 	}
 
 
 	private function __construct() {
-
-		add_action( 'plugins_loaded', array( $this, 'init' ) );
+		add_action( 'plugins_loaded', [ $this, 'init' ] );
 	}
 }
 

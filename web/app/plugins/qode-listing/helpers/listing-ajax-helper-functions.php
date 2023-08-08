@@ -88,7 +88,7 @@ if(!function_exists('qode_listing_get_archive_search_response')){
 				$cat_array[] = $cat;
 			}
 			$meta_query_flag = false;
-			if(count($amenities) || count($customFields)){
+			if(( is_array($amenities) && count($amenities) ) || (is_array($customFields) && count($customFields)) ){
 				$meta_query_flag = true;
 			}
 

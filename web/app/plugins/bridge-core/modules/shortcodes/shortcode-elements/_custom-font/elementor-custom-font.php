@@ -17,7 +17,7 @@ class BridgeCoreElementorCustomFont extends \Elementor\Widget_Base{
         return [ 'qode' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -174,7 +174,7 @@ class BridgeCoreElementorCustomFont extends \Elementor\Widget_Base{
             [
                 'label' => esc_html__( "Content", 'bridge-core' ),
                 'type' => \Elementor\Controls_Manager::TEXTAREA,
-                'default' => '<p>' . esc_html__( 'content content content', 'bridge-core' ) . '</p>'
+                'default' => esc_html__( 'content content content', 'bridge-core' )
             ]
         );
 
@@ -247,4 +247,4 @@ class BridgeCoreElementorCustomFont extends \Elementor\Widget_Base{
 
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorCustomFont() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorCustomFont() );

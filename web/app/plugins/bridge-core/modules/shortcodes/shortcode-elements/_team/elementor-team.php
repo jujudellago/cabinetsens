@@ -17,7 +17,7 @@ class BridgeCoreElementorTeam extends \Elementor\Widget_Base{
         return [ 'qode' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
 		$social_icons_array = array(
 			"" => "",
@@ -295,4 +295,4 @@ class BridgeCoreElementorTeam extends \Elementor\Widget_Base{
 
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorTeam() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorTeam() );

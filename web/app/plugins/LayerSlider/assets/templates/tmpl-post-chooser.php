@@ -1,27 +1,39 @@
 <?php defined( 'LS_ROOT_FILE' ) || exit; ?>
-<script type="text/html" id="tmpl-post-chooser">
-	<div id="ls-post-chooser-modal-window">
-		<h1 class="kmw-modal-title"><?php _e('Select the Post, Page or Attachment you want to use', 'LayerSlider') ?></h1>
+<lse-b id="tmpl-post-chooser" class="lse-dn">
+	<lse-b id="lse-post-chooser-modal-window">
+		<kmw-h1 class="kmw-modal-title"><?= __('Select the Post, Page or Attachment you want to use', 'LayerSlider') ?></kmw-h1>
 
 		<form method="post">
-			<?php wp_nonce_field( 'ls_get_search_posts' ) ?>
-			<input type="hidden" name="action" value="ls_get_search_posts">
-			<div class="search-holder">
-				<input type="search" name="s" placeholder="<?php _e('Type here to search ...', 'LayerSlider') ?>">
-			</div>
-			<select name="post_type">
-				<option value="page"><?php _e('Pages', 'LayerSlider') ?></option>
-				<option value="post"><?php _e('Posts', 'LayerSlider') ?></option>
-				<option value="attachment"><?php _e('Attachments', 'LayerSlider') ?></option>
-			</select>
+			<?php wp_nonce_field( 'lse_get_search_posts' ) ?>
+			<input type="hidden" name="action" value="lse_get_search_posts">
+			<table class="lse-light-theme">
+				<tbody>
+					<tr>
+						<td>
+							<input class="lse-large" type="search" name="s" placeholder="<?= __('Type here to search ...', 'LayerSlider') ?>">
+						</td>
+						<td>
+							<lse-fe-wrapper class="lse-select">
+								<select name="post_type" class="lse-large">
+									<option value="page"><?= __('Pages', 'LayerSlider') ?></option>
+									<option value="post"><?= __('Posts', 'LayerSlider') ?></option>
+									<option value="attachment"><?= __('Attachments', 'LayerSlider') ?></option>
+								</select>
+							</lse-fe-wrapper>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</form>
 
-		<div class="results ls-post-previews">
-			<ul>
+		<lse-b class="results lse-post-previews">
+			<lse-grid>
+				<lse-row>
 
-			</ul>
-		</div>
+				</lse-row>
+			</lse-grid>
+		</lse-b>
 
-	</div>
+	</lse-b>
 
-</script>
+</lse-b>

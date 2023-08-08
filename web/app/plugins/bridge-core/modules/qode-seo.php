@@ -28,7 +28,7 @@ if(!function_exists('bridge_core_header_meta')) {
         }
 
 
-		if ( ! function_exists( 'has_site_icon' ) || ! has_site_icon() ) { ?>
+		if ( ( ! function_exists( 'has_site_icon' ) || ! has_site_icon() ) && ! empty( $bridge_qode_options['favicon_image'] ) ) { ?>
             <link rel="shortcut icon" type="image/x-icon" href="<?php echo esc_url( $bridge_qode_options['favicon_image'] ); ?>">
             <link rel="apple-touch-icon" href="<?php echo esc_url( $bridge_qode_options['favicon_image'] ); ?>"/>
         <?php }

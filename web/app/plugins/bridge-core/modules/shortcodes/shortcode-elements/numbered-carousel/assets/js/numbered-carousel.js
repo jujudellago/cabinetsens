@@ -180,6 +180,50 @@
                 Modernizr.touch && holder[0].addEventListener('touchstart', touchStart);
                 Modernizr.touch && holder[0].addEventListener('touchmove', touchMove);
             }
+
+            if (qode.windowWidth < 1025) {
+                var dragEvent = {
+                    down: 'touchstart',
+                    up: 'touchend',
+                    target: 'srcElement',
+                }
+
+                var getXPos = function (e) {
+                    return e.originalEvent.changedTouches[0].clientX;
+                }
+
+                var touchScrolling = function (oldEvent, newEvent) {
+                    var oldY = oldEvent.originalEvent.changedTouches[0].clientY,
+                        newY = newEvent.originalEvent.changedTouches[0].clientY;
+
+                    if (Math.abs(newY - oldY) > 100) { // 100 is drag sensitivity
+                        return true;
+                    };
+                    return false;
+                }
+
+                var mouseDown = false;
+                holder.on(dragEvent.down, function (e) {
+                    if (!mouseDown && !$(e[dragEvent.target]).is('a, span')) {
+                        var oldEvent = e,
+                            xPos = getXPos(e);
+                        mouseDown = true;
+
+                        holder.one(dragEvent.up, function (e) {
+                            var xPosNew = getXPos(e);
+                            if (Math.abs(xPos - xPosNew) > 10 && !touchScrolling(oldEvent, e)) {
+                                var activeIndex = holder.data('active-index');
+                                if (xPos > xPosNew) {
+                                    activeIndex < holder.data('items') && slideTo(holder, swiper, 'next');
+                                } else {
+                                    activeIndex > 1 && slideTo(holder, swiper, 'prev');
+                                }
+                            }
+                            mouseDown = false;
+                        });
+                    }
+                });
+            }
         }
 
         return {

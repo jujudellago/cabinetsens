@@ -76,7 +76,7 @@ if(isset($bridge_qode_options['enable_social_share']) && $bridge_qode_options['e
 			}
 			if(isset($bridge_qode_options['enable_linkedin']) && $bridge_qode_options['enable_linkedin'] == "yes") {
 				$html .= '<li  class="linkedin_share">';
-				$html .= '<a href="#" class="'.esc_html__('Share on LinkedIn','bridge-core').'" onclick="popUp=window.open(\'http://linkedin.com/shareArticle?mini=true&amp;url=' . urlencode(get_permalink()). '&amp;title=' . urlencode(get_the_title()) . '\', \'popupwindow\', \'scrollbars=yes,width=800,height=400\');popUp.focus();return false">';
+				$html .= '<a href="#" title="'.esc_html__('Share on LinkedIn','bridge-core').'" onclick="popUp=window.open(\'http://linkedin.com/shareArticle?mini=true&amp;url=' . urlencode(get_permalink()). '&amp;title=' . urlencode(get_the_title()) . '\', \'popupwindow\', \'scrollbars=yes,width=800,height=400\');popUp.focus();return false">';
 				if(!empty($bridge_qode_options['linkedin_icon'])) {
 					$html .= '<img itemprop="image" src="' . $bridge_qode_options['linkedin_icon'] . '" alt="" />';
 				} else {

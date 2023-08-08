@@ -1,5 +1,5 @@
 <?php
-$headings_array = array('h2', 'h3', 'h4', 'h5', 'h6', 'p');
+$headings_array = array('h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p');
 
 //get correct heading value. If provided heading isn't valid get the default one
 $title_tag = (in_array($title_tag, $headings_array)) ? $title_tag : $args['title_tag'];

@@ -133,6 +133,12 @@ if ( ! class_exists( 'BridgeCoreDashboard' ) ) {
 			wp_die();
 		}
 
+		function theme_validation() {
+			$is_theme_active = bridge_core_is_installed( 'theme' );
+
+			bridge_core_ajax_status( 'success', '', array( 'is_theme_active' => $is_theme_active ) );
+		}
+
 		function register_purchase_code() {
 			$data        = array();
 			$data_string = $_POST['options']['post'];
@@ -241,6 +247,16 @@ if ( ! class_exists( 'BridgeCoreDashboard' ) ) {
 			return '';
 		}
 
+		function get_code() {
+			$code = $this->get_purchased_code();
+
+			if ( empty( $code ) && ( in_array( getenv( 'REMOTE_ADDR' ), array( '127.0.0.1', '::1' ), true ) || strpos( getenv( 'HTTP_HOST' ), 'qodeinteractive' ) !== false ) ) {
+				$code = true;
+			}
+
+			return $code;
+		}
+
 		function get_import_params() {
 			$params = get_option( $this->import_field );
 
@@ -330,6 +346,12 @@ if ( ! class_exists( 'BridgeCoreDashboard' ) ) {
 
 
 			return $message;
+		}
+
+		public function is_theme_registered() {
+        	$code = $this->get_code();
+
+        	return bridge_core_is_installed( 'theme' ) && $code;
 		}
 
 	}

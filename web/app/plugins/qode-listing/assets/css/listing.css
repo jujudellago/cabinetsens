@@ -423,6 +423,7 @@ span.ui-helper-hidden-accessible {
 
 .qode-ls-archive-holder .qode-ls-archive-items.qode-ls-archive-two-columns article {
   width: 50%;
+  float: left;
 }
 
 @media only screen and (min-width: 1025px) {
@@ -433,6 +434,7 @@ span.ui-helper-hidden-accessible {
 
 .qode-ls-archive-holder .qode-ls-archive-items.qode-ls-archive-three-columns article {
   width: 33.33333%;
+  float: left;
 }
 
 @media only screen and (min-width: 1025px) {
@@ -443,6 +445,7 @@ span.ui-helper-hidden-accessible {
 
 .qode-ls-archive-holder .qode-ls-archive-items.qode-ls-archive-four-columns article {
   width: 25%;
+  float: left;
 }
 
 @media only screen and (min-width: 1201px) {
@@ -453,6 +456,7 @@ span.ui-helper-hidden-accessible {
 
 .qode-ls-archive-holder .qode-ls-archive-items.qode-ls-archive-five-columns article {
   width: 20%;
+  float: left;
 }
 
 @media only screen and (min-width: 1201px) {
@@ -3286,6 +3290,7 @@ body.elementor-editor-active .qode-ls-main-search-holder-part .select2-container
   vertical-align: middle;
   padding-right: 42px;
   position: relative;
+  box-sizing: content-box;
 }
 
 .qode-ls-testimonials article .qode-ls-testimonial-left-part .qode-ls-testimonial-quote {
@@ -6507,6 +6512,7 @@ body.elementor-editor-active .qode-ls-main-search-holder-part .select2-container
   vertical-align: middle;
   padding-right: 42px;
   position: relative;
+  box-sizing: content-box;
 }
 
 .qode-ls-testimonials article .qode-ls-testimonial-left-part .qode-ls-testimonial-quote {

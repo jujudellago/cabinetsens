@@ -17,7 +17,7 @@ class BridgeCoreElementorCounter extends \Elementor\Widget_Base{
         return [ 'qode' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -198,15 +198,70 @@ class BridgeCoreElementorCounter extends \Elementor\Widget_Base{
         );
 
         $this->end_controls_section();
+
+        // Add predefined developer tab content for each shortcode element
+        $this->start_controls_section(
+            'developer_tools',
+            [
+                'label' => esc_html__( 'Developer Tools', 'bridge-core' ),
+                'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+            ]
+        );
+
+        $this->add_control(
+            'shortcode_snippet',
+            [
+                'label'   => esc_html__( 'Show Shortcode Snippet', 'bridge-core' ),
+                'type'    => \Elementor\Controls_Manager::SELECT,
+                'default' => 'no',
+                'options' => array(
+                    'no'  => esc_html__( 'No', 'bridge-core' ),
+                    'yes' => esc_html__( 'Yes', 'bridge-core' ),
+                ),
+            ]
+        );
+
+        $this->end_controls_section();
     }
 
     protected function render(){
         $params = $this->get_settings_for_display();
         $params['content'] = '';
 
-        echo bridge_core_get_shortcode_template_part('templates/counter', '_counter', '', $params);
+        if( ! empty( $params['shortcode_snippet'] ) && $params['shortcode_snippet'] == 'yes' ){
+            echo $this->get_shortcode_snippet( $params );
+        } else{
+            echo bridge_core_get_shortcode_template_part('templates/counter', '_counter', '', $params);
+        }
+    }
+
+    private function get_shortcode_snippet( $params ) {
+        $atts = array();
+
+        if ( empty( $this ) || ! is_object( $this ) ) {
+            return '';
+        }
+
+        if ( ! empty( $params ) ) {
+            foreach ( $params as $key => $value ) {
+                if ( is_array( $value ) || $key === 'shortcode_snippet' ) {
+                    continue;
+                }
+
+                if( empty( $value ) || $value == '' ){
+                    continue;
+                }
+
+                $atts[] = $key . '="' . esc_attr( $value ) . '"';
+            }
+        }
+
+        return sprintf( '<textarea class="qode-shortcode-snipper-holder" readonly>[%s %s]</textarea>',
+            'counter',
+            implode( ' ', $atts )
+        );
     }
 
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorCounter() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorCounter() );

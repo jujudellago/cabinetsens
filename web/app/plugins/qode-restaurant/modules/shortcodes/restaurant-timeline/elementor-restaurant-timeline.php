@@ -17,7 +17,7 @@ class QodeRestaurantElementorRestaurantTimeline extends \Elementor\Widget_Base{
         return [ 'qode-restaurant' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -77,4 +77,4 @@ class QodeRestaurantElementorRestaurantTimeline extends \Elementor\Widget_Base{
     }
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new QodeRestaurantElementorRestaurantTimeline() );
+\Elementor\Plugin::instance()->widgets_manager->register( new QodeRestaurantElementorRestaurantTimeline() );

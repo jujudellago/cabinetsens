@@ -1,6 +1,4 @@
-<h2 class="qodef-membership-page-title"><?php esc_html_e('My Packages', 'qode-real-estate'); ?></h2>
-<p><?php esc_html_e('My packages', 'qode-real-estate'); ?></p>
-
+<h5 class="qodef-membership-page-title"><?php esc_html_e('My Packages', 'qode-real-estate'); ?></h5>
 <div class="qodef-re-profile-packages-holder">
     <table>
         <thead>

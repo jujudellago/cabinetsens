@@ -637,7 +637,7 @@
             var dataAtts = evt.params.data.element.dataset;
             var type = dataAtts.type;
             var order = dataAtts.order;
-            thisList.data('order-by', type);
+            thisList.data('orderby', type);
             thisList.data('order', order);
             thisList.data('next-page', 1);
             qodeInitCoursePagination().getMainPagFunction(thisList, 1);

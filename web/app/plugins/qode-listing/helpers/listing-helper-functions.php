@@ -148,10 +148,15 @@ if(!function_exists('qode_listing_get_listing_categories')){
 			'number'    => $number,
 			'meta_key'    => $meta_key,
 			'meta_value'    => $meta_value,
-			'include'      => $include
+			'include'      => $include,
+            'order'         => 'ASC',
 		);
 
-		$cats = qode_listing_get_terms_ordered('job_listing_category', $args, $include_params, 'slug');
+        if ( !empty($categories_by_custom_order) && $categories_by_custom_order === 'yes' ) {
+            $cats = get_terms( 'job_listing_category', $args );
+        } else {
+            $cats = qode_listing_get_terms_ordered('job_listing_category', $args, $include_params, 'slug');
+        }
 
 		if(is_array($cats) && count($cats) ){
 			foreach($cats as $cat){
@@ -160,6 +165,7 @@ if(!function_exists('qode_listing_get_listing_categories')){
 				$gallery_size = get_term_meta($cat->term_id, 'gallery_size', true);
 				$gallery_type = get_term_meta($cat->term_id, 'gallery_type', true);
 				$custom_link  = get_term_meta($cat->term_id, 'category_custom_link', true);
+				$custom_order  = get_term_meta($cat->term_id, 'listing_category_order', true);
 
 				if($gallery_size === ''){
 				    $gallery_size = 'square-small';
@@ -185,11 +191,20 @@ if(!function_exists('qode_listing_get_listing_categories')){
 					'gallery_size' => $gallery_size,
 					'link'    => $gallery_link,
 					'custom_link' => $custom_link,
-					'classes' => $gallery_classes
+					'classes' => $gallery_classes,
+                    'custom-order' => $custom_order
 				);
 
 			}
 		}
+
+        if ( !empty($categories_by_custom_order) && $categories_by_custom_order === 'yes' ) {
+            usort($cat_array, function($a, $b) {
+                $retval = intval($a['custom-order']) - intval($b['custom-order']);
+                return $retval;
+            });
+        }
+
 		return $cat_array;
 	}
 }

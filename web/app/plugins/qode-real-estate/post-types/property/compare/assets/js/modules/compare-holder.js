@@ -42,15 +42,15 @@
 
                 if (!compareHolderButtonOpen.hasClass('opened')) {
                     compareHolderButtonOpen.addClass('opened');
-                    qodef.body.addClass(cssClass);
+                    qode_body.addClass(cssClass);
 
                     $('.qodef-wrapper .qodef-cover').on('click', function () {
-                        qodef.body.removeClass(cssClass);
+                        qode_body.removeClass(cssClass);
                         compareHolderButtonOpen.removeClass('opened');
                     });
                 } else {
                     compareHolderButtonOpen.removeClass('opened');
-                    qodef.body.removeClass(cssClass);
+                    qode_body.removeClass(cssClass);
                 }
             });
 
@@ -79,14 +79,28 @@
     function qodefCompareHolderScroll(){
         var compareHolderScroll = $('.qodef-re-compare-holder .qodef-re-compare-holder-scroll');
         if(compareHolderScroll.length){
-            var itemsHolder = compareHolderScroll.find('.qodef-re-compare-items-holder');
-            var actionsHolder = compareHolderScroll.find('.qodef-re-compare-actions');
-            var completeHeight = itemsHolder.outerHeight() + actionsHolder.outerHeight();
-            compareHolderScroll.height(completeHeight + 30);
-            compareHolderScroll.perfectScrollbar({
+            var itemsHolder = compareHolderScroll.find('.qodef-re-compare-items-holder'),
+                titleHolder = $( '.qodef-re-compare-holder-title' ),
+                actionsHolder = compareHolderScroll.find('.qodef-re-compare-actions'),
+                itemsHolderHeight = titleHolder.outerHeight( true ) + actionsHolder.outerHeight( true );
+
+            itemsHolder.css('height', 'calc(100% - ' + itemsHolderHeight + 'px)');
+
+            var $defaultParams = {
                 wheelSpeed: 0.6,
                 suppressScrollX: true
-            });
+            };
+
+            var $compareHolderPS = new PerfectScrollbar(
+                itemsHolder[0],
+                $defaultParams
+            );
+
+            $( window ).resize(
+                function () {
+                    $compareHolderPS.update();
+                }
+            );
         }
     }
 
@@ -164,7 +178,6 @@
         if(comparePopupHolder.length) {
             if(!comparePopupHolder.hasClass('qodef-re-popup-opened')){
                 comparePopupHolder.addClass('qodef-re-popup-opened');
-                qode.modules.common.qodefDisableScroll();
 	            qodefInitComparePopupScroll();
             }
         }
@@ -173,16 +186,27 @@
     function qodefInitComparePopupScroll(){
         var comparePopupHolder = $('.qodef-re-compare-popup'),
             itemsHolder = comparePopupHolder.find('#qodef-re-popup-items');
-	    itemsHolder.perfectScrollbar({
+
+        var $defaultParams = {
             wheelSpeed: 0.6,
             suppressScrollX: true
-        });
+        };
+
+        var $comparePopUpPS = new PerfectScrollbar(
+            itemsHolder[0],
+            $defaultParams
+        );
+
+        $( window ).resize(
+            function () {
+                $comparePopUpPS.update();
+            }
+        );
     }
 
     function qodefInitComparePopupClose(){
         var comparePopupHolder = $('.qodef-re-compare-popup');
         comparePopupHolder.removeClass('qodef-re-popup-opened');
-	    qode.modules.common.qodefEnableScroll();
     }
 
     function qodefInitItemsReset() {

@@ -1,5 +1,5 @@
 jQuery(document).ready(function($){
-	
+	"use strict";
 	var vc_tt_fields = vc_timetable_fields();
 	
 	//visual composer - trigger change on shortcode_id when editor loads	

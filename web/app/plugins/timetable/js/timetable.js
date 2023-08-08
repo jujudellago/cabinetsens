@@ -1,8 +1,9 @@
 jQuery(document).ready(function($){
+	"use strict";
 	var $timetable = $(),	//allows to determine which timetable should be used
 		tt_atts;	//value depends on the active timetable
 	
-	$(".tt_tabs_navigation a").click(function(event){
+	$(".tt_tabs_navigation a").on("click", function(event){
 		var $this = $(this);
 		$this.parent().parent().find("li").removeClass("ui-tabs-active");
 		$this.parent().addClass("ui-tabs-active");
@@ -29,13 +30,16 @@ jQuery(document).ready(function($){
 			
 //			scroll to active timetable
 			var param_fragment = escape_str($.param.fragment());
-			if($('#' + param_fragment).closest(".tt_wrapper").length)
-				$("html, body").animate({scrollTop: $('#' + param_fragment).closest(".tt_wrapper").offset().top-80}, 400);
+			if(param_fragment!="")
+			{
+				if($('#' + param_fragment).closest(".tt_wrapper").length)
+					$("html, body").animate({scrollTop: $('#' + param_fragment).closest(".tt_wrapper").offset().top-80}, 400);
+			}
 		}
 	});
 	
 	//browser history
-	$(".tt_tabs .ui-tabs-nav a").click(function(){
+	$(".tt_tabs .ui-tabs-nav a").on("click", function(){
 		if($(this).attr("href").substr(0,4)!="http")
 			$.bbq.pushState($(this).attr("href"));
 		else
@@ -47,7 +51,7 @@ jQuery(document).ready(function($){
 		$(this).find("ul").removeClass("tabs_box_navigation_hidden");
 	});
 	
-	$(".tabs_box_navigation a").click(function(event){
+	$(".tabs_box_navigation a").on("click", function(event){
 		if($.param.fragment()==$(this).attr("href").replace("#", "") || ($.param.fragment()=="" && $(this).attr("href").replace("#", "").substr(0, 10)=="all-events"))
 			event.preventDefault();
 		$(this).parent().parent().find(".selected").removeClass("selected");
@@ -56,7 +60,7 @@ jQuery(document).ready(function($){
 		$(this).parent().parent().addClass("tabs_box_navigation_hidden");
 	});
 	
-	$(".tt_tabs_navigation:not(.all_filter) a, .tabs_box_navigation:not(.all_filter) a").click(function(event){
+	$(".tt_tabs_navigation:not(.all_filter) a, .tabs_box_navigation:not(.all_filter) a").on("click", function(event){
 		event.preventDefault();
 		var $this = $(this),
 			hash,
@@ -111,7 +115,7 @@ jQuery(document).ready(function($){
 	});
 	
 	//hashchange
-	$(window).bind("hashchange", function(event){
+	$(window).on("hashchange", function(event){
 		var param_fragment = escape_str($.param.fragment());
 		//some browsers will have the URL fragment already encoded, 
 		//while others will not, thus it's necessary to handle both cases.
@@ -125,7 +129,7 @@ jQuery(document).ready(function($){
 	}).trigger("hashchange");
 	
 	//tooltip
-	$(".tt_tooltip").bind("mouseover click", function(){
+	$(".tt_tooltip").on("mouseover click", function(){
 		var $this = $(this),
 			$attach_to = $this,
 			$tooltip_text,
@@ -161,7 +165,7 @@ jQuery(document).ready(function($){
 	});
 	
 	//Handle hover booking buttons in RTL mode
-	$("body.rtl .booking_hover_buttons td.event").bind("mouseover click", function(){
+	$("body.rtl .booking_hover_buttons td.event").on("mouseover click", function(){
 		var $td = $(this),
 			button_height = 50,	/* fixed value */
 			height,
@@ -227,13 +231,15 @@ jQuery(document).ready(function($){
 			}
 		});
 		
-		self.find("li a.tt_upcoming_events_event_container, li>span").hover(function(){
-			self.trigger("configuration", ["debug", false, true]);
-		},
-		function(){
-			setTimeout(function(){
+		self.find("li a.tt_upcoming_events_event_container, li>span").on({
+			mouseenter: function(){
 				self.trigger("configuration", ["debug", false, true]);
-			}, 1);
+			},
+			mouseleave: function(){
+				setTimeout(function(){
+					self.trigger("configuration", ["debug", false, true]);
+				}, 1);
+			}
 		});
 	});
 	$(window).resize(function(){
@@ -707,7 +713,7 @@ jQuery(document).ready(function($){
 		if($booking_link.length)
 		{
 			$('html, body').animate({scrollTop: $booking_link.offset().top-80}, 400);
-			$booking_link.click();
+			$booking_link.trigger("click");
 		}
 	}
 	

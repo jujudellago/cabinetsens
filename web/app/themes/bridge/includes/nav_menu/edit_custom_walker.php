@@ -84,11 +84,20 @@ class Bridge_Qode_Walker_Nav_Menu_Edit_Custom extends Walker_Nav_Menu  {
 
 	    $title = empty( $item->label ) ? $title : $item->label;
 
+		$submenu_text = '';
+		if ( 0 === $depth ) {
+			$submenu_text = 'style="display: none;"';
+		}
+
 	    ?>
 	    <li id="menu-item-<?php echo esc_attr($item_id); ?>" class="<?php echo implode(' ', $classes ); ?>">
-	        <dl class="menu-item-bar">
-	            <dt class="menu-item-handle">
-	                <span class="item-title"><?php echo esc_html( $title ); ?></span>
+	        <div class="menu-item-bar">
+	            <div class="menu-item-handle">
+		            <label class="item-title" for="menu-item-checkbox-<?php echo $item_id; ?>">
+			            <input id="menu-item-checkbox-<?php echo $item_id; ?>" type="checkbox" class="menu-item-checkbox" data-menu-item-id="<?php echo $item_id; ?>" disabled="disabled" />
+	                    <span class="menu-item-title"><?php echo esc_html( $title ); ?></span>
+			            <span class="is-submenu" <?php echo $submenu_text; ?>><?php _e( 'sub item' ); ?></span>
+		            </label>
 	                <span class="item-controls">
                         <span class="spinner"></span>
 	                    <span class="item-type"><?php echo esc_html( $item->type_label ); ?></span>
@@ -123,8 +132,8 @@ class Bridge_Qode_Walker_Nav_Menu_Edit_Custom extends Walker_Nav_Menu  {
 	                        echo ( isset( $_GET['edit-menu-item'] ) && $item_id == $_GET['edit-menu-item'] ) ? admin_url( 'nav-menus.php' ) : esc_url(add_query_arg( 'edit-menu-item', $item_id, remove_query_arg( $removed_args, admin_url( 'nav-menus.php#menu-item-settings-' . $item_id ) ) ));
 	                    ?>"><?php esc_html_e( 'Edit Menu Item', 'bridge' ); ?></a>
 	                </span>
-	            </dt>
-	        </dl>
+	            </div>
+	        </div>
 
 	        <div class="menu-item-settings wp-clearfix" id="menu-item-settings-<?php echo esc_attr($item_id); ?>">
 	            <?php if( 'custom' == $item->type ) : ?>

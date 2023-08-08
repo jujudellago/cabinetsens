@@ -125,7 +125,7 @@ class ListingQuery{
 					}
 				}
 			}
-			if(count($this->default_meta_params)){
+			if( is_array( $this->default_meta_params ) && count($this->default_meta_params)) {
 
 				foreach ($this->default_meta_params as $param_key => $param_value){
 

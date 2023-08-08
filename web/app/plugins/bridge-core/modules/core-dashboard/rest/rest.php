@@ -11,7 +11,7 @@ if ( ! class_exists( 'BridgeCoreDashboardRestAPI' ) ) {
 
 		public function __construct() {
 			// Init variables
-			$this->set_namespace( 'bridge-core/v1' );
+			$this->set_namespace( 'qode-api/v1' );
 			$this->set_route( 'dashboard' );
 
 			// Localize theme's main js script with rest variable

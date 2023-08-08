@@ -1,9 +1,9 @@
 <?php defined( 'LS_ROOT_FILE' ) || exit; ?>
 <script type="text/html" id="tmpl-slider-group-placeholder">
-<div class="item scale0">
-	<div class="preview">
+<div class="ls-item ls-scale0">
+	<div class="ls-preview">
 		<div class="no-preview">
-			<?php _e('No Preview', 'LayerSlider') ?>
+			<?= __('No Preview', 'LayerSlider') ?>
 		</div>
 	</div>
 </div>

@@ -124,7 +124,7 @@ function tt_timetable($atts, $content)
 	
 	//replace square entites to their applicable characters
 	$attributes = shortcode_atts($defaults, $atts);
-	array_walk($attributes, function(&$val, &$key) {
+	array_walk($attributes, function(&$val, $key) {
 		$val = html_entity_decode($val);
 	});
 	
@@ -157,8 +157,8 @@ function tt_timetable($atts, $content)
 	
 	if(!$hide_all_events_view)
 	{
-		$events_list_html = '<li><a href="#all-events' . ($id!='' ? '-' . urlencode($id) : '') . '" title="' . esc_attr($filter_label) . '">' . $filter_label . '</a></li>';
-		$events_categories_list_html = '<li><a href="#all-events' . ($id!='' ? '-' . urlencode($id) : '') . '" title="' . esc_attr(($filter_kind=="event_and_event_category" ? $filter_label_2 : $filter_label)) . '">' . ($filter_kind=="event_and_event_category" ? $filter_label_2 : $filter_label) . '</a></li>';
+		$events_list_html = '<li><a href="#all-events' . ($id!='' ? '-' . urlencode($id) : '') . '" title="' . esc_attr($filter_label) . '" class="et_smooth_scroll_disabled">' . $filter_label . '</a></li>';
+		$events_categories_list_html = '<li><a href="#all-events' . ($id!='' ? '-' . urlencode($id) : '') . '" title="' . esc_attr(($filter_kind=="event_and_event_category" ? $filter_label_2 : $filter_label)) . '" class="et_smooth_scroll_disabled">' . ($filter_kind=="event_and_event_category" ? $filter_label_2 : $filter_label) . '</a></li>';
 	}
 	else
 	{
@@ -176,7 +176,7 @@ function tt_timetable($atts, $content)
 				'post_status' => 'publish'
 			));
 			if($events_list)
-				$events_list_html .= '<li><a href="#' . urlencode($events_array[$i]) . ($id!='' ? '-' . urlencode($id) : '') . '" title="' . esc_attr($events_list[0]->post_title) . '">' . $events_list[0]->post_title . '</a></li>';
+				$events_list_html .= '<li><a href="#' . urlencode($events_array[$i]) . ($id!='' ? '-' . urlencode($id) : '') . '" title="' . esc_attr($events_list[0]->post_title) . '" class="et_smooth_scroll_disabled">' . $events_list[0]->post_title . '</a></li>';
 			if($hide_all_events_view && $filter_style=="dropdown_list" && ($filter_label=="All Events" || $filter_label=="") && !$i)
 			{
 				$filter_label = $events_list[$i]->post_title;
@@ -193,7 +193,7 @@ function tt_timetable($atts, $content)
 			$category = get_term_by("slug", $event_category_array[$i], "events_category");
 			if(!empty($category))
 			{
-				$events_categories_list_html .= '<li><a href="#' . urlencode($event_category_array[$i]) . ($id!='' ? '-' . urlencode($id) : '') . '" title="' . esc_attr($category->name) . '">' . $category->name . '</a></li>';
+				$events_categories_list_html .= '<li><a href="#' . urlencode($event_category_array[$i]) . ($id!='' ? '-' . urlencode($id) : '') . '" title="' . esc_attr($category->name) . '" class="et_smooth_scroll_disabled">' . $category->name . '</a></li>';
 				if($hide_all_events_view && $filter_style=="dropdown_list" && !$i)
 				{
 					if($filter_kind!="event_and_event_category" && ($filter_label=="All Events" || $filter_label==""))
@@ -279,8 +279,8 @@ function tt_timetable($atts, $content)
 					<form class='tt_generate_pdf' action='' method='post'>
 						<textarea class='tt_pdf_html' name='tt_pdf_html_content'></textarea>
 						<input type='hidden' name='tt_action' value='tt_generate_pdf'/>
-                        <input type='hidden' name='tt_pdf_font' value='" . $pdf_font . "'/>
-						<input type='submit' value='" . $generate_pdf_label . "' style='" . (strlen($pdf_text_color) ? " color: #" . $pdf_text_color . " !important;" : "") . (strlen($pdf_bg_color) ? " background-color: #" . $pdf_bg_color . ";" : "") . "' onMouseOver='" . (strlen($pdf_hover_text_color) ? " this.style.setProperty(\"color\", \"#" . $pdf_hover_text_color . "\", \"important\");" : "") . (strlen($pdf_hover_bg_color) ? " this.style.setProperty(\"background\", \"#" . $pdf_hover_bg_color . "\", \"important\");" : "") . "' onMouseOut='" . (strlen($pdf_hover_text_color) ? (strlen($pdf_text_color) ? " this.style.setProperty(\"color\", \"#" . $pdf_text_color . "\", \"important\");" : " this.style.color=\"\";") : "") . (strlen($pdf_hover_bg_color) ? (strlen($pdf_bg_color) ? " this.style.setProperty(\"background\", \"#" . $pdf_bg_color . "\", \"important\");" : " this.style.background=\"\";") : "") . "'/>
+                        <input type='hidden' name='tt_pdf_font' value='" . esc_attr($pdf_font) . "'/>
+						<input type='submit' value='" . esc_attr($generate_pdf_label) . "' style='" . (strlen($pdf_text_color) ? " color: #" . esc_attr($pdf_text_color) . " !important;" : "") . (strlen($pdf_bg_color) ? " background-color: #" . esc_attr($pdf_bg_color) . ";" : "") . "' onMouseOver='" . (strlen($pdf_hover_text_color) ? " this.style.setProperty(\"color\", \"#" . esc_attr($pdf_hover_text_color) . "\", \"important\");" : "") . (strlen($pdf_hover_bg_color) ? " this.style.setProperty(\"background\", \"#" . esc_attr($pdf_hover_bg_color) . "\", \"important\");" : "") . "' onMouseOut='" . (strlen($pdf_hover_text_color) ? (strlen($pdf_text_color) ? " this.style.setProperty(\"color\", \"#" . esc_attr($pdf_text_color) . "\", \"important\");" : " this.style.color=\"\";") : "") . (strlen($pdf_hover_bg_color) ? (strlen($pdf_bg_color) ? " this.style.setProperty(\"background\", \"#" . esc_attr($pdf_bg_color) . "\", \"important\");" : " this.style.background=\"\";") : "") . "'/>
 					</form>
 				</div>";
 		}
@@ -301,7 +301,7 @@ function tt_timetable($atts, $content)
 			
 		$inline_style .= ($font_custom!="" || $font!="" ? ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable, #tt_booking_popup_message .tt_booking_message, #tt_booking_popup_message h2{font-family:' . ($font_custom!="" ? $font_custom : $font) . ' !important;}' : '') . ((int)$font_size>0 ? ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable th,' . ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable td,' . ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable .event .before_hour_text,' . ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable .event .after_hour_text,' . ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable .event .event_header{font-size:' . (int)$font_size . 'px !important;}' : '');
 	}
-	$output .= '<div class="timetable_clearfix tt_tabs' . ((int)$responsive ? " tt_responsive" : "") . " event_layout_" . $event_layout . '"' . ($id!="" ? ' id="' . $id . '"' : '') . '>';
+	$output .= '<div class="timetable_clearfix tt_tabs' . ((int)$responsive ? " tt_responsive" : "") . " event_layout_" . esc_attr($event_layout) . '"' . ($id!="" ? ' id="' . esc_attr($id) . '"' : '') . '>';
 	
 	$output .= '<div class="tt_navigation_wrapper ' . ($filter_style=='tabs' ? '' : 'tt_hide') . '">
 		<div class="tt_navigation_cell timetable_clearfix">';
@@ -345,8 +345,8 @@ function tt_timetable($atts, $content)
 				<form class='tt_generate_pdf' action='' method='post'>
 					<textarea class='tt_pdf_html' name='tt_pdf_html_content'></textarea>
 					<input type='hidden' name='tt_action' value='tt_generate_pdf'/>
-					<input type='hidden' name='tt_pdf_font' value='" . $pdf_font . "'/>
-					<input type='submit' value='" . $generate_pdf_label . "' style='" . (strlen($pdf_text_color) ? " color: #" . $pdf_text_color . " !important;" : "") . (strlen($pdf_bg_color) ? " background-color: #" . $pdf_bg_color . ";" : "") . "' onMouseOver='" . (strlen($pdf_hover_text_color) ? " this.style.setProperty(\"color\", \"#" . $pdf_hover_text_color . "\", \"important\");" : "") . (strlen($pdf_hover_bg_color) ? " this.style.setProperty(\"background\", \"#" . $pdf_hover_bg_color . "\", \"important\");" : "") . "' onMouseOut='" . (strlen($pdf_hover_text_color) ? (strlen($pdf_text_color) ? " this.style.setProperty(\"color\", \"#" . $pdf_text_color . "\", \"important\");" : " this.style.color=\"\";") : "") . (strlen($pdf_hover_bg_color) ? (strlen($pdf_bg_color) ? " this.style.setProperty(\"background\", \"#" . $pdf_bg_color . "\", \"important\");" : " this.style.background=\"\";") : "") . "'/>
+					<input type='hidden' name='tt_pdf_font' value='" . esc_attr($pdf_font) . "'/>
+					<input type='submit' value='" . esc_attr($generate_pdf_label) . "' style='" . (strlen($pdf_text_color) ? " color: #" . esc_attr($pdf_text_color) . " !important;" : "") . (strlen($pdf_bg_color) ? " background-color: #" . esc_attr($pdf_bg_color) . ";" : "") . "' onMouseOver='" . (strlen($pdf_hover_text_color) ? " this.style.setProperty(\"color\", \"#" . esc_attr($pdf_hover_text_color) . "\", \"important\");" : "") . (strlen($pdf_hover_bg_color) ? " this.style.setProperty(\"background\", \"#" . esc_attr($pdf_hover_bg_color) . "\", \"important\");" : "") . "' onMouseOut='" . (strlen($pdf_hover_text_color) ? (strlen($pdf_text_color) ? " this.style.setProperty(\"color\", \"#" . esc_attr($pdf_text_color) . "\", \"important\");" : " this.style.color=\"\";") : "") . (strlen($pdf_hover_bg_color) ? (strlen($pdf_bg_color) ? " this.style.setProperty(\"background\", \"#" . esc_attr($pdf_bg_color) . "\", \"important\");" : " this.style.background=\"\";") : "") . "'/>
 				</form>
 			</div>";
 	}
@@ -355,19 +355,22 @@ function tt_timetable($atts, $content)
 	
 	if(!$hide_all_events_view)
 	{
-		$output .= '<div id="all-events' . ($id!='' ? '-' . urlencode($id) : '') . '">' . (empty($events_array_verified) ? tt_get_timetable($atts, $events_array) : ($events_array_verified!=-1 ? tt_get_timetable($atts, $events_array_verified) : sprintf(__('No %s available!' , 'timetable'), strtolower($timetable_events_settings['label_plural'])))) . '</div>';		
+		$output .= '<div id="all-events' . ($id!='' ? '-' . urlencode($id) : '') . '">' . (empty($events_array_verified) ? tt_get_timetable($atts, $events_array) : ($events_array_verified!=-1 ? tt_get_timetable($atts, $events_array_verified) : sprintf(esc_html__('No %s available!' , 'timetable'), strtolower($timetable_events_settings['label_plural'])))) . '</div>';		
 	}
 
 	if($filter_kind=="event" || !count($event_category_array) || $filter_kind=="event_and_event_category")
 	{
 		for($i=0; $i<$events_array_count; $i++)
 		{			
-			$post = get_page_by_path($events_array[$i], ARRAY_A, $timetable_events_settings['slug']);					
-			$categories = wp_get_post_terms($post["ID"], "events_category");
-			$categories_str = "";
-			foreach($categories as $category)
-				$categories_str .= "tt-event-category-" . $category->slug . ($id!='' ? '-' . urlencode($id) : '') . " ";
-			$output .= '<div id="' . urlencode($events_array[$i]) . ($id!='' ? '-' . urlencode($id) : '') . '" class="tt-ui-tabs-hide ' . $categories_str . '">' . (empty($events_array_verified) || ($events_array_verified!=-1 && in_array($events_array[$i], $events_array_verified)) ? tt_get_timetable($atts, $events_array[$i]) : sprintf(__('No %s available!' , 'timetable'), strtolower($timetable_events_settings['label_plural']))) . '</div>';			
+			$post = get_page_by_path($events_array[$i], ARRAY_A, $timetable_events_settings['slug']);
+			if(isset($post))
+			{
+				$categories = wp_get_post_terms($post["ID"], "events_category");
+				$categories_str = "";
+				foreach($categories as $category)
+					$categories_str .= "tt-event-category-" . $category->slug . ($id!='' ? '-' . urlencode($id) : '') . " ";
+				$output .= '<div id="' . urlencode($events_array[$i]) . ($id!='' ? '-' . urlencode($id) : '') . '" class="tt-ui-tabs-hide ' . esc_attr($categories_str) . '">' . (empty($events_array_verified) || ($events_array_verified!=-1 && in_array($events_array[$i], $events_array_verified)) ? tt_get_timetable($atts, $events_array[$i]) : sprintf(esc_html__('No %s available!' , 'timetable'), strtolower($timetable_events_settings['label_plural']))) . '</div>';			
+			}
 		}
 	}
 	if($filter_kind=="event_category" || $filter_kind=="event_and_event_category")
@@ -386,12 +389,12 @@ function tt_timetable($atts, $content)
 			$events_array_for_timetable = array();
 			for($j=0; $j<count($events_array_posts); $j++)
 				$events_array_for_timetable[] = urldecode($events_array_posts[$j]->post_name);
-			$output .= '<div id="' . urlencode($event_category_array[$i]) . ($id!='' ? '-' . urlencode($id) : '') . '" class="tt-ui-tabs-hide">' . (count($events_array_posts) ? tt_get_timetable($atts, $events_array_for_timetable) : sprintf(__('No %1$s available in %2$s category!', 'timetable'), strtolower($timetable_events_settings['label_plural']), $event_category_array[$i])) . '</div>';			
+			$output .= '<div id="' . urlencode($event_category_array[$i]) . ($id!='' ? '-' . urlencode($id) : '') . '" class="tt-ui-tabs-hide">' . (count($events_array_posts) ? tt_get_timetable($atts, $events_array_for_timetable) : sprintf(esc_html__('No %1$s available in %2$s category!', 'timetable'), strtolower($timetable_events_settings['label_plural']), $event_category_array[$i])) . '</div>';			
 		}
 	}
 	$output .= '</div>';
 	
-	$output .= "<div class='tt_error_message tt_hide'>" . sprintf(__('No %s available!' , 'timetable'), strtolower($timetable_events_settings['label_plural'])) . "</div>";
+	$output .= "<div class='tt_error_message tt_hide'>" . sprintf(esc_html__('No %s available!' , 'timetable'), strtolower($timetable_events_settings['label_plural'])) . "</div>";
 	
 	$output .= 	
 	"<div class='tt_booking_overlay tt_hide'>
@@ -524,7 +527,7 @@ function tt_get_timetable($atts, $event = null)
 		t2.post_name AS post_name, 
 		t3.post_title, 
 		t3.menu_order,
-		COALESCE(t6.booking_count,0) AS current_user_booking_count	
+		COALESCE(t6.booking_count,0) AS current_user_booking_count
 	FROM " . $wpdb->prefix . "event_hours AS t1 
 		LEFT JOIN {$wpdb->posts} AS t2 ON t1.event_id=t2.ID 
 		LEFT JOIN {$wpdb->posts} AS t3 ON t1.weekday_id=t3.ID 
@@ -556,7 +559,7 @@ function tt_get_timetable($atts, $event = null)
 	$event_hours = $wpdb->get_results($query);
 	
 	if(!count($event_hours))
-		return sprintf(__('No %s hours available!' , 'timetable'), strtolower($timetable_events_settings['label_plural']));
+		return sprintf(esc_html__('No %s hours available!' , 'timetable'), strtolower($timetable_events_settings['label_plural']));
 	$event_hours_tt = array();
 	foreach($event_hours as $event_hour)
 	{
@@ -623,7 +626,7 @@ function tt_get_timetable($atts, $event = null)
 	{
 		$output .= '<table class="tt_timetable">
 					<thead>
-						<tr class="row_gray"' . ($row1_color!="" ? ' style="background-color: ' . ($row1_color!="transparent" ? '#' : '') . $row1_color . ' !important;"' : '') . '>';
+						<tr class="row_gray"' . ($row1_color!="" ? ' style="background-color: ' . ($row1_color!="transparent" ? '#' : '') . esc_attr($row1_color) . ' !important;"' : '') . '>';
 						if(!(int)$hide_hours_column)
 							$output .= '<th></th>';
 
@@ -643,10 +646,10 @@ function tt_get_timetable($atts, $event = null)
 		else
 		{
 			$max_hour = $hours->max;
-			$max_hour = to_decimal_time($max_hour);
-			$max_hour = get_next_row_hour($max_hour, $measure);
+			$max_hour = timetable_to_decimal_time($max_hour);
+			$max_hour = timetable_get_next_row_hour($max_hour, $measure);
 			$increment = (double)$measure;
-			$hours_min = to_decimal_time(roundMin($hours->min, $measure, to_decimal_time($hours_min)));
+			$hours_min = timetable_to_decimal_time(timetable_roundMin($hours->min, $measure, timetable_to_decimal_time($hours_min)));
 		}
 		for($i=$hours_min; $i<$max_hour; $i=$i+$increment)
 		{
@@ -728,7 +731,7 @@ function tt_get_timetable($atts, $event = null)
 						$events = array();
 						for($k=0; $k<$array_count; $k++)
 						{
-							if(((int)$measure==1 && in_array((int)$event_hours_tt[$weekday_fixed_number][$k]["start"], $hours)) || ((int)$measure!=1 && in_array(to_decimal_time(roundMin($event_hours_tt[$weekday_fixed_number][$k]["start"], $measure, $hours_min)), $hours)))
+							if(((int)$measure==1 && in_array((int)$event_hours_tt[$weekday_fixed_number][$k]["start"], $hours)) || ((int)$measure!=1 && in_array(timetable_to_decimal_time(timetable_roundMin($event_hours_tt[$weekday_fixed_number][$k]["start"], $measure, $hours_min)), $hours)))
 							{
 								$events[$k]["name"] = $event_hours_tt[$weekday_fixed_number][$k]["name"];
 								$events[$k]["title"] = $event_hours_tt[$weekday_fixed_number][$k]["title"];
@@ -808,7 +811,7 @@ function tt_get_timetable($atts, $event = null)
 							"unavailable_bg_color" => ($unavailable_bg_color),
 							"available_slots_color" => ($available_slots_color),
 						);
-						$row_content .= '<td' . ($color!="" || $text_color!="" || $text_align!="center" ? ' style="' . ($text_align!="center" ? 'text-align:' . $text_align . ';' : '') . ($color!="" ? 'background: #' . $color . ';' : '') . ($text_color!="" ? 'color: #' . $text_color . ';' : '') . '"': '') . ($hover_color!="" || $hover_text_color!="" || $hours_hover_text_color!="" ? ' onMouseOver="' . ($hover_color!="" ? 'this.style.background=\'#'.$hover_color.'\';' : '') . ($hover_text_color!="" ? 'this.style.color=\'#'.$hover_text_color.'\';jQuery(this).find(\'.event_header\').css(\'cssText\', \'color: #'.$hover_text_color.' !important\');' : '') . ($hours_hover_text_color!="" ? 'jQuery(this).find(\'.hours\').css(\'color\',\'#'.$hours_hover_text_color.'\');' : '') . '" onMouseOut="' . ($hover_color!="" ? 'this.style.background=\'#'.$color.'\';' : '') . ($hover_text_color!="" ? 'this.style.color=\'#'.$text_color.'\';jQuery(this).find(\'.event_header\').css(\'cssText\',\'color: #'.$text_color.' !important\');' : '') . ($hours_hover_text_color!="" ? 'jQuery(this).find(\'.hours\').css(\'color\',\'#'.$hours_text_color.'\');' : '') . '"' : '') . ' class="event' . (count(array_filter(array_values($events[key($events)]['tooltip']))) && count($events)==1 && count($events[key($events)]['hours'])==1 ? ' tt_tooltip' : '' ) . (count($events)==1 && count($events[key($events)]['hours'])==1 ? ' tt_single_event' : '') . '"' . ($rowspan>1 ? ' rowspan="' . $rowspan . '"' : '') . '>';
+						$row_content .= '<td' . ($color!="" || $text_color!="" || $text_align!="center" ? ' style="' . ($text_align!="center" ? 'text-align:' . esc_attr($text_align) . ';' : '') . ($color!="" ? 'background: #' . esc_attr($color) . ';' : '') . ($text_color!="" ? 'color: #' . esc_attr($text_color) . ';' : '') . '"': '') . ($hover_color!="" || $hover_text_color!="" || $hours_hover_text_color!="" ? ' onMouseOver="' . ($hover_color!="" ? 'this.style.background=\'#'.esc_attr($hover_color).'\';' : '') . ($hover_text_color!="" ? 'this.style.color=\'#'.esc_attr($hover_text_color).'\';jQuery(this).find(\'.event_header\').css(\'cssText\', \'color: #'.esc_attr($hover_text_color).' !important\');' : '') . ($hours_hover_text_color!="" ? 'jQuery(this).find(\'.hours\').css(\'color\',\'#'.esc_attr($hours_hover_text_color).'\');' : '') . '" onMouseOut="' . ($hover_color!="" ? 'this.style.background=\'#'.esc_attr($color).'\';' : '') . ($hover_text_color!="" ? 'this.style.color=\'#'.esc_attr($text_color).'\';jQuery(this).find(\'.event_header\').css(\'cssText\',\'color: #'.esc_attr($text_color).' !important\');' : '') . ($hours_hover_text_color!="" ? 'jQuery(this).find(\'.hours\').css(\'color\',\'#'.esc_attr($hours_text_color).'\');' : '') . '"' : '') . ' class="event' . (count(array_filter(array_values($events[key($events)]['tooltip']))) && count($events)==1 && count($events[key($events)]['hours'])==1 ? ' tt_tooltip' : '' ) . (count($events)==1 && count($events[key($events)]['hours'])==1 ? ' tt_single_event' : '') . '"' . ($rowspan>1 ? ' rowspan="' . esc_attr($rowspan) . '"' : '') . '>';
 						$row_content .= tt_get_row_content($events, compact("events_page", "time_format", "event_layout", "global_colors", "disable_event_url", "show_booking_button", "show_available_slots", "allow_user_booking", "allow_guest_booking", "default_booking_view", "booking_label", "available_slots_singular_label", "available_slots_plural_label", "booked_label", "unavailable_label"));
 						$row_content .= '</td>';
 						$row_empty = false;
@@ -822,7 +825,7 @@ function tt_get_timetable($atts, $event = null)
 				$row_empty = false;
 			if(((int)$hide_empty && !$row_empty) || !(int)$hide_empty)
 			{
-				$output .= '<tr class="row_' . ($l+1) . ($l%2==1 ? ' row_gray' : '') . '"' . ($l%2==1 && strtoupper($row1_color)!="F0F0F0" ? ' style="background: ' . ($row1_color!="transparent" ? '#' : '') . $row1_color . ' !important;"' : '') . ($l%2==0 && $row2_color!="" ? ' style="background: ' . ($row2_color!="transparent" ? '#' : '') . $row2_color . ' !important;"' : '') . '>';
+				$output .= '<tr class="row_' . ($l+1) . ($l%2==1 ? ' row_gray' : '') . '"' . ($l%2==1 && strtoupper($row1_color)!="F0F0F0" ? ' style="background: ' . ($row1_color!="transparent" ? '#' : '') . esc_attr($row1_color) . ' !important;"' : '') . ($l%2==0 && $row2_color!="" ? ' style="background: ' . ($row2_color!="transparent" ? '#' : '') . esc_attr($row2_color) . ' !important;"' : '') . '>';
 				if(!(int)$hide_hours_column)
 				{
 					$output .= '<td class="tt_hours_column">
@@ -900,22 +903,22 @@ function tt_get_timetable($atts, $event = null)
 									$hours_text_color = "FFFFFF";
 							}
 							
-							$colors_html = ($color!="" || $text_color!="" ? ' style="' . ($color!="" ? 'background: #' . $color . ';' : '') . ($text_color!="" ? 'color: #' . $text_color . ';' : '') . '"': '') . ($hover_color!="" || $hover_text_color!="" || $hours_hover_text_color!="" ? ' onMouseOver="' . ($hover_color!="" ? 'this.style.background=\'#'.$hover_color.'\';' : '') . ($hover_text_color!="" ? 'this.style.color=\'#'.$hover_text_color.'\';jQuery(this).find(\'.event_header,.event_description\').css(\'cssText\', \'color: #'.$hover_text_color.' !important\');' : '') . ($hours_hover_text_color!="" ? 'jQuery(this).find(\'.value\').css(\'color\',\'#'.$hours_hover_text_color.'\');' : '') . '" onMouseOut="' . ($hover_color!="" ? 'this.style.background=\'#'.$color.'\';' : '') . ($hover_text_color!="" ? 'this.style.color=\'#'.$text_color.'\';jQuery(this).find(\'.event_header,.event_description\').css(\'cssText\',\'color: #'.$text_color.' !important\');' : '') . ($hours_hover_text_color!="" ? 'jQuery(this).find(\'.value\').css(\'color\',\'#'.$hours_text_color.'\');' : '') . '"' : '');
-							$text_colors_html = ($text_color!="" ? ' style="color: #' . $text_color . ' !important;"' : '');
-							$hours_text_colors_html = ($hours_text_color!="" ? ' style="color:#' . $hours_text_color . ';"' : '');
+							$colors_html = ($color!="" || $text_color!="" ? ' style="' . ($color!="" ? 'background: #' . esc_attr($color) . ';' : '') . ($text_color!="" ? 'color: #' . esc_attr($text_color) . ';' : '') . '"': '') . ($hover_color!="" || $hover_text_color!="" || $hours_hover_text_color!="" ? ' onMouseOver="' . ($hover_color!="" ? 'this.style.background=\'#'.esc_attr($hover_color).'\';' : '') . ($hover_text_color!="" ? 'this.style.color=\'#'.esc_attr($hover_text_color).'\';jQuery(this).find(\'.event_header,.event_description\').css(\'cssText\', \'color: #'.esc_attr($hover_text_color).' !important\');' : '') . ($hours_hover_text_color!="" ? 'jQuery(this).find(\'.value\').css(\'color\',\'#'.esc_attr($hours_hover_text_color).'\');' : '') . '" onMouseOut="' . ($hover_color!="" ? 'this.style.background=\'#'.esc_attr($color).'\';' : '') . ($hover_text_color!="" ? 'this.style.color=\'#'.esc_attr($text_color).'\';jQuery(this).find(\'.event_header,.event_description\').css(\'cssText\',\'color: #'.esc_attr($text_color).' !important\');' : '') . ($hours_hover_text_color!="" ? 'jQuery(this).find(\'.value\').css(\'color\',\'#'.esc_attr($hours_text_color).'\');' : '') . '"' : '');
+							$text_colors_html = ($text_color!="" ? ' style="color: #' . esc_attr($text_color) . ' !important;"' : '');
+							$hours_text_colors_html = ($hours_text_color!="" ? ' style="color:#' . esc_attr($hours_text_color) . ' !important;"' : '');
 						}
 						
 						$output .= '
 							<li ' . $colors_html . ' class="timetable_clearfix">
 								<div class="event_container">
-									<' . ($classes_url!="" ? 'a' : 'span') . ($classes_url!="" ? ' href="' . $classes_url . '"' : '') . ' title="' .  esc_attr($event_hours_tt[$weekday_fixed_number][$i]["title"]) . '"' . ' class="event_header" ' . $text_colors_html . '>' . $event_hours_tt[$weekday_fixed_number][$i]["title"] . ' </' . ($classes_url!="" ? 'a' : 'span') . '>';
+									<' . ($classes_url!="" ? 'a' : 'span') . ($classes_url!="" ? ' href="' . esc_url($classes_url) . '"' : '') . ' title="' .  esc_attr($event_hours_tt[$weekday_fixed_number][$i]["title"]) . '"' . ' class="event_header" ' . $text_colors_html . '>' . $event_hours_tt[$weekday_fixed_number][$i]["title"] . ' </' . ($classes_url!="" ? 'a' : 'span') . '>';
 						
 						if(in_array($event_description_responsive, array("description-2", "description-1", "description-1-and-description-2")) && ($event_hours_tt[$weekday_fixed_number][$i]["before_hour_text"] || $event_hours_tt[$weekday_fixed_number][$i]["after_hour_text"]))
 						{
-							$output .= '<span class="event_description" ' . $text_colors_html . '>'.
-								(in_array($event_description_responsive, array("description-1", "description-1-and-description-2")) ? '<span class="event_description_1">'.do_shortcode($event_hours_tt[$weekday_fixed_number][$i]["before_hour_text"]).'</span>' : '') .
-								(in_array($event_description_responsive, array("description-1-and-description-2")) && $event_hours_tt[$weekday_fixed_number][$i]["before_hour_text"]!="" && $event_hours_tt[$weekday_fixed_number][$i]["after_hour_text"]!="" ? '<span class="event_description_dot"> &middot; </span>' : '') . 
-								(in_array($event_description_responsive, array("description-2", "description-1-and-description-2")) ? '<span class="event_description_2">'.do_shortcode($event_hours_tt[$weekday_fixed_number][$i]["after_hour_text"]).'</span>' : '') .
+							$output .= '<span class="event_description">'.
+								(in_array($event_description_responsive, array("description-1", "description-1-and-description-2")) ? '<span class="event_description_1" ' . $text_colors_html . '>'.do_shortcode($event_hours_tt[$weekday_fixed_number][$i]["before_hour_text"]).'</span>' : '') .
+								(in_array($event_description_responsive, array("description-1-and-description-2")) && $event_hours_tt[$weekday_fixed_number][$i]["before_hour_text"]!="" && $event_hours_tt[$weekday_fixed_number][$i]["after_hour_text"]!="" ? '<span class="event_description_dot" ' . $text_colors_html . '> &middot; </span>' : '') . 
+								(in_array($event_description_responsive, array("description-2", "description-1-and-description-2")) ? '<span class="event_description_2" ' . $text_colors_html . '>'.do_shortcode($event_hours_tt[$weekday_fixed_number][$i]["after_hour_text"]).'</span>' : '') .
 							'</span>';
 						}
 						
@@ -927,7 +930,7 @@ function tt_get_timetable($atts, $event = null)
 						{
 							if($show_available_slots=="always" && $total_slots)
 							{
-								$booking_slots_label = prepare_booking_slots_label(array(
+								$booking_slots_label = timetable_prepare_booking_slots_label(array(
 									'available_slots' => $available_slots,
 									'taken_slots' => $taken_slots,
 									'total_slots' => $total_slots,
@@ -935,7 +938,7 @@ function tt_get_timetable($atts, $event = null)
 									'available_slots_plural_label' => $available_slots_plural_label,
 								));
 								
-								$output .= "<span class='available_slots id-" . $event_hours_tt[$weekday_fixed_number][$i]["event_hours_id"] . "'>";
+								$output .= "<span class='available_slots id-" . esc_attr($event_hours_tt[$weekday_fixed_number][$i]["event_hours_id"]) . "'>";
 								$output .= $booking_slots_label;
 								$output .=
 								"</span>";
@@ -944,12 +947,12 @@ function tt_get_timetable($atts, $event = null)
 						
 						$output .= '</div>';
 						
-						$output .= '<div class="value" ' . $hours_text_colors_html . '>
-									<span class="start-hour">' . $event_hours_tt[$weekday_fixed_number][$i]["start"] . '</span><span class="hour-separator"> - </span><span class="end-hour">' . $event_hours_tt[$weekday_fixed_number][$i]["end"] . "</span>";
+						$output .= '<div class="value">
+									<span class="start-hour" ' . $hours_text_colors_html . '>' . $event_hours_tt[$weekday_fixed_number][$i]["start"] . '</span><span class="hour-separator" ' . $hours_text_colors_html . '> - </span><span class="end-hour" ' . $hours_text_colors_html . '>' . $event_hours_tt[$weekday_fixed_number][$i]["end"] . "</span>";
 						
 						if($show_booking_button!="no")
 						{
-							$output .= prepare_booking_button(array(
+							$output .= timetable_prepare_booking_button(array(
 								'current_user_booking_count' => (int)$event_hours_tt[$weekday_fixed_number][$i]["current_user_booking_count"],
 								'slots_per_user' => $event_hours_tt[$weekday_fixed_number][$i]["slots_per_user"],
 								'event_hours_id' => $event_hours_tt[$weekday_fixed_number][$i]["event_hours_id"],
@@ -1030,12 +1033,12 @@ function tt_get_row_content($events, $args)
 		if(!(int)get_post_meta($details["id"], "timetable_disable_url", true) && !(int)$disable_event_url)
 			$classes_url = ($timetable_custom_url!="" ? $timetable_custom_url : get_permalink($details["id"]));
 		
-		$class_link = '<' . ($classes_url!="" ? 'a' : 'span') . ' class="event_header"' . ($classes_url!="" ? ' href="' . $classes_url /*. '#' . urldecode($details["name"])*/ . '"' : '') . ' title="' .  esc_attr($details["title"]) . '"' . ($text_color!="" ? ' style="color: #' . $text_color . ' !important;"' : '') . '>' . $details["title"] . '</' . ($classes_url!="" ? 'a' : 'span') . '>';
+		$class_link = '<' . ($classes_url!="" ? 'a' : 'span') . ' class="event_header"' . ($classes_url!="" ? ' href="' . esc_url($classes_url) /*. '#' . urldecode($details["name"])*/ . '"' : '') . ' title="' .  esc_attr($details["title"]) . '"' . ($text_color!="" ? ' style="color: #' . esc_attr($text_color) . ' !important;"' : '') . '>' . $details["title"] . '</' . ($classes_url!="" ? 'a' : 'span') . '>';
 				
 		for($i=0; $i<$hours_count; $i++)
 		{
 			$tooltip = "";
-			$content .= '<div class="event_container id-' . $details["id"] . (count(array_filter(array_values($details['tooltip']))) && (count($events)>1 || (count($events)==1 && $hours_count>1)) ? ' tt_tooltip' : '' ) . '"' . ($color!="" || ($text_color!="" && (count($events)>1 || (count($events)==1 && $hours_count>1))) ? ' style="' . ($color!="" ? 'background-color: #' . $color . ';' : '') . ($text_color!="" && (count($events)>1 || (count($events)==1 && $hours_count>1)) ? 'color: #' . $text_color . ';' : '') . '"': '') . (($hover_color!="" || $hover_text_color!="" || $hours_hover_text_color!="") && (count($events)>1 || (count($events)==1 && $hours_count>1)) ? ' onMouseOver="' . ($hover_color!="" ? 'this.style.background=\'#'.$hover_color.'\';' : '') . ($hover_text_color!="" ? 'this.style.color=\'#'.$hover_text_color.'\';jQuery(this).find(\'.event_header\').css(\'cssText\', \'color: #'.$hover_text_color.' !important\');' : '') . ($hours_hover_text_color!="" ? 'jQuery(this).find(\'.hours\').css(\'color\',\'#'.$hours_hover_text_color.'\');' : '') . '" onMouseOut="' . ($hover_color!="" ? 'this.style.background=\'#'.$color.'\';' : '') . ($hover_text_color!="" ? 'this.style.color=\'#'.$text_color.'\';jQuery(this).find(\'.event_header\').css(\'cssText\',\'color: #'.$text_color.' !important\');' : '') . ($hours_hover_text_color!="" ? 'jQuery(this).find(\'.hours\').css(\'color\',\'#'.$hours_text_color.'\');' : '') . '"' : '') . '>';
+			$content .= '<div class="event_container id-' . esc_attr($details["id"]) . (count(array_filter(array_values($details['tooltip']))) && (count($events)>1 || (count($events)==1 && $hours_count>1)) ? ' tt_tooltip' : '' ) . '"' . ($color!="" || ($text_color!="" && (count($events)>1 || (count($events)==1 && $hours_count>1))) ? ' style="' . ($color!="" ? 'background-color: #' . esc_attr($color) . ';' : '') . ($text_color!="" && (count($events)>1 || (count($events)==1 && $hours_count>1)) ? 'color: #' . esc_attr($text_color) . ';' : '') . '"': '') . (($hover_color!="" || $hover_text_color!="" || $hours_hover_text_color!="") && (count($events)>1 || (count($events)==1 && $hours_count>1)) ? ' onMouseOver="' . ($hover_color!="" ? 'this.style.background=\'#'.esc_attr($hover_color).'\';' : '') . ($hover_text_color!="" ? 'this.style.color=\'#'.esc_attr($hover_text_color).'\';jQuery(this).find(\'.event_header\').css(\'cssText\', \'color: #'.esc_attr($hover_text_color).' !important\');' : '') . ($hours_hover_text_color!="" ? 'jQuery(this).find(\'.hours\').css(\'color\',\'#'.esc_attr($hours_hover_text_color).'\');' : '') . '" onMouseOut="' . ($hover_color!="" ? 'this.style.background=\'#'.esc_attr($color).'\';' : '') . ($hover_text_color!="" ? 'this.style.color=\'#'.esc_attr($text_color).'\';jQuery(this).find(\'.event_header\').css(\'cssText\',\'color: #'.esc_attr($text_color).' !important\');' : '') . ($hours_hover_text_color!="" ? 'jQuery(this).find(\'.hours\').css(\'color\',\'#'.esc_attr($hours_text_color).'\');' : '') . '"' : '') . '>';
 			$hoursExplode = explode(" - ", $details["hours"][$i]);
 			$startHour = date($time_format, strtotime($hoursExplode[0]));
 			$endHour = date($time_format, strtotime($hoursExplode[1]));
@@ -1047,10 +1050,10 @@ function tt_get_row_content($events, $args)
 			if($details["after_hour_text"][$i]!="")
 				$description2_content = "<div class='after_hour_text'>" . do_shortcode($details["after_hour_text"][$i]) . "</div>";			
 			
-			$top_hour_content = '<div class="top_hour"><span class="hours"' . ($hours_text_color!="" ? ' style="color:#' . $hours_text_color . ';"' : '') . '>' . $startHour . '</span></div>';
-			$bottom_hour_content = '<div class="bottom_hour"><span class="hours"' . ($hours_text_color!="" ? ' style="color:#' . $hours_text_color . ';"' : '') . '>' . $endHour . '</span></div>';
-			$hours_content = '<div class="hours_container"><span class="hours"' . ($hours_text_color!="" ? ' style="color:#' . $hours_text_color . ';"' : '') . '>' . $startHour . ' - ' . $endHour . '</span></div>';
-			$class_link_tooltip = '<' . ($classes_url!="" ? 'a' : 'span') . ' class="event_header"' . ($hover_text_color!="" ? ' style="color: #' . $hover_text_color . ';"': '') . ($classes_url!="" ? ' href="' . $classes_url /*. '#' . urldecode($details["name"])*/ . '"' : '') . ' title="' .  esc_attr($details["title"]) . '">' . $details["title"] . '</' . ($classes_url!="" ? 'a' : 'span') . '>';
+			$top_hour_content = '<div class="top_hour"><span class="hours"' . ($hours_text_color!="" ? ' style="color:#' . esc_attr($hours_text_color) . ';"' : '') . '>' . $startHour . '</span></div>';
+			$bottom_hour_content = '<div class="bottom_hour"><span class="hours"' . ($hours_text_color!="" ? ' style="color:#' . esc_attr($hours_text_color) . ';"' : '') . '>' . $endHour . '</span></div>';
+			$hours_content = '<div class="hours_container"><span class="hours"' . ($hours_text_color!="" ? ' style="color:#' . esc_attr($hours_text_color) . ';"' : '') . '>' . $startHour . ' - ' . $endHour . '</span></div>';
+			$class_link_tooltip = '<' . ($classes_url!="" ? 'a' : 'span') . ' class="event_header"' . ($hover_text_color!="" ? ' style="color: #' . esc_attr($hover_text_color) . ';"': '') . ($classes_url!="" ? ' href="' . esc_url($classes_url) /*. '#' . urldecode($details["name"])*/ . '"' : '') . ' title="' .  esc_attr($details["title"]) . '">' . $details["title"] . '</' . ($classes_url!="" ? 'a' : 'span') . '>';
 			$tooltip = ($details["tooltip"][$i]!="" ? $class_link_tooltip : '') . $details["tooltip"][$i];
 			
 			$booking_content = '';
@@ -1061,7 +1064,7 @@ function tt_get_row_content($events, $args)
 				$total_slots = $details['available_places'][$i];
 				$available_slots = $total_slots-$taken_slots;
 				
-				$booking_content = prepare_booking_button(array(
+				$booking_content = timetable_prepare_booking_button(array(
 					'current_user_booking_count' => $details['current_user_booking_count'][$i],
 					'slots_per_user' => $details['slots_per_user'][$i],
 					'event_hours_id' => $details["event_hours_id"][$i],
@@ -1082,14 +1085,14 @@ function tt_get_row_content($events, $args)
 
 				if($show_available_slots=="always" && $total_slots)
 				{
-					$booking_slots_label = prepare_booking_slots_label(array(
+					$booking_slots_label = timetable_prepare_booking_slots_label(array(
 						'available_slots' => $available_slots,
 						'taken_slots' => $taken_slots,
 						'total_slots' => $total_slots,
 						'available_slots_singular_label' => $available_slots_singular_label,
 						'available_slots_plural_label' => $available_slots_plural_label,
 					));
-					$booking_slots_html = "<span class='available_slots id-" . $details["event_hours_id"][$i] . "'>";
+					$booking_slots_html = "<span class='available_slots id-" . esc_attr($details["event_hours_id"][$i]) . "'>";
 					$booking_slots_html .= $booking_slots_label;
 					$booking_slots_html .= "</span>";
 				}
@@ -1145,7 +1148,7 @@ function tt_get_row_content($events, $args)
 				$hover_color = get_post_meta($details["id"], "timetable_hover_color", true);
 				if($hover_color=="" && strtoupper($global_colors["box_hover_bg_color"])!="1F736A")
 					$hover_color = $global_colors["box_hover_bg_color"];
-				$content .= '<div class="tt_tooltip_text"><div class="tt_tooltip_content"' . ($hover_color!="" || $hover_text_color!="" ? ' style="' . ($hover_color!="" ? 'background-color: #' . $hover_color . ';' : '') . ($hover_text_color!="" ? 'color: #' . $hover_text_color . ';' : '') . '"': '') . '>' . $tooltip . '</div><div class="tt_tooltip_arrow"' . ($hover_color!="" ? ' style="border-color: #' . $hover_color . ' transparent;"' : '') . '></div></div>';	
+				$content .= '<div class="tt_tooltip_text"><div class="tt_tooltip_content"' . ($hover_color!="" || $hover_text_color!="" ? ' style="' . ($hover_color!="" ? 'background-color: #' . esc_attr($hover_color) . ';' : '') . ($hover_text_color!="" ? 'color: #' . esc_attr($hover_text_color) . ';' : '') . '"': '') . '>' . $tooltip . '</div><div class="tt_tooltip_arrow"' . ($hover_color!="" ? ' style="border-color: #' . esc_attr($hover_color) . ' transparent;"' : '') . '></div></div>';	
 			}
 			if(count($events)>1 || (count($events)==1 && $hours_count>1))
 				$content .= '</div>' . (end($events)!=$details || (end($events)==$details && $i+1<$hours_count) ? '<hr>' : '');
@@ -1164,10 +1167,10 @@ function tt_get_row_content($events, $args)
 			$content .= ($i!=0 ? '<br />' : '');
 			if($details["before_hour_text"][$i]!="")
 				$content .= "<div class='before_hour_text'>" . $details["before_hour_text"][$i] . "</div>";
-			$content .= '<span class="hours"' . ($hours_text_color!="" ? ' style="color:#' . $hours_text_color . ';"' : '') . '>' . $details["hours"][$i] . '</span>';
+			$content .= '<span class="hours"' . ($hours_text_color!="" ? ' style="color:#' . esc_attr($hours_text_color) . ';"' : '') . '>' . $details["hours"][$i] . '</span>';
 			if($details["after_hour_text"][$i]!="")
 				$content .= "<div class='after_hour_text'>" . $details["after_hour_text"][$i] . "</div>";
-			$class_link_tooltip = '<a' . ($hover_text_color!="" ? ' style="color: #' . $hover_text_color . ';"': '') . ' href="' . $classes_url . '#' . urldecode($details["name"]) . '" title="' .  esc_attr($key) . '">' . $key . '</a>';
+			$class_link_tooltip = '<a' . ($hover_text_color!="" ? ' style="color: #' . esc_attr($hover_text_color) . ';"': '') . ' href="' . esc_url($classes_url) . '#' . urldecode($details["name"]) . '" title="' .  esc_attr($key) . '">' . $key . '</a>';
 			$tooltip .= ($tooltip!="" && $details["tooltip"][$i]!="" ? '<br /><br />' : '' ) . ($details["tooltip"][$i]!="" ? $class_link_tooltip : '') . $details["tooltip"][$i];
 		}*/
 		/*if(count($events)==1)
@@ -1175,7 +1178,7 @@ function tt_get_row_content($events, $args)
 		if($tooltip!="")
 		{
 			$hover_color = get_post_meta($details["id"], "timetable_hover_color", true);
-			$content .= '<div class="tooltip_text"><div class="tooltip_content"' . ($hover_color!="" || $hover_text_color!="" ? ' style="' . ($hover_color!="" ? 'background-color: #' . $hover_color . ';' : '') . ($hover_text_color!="" ? 'color: #' . $hover_text_color . ';' : '') . '"': '') . '>' . $tooltip . '</div><span class="tooltip_arrow"' . ($hover_color!="" ? ' style="border-color: #' . $hover_color . ' transparent;"' : '') . '></span></div>';	
+			$content .= '<div class="tooltip_text"><div class="tooltip_content"' . ($hover_color!="" || $hover_text_color!="" ? ' style="' . ($hover_color!="" ? 'background-color: #' . esc_attr($hover_color) . ';' : '') . ($hover_text_color!="" ? 'color: #' . esc_attr($hover_text_color) . ';' : '') . '"': '') . '>' . $tooltip . '</div><span class="tooltip_arrow"' . ($hover_color!="" ? ' style="border-color: #' . esc_attr($hover_color) . ' transparent;"' : '') . '></span></div>';	
 		}
 		
 		if(count($events)>1)
@@ -1213,11 +1216,11 @@ function tt_get_rowspan_value($hour, $array, $rowspan, $measure, $hours_min)
 			$hours[] = $i;
 		for($i=0; $i<$array_count; $i++)
 		{
-			if(in_array(to_decimal_time(roundMin($array[$i]["start"], $measure, $hours_min)), $hours))
+			if(in_array(timetable_to_decimal_time(timetable_roundMin($array[$i]["start"], $measure, $hours_min)), $hours))
 			{
-				$end_hour = to_decimal_time($array[$i]["end"], false); //changed to false - wrong value for ex. 00:30 end hour
-				//$end_hour = ($end_hour<24 ? get_next_row_hour($end_hour, $measure) : $end_hour);
-				$end_hour = get_next_row_hour($end_hour, $measure);
+				$end_hour = timetable_to_decimal_time($array[$i]["end"], false); //changed to false - wrong value for ex. 00:30 end hour
+				//$end_hour = ($end_hour<24 ? timetable_get_next_row_hour($end_hour, $measure) : $end_hour);
+				$end_hour = timetable_get_next_row_hour($end_hour, $measure);
 				if($end_hour-(double)$hour>$measure && ($end_hour-(double)$hour)/$measure>$rowspan)
 				{
 					$rowspan = ($end_hour-(double)$hour)/$measure;
@@ -1232,7 +1235,7 @@ function tt_get_rowspan_value($hour, $array, $rowspan, $measure, $hours_min)
 		return tt_get_rowspan_value($hour, $array, $rowspan, $measure, $hours_min);
 }
 
-function roundMin($time, $measure, $hours_min)
+function timetable_roundMin($time, $measure, $hours_min)
 {
 	/*echo "TIME:" . $time . "<br>";
 	echo "HOURS_MIN:" . $hours_min . "<br>";
@@ -1240,7 +1243,7 @@ function roundMin($time, $measure, $hours_min)
 	$seconds = date('U', strtotime($time));
 	return date("H.i", floor($seconds / ($roundTo * 60)) * ($roundTo * 60));*/
 	
-	$decimal_time = to_decimal_time($time);
+	$decimal_time = timetable_to_decimal_time($time);
 	$found = false;
 	while(!$found)
 	{
@@ -1265,20 +1268,20 @@ function tt_hour_in_array($hour, $array, $measure, $hours_min)
 		}
 		else
 		{
-			if((!isset($array[$i]["displayed"]) || (bool)$array[$i]["displayed"]!=true) && to_decimal_time(roundMin($array[$i]["start"], $measure, $hours_min))==(double)$hour)
+			if((!isset($array[$i]["displayed"]) || (bool)$array[$i]["displayed"]!=true) && timetable_to_decimal_time(timetable_roundMin($array[$i]["start"], $measure, $hours_min))==(double)$hour)
 				return true;
 		}
 	}
 	return false;
 }
 
-function to_decimal_time($time, $midReplace = false)
+function timetable_to_decimal_time($time, $midReplace = false)
 {
 	$timeExplode = explode(".", $time);
 	return ($midReplace && (int)$timeExplode[0]==0 ? 24 : $timeExplode[0]) . "." . (isset($timeExplode[1]) && (int)$timeExplode[1]>0 ? sprintf("%02s", ceil($timeExplode[1]/60*100)) : "00");
 }
 
-function get_next_row_hour($hour, $measure)
+function timetable_get_next_row_hour($hour, $measure)
 {
 	$hourExplode = explode(".", $hour);
 	if((int)$hourExplode[1]>0)
@@ -1323,7 +1326,7 @@ function tt_strtolower_urlencode($val)
 	return strtolower(urlencode($val));
 }
 
-/*function get_next_row_hour($hour, $measure, $next = 1)
+/*function timetable_get_next_row_hour($hour, $measure, $next = 1)
 {
 	$hourExplode = explode(".", $hour);
 	if((int)$hourExplode[1]>0)
@@ -1388,7 +1391,7 @@ function timetable_vc_init()
 
 	//get saved shortcodes
 	$timetable_shortcodes_list = get_option('timetable_shortcodes_list');
-	$timetable_shortcodes_array = array(__('choose...', 'timetable') => '-1');
+	$timetable_shortcodes_array = array(esc_html__('choose...', 'timetable') => '-1');
 	if(!empty($timetable_shortcodes_list))
 	{
 		foreach($timetable_shortcodes_list as $key=>$val)
@@ -1452,26 +1455,29 @@ function timetable_vc_init()
 	$google_fonts_array["Default"]="";
 	if(isset($fontsArray))
 	{
-		$fontsCount = count((array)$fontsArray->items);
-		for($i=0; $i<$fontsCount; $i++)
+		if(array_key_exists("items", (array)$fontsArray))
 		{
-			$variantsCount = count((array)$fontsArray->items[$i]->variants);
-			if($variantsCount>1)
+			$fontsCount = count((array)$fontsArray->items);
+			for($i=0; $i<$fontsCount; $i++)
 			{
-				for($j=0; $j<$variantsCount; $j++)
+				$variantsCount = count((array)$fontsArray->items[$i]->variants);
+				if($variantsCount>1)
 				{
-					$google_fonts_array[$fontsArray->items[$i]->family . ":" . $fontsArray->items[$i]->variants[$j]] = $fontsArray->items[$i]->family . ":" . $fontsArray->items[$i]->variants[$j];
+					for($j=0; $j<$variantsCount; $j++)
+					{
+						$google_fonts_array[$fontsArray->items[$i]->family . ":" . $fontsArray->items[$i]->variants[$j]] = $fontsArray->items[$i]->family . ":" . $fontsArray->items[$i]->variants[$j];
+					}
 				}
-			}
-			else
-			{
-				$google_fonts_array[$fontsArray->items[$i]->family] = $fontsArray->items[$i]->family;
+				else
+				{
+					$google_fonts_array[$fontsArray->items[$i]->family] = $fontsArray->items[$i]->family;
+				}
 			}
 		}
 	}
 
 	vc_map(array(
-		"name" => __("Timetable", 'timetable'),
+		"name" => esc_html__("Timetable", 'timetable'),
 		"base" => "tt_timetable",
 		"class" => "",
 		"controls" => "full",
@@ -1483,83 +1489,83 @@ function timetable_vc_init()
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Choose shortcode id:", "timetable"),
+				"heading" => esc_html__("Choose shortcode id:", "timetable"),
 				"param_name" => "shortcode_id",
 				"value" => $timetable_shortcodes_array,
 			),
 			array(
 				"type" => "dropdownmulti",
 				"class" => "",
-				"heading" => __("Events", "timetable"),
+				"heading" => esc_html__("Events", "timetable"),
 				"param_name" => "event",
 				"value" => $events_array,
 			),
 			array(
 				"type" => "dropdownmulti",
 				"class" => "",
-				"heading" => __("Event categories", "timetable"),
+				"heading" => esc_html__("Event categories", "timetable"),
 				"param_name" => "event_category",
 				"value" => $events_categories_array,
 			),
 			array(
 				"type" => "dropdownmulti",
 				"class" => "",
-				"heading" => __("Hour categories", "timetable"),
+				"heading" => esc_html__("Hour categories", "timetable"),
 				"param_name" => "hour_category",
 				"value" => $hour_categories_array,
 			),
 			array(
 				"type" => "dropdownmulti",
 				"class" => "",
-				"heading" => __("Columns", "timetable"),
+				"heading" => esc_html__("Columns", "timetable"),
 				"param_name" => "columns",
 				"value" => $weekdays_array,
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Hour measure", "timetable"),
+				"heading" => esc_html__("Hour measure", "timetable"),
 				"param_name" => "measure",
 				"value" => array(
-					__("Hour (1h)", "timetable") => "1",
-					__("Half hour (30min)", "timetable") => "0.5",
-					__("Quarter hour (15min)", "timetable") => "0.25",
+					esc_html__("Hour (1h)", "timetable") => "1",
+					esc_html__("Half hour (30min)", "timetable") => "0.5",
+					esc_html__("Quarter hour (15min)", "timetable") => "0.25",
 				),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Filter style", "timetable"),
+				"heading" => esc_html__("Filter style", "timetable"),
 				"param_name" => "filter_style",
 				"value" => array(
-					__("Dropdown list", "timetable") => "dropdown_list",
-					__("Tabs", "timetable") => "tabs",
+					esc_html__("Dropdown list", "timetable") => "dropdown_list",
+					esc_html__("Tabs", "timetable") => "tabs",
 				),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Filter kind", "timetable"),
+				"heading" => esc_html__("Filter kind", "timetable"),
 				"param_name" => "filter_kind",
 				"value" => array(
-					__("By event", "timetable") => "event",
-					__("By event category", "timetable") => "event_category",
-					__("By event and event category", "timetable") => "event_and_event_category",
+					esc_html__("By event", "timetable") => "event",
+					esc_html__("By event category", "timetable") => "event_category",
+					esc_html__("By event and event category", "timetable") => "event_and_event_category",
 				),
 			),
 			array(
 				"type" => "textfield",
 				"class" => "",
-				"heading" => __("Filter label", "timetable"),
+				"heading" => esc_html__("Filter label", "timetable"),
 				"param_name" => "filter_label",
-				"value" => __("All Events", "timetable"),					
+				"value" => esc_html__("All Events", "timetable"),					
 			),
 			array(
 				"type" => "textfield",
 				"class" => "",
-				"heading" => __("Filter label 2", "timetable"),
+				"heading" => esc_html__("Filter label 2", "timetable"),
 				"param_name" => "filter_label_2",
-				"value" => __("All Events Categories", "timetable"),
+				"value" => esc_html__("All Events Categories", "timetable"),
 				"dependency" => array(
 					"element" => "filter_kind",
 					"value" => array("event_and_event_category"),
@@ -1568,361 +1574,361 @@ function timetable_vc_init()
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Select time format", "timetable"),
+				"heading" => esc_html__("Select time format", "timetable"),
 				"param_name" => "select_time",
 				"value" => array(						
-					__("09.03 (H.i)", "timetable") => "H.i",
-					__("09:03 (H:i)", "timetable") => "H:i",
-					__("9:03 am (g:i a)", "timetable") => "g:i a",
-					__("9:03 AM (g:i A)", "timetable") => "g:i A",
+					esc_html__("09.03 (H.i)", "timetable") => "H.i",
+					esc_html__("09:03 (H:i)", "timetable") => "H:i",
+					esc_html__("9:03 am (g:i a)", "timetable") => "g:i a",
+					esc_html__("9:03 AM (g:i A)", "timetable") => "g:i A",
 				),
 			),
 			array(
 				"type" => "textfield",
 				"class" => "",
-				"heading" => __("Time format", "timetable"),
+				"heading" => esc_html__("Time format", "timetable"),
 				"param_name" => "time_format",
 				"value" => "H.i",					
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Hide 'All Events' view", "timetable"),
+				"heading" => esc_html__("Hide 'All Events' view", "timetable"),
 				"param_name" => "hide_all_events_view",
 				"value" => array(
-					__("No", "timetable") => "0",
-					__("Yes", "timetable") => "1",
+					esc_html__("No", "timetable") => "0",
+					esc_html__("Yes", "timetable") => "1",
 				),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Hide first (hours) column", "timetable"),
+				"heading" => esc_html__("Hide first (hours) column", "timetable"),
 				"param_name" => "hide_hours_column",
 				"value" => array(
-					__("No", "timetable") => "0",
-					__("Yes", "timetable") => "1",
+					esc_html__("No", "timetable") => "0",
+					esc_html__("Yes", "timetable") => "1",
 				),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Show end hour in first (hours) column", "timetable"),
+				"heading" => esc_html__("Show end hour in first (hours) column", "timetable"),
 				"param_name" => "show_end_hour",
 				"value" => array(
-					__("No", "timetable") => "0",
-					__("Yes", "timetable") => "1",
+					esc_html__("No", "timetable") => "0",
+					esc_html__("Yes", "timetable") => "1",
 				),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Event block layout", "timetable"),
+				"heading" => esc_html__("Event block layout", "timetable"),
 				"param_name" => "event_layout",
 				"value" => array(
-					__("Type 1", "timetable") => "1",
-					__("Type 2", "timetable") => "2",
-					__("Type 3", "timetable") => "3",
-					__("Type 4", "timetable") => "4",
-					__("Type 5", "timetable") => "5",
+					esc_html__("Type 1", "timetable") => "1",
+					esc_html__("Type 2", "timetable") => "2",
+					esc_html__("Type 3", "timetable") => "3",
+					esc_html__("Type 4", "timetable") => "4",
+					esc_html__("Type 5", "timetable") => "5",
 				),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Hide empty rows", "timetable"),
+				"heading" => esc_html__("Hide empty rows", "timetable"),
 				"param_name" => "hide_empty",
 				"value" => array(
-					__("No", "timetable") => "0",
-					__("Yes", "timetable") => "1",
+					esc_html__("No", "timetable") => "0",
+					esc_html__("Yes", "timetable") => "1",
 				),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Disable event url", "timetable"),
+				"heading" => esc_html__("Disable event url", "timetable"),
 				"param_name" => "disable_event_url",
 				"value" => array(
-					__("No", "timetable") => "0",
-					__("Yes", "timetable") => "1",
+					esc_html__("No", "timetable") => "0",
+					esc_html__("Yes", "timetable") => "1",
 				),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Text align", "timetable"),
+				"heading" => esc_html__("Text align", "timetable"),
 				"param_name" => "text_align",
 				"value" => array(
-					__("center", "timetable") => "center",
-					__("left", "timetable") => "left",
-					__("right", "timetable") => "right",
+					esc_html__("center", "timetable") => "center",
+					esc_html__("left", "timetable") => "left",
+					esc_html__("right", "timetable") => "right",
 				),
 			),
 			array(
 				"type" => "textfield",
 				"class" => "",
-				"heading" => __("Id", "timetable"),
+				"heading" => esc_html__("Id", "timetable"),
 				"param_name" => "id",
 				"value" => "",					
 			),
 			array(
 				"type" => "textfield",
 				"class" => "",
-				"heading" => __("Row height (in px)", "timetable"),
+				"heading" => esc_html__("Row height (in px)", "timetable"),
 				"param_name" => "row_height",
 				"value" => "31",					
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Display list view on desktop", "timetable"),
+				"heading" => esc_html__("Display list view on desktop", "timetable"),
 				"param_name" => "desktop_list_view",
 				"value" => array(
-					__("No", "timetable") => "0",
-					__("Yes", "timetable") => "1",
+					esc_html__("No", "timetable") => "0",
+					esc_html__("Yes", "timetable") => "1",
 				),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Responsive", "timetable"),
+				"heading" => esc_html__("Responsive", "timetable"),
 				"param_name" => "responsive",
 				"value" => array(						
-					__("Yes", "timetable") => "1",
-					__("No", "timetable") => "0",
+					esc_html__("Yes", "timetable") => "1",
+					esc_html__("No", "timetable") => "0",
 				),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Event description in responsive mode", "timetable"),
+				"heading" => esc_html__("Event description in responsive mode", "timetable"),
 				"param_name" => "event_description_responsive",
 				"value" => array(						
-					__("None", "timetable") => "none",
-					__("Only Description 1", "timetable") => "description-1",
-					__("Only Description 2", "timetable") => "description-2",
-					__("Description 1 and Description 2", "timetable") => "description-1-and-description-2",
+					esc_html__("None", "timetable") => "none",
+					esc_html__("Only Description 1", "timetable") => "description-1",
+					esc_html__("Only Description 2", "timetable") => "description-2",
+					esc_html__("Description 1 and Description 2", "timetable") => "description-1-and-description-2",
 				),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Collapse event hours in responsive mode", "timetable"),
+				"heading" => esc_html__("Collapse event hours in responsive mode", "timetable"),
 				"param_name" => "collapse_event_hours_responsive",
 				"value" => array(						
-					__("No", "timetable") => "0",
-					__("Yes", "timetable") => "1",
+					esc_html__("No", "timetable") => "0",
+					esc_html__("Yes", "timetable") => "1",
 				),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Use colors in responsive mode", "timetable"),
+				"heading" => esc_html__("Use colors in responsive mode", "timetable"),
 				"param_name" => "colors_responsive_mode",
 				"value" => array(						
-					__("No", "timetable") => "0",
-					__("Yes", "timetable") => "1",
+					esc_html__("No", "timetable") => "0",
+					esc_html__("Yes", "timetable") => "1",
 				),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Export to PDF button", "timetable"),
+				"heading" => esc_html__("Export to PDF button", "timetable"),
 				"param_name" => "export_to_pdf_button",
 				"value" => array(						
-					__("No", "timetable") => "0",
-					__("Yes", "timetable") => "1",
+					esc_html__("No", "timetable") => "0",
+					esc_html__("Yes", "timetable") => "1",
 				),
 			),
 			array(
 				"type" => "textfield",
 				"class" => "",
-				"heading" => __("Generate PDF label", "timetable"),
+				"heading" => esc_html__("Generate PDF label", "timetable"),
 				"param_name" => "generate_pdf_label",
-				"value" => __("Generate PDF", "timetable"),					
+				"value" => esc_html__("Generate PDF", "timetable"),					
 			),
 		    array(
 		        "type" => "dropdown",
 		        "class" => "",
-		        "heading" => __("PDF Font", "timetable"),
+		        "heading" => esc_html__("PDF Font", "timetable"),
 		        "param_name" => "pdf_font",
 		        "value" => array(
-		            __("Lato", "timetable") => "lato",
-		            __("DejaVu Sans", "timetable") => "dejavusans",
+		            esc_html__("Lato", "timetable") => "lato",
+		            esc_html__("DejaVu Sans", "timetable") => "dejavusans",
 		        ),
 		    ),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Timetable box background color", "timetable"),
+				"heading" => esc_html__("Timetable box background color", "timetable"),
 				"param_name" => "box_bg_color",
 				"value" => "#00a27c",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Timetable box hover background color", "timetable"),
+				"heading" => esc_html__("Timetable box hover background color", "timetable"),
 				"param_name" => "box_hover_bg_color",
 				"value" => "#1f736a",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Timetable box text color", "timetable"),
+				"heading" => esc_html__("Timetable box text color", "timetable"),
 				"param_name" => "box_txt_color",
 				"value" => "#ffffff",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Timetable box hover text color", "timetable"),
+				"heading" => esc_html__("Timetable box hover text color", "timetable"),
 				"param_name" => "box_hover_txt_color",
 				"value" => "#ffffff",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Timetable box hours text color", "timetable"),
+				"heading" => esc_html__("Timetable box hours text color", "timetable"),
 				"param_name" => "box_hours_txt_color",
 				"value" => "#ffffff",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Timetable box hours hover text color", "timetable"),
+				"heading" => esc_html__("Timetable box hours hover text color", "timetable"),
 				"param_name" => "box_hours_hover_txt_color",
 				"value" => "#ffffff",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Filter control background color", "timetable"),
+				"heading" => esc_html__("Filter control background color", "timetable"),
 				"param_name" => "filter_color",
 				"value" => "#00a27c",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Row 1 style background color", "timetable"),
+				"heading" => esc_html__("Row 1 style background color", "timetable"),
 				"param_name" => "row1_color",
 				"value" => "#f0f0f0",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Row 2 style background color", "timetable"),
+				"heading" => esc_html__("Row 2 style background color", "timetable"),
 				"param_name" => "row2_color",
 				"value" => "",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Generate PDF button text color", "timetable"),
+				"heading" => esc_html__("Generate PDF button text color", "timetable"),
 				"param_name" => "generate_pdf_text_color",
 				"value" => "#ffffff",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Generate PDF button background color", "timetable"),
+				"heading" => esc_html__("Generate PDF button background color", "timetable"),
 				"param_name" => "generate_pdf_bg_color",
 				"value" => "#00a27c",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Generate PDF button hover text color", "timetable"),
+				"heading" => esc_html__("Generate PDF button hover text color", "timetable"),
 				"param_name" => "generate_pdf_hover_text_color",
 				"value" => "#ffffff",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Generate PDF button hover background color", "timetable"),
+				"heading" => esc_html__("Generate PDF button hover background color", "timetable"),
 				"param_name" => "generate_pdf_hover_bg_color",
 				"value" => "#1f736a",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Booking button text color", "timetable"),
+				"heading" => esc_html__("Booking button text color", "timetable"),
 				"param_name" => "booking_text_color",
 				"value" => "#ffffff",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Booking button background color", "timetable"),
+				"heading" => esc_html__("Booking button background color", "timetable"),
 				"param_name" => "booking_bg_color",
 				"value" => "#05bb90",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Booking button hover text color", "timetable"),
+				"heading" => esc_html__("Booking button hover text color", "timetable"),
 				"param_name" => "booking_hover_text_color",
 				"value" => "#ffffff",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Booking button hover background color", "timetable"),
+				"heading" => esc_html__("Booking button hover background color", "timetable"),
 				"param_name" => "booking_hover_bg_color",
 				"value" => "#07b38a",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Booked button text color", "timetable"),
+				"heading" => esc_html__("Booked button text color", "timetable"),
 				"param_name" => "booked_text_color",
 				"value" => "#aaaaaa",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Booked button background color", "timetable"),
+				"heading" => esc_html__("Booked button background color", "timetable"),
 				"param_name" => "booked_bg_color",
 				"value" => "#eeeeee",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Unavailable button text color", "timetable"),
+				"heading" => esc_html__("Unavailable button text color", "timetable"),
 				"param_name" => "unavailable_text_color",
 				"value" => "#aaaaaa",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Unavailable button background color", "timetable"),
+				"heading" => esc_html__("Unavailable button background color", "timetable"),
 				"param_name" => "unavailable_bg_color",
 				"value" => "#eeeeee",
 			),
 			array(
 				"type" => "colorpicker",
 				"class" => "",
-				"heading" => __("Available slots color", "timetable"),
+				"heading" => esc_html__("Available slots color", "timetable"),
 				"param_name" => "available_slots_color",
 				"value" => "#ffd544",
 			),
 			array(
 				"type" => "textfield",
 				"class" => "",
-				"heading" => __("Table header font", "timetable"),
+				"heading" => esc_html__("Table header font", "timetable"),
 				"param_name" => "font_custom",
 				"value" => "",					
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("or choose Google font", "timetable"),
+				"heading" => esc_html__("or choose Google font", "timetable"),
 				"param_name" => "font",
 				"value" => $google_fonts_array,
 			),
 			array(
 				"type" => "dropdownmulti",
 				"class" => "",
-				"heading" => __("Google font subset", "timetable"),
+				"heading" => esc_html__("Google font subset", "timetable"),
 				"param_name" => "font_subset",
 				"value" => array(
 					"",
@@ -1948,68 +1954,68 @@ function timetable_vc_init()
 			array(
 				"type" => "textfield",
 				"class" => "",
-				"heading" => __("Font size (in px)", "timetable"),
+				"heading" => esc_html__("Font size (in px)", "timetable"),
 				"param_name" => "font_size",
 				"value" => "",					
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Show booking button", "timetable"),
+				"heading" => esc_html__("Show booking button", "timetable"),
 				"param_name" => "show_booking_button",
 				"value" => array(						
-					__("No", "timetable") => "no",
-					__("Always", "timetable") => "always",
-					__("On hover", "timetable") => "on_hover",
+					esc_html__("No", "timetable") => "no",
+					esc_html__("Always", "timetable") => "always",
+					esc_html__("On hover", "timetable") => "on_hover",
 				),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Show available slots", "timetable"),
+				"heading" => esc_html__("Show available slots", "timetable"),
 				"param_name" => "show_available_slots",
 				"value" => array(						
-					__("No", "timetable") => "no",
-					__("Always", "timetable") => "always",
+					esc_html__("No", "timetable") => "no",
+					esc_html__("Always", "timetable") => "always",
 				),
 			),
 			array(
 				"type" => "textfield",
 				"class" => "",
-				"heading" => __("Available slots singular label", "timetable"),
+				"heading" => esc_html__("Available slots singular label", "timetable"),
 				"param_name" => "available_slots_singular_label",
 				"value" => "{number_available}/{number_total} slot available",
-				"description" => __("Specify text label for 'slot available' information (singular). Available placeholders: {number_available}, {number_taken}, {number_total}.", "timetable")
+				"description" => esc_html__("Specify text label for 'slot available' information (singular). Available placeholders: {number_available}, {number_taken}, {number_total}.", "timetable")
 			),
 			array(
 				"type" => "textfield",
 				"class" => "",
-				"heading" => __("Available slots plural label", "timetable"),
+				"heading" => esc_html__("Available slots plural label", "timetable"),
 				"param_name" => "available_slots_plural_label",
 				"value" => "{number_available}/{number_total} slots available",
-				"description" => __("Specify text label for 'slots available' information (plural). Available placeholders: {number_available}, {number_taken}, {number_total}.", "timetable")
+				"description" => esc_html__("Specify text label for 'slots available' information (plural). Available placeholders: {number_available}, {number_taken}, {number_total}.", "timetable")
 			),
 		    array(
 		        "type" => "dropdown",
 		        "class" => "",
-		        "heading" => __("Default booking view", "timetable"),
+		        "heading" => esc_html__("Default booking view", "timetable"),
 		        "param_name" => "default_booking_view",
 		        "value" => array(
-		            __("User", "timetable") => "user",
-		            __("Guest", "timetable") => "guest",
+		            esc_html__("User", "timetable") => "user",
+		            esc_html__("Guest", "timetable") => "guest",
 		        ),
-		        "description" => __("Specify which booking view should be visible by default.", "timetable"),
+		        "description" => esc_html__("Specify which booking view should be visible by default.", "timetable"),
 		    ),
 		    array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Allow user booking", "timetable"),
+				"heading" => esc_html__("Allow user booking", "timetable"),
 				"param_name" => "allow_user_booking",
 				"value" => array(
-				    __("Yes", "timetable") => "yes",
-					__("No", "timetable") => "no",
+				    esc_html__("Yes", "timetable") => "yes",
+					esc_html__("No", "timetable") => "no",
 				),
-				"description" => __("Set to 'Yes' if you want to allow logged in users to make a booking.", "timetable"),
+				"description" => esc_html__("Set to 'Yes' if you want to allow logged in users to make a booking.", "timetable"),
 		        "dependency" => array(
 		            "element" => "default_booking_view",
 		            "value" => array("guest"),
@@ -2018,13 +2024,13 @@ function timetable_vc_init()
 		    array(
 		        "type" => "dropdown",
 		        "class" => "",
-		        "heading" => __("Allow guest booking", "timetable"),
+		        "heading" => esc_html__("Allow guest booking", "timetable"),
 		        "param_name" => "allow_guest_booking",
 		        "value" => array(
-		            __("No", "timetable") => "no",
-		            __("Yes", "timetable") => "yes",
+		            esc_html__("No", "timetable") => "no",
+		            esc_html__("Yes", "timetable") => "yes",
 		        ),
-		        "description" => __("Set to 'Yes' if you want to allow guests to make a booking.", "timetable"),
+		        "description" => esc_html__("Set to 'Yes' if you want to allow guests to make a booking.", "timetable"),
 		        /*"dependency" => array(
 		            "element" => "default_booking_view",
 		            "value" => array("user"),
@@ -2033,181 +2039,181 @@ function timetable_vc_init()
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Show guest name field", "timetable"),
+				"heading" => esc_html__("Show guest name field", "timetable"),
 				"param_name" => "show_guest_name_field",
 				"value" => array(
-					__("Yes", "timetable") => "yes",
-					__("No", "timetable") => "no",
+					esc_html__("Yes", "timetable") => "yes",
+					esc_html__("No", "timetable") => "no",
 				),
 				"dependency" => array(
 					"element" => "allow_guest_booking",
 					"value" => array("yes"),
 				),
-				"description" => __("Set to 'Yes' if you want to show 'Name' field in guest booking form.", "timetable"),
+				"description" => esc_html__("Set to 'Yes' if you want to show 'Name' field in guest booking form.", "timetable"),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Guest name field required", "timetable"),
+				"heading" => esc_html__("Guest name field required", "timetable"),
 				"param_name" => "guest_name_field_required",
 				"value" => array(						
-					__("Yes", "timetable") => "yes",
-					__("No", "timetable") => "no",
+					esc_html__("Yes", "timetable") => "yes",
+					esc_html__("No", "timetable") => "no",
 				),
 				"dependency" => array(
 					"element" => "allow_guest_booking",
 					"value" => array("yes"),
 				),
-				"description" => __("Set to 'Yes' if the 'Name' field should be required.", "timetable"),
+				"description" => esc_html__("Set to 'Yes' if the 'Name' field should be required.", "timetable"),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Show guest phone field", "timetable"),
+				"heading" => esc_html__("Show guest phone field", "timetable"),
 				"param_name" => "show_guest_phone_field",
 				"value" => array(						
-					__("No", "timetable") => "no",
-					__("Yes", "timetable") => "yes",
+					esc_html__("No", "timetable") => "no",
+					esc_html__("Yes", "timetable") => "yes",
 				),
 				"dependency" => array(
 					"element" => "allow_guest_booking",
 					"value" => array("yes"),
 				),
-				"description" => __("Set to 'Yes' if you want to show 'Phone' field in guest booking form.", "timetable"),
+				"description" => esc_html__("Set to 'Yes' if you want to show 'Phone' field in guest booking form.", "timetable"),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Guest phone field required", "timetable"),
+				"heading" => esc_html__("Guest phone field required", "timetable"),
 				"param_name" => "guest_phone_field_required",
 				"value" => array(						
-					__("No", "timetable") => "no",
-					__("Yes", "timetable") => "yes",
+					esc_html__("No", "timetable") => "no",
+					esc_html__("Yes", "timetable") => "yes",
 				),
 				"dependency" => array(
 					"element" => "allow_guest_booking",
 					"value" => array("yes"),
 				),
-				"description" => __("Set to 'Yes' if the 'Phone' field should be required.", "timetable"),
+				"description" => esc_html__("Set to 'Yes' if the 'Phone' field should be required.", "timetable"),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Show guest message field", "timetable"),
+				"heading" => esc_html__("Show guest message field", "timetable"),
 				"param_name" => "show_guest_message_field",
 				"value" => array(						
-					__("No", "timetable") => "no",
-					__("Yes", "timetable") => "yes",
+					esc_html__("No", "timetable") => "no",
+					esc_html__("Yes", "timetable") => "yes",
 				),
 				"dependency" => array(
 					"element" => "allow_guest_booking",
 					"value" => array("yes"),
 				),
-				"description" => __("Set to 'Yes' if you want to show 'Message' field in guest booking form.", "timetable"),
+				"description" => esc_html__("Set to 'Yes' if you want to show 'Message' field in guest booking form.", "timetable"),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Guest message field required", "timetable"),
+				"heading" => esc_html__("Guest message field required", "timetable"),
 				"param_name" => "guest_message_field_required",
 				"value" => array(						
-					__("No", "timetable") => "no",
-					__("Yes", "timetable") => "yes",
+					esc_html__("No", "timetable") => "no",
+					esc_html__("Yes", "timetable") => "yes",
 				),
 				"dependency" => array(
 					"element" => "allow_guest_booking",
 					"value" => array("yes"),
 				),
-				"description" => __("Set to 'Yes' if the 'Message' field should be required.", "timetable"),
+				"description" => esc_html__("Set to 'Yes' if the 'Message' field should be required.", "timetable"),
 			),
 			array(
 				"type" => "textfield",
 				"class" => "",
-				"heading" => __("Booking label", "timetable"),
+				"heading" => esc_html__("Booking label", "timetable"),
 				"param_name" => "booking_label",
-				"value" => __("Book now", "timetable"),
+				"value" => esc_html__("Book now", "timetable"),
 			),
 			array(
 				"type" => "textfield",
 				"class" => "",
-				"heading" => __("Booked label", "timetable"),
+				"heading" => esc_html__("Booked label", "timetable"),
 				"param_name" => "booked_label",
-				"value" => __("Booked", "timetable"),
+				"value" => esc_html__("Booked", "timetable"),
 			),
 			array(
 				"type" => "textfield",
 				"class" => "",
-				"heading" => __("Unavailable label", "timetable"),
+				"heading" => esc_html__("Unavailable label", "timetable"),
 				"param_name" => "unavailable_label",
-				"value" => __("Unavailable", "timetable"),
+				"value" => esc_html__("Unavailable", "timetable"),
 			),
 			array(
 				"type" => "textfield",
 				"class" => "",
-				"heading" => __("Popup booking label", "timetable"),
+				"heading" => esc_html__("Popup booking label", "timetable"),
 				"param_name" => "booking_popup_label",
-				"value" => __("Book now", "timetable"),
+				"value" => esc_html__("Book now", "timetable"),
 			),
 			array(
 				"type" => "textfield",
 				"class" => "",
-				"heading" => __("Popup login label", "timetable"),
+				"heading" => esc_html__("Popup login label", "timetable"),
 				"param_name" => "login_popup_label",
-				"value" => __("Log in", "timetable"),
+				"value" => esc_html__("Log in", "timetable"),
 			),
 			array(
 				"type" => "textfield",
 				"class" => "",
-				"heading" => __("Popup cancel label", "timetable"),
+				"heading" => esc_html__("Popup cancel label", "timetable"),
 				"param_name" => "cancel_popup_label",
-				"value" => __("Cancel", "timetable"),
+				"value" => esc_html__("Cancel", "timetable"),
 			),
 			array(
 				"type" => "textfield",
 				"class" => "",
-				"heading" => __("Popup continue label", "timetable"),
+				"heading" => esc_html__("Popup continue label", "timetable"),
 				"param_name" => "continue_popup_label",
-				"value" => __("Continue", "timetable"),
+				"value" => esc_html__("Continue", "timetable"),
 			),
 			array(
 				"type" => "dropdown",
 				"class" => "",
-				"heading" => __("Terms and conditions checkbox", "timetable"),
+				"heading" => esc_html__("Terms and conditions checkbox", "timetable"),
 				"param_name" => "terms_checkbox",
 				"value" => array(						
-					__("No", "timetable") => "no",
-					__("Yes", "timetable") => "yes",
+					esc_html__("No", "timetable") => "no",
+					esc_html__("Yes", "timetable") => "yes",
 				),
-				"description" => __("Set to 'Yes' if you want to display 'Terms and conditions' checkbox.", "timetable"),
+				"description" => esc_html__("Set to 'Yes' if you want to display 'Terms and conditions' checkbox.", "timetable"),
 			),
 			array(
 				"type" => "textfield",
 				"class" => "",
-				"heading" => __("Terms and conditions message", "timetable"),
+				"heading" => esc_html__("Terms and conditions message", "timetable"),
 				"param_name" => "terms_message",
-				"value" => __("Please accept terms and conditions", "timetable"),
-				"description" => __("Specify text for 'Terms and conditions' checkbox.", "timetable"),
+				"value" => esc_html__("Please accept terms and conditions", "timetable"),
+				"description" => esc_html__("Specify text for 'Terms and conditions' checkbox.", "timetable"),
 			),
 			array(
 				"type" => "textarea",
 				"class" => "",
-				"heading" => __("Booking pop-up message", "timetable"),
+				"heading" => esc_html__("Booking pop-up message", "timetable"),
 				"param_name" => "booking_popup_message",
 				"value" => BOOKING_POPUP_MESSAGE,
-				"description" => __("Specify text that will appear in pop-up window. Available placeholders: {event_title} {column_title} {event_start} {event_end} {event_description_1} {event_description_2} {user_name} {user_email} {tt_btn_book} {tt_btn_cancel} {tt_btn_continue}", 'timetable'),
+				"description" => esc_html__("Specify text that will appear in pop-up window. Available placeholders: {event_title} {column_title} {event_start} {event_end} {event_description_1} {event_description_2} {user_name} {user_email} {tt_btn_book} {tt_btn_cancel} {tt_btn_continue}", 'timetable'),
 			),
 			array(
 				"type" => "textarea",
 				"class" => "",
-				"heading" => __("Booking pop-up thank you message", "timetable"),
+				"heading" => esc_html__("Booking pop-up thank you message", "timetable"),
 				"param_name" => "booking_popup_thank_you_message",
 				"value" => BOOKING_POPUP_THANK_YOU_MESSAGE,
-				"description" => __("Specify text that will appear in pop-up window. Available placeholders: {event_title} {column_title} {event_start} {event_end} {event_description_1} {event_description_2} {user_name} {user_email} {tt_btn_continue}", 'timetable'),
+				"description" => esc_html__("Specify text that will appear in pop-up window. Available placeholders: {event_title} {column_title} {event_start} {event_end} {event_description_1} {event_description_2} {user_name} {user_email} {tt_btn_continue}", 'timetable'),
 			),
 			array(
 				"type" => "textarea",
 				"class" => "",
-				"heading" => __("Custom CSS", "timetable"),
+				"heading" => esc_html__("Custom CSS", "timetable"),
 				"param_name" => "custom_css",
 				"value" => "",					
 			),
@@ -2221,21 +2227,21 @@ function timetable_vc_dropdownmultiple_settings_field($settings, $value)
 	$value = ($value==null ? array() : $value);
 	if(!is_array($value))
 		$value = explode(",", $value);
-	$output = '<select name="'.$settings['param_name'].'" class="wpb_vc_param_value wpb-input wpb-select '.$settings['param_name'].' '.$settings['type'].'" multiple>';
+	$output = '<select name="'.esc_attr($settings['param_name']).'" class="wpb_vc_param_value wpb-input wpb-select '.esc_attr($settings['param_name']).' '.esc_attr($settings['type']).'" multiple>';
 			foreach ( $settings['value'] as $text_val => $val ) {
 				if ( is_numeric($text_val) && is_string($val) || is_numeric($text_val) && is_numeric($val) ) {
 					$text_val = $val;
 				}
-				$text_val = __($text_val, "js_composer");				   
+				$text_val = esc_html__($text_val, "js_composer");				   
 				$selected = '';
 				if ( in_array($val,$value) ) $selected = ' selected="selected"';
-				$output .= '<option class="'.$val.'" value="'.$val.'"'.$selected.'>'.$text_val.'</option>';
+				$output .= '<option class="'.esc_attr($val).'" value="'.esc_attr($val).'"'.esc_attr($selected).'>'.$text_val.'</option>';
 			}
 			$output .= '</select>';
 	return $output;
 }
 
-function prepare_booking_button($args)
+function timetable_prepare_booking_button($args)
 {
 	$args = shortcode_atts(array(
 		'show_booking_button' => 'no',
@@ -2270,23 +2276,23 @@ function prepare_booking_button($args)
 
 	if($args['current_user_booking_count']>=$args['slots_per_user'] && $args['slots_per_user']>0)
 	{
-		$output .= "<a href='' class='event_hour_booking id-" . $args['event_hours_id'] . " booked' style='" . (strlen($args['booked_text_color']) ? " color: #" . $args['booked_text_color'] . " !important;" : "") . (strlen($args['booked_bg_color']) ? " background-color: #" . $args['booked_bg_color'] . " !important;" : "") . "' title='" . $args['booked_label'] . "'>" . $args['booked_label'] . "</a>";
+		$output .= "<a href='' class='event_hour_booking id-" . esc_attr($args['event_hours_id']) . " booked' style='" . (strlen($args['booked_text_color']) ? " color: #" . esc_attr($args['booked_text_color']) . " !important;" : "") . (strlen($args['booked_bg_color']) ? " background-color: #" . esc_attr($args['booked_bg_color']) . " !important;" : "") . "' title='" . esc_attr($args['booked_label']) . "'>" . $args['booked_label'] . "</a>";
 	}
 	elseif(!$args['available_slots'])
 	{
-		$output .= "<a href='' class='event_hour_booking id-" . $args['event_hours_id'] . " unavailable' style='" . (strlen($args['unavailable_text_color']) ? " color: #" . $args['unavailable_text_color'] . " !important;" : "") . (strlen($args['unavailable_bg_color']) ? " background-color: #" . $args['unavailable_bg_color'] . " !important;" : "") . "' title='" . $args['unavailable_label'] . "'>" . $args['unavailable_label'] . "</a>";
+		$output .= "<a href='' class='event_hour_booking id-" . esc_attr($args['event_hours_id']) . " unavailable' style='" . (strlen($args['unavailable_text_color']) ? " color: #" . esc_attr($args['unavailable_text_color']) . " !important;" : "") . (strlen($args['unavailable_bg_color']) ? " background-color: #" . esc_attr($args['unavailable_bg_color']) . " !important;" : "") . "' title='" . esc_attr($args['unavailable_label']) . "'>" . $args['unavailable_label'] . "</a>";
 	}
 	else
 	{
-		$output .= "<a href='" . $booking_url . "' class='event_hour_booking id-" . $args['event_hours_id'] . " " . ($args['redirect']=='yes' ? 'redirect' : '') . " ' data-event-hour-id='" . $args['event_hours_id'] . "' style='" . (strlen($args['booking_text_color']) ? " color: #" . $args['booking_text_color'] . " !important;" : "") . (strlen($args['booking_bg_color']) ? " background-color: #" . $args['booking_bg_color'] . ";" : "") . "' onMouseOver='" . (strlen($args['booking_hover_text_color']) ? " this.style.setProperty(\"color\", \"#" . $args['booking_hover_text_color'] . "\", \"important\");" : "") . (strlen($args['booking_hover_bg_color']) ? " this.style.setProperty(\"background\", \"#" . $args['booking_hover_bg_color'] . "\", \"important\");" : "") . "' onMouseOut='" . (strlen($args['booking_hover_text_color']) ? (strlen($args['booking_hover_text_color']) ? " this.style.setProperty(\"color\", \"#" . $args['booking_text_color'] . "\", \"important\");" : " this.style.color=\"\";") : "") . (strlen($args['booking_hover_bg_color']) ? (strlen($args['booking_hover_bg_color']) ? " this.style.setProperty(\"background\", \"#" . $args['booking_bg_color'] . "\", \"important\");" : " this.style.background=\"\";") : "") . "' title='" . $args['booking_label'] . "'>" . $args['booking_label'] . "</a>";
+		$output .= "<a href='" . esc_url($booking_url) . "' class='event_hour_booking id-" . esc_attr($args['event_hours_id']) . " " . ($args['redirect']=='yes' ? 'redirect' : '') . " ' data-event-hour-id='" . esc_attr($args['event_hours_id']) . "' style='" . (strlen($args['booking_text_color']) ? " color: #" . esc_attr($args['booking_text_color']) . " !important;" : "") . (strlen($args['booking_bg_color']) ? " background-color: #" . esc_attr($args['booking_bg_color']) . ";" : "") . "' onMouseOver='" . (strlen($args['booking_hover_text_color']) ? " this.style.setProperty(\"color\", \"#" . esc_attr($args['booking_hover_text_color']) . "\", \"important\");" : "") . (strlen($args['booking_hover_bg_color']) ? " this.style.setProperty(\"background\", \"#" . esc_attr($args['booking_hover_bg_color']) . "\", \"important\");" : "") . "' onMouseOut='" . (strlen($args['booking_hover_text_color']) ? (strlen($args['booking_hover_text_color']) ? " this.style.setProperty(\"color\", \"#" . esc_attr($args['booking_text_color']) . "\", \"important\");" : " this.style.color=\"\";") : "") . (strlen($args['booking_hover_bg_color']) ? (strlen($args['booking_hover_bg_color']) ? " this.style.setProperty(\"background\", \"#" . esc_attr($args['booking_bg_color']) . "\", \"important\");" : " this.style.background=\"\";") : "") . "' title='" . esc_attr($args['booking_label']) . "'>" . $args['booking_label'] . "</a>";
 	}
 	
-	$output = "<div class='event_hour_booking_wrapper " . $args['show_booking_button'] . "'>" . $output . "</div>";
+	$output = "<div class='event_hour_booking_wrapper " . esc_attr($args['show_booking_button']) . "'>" . $output . "</div>";
 	
 	return $output;
 }
 
-function prepare_booking_slots_label($args)
+function timetable_prepare_booking_slots_label($args)
 {
 	$args = shortcode_atts(array(
 		'available_slots' => '',

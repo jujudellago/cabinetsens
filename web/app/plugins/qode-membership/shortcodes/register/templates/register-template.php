@@ -18,6 +18,7 @@
 	            <label for="user_register_confirm_password" class="qode-membership-lr-label"><?php esc_html_e( 'Repeat Password', 'qode-membership' ) ?></label>
                 <input type="password" name="user_register_confirm_password" id="user_register_confirm_password" placeholder="<?php esc_html_e('Repeat Password','qode-membership') ?>" value="" required />
             </div>
+            <?php do_action('qode_membership_additional_registration_field'); ?>
 			<div class="qode-register-button-holder">
 				<?php
 				if ( qode_membership_theme_installed() ) {

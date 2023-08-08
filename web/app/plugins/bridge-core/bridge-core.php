@@ -5,7 +5,7 @@ Plugin URI: https://qodeinteractive.com
 Description: Plugin that adds additional features needed by our theme
 Author: Qode
 Author URI: https://qodeinteractive.com
-Version: 2.6.8
+Version: 3.0.9
 */
 if ( ! class_exists( 'BridgeCore' ) ) {
 	class BridgeCore {
@@ -55,7 +55,7 @@ if ( ! class_exists( 'BridgeCore' ) ) {
 
 
 		function qode_theme_menu() {
-			if ( bridge_core_is_installed('theme') ) {
+			if ( bridge_core_is_installed('theme') && bridge_core_is_theme_registered() ) {
 				global $bridge_qode_framework;
 				bridge_qode_init_qode_theme_options();
 				$page_hook_suffix = add_menu_page(
@@ -88,7 +88,7 @@ if ( ! class_exists( 'BridgeCore' ) ) {
 
 
 		function qode_add_theme_options_toolbar($wp_admin_bar) {
-			if ( bridge_core_is_installed('theme') && current_user_can( 'administrator' ) && !is_admin()) {
+			if ( bridge_core_is_installed('theme') && current_user_can( 'edit_theme_options' ) && !is_admin()) {
 					$args = array(
 						'id'    => 'qode_theme_menu',
 						'title' => esc_html__('Qode Options', 'bridge-core'),
@@ -99,7 +99,6 @@ if ( ! class_exists( 'BridgeCore' ) ) {
 					$wp_admin_bar->add_node($args);
 			}
 		}
-
 	}
 
 	BridgeCore::get_instance();

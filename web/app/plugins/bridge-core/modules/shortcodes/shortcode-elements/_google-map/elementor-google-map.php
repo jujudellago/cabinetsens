@@ -17,7 +17,7 @@ class BridgeCoreElementorGoogleMap extends \Elementor\Widget_Base{
         return [ 'qode' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -162,7 +162,8 @@ class BridgeCoreElementorGoogleMap extends \Elementor\Widget_Base{
             [
                 'label' => esc_html__( "Map Zoom", 'bridge-core' ),
                 "description" => esc_html__( "Enter a zoom factor for Google Map (0 = whole worlds, 19 = individual buildings)", 'bridge-core' ),
-                'type' => \Elementor\Controls_Manager::TEXT
+                'type' => \Elementor\Controls_Manager::TEXT,
+	            'default' => 10
             ]
         );
 
@@ -195,4 +196,4 @@ class BridgeCoreElementorGoogleMap extends \Elementor\Widget_Base{
 
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorGoogleMap() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorGoogleMap() );

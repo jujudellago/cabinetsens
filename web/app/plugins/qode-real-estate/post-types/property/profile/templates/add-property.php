@@ -649,7 +649,7 @@ $package = qodef_re_property_addition_enabled();
 	//stongly false because of the 0 key for packages
 	if ($package === false) { ?>
     <div class="qodef-no-package">
-        <h3><?php esc_html_e('Please buy package in order to add more properties.', 'qode-real-estate'); ?></h3>
+        <h5><?php esc_html_e('Please buy package in order to add more properties.', 'qode-real-estate'); ?></h5>
         <?php if (qode_membership_theme_installed()) {
             echo bridge_core_get_button_v2_html(array(
                 'text' => esc_html__('BUY PACKAGES', 'qode-real-estate'),
@@ -662,9 +662,7 @@ $package = qodef_re_property_addition_enabled();
     </div>
 <?php } else { ?>
     <div class="qodef-add-property-page">
-        <h2 class="qodef-membership-page-title"><?php esc_html_e('Add Property', 'qode-real-estate'); ?></h2>
-        <p><?php esc_html_e('Add New Property', 'qode-real-estate'); ?></p>
-
+        <h5 class="qodef-membership-page-title"><?php esc_html_e('Add Property', 'qode-real-estate'); ?></h5>
         <div>
             <?php qodef_real_estate_dashboard_add_property_fields($params); ?>
             <?php do_action('qode_membership_action_login_ajax_response'); ?>

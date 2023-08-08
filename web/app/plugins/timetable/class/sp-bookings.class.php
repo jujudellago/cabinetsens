@@ -27,9 +27,9 @@ class SP_Bookings
 	
 	public function plugin_menu()
 	{
-		$admin_booking_hook = add_menu_page(__('Timetable Bookings', 'timetable'), __('Timetable Bookings', 'timetable'), 'manage_options', 'timetable_admin_bookings', array($this, 'bookings_page'), '', 20);
+		$admin_booking_hook = add_menu_page(esc_html__('Timetable Bookings', 'timetable'), esc_html__('Timetable Bookings', 'timetable'), 'manage_options', 'timetable_admin_bookings', array($this, 'bookings_page'), '', 20);
 		add_action('load-' . $admin_booking_hook, array($this, 'screen_option'));
-		add_submenu_page('timetable_admin_bookings', __('Export Bookings', 'timetable'), __('Export Bookings', 'timetable'), 'manage_options', 'timetable_admin_bookings_export', array($this, 'bookings_export_page'));
+		add_submenu_page('timetable_admin_bookings', esc_html__('Export Bookings', 'timetable'), esc_html__('Export Bookings', 'timetable'), 'manage_options', 'timetable_admin_bookings_export', array($this, 'bookings_export_page'));
 	}
 	
 	public function screen_option()
@@ -86,7 +86,7 @@ class SP_Bookings
 		?>
 		<div class="wrap timetable_settings_section first">
 			<h2><?php _e('Bookings export', 'timetable'); ?></h2>
-			<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post" id="timetable_bookings_export">
+			<form action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>" method="post" id="timetable_bookings_export">
 				<div>
 					<table class="timetable_table form-table">
 						<tr valign="top">
@@ -126,7 +126,7 @@ class SP_Bookings
 						<tr valign="top" class="no-border">
 							<td colspan="3">
 								<input type="hidden" name="action" value="export-bookings"/>
-								<input type="submit" class="button button-primary" name="bookings_export" id="bookings_export" value="<?php _e('Export', 'timetable'); ?>" />
+								<input type="submit" class="button button-primary" name="bookings_export" id="bookings_export" value="<?php esc_attr_e('Export', 'timetable'); ?>" />
 								
 							</td>
 						</tr>
@@ -161,16 +161,16 @@ class SP_Bookings
 
 		$data = '';
 		$dataArray = array();
-		$dataArray[] = __('ID','timetable');
-		$dataArray[] = __('Event','timetable');
-		$dataArray[] = __('Weekday','timetable');
-		$dataArray[] = __('Start','timetable');
-		$dataArray[] = __('End','timetable');
-		$dataArray[] = __('Type','timetable');
-		$dataArray[] = __('Name','timetable');
-		$dataArray[] = __('E-mail','timetable');
-		$dataArray[] = __('Phone','timetable');
-		$dataArray[] = __('Message','timetable');
+		$dataArray[] = esc_html__('ID','timetable');
+		$dataArray[] = esc_html__('Event','timetable');
+		$dataArray[] = esc_html__('Weekday','timetable');
+		$dataArray[] = esc_html__('Start','timetable');
+		$dataArray[] = esc_html__('End','timetable');
+		$dataArray[] = esc_html__('Type','timetable');
+		$dataArray[] = esc_html__('Name','timetable');
+		$dataArray[] = esc_html__('E-mail','timetable');
+		$dataArray[] = esc_html__('Phone','timetable');
+		$dataArray[] = esc_html__('Message','timetable');
 				
         $data .= implode(chr(9),$dataArray) . "\r\n";
         
@@ -186,7 +186,7 @@ class SP_Bookings
 				$dataArray[] = $booking['end'];
 				if($booking['user_id'])
 				{
-					$dataArray[] = sprintf(__('Logged in (%s)', 'timetable'), $booking['user_login']);
+					$dataArray[] = sprintf(esc_html__('Logged in (%s)', 'timetable'), $booking['user_login']);
 					$dataArray[] = $booking['user_name'];
 					$dataArray[] = $booking['user_email'];
 					$dataArray[] = '';	//empty for phone column
@@ -194,7 +194,7 @@ class SP_Bookings
 				}
 				else
 				{
-					$dataArray[] = __('Guest', 'timetable');
+					$dataArray[] = esc_html__('Guest', 'timetable');
 					$dataArray[] = $booking['guest_name'];
 					$dataArray[] = $booking['guest_email'];
 					$dataArray[] = $booking['guest_phone'];

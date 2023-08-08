@@ -538,7 +538,7 @@
                     var resultHolder = queryHolder.find('.qodef-query-result');
 
                     saveQueryButton.on('click', function () {
-                        if(qodef.body.hasClass('logged-in')) {
+                        if(qode_body.hasClass('logged-in')) {
                             resultHolder.html('<span class="fa fa-spinner fa-spin" aria-hidden="true"></span>');
 
                             var statusValue = status.data('status'),

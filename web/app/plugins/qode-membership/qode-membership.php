@@ -3,7 +3,7 @@
  * Plugin Name: Qode Membership
  * Description: Plugin that adds social login and user dashboard page
  * Author: Qode Themes
- * Version: 2.0.2
+ * Version: 2.0.3
  */
 
 require_once 'load.php';

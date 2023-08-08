@@ -92,7 +92,7 @@ class QodeNewsVideoLayout2 extends \Elementor\Widget_Base{
         return $reactions_array;
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -460,4 +460,4 @@ class QodeNewsVideoLayout2 extends \Elementor\Widget_Base{
 
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new QodeNewsVideoLayout2() );
+\Elementor\Plugin::instance()->widgets_manager->register( new QodeNewsVideoLayout2() );

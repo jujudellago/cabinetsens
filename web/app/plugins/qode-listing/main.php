@@ -3,7 +3,7 @@
 Plugin Name: Qode Listing
 Description: Plugin that extends wp_job_manager functionality
 Author: Qode Themes
-Version: 3.0.2
+Version: 3.0.5
 */
 
 require_once 'const.php';

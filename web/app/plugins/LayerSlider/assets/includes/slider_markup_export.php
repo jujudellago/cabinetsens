@@ -5,24 +5,29 @@ defined( 'LS_ROOT_FILE' ) || exit;
 
 // Check ZipArchive
 if( ! class_exists('ZipArchive') ) {
-	wp_die( __('The PHP ZipArchive extension is required to export sliders.', 'LayerSlider') );
+	wp_die( __('The PHP ZipArchive extension is required to export projects.', 'LayerSlider') );
 }
 
 if( ! LS_Config::isActivatedSite() ) {
-	wp_die( __('Product activation is required in order to use this feature.', 'LayerSlider') );
+	wp_die( __('License registration is required in order to use this feature.', 'LayerSlider') );
 }
 
 // Get dindent
 include LS_ROOT_PATH.'/static/dindent/Indenter.php';
-$indenter = new \Gajus\Dindent\Indenter( array(
+$indenter = new \Gajus\Dindent\Indenter([
 	'indentation_character' => "\t"
-));
+]);
 
 include LS_ROOT_PATH.'/classes/class.ls.exportutil.php';
 $zip = new LS_ExportUtil;
 
 // Fetch slider data
 $slider = LS_Sliders::find( $sliderID );
+
+// Get saved project draft if any
+if( $draft = LS_Sliders::getDraft( $sliderID ) ) {
+	$slider['data'] = $draft['data'];
+}
 
 // Override some slider settings
 $slider['data']['properties']['useSrcset'] = false;
@@ -80,28 +85,14 @@ preg_match('/, {(.*?)}/', $parts['init'], $matches);
 // Format slider properties for use in the init code
 $init = implode(",\r\n\t\t\t\t", explode('[[LN]]', $matches[1]) );
 
-// Google Fonts
-$googleFonts = '';
-$fonts = $zip->fontsForSlider( $slider['data'] );
-if( ! empty( $fonts ) ) {
-
-	foreach( $fonts as $font ) {
-		$googleFont[] = htmlspecialchars( $font['param'] );
-	}
-
-	$fontFamily = implode('|', $googleFont );
-	$googleFonts = "\r\n\t<!-- Google Fonts -->\r\n\t".'<link rel="stylesheet" href="https://fonts.googleapis.com/css?family='.$fontFamily.'">'."\r\n\t";
-
-}
-
 // Icon Fonts
 $iconFonts = '';
 if( ! empty( $parts['fonts'] ) ) {
-	$tmp = array("\r\n\t<!-- Icon Fonts -->");
+	$tmp = ["\r\n\t<!-- Icon Fonts -->"];
 	foreach( $parts['fonts'] as $font ) {
 
 		// FontAwesome
-		if( $font === 'font-awesome' ) {
+		if( $font === 'font-awesome-4' ) {
 
 			$tmp[] = '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">'."\r\n\t";
 		}
@@ -115,7 +106,7 @@ if( ! empty( $parts['fonts'] ) ) {
 $pluginFiles = '';
 if( ! empty( $parts['plugins'] ) ) {
 
-	$tmp = array("\r\n\t<!-- LayerSlider plugin files -->");
+	$tmp = ["\r\n\t<!-- LayerSlider plugin files -->"];
 	foreach( $parts['plugins'] as $plugin ) {
 		$tmp[] = '<link rel="stylesheet" href="../../layerslider/plugins/'.$plugin.'/layerslider.'.$plugin.'.css">';
 		$tmp[] = '<script src="../../layerslider/plugins/'.$plugin.'/layerslider.'.$plugin.'.js"></script>'."\r\n\t";
@@ -140,7 +131,6 @@ if( ! empty( $slider['data']['callbacks'] ) && is_array( $slider['data']['callba
 
 // Replace placeholders
 $template = str_replace( '{{slider-title}}', $slider['name'], $template );
-$template = str_replace( '{{google-fonts}}', $googleFonts, $template );
 $template = str_replace( '{{icon-fonts}}', $iconFonts, $template );
 $template = str_replace( '{{layerslider-plugins}}', $pluginFiles, $template );
 $template = str_replace( '{{slider-markup}}', $markup, $template );
@@ -173,14 +163,14 @@ $template = str_replace( ' class="ls-wp-container fitvidsignore"', '', $template
 	// Add images
 	$images = $zip->getImagesForSlider( $slider['data'] );
 	$images = $zip->getFSPaths( $images );
-	$zip->addImage( $images, $name, 'images' );
+	$zip->addImage( $images, $name, 'images', true );
 
 	// Add slider HTML file
 	$zip->addFileFromString( "$name/slider.html", $template);
 
 	// Add instructions
 	$zip->addFile( LS_ROOT_PATH.'/templates/html-export/INSTRUCTIONS.html', "$name/" );
-	$zip->addImage( LS_ROOT_PATH.'/templates/html-export/ls-instructions.png', "$name", 'images');
+	$zip->addImage( LS_ROOT_PATH.'/templates/html-export/ls-instructions.png', "$name", 'images', true);
 
 
 

@@ -56,8 +56,13 @@ class TablesSetup {
 
 	public function initialize() {
 		$this->addTables();
-
-		register_activation_hook(QODE_TOURS_MAIN_FILE_PATH, array($this, 'onActivate'));
+		
+		if( function_exists( 'wp_doing_ajax' ) && wp_doing_ajax() ) {
+			$this->onActivate();
+		} else {
+			register_activation_hook(QODE_TOURS_MAIN_FILE_PATH, array($this, 'onActivate'));
+		}
+		
 		register_deactivation_hook(QODE_TOURS_MAIN_FILE_PATH, array($this, 'onDeactivate'));
 
 		add_action('plugins_loaded', array($this, 'upgrade'));

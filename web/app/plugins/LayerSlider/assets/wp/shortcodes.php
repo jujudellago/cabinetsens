@@ -3,16 +3,17 @@
 // Prevent direct file access
 defined( 'LS_ROOT_FILE' ) || exit;
 
-$GLOBALS['lsLoadPlugins'] 	= array();
-$GLOBALS['lsLoadFonts'] 	= array();
+$GLOBALS['lsLoadPlugins'] 	= [];
+$GLOBALS['lsLoadIcons'] 	= [];
+$GLOBALS['lsLoadedFonts'] 	= [];
 
-function layerslider( $id = 0, $filters = '', $options = array() ) {
+function layerslider( $id = 0, $filters = '', $options = [] ) {
 
 	$attrs = array_merge(
-		array(
+		[
 			'id' => $id,
 			'filters' => $filters
-		),
+		],
 		$options
 	);
 
@@ -25,7 +26,7 @@ class LS_Shortcode {
 	// List of already included sliders on page.
 	// Using to identify duplicates and give them
 	// a unique slider ID to avoid issues with caching.
-	public static $slidersOnPage = array();
+	public static $slidersOnPage = [];
 
 	private function __construct() {}
 
@@ -40,7 +41,7 @@ class LS_Shortcode {
 
 	public static function registerShortcode() {
 		if(!shortcode_exists('layerslider')) {
-			add_shortcode('layerslider', array(__CLASS__, 'handleShortcode'));
+			add_shortcode('layerslider', [__CLASS__, 'handleShortcode']);
 		}
 	}
 
@@ -57,7 +58,7 @@ class LS_Shortcode {
 	 * @return bool True on successful validation, false otherwise
 	 */
 
-	public static function handleShortcode( $atts = array() ) {
+	public static function handleShortcode( $atts = [] ) {
 
 		if(self::validateFilters($atts)) {
 
@@ -102,7 +103,7 @@ class LS_Shortcode {
 	 * @return bool True on successful validation, false otherwise
 	 */
 
-	public static function validateFilters($atts = array()) {
+	public static function validateFilters($atts = []) {
 
 		// Bail out early and pass the validation
 		// if there aren't filters provided
@@ -143,7 +144,7 @@ class LS_Shortcode {
 	 * @return bool True on successful validation, false otherwise
 	 */
 
-	public static function validateShortcode($atts = array()) {
+	public static function validateShortcode($atts = []) {
 
 		$error = false;
 		$slider = false;
@@ -159,32 +160,34 @@ class LS_Shortcode {
 
 				// Second attempt to retrieve cache (if any)
 				// based on the actual slider ID instead of alias
-				if( $cache = self::cacheForSlider( $slider['id'] ) ) {
-					$slider = $cache;
+				if( ! empty( $slider['id'] ) ) {
+					if( $cache = self::cacheForSlider( $slider['id'] ) ) {
+						$slider = $cache;
+					}
 				}
 			}
 
 			// ERROR: No slider with ID was found
 			if( empty( $slider ) ) {
 				$error = self::generateErrorMarkup(
-					__('The slider cannot be found', 'LayerSlider'),
+					__('The project cannot be found', 'LayerSlider'),
 					null
 				);
 
 			// ERROR: The slider is not published
 			} elseif( (int)$slider['flag_hidden'] ) {
 				$error = self::generateErrorMarkup(
-					__('Unpublished slider', 'LayerSlider'),
-					sprintf(__('The slider you’ve inserted here is yet to be published, thus it won’t be displayed to your visitors. You can publish it by enabling the appropriate option in %sSlider Settings → Publish%s. ', 'LayerSlider'), '<a href="'.admin_url('admin.php?page=layerslider&action=edit&id='.(int)$slider['id'].'&showsettings=1#publish').'" target="_blank">', '</a>.'),
+					__('Unpublished project', 'LayerSlider'),
+					sprintf(__('The LayerSlider project you’ve embedded here is yet to be published, thus it won’t be displayed to your visitors. You can publish it by enabling the appropriate option in %sProject Settings → Publish%s. ', 'LayerSlider'), '<a href="'.admin_url('admin.php?page=layerslider&action=edit&id='.(int)$slider['id'].'&showsettings=1#publish').'" target="_blank">', '</a>.'),
 					'dashicons-hidden'
 				);
 
 			// ERROR: The slider was removed
 			} elseif( (int)$slider['flag_deleted'] ) {
 				$error = self::generateErrorMarkup(
-					__('Removed slider', 'LayerSlider'),
-					sprintf(__('The slider you’ve inserted here was removed in the meantime, thus it won’t be displayed to your visitors. This slider is still recoverable on the admin interface. You can enable listing removed sliders with the Screen Options → Removed sliders option, then choose the Restore option for the corresponding item to reinstate this slider, or just click %shere%s.', 'LayerSlider'), '<a href="'.wp_nonce_url( admin_url('admin.php?page=layerslider&action=restore&id='.$slider['id'].'&ref='.urlencode(get_permalink()) ), 'restore_'.$slider['id']).'">', '</a>'),
-					'dashicons-trash'
+					__('Hidden project', 'LayerSlider'),
+					sprintf(__('You’ve hidden this project; thus, it won’t be displayed to your visitors. Below you can see a preview of how it would look if it was displayed publicly. You can restore this project on the LayerSlider admin interface or by %sclicking here%s.', 'LayerSlider'), '<a href="'.wp_nonce_url( admin_url('admin.php?page=layerslider&action=restore&id='.$slider['id'].'&ref='.urlencode(get_permalink()) ), 'restore_'.$slider['id']).'">', '</a>'),
+					'dashicons-hidden'
 				);
 
 			// ERROR: Scheduled sliders
@@ -192,13 +195,13 @@ class LS_Shortcode {
 
 				if( ! empty($slider['schedule_start']) && (int) $slider['schedule_start'] > time() ) {
 					$error = self::generateErrorMarkup(
-						sprintf(__('This slider is scheduled to display on %s', 'LayerSlider'), ls_date(get_option('date_format') .' '. get_option('time_format'), $slider['schedule_start']) ),
+						sprintf(__('This project is scheduled to display on %s', 'LayerSlider'), ls_date(get_option('date_format') .' '. get_option('time_format'), $slider['schedule_start']) ),
 						'', 'dashicons-calendar-alt', 'scheduled'
 					);
 				} elseif( ! empty($slider['schedule_end']) && (int) $slider['schedule_end'] < time() ) {
 					$error = self::generateErrorMarkup(
-						sprintf(__('This slider was scheduled to hide on %s ','LayerSlider'), ls_date(get_option('date_format') .' '. get_option('time_format'), $slider['schedule_end']) ),
-						sprintf(__('Due to scheduling, this slider is no longer visible to your visitors. If you wish to reinstate this slider, just remove the schedule in %sSlider Settings → Publish%s.', 'LayerSlider'), '<a href="'.admin_url('admin.php?page=layerslider&action=edit&id='.(int)$slider['id'].'&showsettings=1#publish').'" target="_blank">', '</a>'),
+						sprintf(__('This project was scheduled to hide on %s ','LayerSlider'), ls_date(get_option('date_format') .' '. get_option('time_format'), $slider['schedule_end']) ),
+						sprintf(__('Due to scheduling, this project is no longer visible to your visitors. If you wish to reinstate this project, just remove the schedule in %sProject Settings → Publish%s.', 'LayerSlider'), '<a href="'.admin_url('admin.php?page=layerslider&action=edit&id='.(int)$slider['id'].'&showsettings=1#publish').'" target="_blank">', '</a>'),
 						'dashicons-no-alt', 'dead'
 					);
 				}
@@ -210,10 +213,10 @@ class LS_Shortcode {
 			$error = self::generateErrorMarkup();
 		}
 
-		return array(
+		return [
 			'error' => $error,
 			'data' => $slider
-		);
+		];
 	}
 
 
@@ -228,7 +231,7 @@ class LS_Shortcode {
 
 		// Attempt to retrieve the pre-generated markup
 		// set via the Transients API if caching is enabled.
-		if( get_option('ls_use_cache', false ) ) {
+		if( get_option('ls_use_cache', false) ) {
 
 			if( $slider = get_transient('ls-slider-data-'.$sliderID) ) {
 				$slider['id'] = $sliderID;
@@ -247,7 +250,7 @@ class LS_Shortcode {
 	}
 
 
-	public static function processShortcode( $slider, $embed = array() ) {
+	public static function processShortcode( $slider, $embed = [] ) {
 
 		// Slider ID
 		$sID = 'layerslider_'.$slider['id'];
@@ -288,7 +291,7 @@ class LS_Shortcode {
 			// and other items may be present.
 			$capability = get_option('layerslider_custom_capability', 'manage_options');
 			$permission = current_user_can( $capability );
-			if( get_option('ls_use_cache', false ) && ! $permission ) {
+			if( get_option('ls_use_cache', false) && ! $permission ) {
 				set_transient('ls-slider-data-'.$slider['id'], $output, HOUR_IN_SECONDS * 6);
 			}
 		}
@@ -324,7 +327,7 @@ class LS_Shortcode {
 
 		// Fonts
 		if( ! empty( $output['fonts'] ) ) {
-			$GLOBALS['lsLoadFonts'] = array_merge($GLOBALS['lsLoadFonts'], $output['fonts']);
+			$GLOBALS['lsLoadIcons'] = array_merge($GLOBALS['lsLoadIcons'], $output['fonts']);
 		}
 
 
@@ -339,11 +342,11 @@ class LS_Shortcode {
 
 
 
-	public static function generateSliderMarkup( $slider = null, $embed = array() ) {
+	public static function generateSliderMarkup( $slider = null, $embed = [] ) {
 
 		// Bail out early if no params received or using Popup on unactivated sites
-		if( ! $slider || ( (int)$slider['flag_popup'] && ! LS_Config::isActivatedSite() ) ) {
-			return array('init' => '', 'container' => '', 'markup' => '');
+		if( ! $slider || ( (int)$slider['flag_popup'] && ! LS_Config::isActivatedSite() ) || ! LS_Config::isActivatedSite() && ! empty( $slider['data']['properties']['pt'] ) ) {
+			return ['init' => '', 'container' => '', 'markup' => ''];
 		}
 
 		// Slider and markup data
@@ -352,11 +355,11 @@ class LS_Shortcode {
 		$slides 		= $slider['data'];
 
 		// Store generated output
-		$lsInit 		= array();
-		$lsContainer 	= array();
-		$lsMarkup 		= array();
-		$lsPlugins 		= array();
-		$lsFonts 		= array();
+		$lsInit 		= [];
+		$lsContainer 	= [];
+		$lsMarkup 		= [];
+		$lsPlugins 		= [];
+		$lsFonts 		= [];
 
 		// Include slider file
 		if( is_array( $slides ) ) {
@@ -366,8 +369,9 @@ class LS_Shortcode {
 				require_once LS_ROOT_PATH.'/classes/class.ls.dom.php';
 			}
 
-
-			$GLOBALS['lsPremiumNotice'] = array();
+			$GLOBALS['lsInitAjaxURL'] = false;
+			$GLOBALS['lsPremiumNotice'] = [];
+			$GLOBALS['lsIsActivatedSite'] = LS_Config::isActivatedSite();
 
 			// Temporarily disable using the loading="lazy"
 			// attribute based on the plugin advanced settings
@@ -388,17 +392,15 @@ class LS_Shortcode {
 			if( ! empty( $GLOBALS['lsPremiumNotice'] ) ) {
 				array_unshift($lsContainer, self::generateErrorMarkup(
 					__('Premium features is available for preview purposes only.', 'LayerSlider'),
-					sprintf(__('We’ve detected that you’re using premium features in this slider, but you have not yet activated your copy of LayerSlider. Premium features in your sliders will not be available for your visitors without activation. %sClick here to learn more%s. Detected features: %s', 'LayerSlider'), '<a href="https://layerslider.kreaturamedia.com/documentation/#activation" target="_blank">', '</a>', implode(', ', $GLOBALS['lsPremiumNotice'])),
+					sprintf(__('We’ve detected that you’re using premium features in this project, but you have not yet registered your copy of LayerSlider. Premium features in your projects will not be available for your visitors without license registration. %sClick here to learn more%s. Detected features: %s', 'LayerSlider'), '<a href="https://layerslider.com/documentation/#activation" target="_blank">', '</a>', implode(', ', $GLOBALS['lsPremiumNotice'])),
 					'dashicons-star-filled', 'info'
 				));
 			}
-
-
-
-			$lsInit 		= implode('', $lsInit);
-			$lsContainer 	= implode('', $lsContainer);
-			$lsMarkup 		= implode('', $lsMarkup);
 		}
+
+		$lsInit 		= implode('', $lsInit);
+		$lsContainer 	= implode('', $lsContainer);
+		$lsMarkup 		= implode('', $lsMarkup);
 
 		// Concatenate output
 		if( get_option('ls_concatenate_output', false) ) {
@@ -411,24 +413,24 @@ class LS_Shortcode {
 		$lsMarkup = str_replace('></source>', ' />', $lsMarkup);
 
 		// Return formatted data
-		return array(
+		return [
 			'init' 		=> $lsInit,
 			'container' => $lsContainer,
 			'markup' 	=> $lsMarkup,
 			'plugins' 	=> array_unique( $lsPlugins ),
 			'fonts' 	=> array_unique( $lsFonts )
-		);
+		];
 	}
 
 
 	public static function generateErrorMarkup( $title = null, $description = null, $logo = 'dashicons-warning', $customClass = '' ) {
 
 		if( ! $title ) {
-			$title = __('LayerSlider encountered a problem while it tried to show your slider.', 'LayerSlider');
+			$title = __('LayerSlider encountered a problem while it tried to show your project.', 'LayerSlider');
 		}
 
 		if( is_null($description) ) {
-			$description = __('Please make sure that you’ve used the right shortcode or method to insert the slider, and check if the corresponding slider exists and it wasn’t deleted previously.', 'LayerSlider');
+			$description = __('Please make sure that you’ve used the right shortcode or method to embed the project, and check if the corresponding project exists and it wasn’t deleted previously.', 'LayerSlider');
 		}
 
 		if( $description ) {
@@ -438,13 +440,13 @@ class LS_Shortcode {
 		$logo = $logo ? '<i class="lswp-notification-logo dashicons '.$logo.'"></i>' : '';
 		$notice = __('Only you and other administrators can see this to take appropriate actions if necessary.', 'LayerSlider');
 
-		$classes = array('error', 'info', 'scheduled', 'dead');
+		$classes = ['error', 'info', 'scheduled', 'dead'];
 		if( ! empty($customClass) && ! in_array($customClass, $classes) ) {
 			$customClass = '';
 		}
 
 
-		return '<div class="clearfix lswp-notification '.$customClass.'">
+		return '<div class="ls-clearfix lswp-notification '.$customClass.'">
 					'.$logo.'
 					<strong>'.$title.'</strong>
 					<span>'.$description.'</span>

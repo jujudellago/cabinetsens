@@ -1157,12 +1157,17 @@ if($header_bottom_appearance == "fixed_hiding" && $bridge_qode_options['center_l
 		if ( ! empty( $logo_image_sizes ) ) {
 			$logo_height = $logo_image_sizes['height'];
 			$logo_width = $logo_image_sizes['width'];
-		}
+		
 
 		?>
 		header.fixed_hiding .q_logo a,
 		header.fixed_hiding .q_logo{
 		max-height: <?php echo intval($logo_height/2); ?>px;
+		<?php 
+			}
+		?>
+
+
 		}
 		<?php
 	}
@@ -1208,7 +1213,7 @@ if (isset($bridge_qode_options['parallax_onoff']))
 	$parallax_onoff = $bridge_qode_options['parallax_onoff'];
 if ($parallax_onoff == "off"){
 	?>
-	.touch section.parallax_section_holder{
+	.touchevents section.parallax_section_holder{
 	height: auto !important;
 	min-height: 300px;
 	background-position: center top !important;
@@ -11267,7 +11272,8 @@ if(isset($bridge_qode_options['sidebar_title_color']) && $bridge_qode_options['s
 <?php if($sidebar_title_styles !== ""){ ?>
 	aside .widget h5:not(.latest_post_title),
 	.wpb_widgetised_column .widget h5:not(.latest_post_title),
-    .elementor-widget.elementor-widget-sidebar .widget h5:not(.latest_post_title){
+    .elementor-widget.elementor-widget-sidebar .widget h5:not(.latest_post_title),
+    .elementor-widget.elementor-widget-sidebar .widget h5:not(.qode-post-title) {
 	<?php echo esc_attr($sidebar_title_styles); ?>
 	}
 <?php } ?>

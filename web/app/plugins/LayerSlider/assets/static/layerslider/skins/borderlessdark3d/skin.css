@@ -1,6 +1,8 @@
 /* LayerSlider Borderless Dark 3D Skin */
 
-
+.test {
+	color: unset;
+}
 
 .ls-borderlessdark3d .ls-playvideo {
 	width: 50px;

@@ -1,6 +1,5 @@
-<?php
-$required_plugins_html = bridge_core_get_required_plugins_links($demo_id);
-?>
+<?php $required_plugins_html = BridgeCoreImport::get_instance()->required_plugins_per_demo($demo_id); ?>
+
 <div class="qodef-core-dashboard">
     <a href="#" class="qodef-import-popup-close">
         <span class="dashicons dashicons-no-alt"></span>
@@ -19,7 +18,11 @@ $required_plugins_html = bridge_core_get_required_plugins_links($demo_id);
 							<?php echo bridge_core_get_module_template_part('sub-pages/import/templates/notice', 'core-dashboard', ''); ?>
                             <div class="qodef-import-popup-top-info">
                                 <div class="qodef-import-popup-image-holder">
-                                    <img src="https://export.qodethemes.com/bridge-admin/images/demos/<?php echo esc_attr($demo_id); ?>.jpg" />
+	                                <?php if( ! empty( $original_demo_id ) ) { ?>
+		                                <img src="https://export.qodethemes.com/bridge-admin/images/demos/<?php echo esc_attr($original_demo_id); ?>.jpg" />
+	                                <?php } else { ?>
+                                        <img src="https://export.qodethemes.com/bridge-admin/images/demos/<?php echo esc_attr($demo_id); ?>.jpg" />
+	                                <?php } ?>
                                 </div>
                                 <div class="qodef-popup-required-plugins-holder">
                                     <?php echo wp_kses_post( $required_plugins_html ); ?>

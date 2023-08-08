@@ -6,9 +6,9 @@ defined( 'LS_ROOT_FILE' ) || exit;
 class LS_Sources {
 
 	// handle => path
-	public static $skins = array();
-	public static $sliders = array();
-	public static $transitions = array();
+	public static $skins = [];
+	public static $sliders = [];
+	public static $transitions = [];
 
 	private function __construct() {
 
@@ -25,12 +25,12 @@ class LS_Sources {
 	 */
 	public static function addSkins($path) {
 
-		$skinsPath = $skins = array();
+		$skinsPath = $skins = [];
 		$path = rtrim($path, '/\\');
 
 		// It's a direct skin folder
 		if(file_exists($path.'/skin.css')) {
-			$skinsPath = array($path);
+			$skinsPath = [ $path ];
 
 		}  else { // Get all children if it's a parent directory
 			$skinsPath = glob($path.'/*', GLOB_ONLYDIR);
@@ -44,12 +44,12 @@ class LS_Sources {
 
 			// Gather skin data
 			$handle = strtolower(basename($path));
-			$skins[$handle] = array(
+			$skins[$handle] = [
 				'name' => $handle,
 				'handle' => $handle,
 				'dir' => $path,
 				'file' => $path.DIRECTORY_SEPARATOR.'skin.css'
-			);
+			];
 
 			// Get skin info (if any)
 			if(file_exists($path.'/info.json')) {
@@ -177,12 +177,12 @@ class LS_Sources {
 	 */
 	public static function addDemoSlider( $path ) {
 
-		$slidersPath = $sliders = array();
+		$slidersPath = $sliders = [];
 		$path = rtrim($path, '/\\');
 
 		// It's a direct slider folder
 		if(file_exists($path.'/slider.zip')) {
-			$slidersPath = array($path);
+			$slidersPath = [ $path ];
 
 		}  else { // Get all children if it's a parent directory
 			$slidersPath = glob($path.'/*', GLOB_ONLYDIR);
@@ -197,13 +197,13 @@ class LS_Sources {
 
 				// Gather slider data
 				$handle = strtolower(basename($path));
-				$sliders[$handle] = array(
+				$sliders[$handle] = [
 					'name' => $handle,
 					'handle' => $handle,
 					'dir' => $path,
 					'file' => $path.DIRECTORY_SEPARATOR.'slider.zip',
-					'bundled' => true,
-				);
+					'bundled' => true
+				];
 
 				// Get skin info (if any)
 				if(file_exists($path.'/info.json')) {
@@ -215,7 +215,7 @@ class LS_Sources {
 						$sliders[$handle]['groups'] .= $sliders[$handle]['info']['groups'];
 					}
 
-					$sliders[$handle]['url'] = '#';
+					$sliders[$handle]['url'] = '';
 					if( ! empty($sliders[$handle]['info']['url']) ) {
 						$sliders[$handle]['url'] = $sliders[$handle]['info']['url'];
 					}
@@ -278,6 +278,18 @@ class LS_Sources {
 	 */
 	public static function getDemoSliders() {
 		return self::$sliders;
+	}
+
+
+	/**
+	 * Tells whether there are any demo sliders added.
+	 *
+ 	 * @since 7.6.5
+	 * @access public
+	 * @return bool True if there are demo sliders available
+	 */
+	public static function hasDemoSliders() {
+		return ! empty( self::$sliders );
 	}
 
 

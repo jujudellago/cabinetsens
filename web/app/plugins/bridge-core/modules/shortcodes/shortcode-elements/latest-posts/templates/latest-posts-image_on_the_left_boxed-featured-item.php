@@ -14,8 +14,7 @@
                     <<?php echo esc_attr($title_tag); ?> itemprop="name" class="latest_post_title entry_title"><a itemprop="url" href="<?php echo get_permalink(); ?>"><?php echo get_the_title(); ?></a></<?php echo esc_attr($title_tag); ?>>
                     <div class="latest_post_image clearfix">
                         <a itemprop="url" href="<?php echo get_permalink(); ?>">
-                            <?php $featured_image_array = wp_get_attachment_image_src(get_post_thumbnail_id(), $thumb_size); ?>
-                            <img itemprop="image" src="<?php echo esc_url($featured_image_array[0]); ?>" alt="" />
+                            <?php echo wp_get_attachment_image( get_post_thumbnail_id(), $thumb_size ); ?>
                         </a>
                     </div>
                     <?php echo wp_kses_post($this_object->getExcerpt(get_the_ID(), $params['text_length'])); ?>

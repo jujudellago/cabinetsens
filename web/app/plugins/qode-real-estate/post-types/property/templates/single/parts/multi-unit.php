@@ -38,13 +38,13 @@ if(is_array($multi_units_meta) && count($multi_units_meta)) {
                             <?php echo esc_html($multi_unit['bedrooms']);?>
                         </td>
                         <td>
-                            <?php echo esc_html($multi_unit['bedrooms']);?>
-                        </td>
-                        <td>
-                            <?php echo esc_html($multi_unit['bathrooms']);?>
+	                        <?php echo esc_html($multi_unit['bathrooms']);?>
                         </td>
                         <td>
                             <?php echo esc_html($multi_unit['size']);?>
+                        </td>
+                        <td>
+                            <?php echo esc_html($multi_unit['availability']);?>
                         </td>
                     </tr>
                 <?php } ?>

@@ -50,8 +50,11 @@
 		.ui-datepicker-prev,
 		.ui-datepicker-next{
 			.ui-icon{
-				span:before{
+				&:before{
 					line-height: 27px;
+					font-family: "dripicons-v2" !important;
+					font-style: normal !important;
+					font-weight: normal !important;
 				}
 			}
 		}
@@ -60,10 +63,22 @@
 	.ui-datepicker-prev{
 		position: absolute;
 		left: 0;
+		
+		.ui-icon{
+			&:before {
+				content: "\55";
+			}
+		}
 	}
 
 	.ui-datepicker-next{
 		position: absolute;
 		right: 0;
+		
+		.ui-icon{
+			&:before {
+				content: "\56";
+			}
+		}
 	}
 }

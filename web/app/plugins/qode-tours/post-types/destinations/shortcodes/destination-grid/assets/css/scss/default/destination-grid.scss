@@ -14,7 +14,7 @@
 .qode-tours-destination-item-holder {
 	@include qodeRelativeHolderLayout();
 	
-	.touch & {
+	.touchevents & {
 		cursor: pointer;
 	}
 

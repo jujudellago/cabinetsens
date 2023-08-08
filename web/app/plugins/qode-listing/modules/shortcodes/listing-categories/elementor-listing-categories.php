@@ -88,7 +88,7 @@ class QodeListingElementorListingCategories extends \Elementor\Widget_Base{
         return [ 'qode-listing' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -125,6 +125,16 @@ class QodeListingElementorListingCategories extends \Elementor\Widget_Base{
             ]
         );
 
+        $this->add_control(
+            'categories_by_custom_order',
+            [
+                'label' => esc_html__('Include Categories by Custom Order', 'qode-listing'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'options' => bridge_qode_get_yes_no_select_array(false, false),
+                'default' => 'no'
+            ]
+        );
+
         $this->end_controls_section();
     }
 
@@ -139,7 +149,8 @@ class QodeListingElementorListingCategories extends \Elementor\Widget_Base{
         $this->setBasicParams($params);
 
         $query_params = array(
-            'number'     => $listing_cat_number
+            'number'     => $listing_cat_number,
+            'categories_by_custom_order' => $params['categories_by_custom_order']
         );
 
         if($listing_type !== ''){
@@ -215,4 +226,4 @@ class QodeListingElementorListingCategories extends \Elementor\Widget_Base{
 
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new QodeListingElementorListingCategories() );
+\Elementor\Plugin::instance()->widgets_manager->register( new QodeListingElementorListingCategories() );

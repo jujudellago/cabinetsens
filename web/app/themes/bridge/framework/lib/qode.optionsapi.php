@@ -1071,3 +1071,214 @@ if ( ! function_exists( 'bridge_qode_add_user_group' ) ) {
         return false;
     }
 }
+
+/**
+ * Dashboard fields function
+ */
+
+if ( ! function_exists( 'bridge_qode_add_dashboard_fields' ) ) {
+    /**
+     * Adds new meta box
+     *
+     * @param $attributes
+     *
+     * @return bool|BridgeQodeDashboardOption
+     */
+    function bridge_qode_add_dashboard_fields( $attributes ) {
+        $name = '';
+
+        extract( $attributes );
+
+        if ( $name !== '') {
+            $dash_obj = new BridgeQodeDashboardOption();
+            bridge_qode_framework()->qodeDashboardOptions->addDashboardOptions( $name, $dash_obj );
+
+            return $dash_obj;
+        }
+
+        return false;
+    }
+}
+
+if ( ! function_exists( 'bridge_qode_add_dashboard_form' ) ) {
+    /**
+     * Generates form object
+     * $attributes can contain:
+     *      $name - name of the form with which it will be added to parent element
+     *      $parent - parent object to which to add form
+     *      $form_id - id of form generated
+     *      $form_method - method for form generated
+     *      $form_nonce - nonce for form generated
+     *
+     * @param $attributes
+     *
+     * @return bool|BridgeQodeDashboardForm
+     */
+    function bridge_qode_add_dashboard_form( $attributes ) {
+        $name				= '';
+        $form_id			= '';
+        $form_method		= 'post';
+        $form_action		= '';
+        $form_nonce_action	= '';
+        $form_nonce_name	= '';
+        $button_label		= esc_html__('SUMBIT','bridge');
+        $button_args		= array();
+        $parent				= '';
+
+        extract( $attributes );
+
+        if ( ! empty( $name ) && is_object( $parent ) && $form_id !== '') {
+            $container = new BridgeQodeDashboardForm( $name, $form_id, $form_method, $form_action, $form_nonce_action, $form_nonce_name, $button_label, $button_args);
+            $parent->addChild( $name, $container );
+
+            return $container;
+        }
+
+        return false;
+    }
+}
+
+if ( ! function_exists( 'bridge_qode_add_dashboard_group' ) ) {
+    /**
+     * Generates form object
+     * $attributes can contain:
+     *      $name - name of the form with which it will be added to parent element
+     *      $parent - parent object to which to add form
+     *
+     * @param $attributes
+     *
+     * @return bool|BridgeQodeDashboardGroup
+     */
+    function bridge_qode_add_dashboard_group( $attributes ) {
+        $name		 = '';
+        $title 		 = '';
+        $description = '';
+        $parent		 = '';
+
+        extract( $attributes );
+
+        if ( ! empty( $name ) && is_object( $parent ) ) {
+            $container = new BridgeQodeDashboardGroup( $name, $title, $description );
+            $parent->addChild( $name, $container );
+
+            return $container;
+        }
+
+        return false;
+    }
+}
+
+if ( ! function_exists( 'bridge_qode_add_dashboard_section_title' ) ) {
+    /**
+     * Generates dashboard title field
+     * $attributes can contain:
+     *      $parent - parent object to which to add title
+     *      $name - name of title with which to add it to the parent
+     *      $title - title text
+     *
+     * @param $attributes
+     *
+     * @return bool|BridgeQodeDashboardTitle
+     */
+    function bridge_qode_add_dashboard_section_title( $attributes ) {
+        $parent = '';
+        $name   = '';
+        $title  = '';
+        $args   = array();
+
+        extract( $attributes );
+
+        if ( is_object( $parent ) && ! empty( $title ) && ! empty( $name ) ) {
+            $section_title = new BridgeQodeDashboardTitle( $name, $title, $args );
+            $parent->addChild( $name, $section_title );
+
+            return $section_title;
+        }
+
+        return false;
+    }
+}
+
+if ( ! function_exists( 'bridge_qode_add_dashboard_repeater_field' ) ) {
+    /**
+     * Generates meta box field object
+     * $attributes can contain:
+     *      $name - name of the field. This will be name of the option in database
+     *      $label - title of the option
+     *      $description
+     *      $field_type - type of the field that will be rendered and repeated
+     *      $parent - parent object to which to add field
+     *
+     * @param $attributes
+     *
+     * @return bool|BridgeQodeDashboardRepeater
+     */
+    function bridge_qode_add_dashboard_repeater_field( $attributes ) {
+        $name        = '';
+        $label       = '';
+        $description = '';
+        $fields      = array();
+        $parent      = '';
+        $button_text = '';
+        $table_layout = false;
+        $value = array();
+
+        extract( $attributes );
+
+        if ( ! empty( $parent ) && ! empty( $name ) ) {
+            $field = new BridgeQodeDashboardRepeater( $fields, $name, $label, $description, $button_text, $table_layout, $value);
+
+            if ( is_object( $parent ) ) {
+                $parent->addChild( $name, $field );
+
+                return $field;
+            }
+        }
+
+        return false;
+    }
+}
+
+if ( ! function_exists( 'bridge_qode_add_dashboard_field' ) ) {
+    /**
+     * Generates dashboard field object
+     * $attributes can contain:
+     *      $type - type of the field to generate
+     *      $name - name of the field. This will be name of the option in database
+     *      $label - title of the option
+     *      $description
+     *      $options - assoc array of option. Used only for select and radiogroup field types
+     *      $args - assoc array of additional parameters. Used for dependency
+     *      $parent - parent object to which to add field
+     *      $hidden_property - name of option that hides field
+     *      $hidden_values - array of valus of $hidden_property that hides field
+     *
+     * @param $attributes
+     *
+     * @return bool|BridgeQodeDashboardField
+     */
+    function bridge_qode_add_dashboard_field( $attributes ) {
+        $type        = '';
+        $name        = '';
+        $label       = '';
+        $description = '';
+        $options     = array();
+        $args        = array();
+        $value       = '';
+        $parent      = '';
+        $repeat      = array();
+
+        extract( $attributes );
+
+        if ( ! empty( $parent ) && ! empty( $name ) ) {
+            $field = new BridgeQodeDashboardField( $type, $name, $label, $description, $options, $args, $value, $repeat);
+            if ( is_object( $parent ) ) {
+                $parent->addChild( $name, $field );
+
+                return $field;
+            }
+        }
+
+        return false;
+    }
+}

@@ -4,6 +4,7 @@
     var propertySearch = {};
     qode.modules.propertySearch = propertySearch;
 
+    propertySearch.initSearchParams = initSearchParams;
     propertySearch.qodefOnDocumentReady = qodefOnDocumentReady;
     propertySearch.qodefOnWindowLoad = qodefOnWindowLoad;
     propertySearch.qodefOnWindowResize = qodefOnWindowResize;

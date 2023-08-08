@@ -556,7 +556,7 @@ class ProductList implements ShortcodeInterface {
 					foreach ( $termchildren as $child ) {
 						$cat = get_term_by( 'id', $child, 'product_cat' );
 						if($cat->count != 0){
-						    $category_html .= '<li><a class="qode-no-smooth-transitions" data-category="'.$cat->slug.'" href="' . get_term_link($child, 'product_cat') . '">' . $cat->name . '</a></li>';
+						    $category_html .= '<li><a class="qode-no-smooth-transitions" data-category="'.$cat->slug.'" href="' . get_term_link(intval($child), 'product_cat') . '">' . $cat->name . '</a></li>';
                         }
 					}
 				}

@@ -211,21 +211,25 @@ class WPBakeryShortCode_Vc_Tta_Section extends WPBakeryShortCode_Vc_Tta_Accordio
 	public function getParamHeading( $atts, $content ) {
 		$isPageEditable = vc_is_page_editable();
 
-		$h4attributes = array();
-		$h4classes = array(
+		$headingAttributes = array();
+		$headingClasses = array(
 			'vc_tta-panel-title',
 		);
 		if ( $isPageEditable ) {
-			$h4attributes[] = 'data-vc-tta-controls-icon-position=""';
+			$headingAttributes[] = 'data-vc-tta-controls-icon-position=""';
 		} else {
 			$controlIconPosition = $this->getTemplateVariable( 'control-icon-position' );
 			if ( $controlIconPosition ) {
-				$h4classes[] = $controlIconPosition;
+				$headingClasses[] = $controlIconPosition;
 			}
 		}
-		$h4attributes[] = 'class="' . implode( ' ', $h4classes ) . '"';
+		$headingAttributes[] = 'class="' . implode( ' ', $headingClasses ) . '"';
+		$headingTag = apply_filters( 'vc_tta_section_param_heading_tag', 'h4', $atts );
+		if ( ! empty( self::$tta_base_shortcode->atts['section_title_tag'] ) ) {
+			$headingTag = self::$tta_base_shortcode->atts['section_title_tag'];
+		}
 
-		$output = '<h4 ' . implode( ' ', $h4attributes ) . '>'; // close h4
+		$output = '<' . $headingTag . ' ' . implode( ' ', $headingAttributes ) . '>';
 
 		if ( $isPageEditable ) {
 			$output .= '<a href="javascript:;" data-vc-target=""';
@@ -239,14 +243,14 @@ class WPBakeryShortCode_Vc_Tta_Section extends WPBakeryShortCode_Vc_Tta_Accordio
 
 		$output .= ' data-vc-container=".vc_tta-container">';
 		$output .= $this->getTemplateVariable( 'icon-left' );
-		$output .= '<span class="vc_tta-title-text">' . $this->getTemplateVariable( 'title' ) . '</span>';
+		$output .= '<span class="vc_tta-title-text">' . wp_kses_post( $this->getTemplateVariable( 'title' ) ) . '</span>';
 		$output .= $this->getTemplateVariable( 'icon-right' );
 		if ( ! $isPageEditable ) {
 			$output .= $this->getTemplateVariable( 'control-icon' );
 		}
 
 		$output .= '</a>';
-		$output .= '</h4>'; // close h4 fix #2229
+		$output .= '</' . $headingTag . '>'; // close heading tag
 
 		return $output;
 	}

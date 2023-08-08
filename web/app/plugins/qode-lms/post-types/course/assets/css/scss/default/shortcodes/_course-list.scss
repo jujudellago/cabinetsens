@@ -12,7 +12,7 @@
         box-sizing: border-box;
 
 
-        .touch & {
+        .touchevents & {
             cursor: pointer;
         }
 
@@ -39,6 +39,7 @@
 
         .qode-cli-text-wrapper {
             @include qodeTableLayout();
+            box-sizing: content-box;
         }
 
         .qode-cli-text {
@@ -217,7 +218,7 @@
                 }
             }
 
-            .touch & {
+            .touchevents & {
                 opacity: 1;
                 @include qodeTransform(translateY(0));
             }
@@ -271,6 +272,7 @@
     .qode-course-layout-filter {
         @include qodeTableCellLayout();
         width: 65px;
+        box-sizing: content-box;
         text-align: left;
         padding-right: 24px;
         color: $first-main-color;

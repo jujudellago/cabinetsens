@@ -80,7 +80,22 @@ $html = "";
 $html .= "<div class='latest_post_two_holder $columns_number'>";
 $html .= "<ul>";
 
-while ($q->have_posts()) : $q->the_post();
+$num_of_posts = 0;
+if (intval($number_of_posts) === -1 ) {
+    $category = get_category_by_slug($category);
+    $category_id = $category->term_id;
+
+    $posts = get_posts(
+        array(
+            'category' => $category_id
+        )
+    );
+    $num_of_posts = count($posts);
+} else {
+    $num_of_posts = $number_of_posts;
+}
+
+while ($q->have_posts() && $q->current_post + 1 < $num_of_posts ) : $q->the_post();
 
     $html .= '<li class="clearfix">';
     if($display_featured_images === "yes") {

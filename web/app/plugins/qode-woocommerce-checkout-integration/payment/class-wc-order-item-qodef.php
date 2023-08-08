@@ -54,7 +54,7 @@ abstract class WC_Order_Item_Qodef extends WC_Order_Item {
      */
     public function set_tax_class( $value ) {
         if ( $value && ! in_array( $value, WC_Tax::get_tax_class_slugs() ) ) {
-            $this->error( 'order_item_product_invalid_tax_class', esc_html__( 'Invalid tax class', 'qode-woocommerce-checkout-integration' ) );
+            $this->error( 'order_item_product_invalid_tax_class', esc_html__( 'Invalid tax class', 'qodef-checkout' ) );
         }
         $this->set_prop( 'tax_class', $value );
     }
@@ -67,7 +67,7 @@ abstract class WC_Order_Item_Qodef extends WC_Order_Item {
      */
     public function set_product_id( $value ) {
         if ( $value > 0 && $this->custom_post_type !== get_post_type( absint( $value ) ) ) {
-            $this->error( 'order_item_product_invalid_product_id', esc_html__( 'Invalid product ID', 'qode-woocommerce-checkout-integration' ) );
+            $this->error( 'order_item_product_invalid_product_id', esc_html__( 'Invalid product ID', 'qodef-checkout' ) );
         }
         $this->set_prop( 'product_id', absint( $value ) );
     }
@@ -80,45 +80,57 @@ abstract class WC_Order_Item_Qodef extends WC_Order_Item {
      */
     public function set_variation_id( $value ) {
         if ( $value > 0 && 'product_variation' !== get_post_type( $value ) ) {
-            $this->error( 'order_item_product_invalid_variation_id', esc_html__( 'Invalid variation ID', 'qode-woocommerce-checkout-integration' ) );
+            $this->error( 'order_item_product_invalid_variation_id', esc_html__( 'Invalid variation ID', 'qodef-checkout' ) );
         }
         $this->set_prop( 'variation_id', absint( $value ) );
     }
-
-    /**
-     * Line subtotal (before discounts).
-     *
-     * @param string $value
-     * @throws WC_Data_Exception
-     */
-    public function set_subtotal( $value ) {
-        $this->set_prop( 'subtotal', floatval( wc_format_decimal( $value ) ) );
-    }
-
-    /**
-     * Line total (after discounts).
-     *
-     * @param string $value
-     * @throws WC_Data_Exception
-     */
-    public function set_total( $value ) {
-        $this->set_prop( 'total', floatval( wc_format_decimal( $value ) ) );
-
-        // Subtotal cannot be less than total
-        if ( '' === $this->get_subtotal() || $this->get_subtotal() < $this->get_total() ) {
-            $this->set_subtotal( $value );
-        }
-    }
-
-    /**
-     * Line subtotal tax (before discounts).
-     *
-     * @param string $value
-     * @throws WC_Data_Exception
-     */
-    public function set_subtotal_tax( $value ) {
-        $this->set_prop( 'subtotal_tax', wc_format_decimal( $value ) );
-    }
+	
+	/**
+	 * Line subtotal (before discounts).
+	 *
+	 * @param string $value
+	 * @throws WC_Data_Exception
+	 */
+	public function set_subtotal( $value ) {
+		$value = wc_format_decimal( $value );
+		
+		if ( ! is_numeric( $value ) ) {
+			$value = 0;
+		}
+		
+		$this->set_prop( 'subtotal', $value );
+	}
+	
+	/**
+	 * Line total (after discounts).
+	 *
+	 * @param string $value
+	 * @throws WC_Data_Exception
+	 */
+	public function set_total( $value ) {
+		$value = wc_format_decimal( $value );
+		
+		if ( ! is_numeric( $value ) ) {
+			$value = 0;
+		}
+		
+		$this->set_prop( 'total', $value );
+		
+		// Subtotal cannot be less than total.
+		if ( '' === $this->get_subtotal() || $this->get_subtotal() < $this->get_total() ) {
+			$this->set_subtotal( $value );
+		}
+	}
+	
+	/**
+	 * Line subtotal tax (before discounts).
+	 *
+	 * @param string $value
+	 * @throws WC_Data_Exception
+	 */
+	public function set_subtotal_tax( $value ) {
+		$this->set_prop( 'subtotal_tax', wc_format_decimal( $value ) );
+	}
 
     /**
      * Line total tax (after discounts).
@@ -151,9 +163,14 @@ abstract class WC_Order_Item_Qodef extends WC_Order_Item {
                 $tax_data['subtotal'] = $tax_data['total'];
             }
         }
-        $this->set_prop( 'taxes', $tax_data );
-        $this->set_total_tax( array_sum( $tax_data['total'] ) );
-        $this->set_subtotal_tax( array_sum( $tax_data['subtotal'] ) );
+	    $this->set_prop( 'taxes', $tax_data );
+	    if ( 'yes' === get_option( 'woocommerce_tax_round_at_subtotal' ) ) {
+		    $this->set_total_tax( array_sum( $tax_data['total'] ) );
+		    $this->set_subtotal_tax( array_sum( $tax_data['subtotal'] ) );
+	    } else {
+		    $this->set_total_tax( array_sum( array_map( 'wc_round_tax_total', $tax_data['total'] ) ) );
+		    $this->set_subtotal_tax( array_sum( array_map( 'wc_round_tax_total', $tax_data['subtotal'] ) ) );
+	    }
     }
 
     /**
@@ -177,7 +194,7 @@ abstract class WC_Order_Item_Qodef extends WC_Order_Item {
      */
     public function set_product( $product ) {
         if ( ! is_a( $product, 'WC_Order_Item_Qodef' ) ) {
-            $this->error( 'order_item_product_invalid_product', esc_html__( 'Invalid product', 'qode-woocommerce-checkout-integration' ) );
+            $this->error( 'order_item_product_invalid_product', esc_html__( 'Invalid product', 'qodef-checkout' ) );
         }
         if ( $product->is_type( 'variation' ) ) {
             $this->set_product_id( $product->get_parent_id() );
@@ -196,7 +213,7 @@ abstract class WC_Order_Item_Qodef extends WC_Order_Item {
     public function set_backorder_meta() {
         $product = $this->get_product();
         if ( $product && $product->backorders_require_notification() && $product->is_on_backorder( $this->get_quantity() ) ) {
-            $this->add_meta_data( apply_filters( 'woocommerce_backordered_item_meta_name', esc_html__( 'Backordered', 'qode-woocommerce-checkout-integration' ), $this ), $this->get_quantity() - max( 0, $product->get_stock_quantity() ), true );
+            $this->add_meta_data( apply_filters( 'woocommerce_backordered_item_meta_name', esc_html__( 'Backordered', 'qodef-checkout' ), $this ), $this->get_quantity() - max( 0, $product->get_stock_quantity() ), true );
         }
     }
 
@@ -324,62 +341,71 @@ abstract class WC_Order_Item_Qodef extends WC_Order_Item {
 
         return apply_filters( 'woocommerce_order_item_product', $product, $this );
     }
-
-    /**
-     * Get the Download URL.
-     *
-     * @param  int $download_id
-     * @return string
-     */
-    public function get_item_download_url( $download_id ) {
-        $order = $this->get_order();
-
-        return $order ? add_query_arg( array(
-            'download_file' => $this->get_variation_id() ? $this->get_variation_id() : $this->get_product_id(),
-            'order'         => $order->get_order_key(),
-            'email'         => urlencode( $order->get_billing_email() ),
-            'key'           => $download_id,
-        ), trailingslashit( home_url() ) ) : '';
-    }
-
-    /**
-     * Get any associated downloadable files.
-     *
-     * @return array
-     */
-    public function get_item_downloads() {
-        $files      = array();
-        $product    = $this->get_product();
-        $order      = $this->get_order();
-        $product_id = $this->get_variation_id() ? $this->get_variation_id() : $this->get_product_id();
-
-        if ( $product && $order && $product->is_downloadable() && $order->is_download_permitted() ) {
-            $data_store         = WC_Data_Store::load( 'customer-download' );
-            $customer_downloads = $data_store->get_downloads( array(
-                'user_email' => $order->get_billing_email(),
-                'order_id'   => $order->get_id(),
-                'product_id' => $product_id,
-            ) );
-            foreach ( $customer_downloads as $customer_download ) {
-                $download_id = $customer_download->get_download_id();
-
-                if ( $product->has_file( $download_id ) ) {
-                    $file                                         = $product->get_file( $download_id );
-                    $files[ $download_id ]                        = $file->get_data();
-                    $files[ $download_id ]['downloads_remaining'] = $customer_download->get_downloads_remaining();
-                    $files[ $download_id ]['access_expires']      = $customer_download->get_access_expires();
-                    $files[ $download_id ]['download_url']        = add_query_arg( array(
-                        'download_file' => $product_id,
-                        'order'         => $order->get_order_key(),
-                        'email'         => urlencode( $order->get_billing_email() ),
-                        'key'           => $download_id,
-                    ), trailingslashit( home_url() ) );
-                }
-            }
-        }
-
-        return apply_filters( 'woocommerce_get_item_downloads', $files, $this, $order );
-    }
+	
+	/**
+	 * Get the Download URL.
+	 *
+	 * @param  int $download_id
+	 * @return string
+	 */
+	public function get_item_download_url( $download_id ) {
+		$order = $this->get_order();
+		
+		return $order ? add_query_arg(
+			array(
+				'download_file' => $this->get_variation_id() ? $this->get_variation_id() : $this->get_product_id(),
+				'order'         => $order->get_order_key(),
+				'email'         => rawurlencode( $order->get_billing_email() ),
+				'key'           => $download_id,
+			),
+			trailingslashit( home_url() )
+		) : '';
+	}
+	
+	/**
+	 * Get any associated downloadable files.
+	 *
+	 * @return array
+	 */
+	public function get_item_downloads() {
+		$files      = array();
+		$product    = $this->get_product();
+		$order      = $this->get_order();
+		$product_id = $this->get_variation_id() ? $this->get_variation_id() : $this->get_product_id();
+		$email_hash = function_exists( 'hash' ) ? hash( 'sha256', $order->get_billing_email() ) : sha1( $order->get_billing_email() );
+		
+		if ( $product && $order && $product->is_downloadable() && $order->is_download_permitted() ) {
+			$data_store         = WC_Data_Store::load( 'customer-download' );
+			$customer_downloads = $data_store->get_downloads(
+				array(
+					'user_email' => $order->get_billing_email(),
+					'order_id'   => $order->get_id(),
+					'product_id' => $product_id,
+				)
+			);
+			foreach ( $customer_downloads as $customer_download ) {
+				$download_id = $customer_download->get_download_id();
+				
+				if ( $product->has_file( $download_id ) ) {
+					$file                  = $product->get_file( $download_id );
+					$files[ $download_id ] = $file->get_data();
+					$files[ $download_id ]['downloads_remaining'] = $customer_download->get_downloads_remaining();
+					$files[ $download_id ]['access_expires']      = $customer_download->get_access_expires();
+					$files[ $download_id ]['download_url']        = add_query_arg(
+						array(
+							'download_file' => $product_id,
+							'order'         => $order->get_order_key(),
+							'uid'           => $email_hash,
+							'key'           => $download_id,
+						),
+						trailingslashit( home_url() )
+					);
+				}
+			}
+		}
+		
+		return apply_filters( 'woocommerce_get_item_downloads', $files, $this, $order );
+	}
 
     /**
      * Get tax status.
@@ -453,10 +479,10 @@ abstract class WC_Order_Item_Qodef extends WC_Order_Item {
      * @param string $offset
      * @return bool
      */
-    public function offsetExists( $offset ) {
-        if ( in_array( $offset, array( 'line_subtotal', 'line_subtotal_tax', 'line_total', 'line_tax', 'line_tax_data', 'item_meta_array', 'item_meta', 'qty' ) ) ) {
-            return true;
-        }
-        return parent::offsetExists( $offset );
-    }
+	public function offsetExists( $offset ) {
+		if ( in_array( $offset, array( 'line_subtotal', 'line_subtotal_tax', 'line_total', 'line_tax', 'line_tax_data', 'item_meta_array', 'item_meta', 'qty' ), true ) ) {
+			return true;
+		}
+		return parent::offsetExists( $offset );
+	}
 }

@@ -23,20 +23,20 @@ function timetable_events_init()
 		'name' => $timetable_events_settings['label_plural'],
 		'singular_name' => $timetable_events_settings['label_singular'],
 		'add_new' => _x('Add New', $timetable_events_settings["slug"], 'timetable'),
-		'add_new_item' => sprintf(__('Add New %s' , 'timetable') , $timetable_events_settings['label_singular']),
-		'edit_item' => sprintf(__('Edit %s', 'timetable'), $timetable_events_settings['label_singular']),
-		'new_item' => sprintf(__('New %s', 'timetable'), $timetable_events_settings['label_singular']),
-		'all_items' => sprintf(__('All %s', 'timetable'), $timetable_events_settings['label_plural']),
-		'view_item' => sprintf(__('View %s', 'timetable'), $timetable_events_settings['label_singular']),
-		'search_items' => sprintf(__('Search %s', 'timetable'), $timetable_events_settings['label_singular']),
-		'not_found' =>  sprintf(__('No %s found', 'timetable'), strtolower($timetable_events_settings['label_plural'])),
-		'not_found_in_trash' => sprintf(__('No %s found in Trash', 'timetable'), strtolower($timetable_events_settings['label_plural'])), 
+		'add_new_item' => sprintf(esc_html__('Add New %s' , 'timetable') , $timetable_events_settings['label_singular']),
+		'edit_item' => sprintf(esc_html__('Edit %s', 'timetable'), $timetable_events_settings['label_singular']),
+		'new_item' => sprintf(esc_html__('New %s', 'timetable'), $timetable_events_settings['label_singular']),
+		'all_items' => sprintf(esc_html__('All %s', 'timetable'), $timetable_events_settings['label_plural']),
+		'view_item' => sprintf(esc_html__('View %s', 'timetable'), $timetable_events_settings['label_singular']),
+		'search_items' => sprintf(esc_html__('Search %s', 'timetable'), $timetable_events_settings['label_singular']),
+		'not_found' =>  sprintf(esc_html__('No %s found', 'timetable'), strtolower($timetable_events_settings['label_plural'])),
+		'not_found_in_trash' => sprintf(esc_html__('No %s found in Trash', 'timetable'), strtolower($timetable_events_settings['label_plural'])), 
 		'parent_item_colon' => '',
 		'menu_name' => $timetable_events_settings['label_plural']
 	);
 	$args = array(  
 		"labels" => $labels, 
-		"public" => true,  
+		"public" => true,
 		"show_ui" => true,  
 		"capability_type" => "post",  
 		"menu_position" => 20,
@@ -47,7 +47,7 @@ function timetable_events_init()
 	);
 	register_post_type($timetable_events_settings["slug"], $args);
 	
-	register_taxonomy("events_category", array($timetable_events_settings["slug"]), array("label" => __("Categories", 'timetable'), "singular_label" => __("Category", 'timetable'), "rewrite" => true, "hierarchical" => true, "show_in_rest" => true));
+	register_taxonomy("events_category", array($timetable_events_settings["slug"]), array("label" => esc_html__("Categories", 'timetable'), "singular_label" => esc_html__("Category", 'timetable'), "rewrite" => true, "hierarchical" => true, "show_in_rest" => true));
 	
 	if(array_key_exists("timetable_warning", $_GET) && $_GET["timetable_warning"]=="available_places")
 	{
@@ -161,14 +161,14 @@ function timetable_add_events_custom_box()
 	$timetable_events_settings = timetable_events_settings();
     add_meta_box(
         "event_hours",
-        __("Event hours", 'timetable'),
+        esc_html__("Event hours", 'timetable'),
         "timetable_inner_events_custom_box_side",
         $timetable_events_settings["slug"],
 		"normal"
     );
 	add_meta_box( 
         "event_config",
-        __("Options", 'timetable'),
+        esc_html__("Options", 'timetable'),
         "timetable_inner_events_custom_box_main",
         $timetable_events_settings["slug"],
 		"normal",
@@ -270,34 +270,34 @@ function timetable_inner_events_custom_box_side($post)
 			$booking_count=(isset($bookings_array[$event_hours[$i]->event_hours_id]) ? count($bookings_array[$event_hours[$i]->event_hours_id]) : 0);
 			//get day by id
 			$current_day = get_post($event_hours[$i]->weekday_id);
-			echo '<li id="event_hours_' . $event_hours[$i]->event_hours_id . '">' . $current_day->post_title . ' ' . date("H:i", strtotime($event_hours[$i]->start)) . '-' . date("H:i", strtotime($event_hours[$i]->end)) . '<img class="operation_button delete_button delete_event_hour" src="' . plugins_url('/admin/images/delete.png', __FILE__) . '" alt="del" /><img class="operation_button edit_button" src="' . plugins_url('/admin/images/edit.png', __FILE__) . '" alt="edit" /><img class="operation_button edit_hour_event_loader" src="' . plugins_url('/admin/images/ajax-loader.gif', __FILE__) . '" alt="loader" />';
+			echo '<li id="event_hours_' . esc_attr($event_hours[$i]->event_hours_id) . '">' . $current_day->post_title . ' ' . date("H:i", strtotime($event_hours[$i]->start)) . '-' . date("H:i", strtotime($event_hours[$i]->end)) . '<img class="operation_button delete_button delete_event_hour" src="' . plugins_url('/admin/images/delete.png', __FILE__) . '" alt="del" /><img class="operation_button edit_button" src="' . plugins_url('/admin/images/edit.png', __FILE__) . '" alt="edit" /><img class="operation_button edit_hour_event_loader" src="' . plugins_url('/admin/images/ajax-loader.gif', __FILE__) . '" alt="loader" />';
 			if($event_hours[$i]->tooltip!="" || $event_hours[$i]->before_hour_text!="" || $event_hours[$i]->after_hour_text!="" || $event_hours[$i]->category!="" || $event_hours[$i]->available_places!="")
 			{
 				echo '<div>';
 				if($event_hours[$i]->tooltip!="")
-					echo '<br /><strong>' . __('Tooltip', 'timetable') . ':</strong> ' . $event_hours[$i]->tooltip;
+					echo '<br /><strong>' . esc_html__('Tooltip', 'timetable') . ':</strong> ' . $event_hours[$i]->tooltip;
 				if($event_hours[$i]->before_hour_text!="")
-					echo '<br /><strong>' . __('Description 1', 'timetable') . ':</strong> ' . $event_hours[$i]->before_hour_text;
+					echo '<br /><strong>' . esc_html__('Description 1', 'timetable') . ':</strong> ' . $event_hours[$i]->before_hour_text;
 				if($event_hours[$i]->after_hour_text!="")
-					echo '<br /><strong>' . __('Description 2', 'timetable') . ':</strong> ' . $event_hours[$i]->after_hour_text;
+					echo '<br /><strong>' . esc_html__('Description 2', 'timetable') . ':</strong> ' . $event_hours[$i]->after_hour_text;
 				if($event_hours[$i]->available_places!=0)
-					echo '<br /><strong>' . __('Available slots', 'timetable') . ':</strong> ' . ($booking_count>0 ? $event_hours[$i]->available_places-$booking_count . '/' : '') . $event_hours[$i]->available_places;
+					echo '<br /><strong>' . esc_html__('Available slots', 'timetable') . ':</strong> ' . ($booking_count>0 ? $event_hours[$i]->available_places-$booking_count . '/' : '') . $event_hours[$i]->available_places;
 				if($event_hours[$i]->available_places!=0 && $event_hours[$i]->slots_per_user!=0)
-					echo '<br /><strong>' . __('Slots per user', 'timetable') . ':</strong> ' . $event_hours[$i]->slots_per_user;
+					echo '<br /><strong>' . esc_html__('Slots per user', 'timetable') . ':</strong> ' . $event_hours[$i]->slots_per_user;
 				if($booking_count)
 				{
-					echo '<br><a href="#" class="show_hide_bookings">' . __('Show/Hide booked users', 'timetable') . '</a>
+					echo '<br><a href="#" class="show_hide_bookings">' . esc_html__('Show/Hide booked users', 'timetable') . '</a>
 						<ul class="booking_list">';
 					foreach($bookings_array[$event_hours[$i]->event_hours_id] as $booking)
 					{
-						echo '<li id="booking_id_' . $booking['booking_id'] . '">';
+						echo '<li id="booking_id_' . esc_attr($booking['booking_id']) . '">';
 						if($booking['user_id'])
 						{
-							echo sprintf(__('<a href="%s">%s</a> on %s', 'timetable'), get_edit_user_link($booking['user_id']), $booking['user_name'], $booking['booking_datetime']);
+							echo sprintf(wp_kses(__('<a href="%s">%s</a> on %s', 'timetable'), array("a" => array("href" => array()))), get_edit_user_link($booking['user_id']), $booking['user_name'], $booking['booking_datetime']);
 						}
 						elseif($booking['guest_id'])
 						{
-							echo sprintf(__('Guest: %s on %s', 'timetable'), $booking['guest_name'], $booking['booking_datetime']);
+							echo sprintf(esc_html__('Guest: %s on %s', 'timetable'), $booking['guest_name'], $booking['booking_datetime']);
 						}
 						echo	'<img class="operation_button delete_button delete_booking" src="' . plugins_url('/admin/images/delete.png', __FILE__) . '" alt="del" />
 							</li>';
@@ -305,7 +305,7 @@ function timetable_inner_events_custom_box_side($post)
 					echo '</ul>';
 				}
 				if($event_hours[$i]->category!="")
-					echo '<br /><strong>' . __('Category', 'timetable') . ':</strong> ' . $event_hours[$i]->category;
+					echo '<br /><strong>' . esc_html__('Category', 'timetable') . ':</strong> ' . $event_hours[$i]->category;
 				echo '</div>';
 			}
 			echo '</li>';
@@ -315,18 +315,18 @@ function timetable_inner_events_custom_box_side($post)
 	<table id="event_hours_table">
 		<tr>
 			<td>
-				<label for="weekday_id">' . __('Timetable column', 'timetable') . ':</label>
+				<label for="weekday_id">' . esc_html__('Timetable column', 'timetable') . ':</label>
 			</td>
 			<td>
 				<select name="weekday_id" id="weekday_id">';
 				foreach($weekdays as $weekday)
-					echo '<option value="' . $weekday->ID . '">' . $weekday->post_title . '</option>';
+					echo '<option value="' . esc_attr($weekday->ID) . '">' . esc_html($weekday->post_title) . '</option>';
 	echo '		</select>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<label for="start_hour">' . __('Start hour', 'timetable') . ':</label>
+				<label for="start_hour">' . esc_html__('Start hour', 'timetable') . ':</label>
 			</td>
 			<td>
 				<input size="5" maxlength="5" type="text" id="start_hour" name="start_hour" value="" />
@@ -335,7 +335,7 @@ function timetable_inner_events_custom_box_side($post)
 		</tr>
 		<tr>
 			<td>
-				<label for="end_hour">' . __('End hour', 'timetable') . ':</label>
+				<label for="end_hour">' . esc_html__('End hour', 'timetable') . ':</label>
 			</td>
 			<td>
 				<input size="5" maxlength="5" type="text" id="end_hour" name="end_hour" value="" />
@@ -344,7 +344,7 @@ function timetable_inner_events_custom_box_side($post)
 		</tr>
 		<tr>
 			<td>
-				<label for="before_hour_text">' . __('Description 1', 'timetable') . ':</label>
+				<label for="before_hour_text">' . esc_html__('Description 1', 'timetable') . ':</label>
 			</td>
 			<td>
 				<textarea id="before_hour_text" name="before_hour_text"></textarea>
@@ -352,7 +352,7 @@ function timetable_inner_events_custom_box_side($post)
 		</tr>
 		<tr>
 			<td>
-				<label for="after_hour_text">' . __('Description 2', 'timetable') . ':</label>
+				<label for="after_hour_text">' . esc_html__('Description 2', 'timetable') . ':</label>
 			</td>
 			<td>
 				<textarea id="after_hour_text" name="after_hour_text"></textarea>
@@ -360,7 +360,7 @@ function timetable_inner_events_custom_box_side($post)
 		</tr>
 		<tr>
 			<td>
-				<label for="tooltip">' . __('Tooltip', 'timetable') . ':</label>
+				<label for="tooltip">' . esc_html__('Tooltip', 'timetable') . ':</label>
 			</td>
 			<td>
 				<textarea id="tooltip" name="tooltip"></textarea>
@@ -368,7 +368,7 @@ function timetable_inner_events_custom_box_side($post)
 		</tr>
 		<tr>
 			<td>
-				<label for="event_hour_category">' . __('Category', 'timetable') . ':</label>
+				<label for="event_hour_category">' . esc_html__('Category', 'timetable') . ':</label>
 			</td>
 			<td>
 				<input type="text" id="event_hour_category" name="event_hour_category" value="" />
@@ -376,7 +376,7 @@ function timetable_inner_events_custom_box_side($post)
 		</tr>
 		<tr>
 			<td>
-				<label for="available_places">' . __('Available slots', 'timetable') . ':</label>
+				<label for="available_places">' . esc_html__('Available slots', 'timetable') . ':</label>
 			</td>
 			<td>
 				<input type="text" id="available_places" name="available_places" value="" />
@@ -384,7 +384,7 @@ function timetable_inner_events_custom_box_side($post)
 		</tr>
 		<tr>
 			<td>
-				<label for="slots_per_user">' . __('Slots per user', 'timetable') . ':</label>
+				<label for="slots_per_user">' . esc_html__('Slots per user', 'timetable') . ':</label>
 			</td>
 			<td>
 				<input type="text" id="slots_per_user" name="slots_per_user" value="" />
@@ -392,7 +392,7 @@ function timetable_inner_events_custom_box_side($post)
 		</tr>
 		<tr>
 			<td colspan="2" style="text-align: right;">
-				<input id="add_event_hours" type="button" class="button" value="' . __("Add", 'timetable') . '" />
+				<input id="add_event_hours" type="button" class="button" value="' . esc_attr__("Add", 'timetable') . '" />
 				<input type="hidden" id="event_hours_id" name="event_hours_id" value="0"/>
 			</td>
 		</tr>
@@ -400,26 +400,26 @@ function timetable_inner_events_custom_box_side($post)
 	<table id="event_bookings_table">
 		<tr>
 			<td colspan="2">
-				<h3>' . __('Delete event bookings', 'timetable') . '</h3>
+				<h3>' . esc_html__('Delete event bookings', 'timetable') . '</h3>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<label for="booking_weekday_id">' . __('Timetable column', 'timetable') . ':</label>
+				<label for="booking_weekday_id">' . esc_html__('Timetable column', 'timetable') . ':</label>
 			</td>
 			<td>
 				<select name="booking_weekday_id" id="booking_weekday_id">
-					<option value="all">' . __('All', 'timetable') . '</option>';
+					<option value="all">' . esc_html__('All', 'timetable') . '</option>';
 	
 				foreach($weekdays as $weekday)
-					echo '<option value="' . $weekday->ID . '">' . $weekday->post_title . '</option>';
+					echo '<option value="' . esc_attr($weekday->ID) . '">' . esc_html($weekday->post_title) . '</option>';
 	echo '		</select>
 			</td>
 		</tr>
 		<tr>	
 			<td colspan="2" style="text-align: right;">
-				<input type="hidden" id="event_id" name="event_id" value="' . $post->ID . '"/>
-				<input id="delete_event_bookings" type="button" class="button" value="' . __("Delete", 'timetable') . '" />
+				<input type="hidden" id="event_id" name="event_id" value="' . esc_attr($post->ID) . '"/>
+				<input id="delete_event_bookings" type="button" class="button" value="' . esc_attr__("Delete", 'timetable') . '" />
 			</td>
 		</tr>
 	</table>
@@ -439,7 +439,7 @@ function timetable_inner_events_custom_box_main($post)
 	<table>
 		<tr>
 			<td>
-				<label for="color">' . __('Subtitle', 'timetable') . ':</label>
+				<label for="color">' . esc_html__('Subtitle', 'timetable') . ':</label>
 			</td>
 			<td>
 				<input class="regular-text" type="text" id="subtitle" name="subtitle" value="' . esc_attr(get_post_meta($post->ID, "timetable_subtitle", true)) . '" />
@@ -447,17 +447,17 @@ function timetable_inner_events_custom_box_main($post)
 		</tr>
 		<tr>
 			<td>
-				<label for="color">' . __('Timetable box background color', 'timetable') . ':</label>
+				<label for="color">' . esc_html__('Timetable box background color', 'timetable') . ':</label>
 			</td>
 			<td>
 				<span class="color_preview" style="background-color: #' . (get_post_meta($post->ID, "timetable_color", true)!="" ? esc_attr(get_post_meta($post->ID, "timetable_color", true)) : 'transparent') . '"></span>
 				<input class="regular-text color" type="text" id="color" name="color" value="' . esc_attr(get_post_meta($post->ID, "timetable_color", true)) . '" data-default-color="transparent" />
-				<span class="description">' . __('Required when \'Timetable box hover color\' isn\'t empty', 'timetable') . '</span>
+				<span class="description">' . esc_html__('Required when \'Timetable box hover color\' isn\'t empty', 'timetable') . '</span>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<label for="color">' . __('Timetable box hover background color', 'timetable') . ':</label>
+				<label for="color">' . esc_html__('Timetable box hover background color', 'timetable') . ':</label>
 			</td>
 			<td>
 				<span class="color_preview" style="background-color: #' . (get_post_meta($post->ID, "timetable_hover_color", true)!="" ? esc_attr(get_post_meta($post->ID, "timetable_hover_color", true)) : 'transparent') . '"></span>
@@ -466,17 +466,17 @@ function timetable_inner_events_custom_box_main($post)
 		</tr>
 		<tr>
 			<td>
-				<label for="text_color">' . __('Timetable box text color', 'timetable') . ':</label>
+				<label for="text_color">' . esc_html__('Timetable box text color', 'timetable') . ':</label>
 			</td>
 			<td>
 				<span class="color_preview" style="background-color: #' . (get_post_meta($post->ID, "timetable_text_color", true)!="" ? esc_attr(get_post_meta($post->ID, "timetable_text_color", true)) : 'transparent') . '"></span>
 				<input class="regular-text color" type="text" id="text_color" name="text_color" value="' . esc_attr(get_post_meta($post->ID, "timetable_text_color", true)) . '" data-default-color="transparent" />
-				<span class="description">' . __('Required when \'Timetable box hover text color\' isn\'t empty', 'timetable') . '</span>
+				<span class="description">' . esc_html__('Required when \'Timetable box hover text color\' isn\'t empty', 'timetable') . '</span>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<label for="text_color">' . __('Timetable box hover text color', 'timetable') . ':</label>
+				<label for="text_color">' . esc_html__('Timetable box hover text color', 'timetable') . ':</label>
 			</td>
 			<td>
 				<span class="color_preview" style="background-color: #' . (get_post_meta($post->ID, "timetable_hover_text_color", true)!="" ? esc_attr(get_post_meta($post->ID, "timetable_hover_text_color", true)) : 'transparent') . '"></span>
@@ -485,17 +485,17 @@ function timetable_inner_events_custom_box_main($post)
 		</tr>
 		<tr>
 			<td>
-				<label for="text_color">' . __('Timetable box hours text color', 'timetable') . ':</label>
+				<label for="text_color">' . esc_html__('Timetable box hours text color', 'timetable') . ':</label>
 			</td>
 			<td>
 				<span class="color_preview" style="background-color: #' . (get_post_meta($post->ID, "timetable_hours_text_color", true)!="" ? esc_attr(get_post_meta($post->ID, "timetable_hours_text_color", true)) : 'transparent') . '"></span>
 				<input class="regular-text color" type="text" id="hours_text_color" name="hours_text_color" value="' . esc_attr(get_post_meta($post->ID, "timetable_hours_text_color", true)) . '" data-default-color="transparent" />
-				<span class="description">' . __('Required when \'Timetable box hover hours text color\' isn\'t empty', 'timetable') . '</span>
+				<span class="description">' . esc_html__('Required when \'Timetable box hover hours text color\' isn\'t empty', 'timetable') . '</span>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<label for="text_color">' . __('Timetable box hover hours text color', 'timetable') . ':</label>
+				<label for="text_color">' . esc_html__('Timetable box hover hours text color', 'timetable') . ':</label>
 			</td>
 			<td>
 				<span class="color_preview" style="background-color: #' . (get_post_meta($post->ID, "timetable_hours_hover_text_color", true)!="" ? esc_attr(get_post_meta($post->ID, "timetable_hours_hover_text_color", true)) : 'transparent') . '"></span>
@@ -504,7 +504,7 @@ function timetable_inner_events_custom_box_main($post)
 		</tr>
 		<tr>
 			<td>
-				<label for="color">' . __('Timetable custom URL', 'timetable') . ':</label>
+				<label for="color">' . esc_html__('Timetable custom URL', 'timetable') . ':</label>
 			</td>
 			<td>
 				<input class="regular-text" type="text" id="timetable_custom_url" name="timetable_custom_url" value="' . esc_attr(get_post_meta($post->ID, "timetable_custom_url", true)) . '" />
@@ -512,12 +512,12 @@ function timetable_inner_events_custom_box_main($post)
 		</tr>
 		<tr>
 			<td>
-				<label for="color">' . __('Disable timetable event URL', 'timetable') . ':</label>
+				<label for="color">' . esc_html__('Disable timetable event URL', 'timetable') . ':</label>
 			</td>
 			<td>
 				<select name="timetable_disable_url">
-					<option value="0"' . (!(int)$timetable_disable_url ? ' selected="selected"' : '') . '>' . __("No", 'timetable') . '</option>
-					<option value="1"' . ((int)$timetable_disable_url ? ' selected="selected"' : '') . '>' . __("Yes", 'timetable') . '</option>
+					<option value="0"' . (!(int)$timetable_disable_url ? ' selected="selected"' : '') . '>' . esc_html__("No", 'timetable') . '</option>
+					<option value="1"' . ((int)$timetable_disable_url ? ' selected="selected"' : '') . '>' . esc_html__("Yes", 'timetable') . '</option>
 				</select>
 			</td>
 		</tr>
@@ -637,20 +637,20 @@ function timetable_delete_events($post_id)
 add_action("delete_post", "timetable_delete_events");
 
 //custom events items list
-function events_edit_columns($columns)
+function timetable_events_edit_columns($columns)
 {
-	$columns = array(  
+	$new_columns = array(  
 		"cb" => "<input type=\"checkbox\" />",  
 		"title" => _x('Title', 'post type singular name', 'timetable'),
-		"events_category" => __('Categories', 'timetable'),
-		"date" => __('Date', 'timetable')
+		"events_category" => esc_html__('Categories', 'timetable'),
+		"date" => esc_html__('Date', 'timetable')
 	);    
 
-	return $columns;  
+	return array_merge($new_columns, $columns);  
 }  
 $timetable_events_settings = timetable_events_settings();
-add_filter("manage_edit-" . $timetable_events_settings["slug"] . "_columns", "events_edit_columns"); 
-function manage_events_posts_custom_column($column)
+add_filter("manage_edit-" . $timetable_events_settings["slug"] . "_columns", "timetable_events_edit_columns"); 
+function timetable_manage_events_posts_custom_column($column)
 {
 	global $post;
 	switch ($column)
@@ -666,9 +666,9 @@ function manage_events_posts_custom_column($column)
 			break;
 	}
 }
-add_action("manage_" . $timetable_events_settings["slug"] . "_posts_custom_column", "manage_events_posts_custom_column");
+add_action("manage_" . $timetable_events_settings["slug"] . "_posts_custom_column", "timetable_manage_events_posts_custom_column");
 
-function filter_events_by_taxonomies($post_type)
+function timetable_filter_events_by_taxonomies($post_type)
 {
 	$timetable_events_settings = timetable_events_settings();
 	//Apply this only on a specific post type
@@ -697,7 +697,7 @@ function filter_events_by_taxonomies($post_type)
 		echo '</select>';
 	}
 }
-add_action('restrict_manage_posts', 'filter_events_by_taxonomies', 10, 2);
+add_action('restrict_manage_posts', 'timetable_filter_events_by_taxonomies', 10, 2);
 
 function timetable_set_warning_available_places($location)
 {
@@ -708,7 +708,7 @@ function timetable_warning_available_places()
 {
 	echo "
 	<div class='notice notice-error'>
-		<p>" . __("Error: Available slots value must be equal or greater than the number of existing bookings.", "timetable") . "</p>
+		<p>" . esc_html__("Error: Available slots value must be equal or greater than the number of existing bookings.", "timetable") . "</p>
 	</div>";
 }
 

@@ -29,14 +29,14 @@
 		var lsId = $('input[data-setting=identifier]').val();
 
 		kmw.modal.open({
-			title: LS_Widget.i18n.modalTitle,
-			modalClasses: 'ls-editor-modal ls-editor-loading',
+			modalClasses: 'ls-editor-modal',
 			maxWidth: '100%',
 			maxHeight: '100%',
-			spacing: 20,
-			padding: 20,
+			spacing: 50,
+			padding: 0,
 			content: '<iframe></iframe>',
 			animationIn: 'scale',
+			animationOut: 'fade',
 			overlaySettings: {
 				animationIn: 'fade'
 			},
@@ -51,7 +51,7 @@
 				this.win.jQuery(this.win.document).ajaxSuccess($.proxy(this, 'onAjaxSuccess'));
 			},
 			onAjaxSuccess: function( e, xhr, args, res ) {
-				if (args.data && ~args.data.indexOf('action=ls_save_slider') && '{"status":"ok"}' === res) {
+				if (args.data && ~args.data.indexOf('action=ls_publish_slider') && '{"status":"ok"}' === res) {
 					this.reload = true;
 				}
 			},
@@ -78,7 +78,7 @@
 		$('.elementor-element-' + id + ' .ls-container').layerSlider('destroy');
 	};
 
-	$('html').on('input.ls', '.ls-overrides ~ .elementor-control :input', function onChangeOverride() {
+	$('html').on('input.ls', '.ls-overrides ~ .elementor-control :input', function() {
 		LS_Widget.destroySlider();
 	});
 

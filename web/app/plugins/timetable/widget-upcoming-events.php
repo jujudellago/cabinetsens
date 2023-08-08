@@ -9,7 +9,7 @@ class tt_upcoming_events_widget extends WP_Widget
 			'description' => 'Displays upcoming events scrolling list'
 		);
 
-       parent::__construct('timetable_upcoming_events', __('Upcoming Events', 'timetable'), $widget_options);
+       parent::__construct('timetable_upcoming_events', esc_html__('Upcoming Events', 'timetable'), $widget_options);
     }
 	
 	/** @see WP_Widget::widget */
@@ -147,17 +147,16 @@ class tt_upcoming_events_widget extends WP_Widget
 				if($title) 
 				{
 					if($title_color!="")
-						$before_title = str_replace(">", " style='color: #" . $title_color . ";'>",$before_title);
+						$before_title = str_replace(">", " style='color: #" . esc_attr($title_color) . ";'>",$before_title);
 					$output .= $before_title . $title . $after_title;
 				}
 		$output .= '<div class="tt_upcoming_events_wrapper page_margin_top">';
 		if($event_hours_count):
-				$output .= '<ul class="tt_upcoming_events clearfix autoscroll-' . (int)$auto_scroll . '">';
+				$output .= '<ul class="tt_upcoming_events clearfix autoscroll-' . (int)esc_attr($auto_scroll) . '">';
 				for($i=0; $i<$event_hours_count; $i++)
 				{
 					$event_hours[$i]->start = date($time_format_custom, strtotime($event_hours[$i]->start));
 					$event_hours[$i]->end = date($time_format_custom, strtotime($event_hours[$i]->end));
-					//$output .= '<li' . ($text_color!='' ? ' value_color="' . $text_color . '"' : '') . ($item_border_color!='' ? ' border_color="' . $item_border_color . '"' : '') . ' value="' .  $event_hours[$i]->start . ' - ' .  $event_hours[$i]->end . '"]<a href="' . get_permalink($event_hours[$i]->ID) . '" title="' . $event_hours[$i]->post_title . '">' . $event_hours[$i]->post_title . '</a></li>';
 					//get event color
 					$reset_bg_color = false;
 					$reset_border_color = false;
@@ -176,11 +175,14 @@ class tt_upcoming_events_widget extends WP_Widget
 							$reset_border_color = true;
 						}
 					}
+					$widget_custom_url = "";
 					$event_custom_url = "";
 					$event_custom_url = get_post_meta($event_hours[$i]->event_id, "timetable_custom_url", true);
 					if($event_custom_url!="")
-						$custom_url = $event_custom_url;
-					$output .= '<li><' . ((int)$disable_url ? 'span' : 'a') . ' class="tt_upcoming_events_event_container"' . ($background_color!="" || $item_border_color!="" || $text_color!="" ? ' style="' . ($background_color!="" ? 'background-color: #' . $background_color . ';' : '') . ($item_border_color!="" ? 'border-' . ($wp_locale->text_direction=='rtl' ? 'right' : 'left') . '-color: #' . $item_border_color . ';' : '') . ($text_color!="" ? 'color: #' . $text_color . ';' : '') . '"' : '') . ($background_color!="" || $hover_background_color!="" || $item_border_color!="" || $hover_item_border_color!="" || $text_color!="" || $hover_text_color!="" ? ' onMouseOver="' . ($background_color!="" || $hover_background_color!="" ? 'this.style.backgroundColor=\'#'.($hover_background_color!="" ? $hover_background_color : '00A27C').'\';' : '') . ($item_border_color!="" || $hover_item_border_color!="" ? 'this.style.borderColor=\'#'.($hover_item_border_color!="" ? $hover_item_border_color : '00A27C').'\';' : '' ) . ($text_color!="" || $hover_text_color!="" ? 'this.style.color=\'#'.($hover_text_color!="" ? $hover_text_color : 'FFFFFF') . '\';' : '' ) . '" onMouseOut="' . ($background_color!="" || $hover_background_color!="" || $item_border_color!="" || $hover_item_border_color!="" || $text_color!="" || $hover_text_color!="" ? ($background_color!="" || $hover_background_color!="" ? 'this.style.backgroundColor=\'#'.($background_color!="" ? $background_color : 'FFF').'\';' : '') . ($item_border_color!="" || $hover_item_border_color!="" ? 'this.style.borderColor=\'#EFEFEF\';this.style.border' . ($wp_locale->text_direction=='rtl' ? 'Right' : 'Left') . 'Color=\'#'.($item_border_color!="" ? $item_border_color : 'EFEFEF').'\';' : '' ) . ($text_color!="" || $hover_text_color!="" ? 'this.style.color=\'#'.($text_color!="" ? $text_color : '34495E').'\';' : '') : '' ). '"' : '') . (!(int)$disable_url ? ' href="' . ($custom_url!="" ? esc_attr($custom_url) : get_permalink($event_hours[$i]->event_id)) . '"' : '') . ' title="' . $event_hours[$i]->post_title . '">' . ($event_hours[$i]->description1!="" || $event_hours[$i]->description2!="" ? '<span class="tt_upcoming_events_arrow"></span>' : '') . $event_hours[$i]->post_title . '<span class="tt_upcoming_events_hours timetable_clearfix"><span class="tt_calendar_icon"></span>' . $event_hours[$i]->weekday . ', ' . $event_hours[$i]->start . ' - ' .  $event_hours[$i]->end . '</span>' . ($event_hours[$i]->description1!="" || $event_hours[$i]->description2!="" ? '<span class="tt_event_hours_description">' . $event_hours[$i]->description1 . ($event_hours[$i]->description1!="" && $event_hours[$i]->description2!="" ? '<br>' : '') . $event_hours[$i]->description2 . '</span>' : '') . ((int)$event_featured_image==1 ? get_the_post_thumbnail($event_hours[$i]->event_id) : '') . '</' . ((int)$disable_url ? 'span' : 'a') . '></li>';
+						$widget_custom_url = $event_custom_url;
+					else
+						$widget_custom_url = $custom_url;
+					$output .= '<li><' . ((int)$disable_url ? 'span' : 'a') . ' class="tt_upcoming_events_event_container"' . ($background_color!="" || $item_border_color!="" || $text_color!="" ? ' style="' . ($background_color!="" ? 'background-color: #' . esc_attr($background_color) . ';' : '') . ($item_border_color!="" ? 'border-' . ($wp_locale->text_direction=='rtl' ? 'right' : 'left') . '-color: #' . esc_attr($item_border_color) . ';' : '') . ($text_color!="" ? 'color: #' . esc_attr($text_color) . ';' : '') . '"' : '') . ($background_color!="" || $hover_background_color!="" || $item_border_color!="" || $hover_item_border_color!="" || $text_color!="" || $hover_text_color!="" ? ' onMouseOver="' . ($background_color!="" || $hover_background_color!="" ? 'this.style.backgroundColor=\'#'.($hover_background_color!="" ? $hover_background_color : '00A27C').'\';' : '') . ($item_border_color!="" || $hover_item_border_color!="" ? 'this.style.borderColor=\'#'.($hover_item_border_color!="" ? $hover_item_border_color : '00A27C').'\';' : '' ) . ($text_color!="" || $hover_text_color!="" ? 'this.style.color=\'#'.($hover_text_color!="" ? $hover_text_color : 'FFFFFF') . '\';' : '' ) . '" onMouseOut="' . ($background_color!="" || $hover_background_color!="" || $item_border_color!="" || $hover_item_border_color!="" || $text_color!="" || $hover_text_color!="" ? ($background_color!="" || $hover_background_color!="" ? 'this.style.backgroundColor=\'#'.($background_color!="" ? $background_color : 'FFF').'\';' : '') . ($item_border_color!="" || $hover_item_border_color!="" ? 'this.style.borderColor=\'#EFEFEF\';this.style.border' . ($wp_locale->text_direction=='rtl' ? 'Right' : 'Left') . 'Color=\'#'.($item_border_color!="" ? $item_border_color : 'EFEFEF').'\';' : '' ) . ($text_color!="" || $hover_text_color!="" ? 'this.style.color=\'#'.($text_color!="" ? $text_color : '34495E').'\';' : '') : '' ). '"' : '') . (!(int)$disable_url ? ' href="' . ($widget_custom_url!="" ? esc_url($widget_custom_url) : esc_url(get_permalink($event_hours[$i]->event_id))) . '"' : '') . ' title="' . esc_attr($event_hours[$i]->post_title) . '">' . ($event_hours[$i]->description1!="" || $event_hours[$i]->description2!="" ? '<span class="tt_upcoming_events_arrow"></span>' : '') . $event_hours[$i]->post_title . '<span class="tt_upcoming_events_hours timetable_clearfix"><span class="tt_calendar_icon"></span>' . $event_hours[$i]->weekday . ', ' . $event_hours[$i]->start . ' - ' .  $event_hours[$i]->end . '</span>' . ($event_hours[$i]->description1!="" || $event_hours[$i]->description2!="" ? '<span class="tt_event_hours_description">' . $event_hours[$i]->description1 . ($event_hours[$i]->description1!="" && $event_hours[$i]->description2!="" ? '<br>' : '') . $event_hours[$i]->description2 . '</span>' : '') . ((int)$event_featured_image==1 ? get_the_post_thumbnail($event_hours[$i]->event_id) : '') . '</' . ((int)$disable_url ? 'span' : 'a') . '></li>';
 					if($reset_bg_color)
 						$hover_background_color = "";
 					if($reset_border_color)
@@ -194,7 +196,7 @@ class tt_upcoming_events_widget extends WP_Widget
 			<a href="#" id="upcoming_event_next"><span class="tt_upcoming_event_next_arrow"></span></a>
 		</div>';
 		else:
-			$output .= '<p class="message">' . sprintf(__('No upcoming %s for today' , 'timetable'), strtolower($timetable_events_settings['label_plural'])) . '</p>';
+			$output .= '<p class="message">' . sprintf(esc_html__('No upcoming %s for today' , 'timetable'), strtolower($timetable_events_settings['label_plural'])) . '</p>';
 		
 		endif;
 		$output .= '</div>
@@ -260,93 +262,93 @@ class tt_upcoming_events_widget extends WP_Widget
 		$hover_item_border_color = (isset($instance['hover_item_border_color']) ? esc_attr($instance['hover_item_border_color']) : "");
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title', 'timetable'); ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
+			<label for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php esc_html_e('Title', 'timetable'); ?></label>
+			<input class="widefat" id="<?php echo esc_attr($this->get_field_id('title')); ?>" name="<?php echo esc_attr($this->get_field_name('title')); ?>" type="text" value="<?php echo esc_attr($title); ?>" />
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('title_color'); ?>"><?php _e('Title color', 'timetable'); ?></label>
-			<span class="color_preview" style="background-color: #<?php echo ($title_color!="" ? $title_color : 'FFFFFF'); ?>;"></span>
-			<input class="regular-text color" id="<?php echo $this->get_field_id('title_color'); ?>" name="<?php echo $this->get_field_name('title_color'); ?>" type="text" value="<?php echo $title_color; ?>" data-default-color="FFFFFF" />
+			<label for="<?php echo esc_attr($this->get_field_id('title_color')); ?>"><?php esc_html_e('Title color', 'timetable'); ?></label>
+			<span class="color_preview" style="background-color: #<?php echo ($title_color!="" ? esc_attr($title_color) : 'FFFFFF'); ?>;"></span>
+			<input class="regular-text color" id="<?php echo esc_attr($this->get_field_id('title_color')); ?>" name="<?php echo esc_attr($this->get_field_name('title_color')); ?>" type="text" value="<?php echo esc_attr($title_color); ?>" data-default-color="FFFFFF" />
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('count'); ?>"><?php _e('Count', 'timetable'); ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id('count'); ?>" name="<?php echo $this->get_field_name('count'); ?>" type="text" value="<?php echo $count; ?>" />
+			<label for="<?php echo esc_attr($this->get_field_id('count')); ?>"><?php esc_html_e('Count', 'timetable'); ?></label>
+			<input class="widefat" id="<?php echo esc_attr($this->get_field_id('count')); ?>" name="<?php echo esc_attr($this->get_field_name('count')); ?>" type="text" value="<?php echo esc_attr($count); ?>" />
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('display_settings'); ?>"><?php _e('Display settings', 'timetable'); ?></label>
-			<select id="<?php echo $this->get_field_id('display_settings'); ?>" name="<?php echo $this->get_field_name('display_settings'); ?>">
-				<option value="today"<?php echo ($display_settings=="today" ? " selected='selected'" : ""); ?>><?php _e('today upcoming', 'timetable'); ?></option>
-				<option value="all"<?php echo ($display_settings=="all" ? " selected='selected'" : ""); ?>><?php _e('all upcoming', 'timetable'); ?></option>
-				<option value="current"<?php echo ($display_settings=="current" ? " selected='selected'" : ""); ?>><?php _e('current events', 'timetable'); ?></option>
+			<label for="<?php echo esc_attr($this->get_field_id('display_settings')); ?>"><?php esc_html_e('Display settings', 'timetable'); ?></label>
+			<select id="<?php echo esc_attr($this->get_field_id('display_settings')); ?>" name="<?php echo esc_attr($this->get_field_name('display_settings')); ?>">
+				<option value="today"<?php echo ($display_settings=="today" ? " selected='selected'" : ""); ?>><?php esc_html_e('today upcoming', 'timetable'); ?></option>
+				<option value="all"<?php echo ($display_settings=="all" ? " selected='selected'" : ""); ?>><?php esc_html_e('all upcoming', 'timetable'); ?></option>
+				<option value="current"<?php echo ($display_settings=="current" ? " selected='selected'" : ""); ?>><?php esc_html_e('current events', 'timetable'); ?></option>
 			</select>
 		</p>
 		<p <?php echo ($display_settings=="today" || $display_settings=="current" || $display_settings=="" ? ' style="display: none;"' : ''); ?>>
-			<label for="<?php echo $this->get_field_id('within_next'); ?>"><?php _e('All upcoming within next', 'timetable'); ?></label>
-			<input class="widefat" style="width: 60px;" id="<?php echo $this->get_field_id('within_next'); ?>" name="<?php echo $this->get_field_name('within_next'); ?>" type="text" value="<?php echo $within_next; ?>" /> <?php _e("day(s)", 'timetable'); ?>
+			<label for="<?php echo esc_attr($this->get_field_id('within_next')); ?>"><?php esc_html_e('All upcoming within next', 'timetable'); ?></label>
+			<input class="widefat" style="width: 60px;" id="<?php echo esc_attr($this->get_field_id('within_next')); ?>" name="<?php echo esc_attr($this->get_field_name('within_next')); ?>" type="text" value="<?php echo esc_attr($within_next); ?>" /> <?php esc_html_e("day(s)", 'timetable'); ?>
 		</p>
 		<p>
 			<label for="time_format">
-				<?php _e("Time format", "timetable"); ?>
+				<?php esc_html_e("Time format", "timetable"); ?>
 			</label>
 			<br>
 			<label title="H.i">
-				<input type="radio" <?php echo ($time_format=="H.i" ? 'checked="checked"' : ''); ?> value="H.i" name="<?php echo $this->get_field_name('time_format'); ?>"> 
+				<input type="radio" <?php echo ($time_format=="H.i" ? 'checked="checked"' : ''); ?> value="H.i" name="<?php echo esc_attr($this->get_field_name('time_format')); ?>"> 
 				<span>09.03</span>
 			</label>
 			<br>
 			<label title="H:i">
-				<input type="radio" <?php echo ($time_format=="H:i" ? 'checked="checked"' : ''); ?> value="H:i" name="<?php echo $this->get_field_name('time_format'); ?>"> 
+				<input type="radio" <?php echo ($time_format=="H:i" ? 'checked="checked"' : ''); ?> value="H:i" name="<?php echo esc_attr($this->get_field_name('time_format')); ?>"> 
 				<span>09:03</span>
 			</label>
 			<br>
 			<label title="g:i a">
-				<input type="radio" <?php echo ($time_format=="g:i a" ? 'checked="checked"' : ''); ?> value="g:i a" name="<?php echo $this->get_field_name('time_format'); ?>"> 
+				<input type="radio" <?php echo ($time_format=="g:i a" ? 'checked="checked"' : ''); ?> value="g:i a" name="<?php echo esc_attr($this->get_field_name('time_format')); ?>"> 
 				<span>9:03 am</span>
 			</label>
 			<br>
 			<label title="g:i A">
-				<input type="radio" <?php echo ($time_format=="g:i A" ? 'checked="checked"' : ''); ?> value="g:i A" name="<?php echo $this->get_field_name('time_format'); ?>"> 
+				<input type="radio" <?php echo ($time_format=="g:i A" ? 'checked="checked"' : ''); ?> value="g:i A" name="<?php echo esc_attr($this->get_field_name('time_format')); ?>"> 
 				<span>9:03 AM</span>
 			</label>
 			<br>
 			<label>
-				<input type="radio" <?php echo ($time_format=="custom" ? 'checked="checked"' : ''); ?> value="custom" id="time_format_custom_radio" name="<?php echo $this->get_field_name('time_format'); ?>"> 
-				<?php _e("Custom: ", "timetable"); ?>
+				<input type="radio" <?php echo ($time_format=="custom" ? 'checked="checked"' : ''); ?> value="custom" id="time_format_custom_radio" name="<?php echo esc_attr($this->get_field_name('time_format')); ?>"> 
+				<?php esc_html_e("Custom: ", "timetable"); ?>
 			</label>
-			<input type="text" class="small-text" value="<?php echo ($time_format_custom!="" ? $time_format_custom : "g:i a"); ?>" name="<?php echo $this->get_field_name('time_format_custom'); ?>" id="<?php echo $this->get_field_id('time_format_custom'); ?>"> 
+			<input type="text" class="small-text" value="<?php echo ($time_format_custom!="" ? $time_format_custom : "g:i a"); ?>" name="<?php echo esc_attr($this->get_field_name('time_format_custom')); ?>" id="<?php echo esc_attr($this->get_field_id('time_format_custom')); ?>"> 
 			<span class="example"> 9:03 am</span>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('time_mode'); ?>"><?php _e('Time from', 'timetable'); ?></label>
-			<select id="upcoming_events_time_from" name="<?php echo $this->get_field_name('time_mode'); ?>">
-				<option value="server"<?php echo ($time_mode=="server" ? " selected='selected'" : ""); ?>><?php _e('server', 'timetable'); ?></option>
-				<option value="database"<?php echo ($time_mode=="database" ? " selected='selected'" : ""); ?>><?php _e('database', 'timetable'); ?></option>
+			<label for="<?php echo esc_attr($this->get_field_id('time_mode')); ?>"><?php esc_html_e('Time from', 'timetable'); ?></label>
+			<select id="upcoming_events_time_from" name="<?php echo esc_attr($this->get_field_name('time_mode')); ?>">
+				<option value="server"<?php echo ($time_mode=="server" ? " selected='selected'" : ""); ?>><?php esc_html_e('server', 'timetable'); ?></option>
+				<option value="database"<?php echo ($time_mode=="database" ? " selected='selected'" : ""); ?>><?php esc_html_e('database', 'timetable'); ?></option>
 			</select>
 		</p>
 		<p class="upcoming_events_timezone_row" <?php echo ($time_mode=="database" ? " style='display: none;'" : ""); ?>>
-			<label for="<?php echo $this->get_field_id('timezone'); ?>"><?php _e('Timezone', 'timetable'); ?></label>
-			<select name="<?php echo $this->get_field_name('timezone'); ?>">
-				<option value="localtime"<?php echo ($timezone=="localtime" ? " selected='selected'" : ""); ?>><?php _e('localtime', 'timetable'); echo " (now: " .  date('H:i:s', current_time('timestamp')) . ")"; ?></option>
-				<option value="utc"<?php echo ($timezone=="utc" ? " selected='selected'" : ""); ?>><?php _e('utc', 'timetable'); echo " (now: " .  date('H:i:s', current_time('timestamp', 1)) . ")"; ?></option>
+			<label for="<?php echo esc_attr($this->get_field_id('timezone')); ?>"><?php esc_html_e('Timezone', 'timetable'); ?></label>
+			<select name="<?php echo esc_attr($this->get_field_name('timezone')); ?>">
+				<option value="localtime"<?php echo ($timezone=="localtime" ? " selected='selected'" : ""); ?>><?php esc_html_e('localtime', 'timetable'); echo " (now: " .  date('H:i:s', current_time('timestamp')) . ")"; ?></option>
+				<option value="utc"<?php echo ($timezone=="utc" ? " selected='selected'" : ""); ?>><?php esc_html_e('utc', 'timetable'); echo " (now: " .  date('H:i:s', current_time('timestamp', 1)) . ")"; ?></option>
 			</select>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('categories'); ?>"><?php _e('Categories', 'timetable'); ?></label>
-			<select multiple="multiple" id="<?php echo $this->get_field_id('categories'); ?>" name="<?php echo $this->get_field_name('categories'); ?>[]">
+			<label for="<?php echo esc_attr($this->get_field_id('categories')); ?>"><?php esc_html_e('Categories', 'timetable'); ?></label>
+			<select multiple="multiple" id="<?php echo esc_attr($this->get_field_id('categories')); ?>" name="<?php echo esc_attr($this->get_field_name('categories')); ?>[]">
 			<?php
 			$events_categories = get_terms("events_category");
 			foreach((array)$events_categories as $events_category)
 			{
 			?>
-				<option <?php echo (is_array($categories) && in_array($events_category->slug, $categories) ? ' selected="selected"':'');?> value='<?php echo $events_category->slug;?>'><?php echo $events_category->name; ?></option>
+				<option <?php echo (is_array($categories) && in_array($events_category->slug, $categories) ? ' selected="selected"':'');?> value='<?php echo esc_attr($events_category->slug);?>'><?php echo esc_html($events_category->name); ?></option>
 			<?php
 			}
 			?>
 			</select>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('hour_categories'); ?>"><?php _e('Hour categories', 'timetable'); ?></label>
-			<select multiple="multiple" id="<?php echo $this->get_field_id('hour_categories'); ?>" name="<?php echo $this->get_field_name('hour_categories'); ?>[]">
+			<label for="<?php echo esc_attr($this->get_field_id('hour_categories')); ?>"><?php esc_html_e('Hour categories', 'timetable'); ?></label>
+			<select multiple="multiple" id="<?php echo esc_attr($this->get_field_id('hour_categories')); ?>" name="<?php echo esc_attr($this->get_field_name('hour_categories')); ?>[]">
 			<?php
 			//get all hour categories
 			global $wpdb;
@@ -360,126 +362,67 @@ class tt_upcoming_events_widget extends WP_Widget
 			foreach((array)$hour_categories_array as $hour_category)
 			{
 			?>
-				<option <?php echo (is_array($hour_categories) && in_array($hour_category->category, $hour_categories) ? ' selected="selected"':'');?> value='<?php echo $hour_category->category;?>'><?php echo $hour_category->category; ?></option>
+				<option <?php echo (is_array($hour_categories) && in_array($hour_category->category, $hour_categories) ? ' selected="selected"':'');?> value='<?php echo esc_attr($hour_category->category);?>'><?php echo esc_html($hour_category->category); ?></option>
 			<?php
 			}
 			?>
 			</select>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('auto_scroll'); ?>"><?php _e('Auto scroll', 'timetable'); ?></label>
-			<select id="<?php echo $this->get_field_id('auto_scroll'); ?>" name="<?php echo $this->get_field_name('auto_scroll'); ?>">
-				<option value="0"<?php echo ((int)$auto_scroll==0 ? " selected='selected'" : ""); ?>><?php _e('no', 'timetable'); ?></option>
-				<option value="1"<?php echo ((int)$auto_scroll==1 ? " selected='selected'" : ""); ?>><?php _e('yes', 'timetable'); ?></option>
+			<label for="<?php echo esc_attr($this->get_field_id('auto_scroll')); ?>"><?php esc_html_e('Auto scroll', 'timetable'); ?></label>
+			<select id="<?php echo esc_attr($this->get_field_id('auto_scroll')); ?>" name="<?php echo esc_attr($this->get_field_name('auto_scroll')); ?>">
+				<option value="0"<?php echo ((int)$auto_scroll==0 ? " selected='selected'" : ""); ?>><?php esc_html_e('no', 'timetable'); ?></option>
+				<option value="1"<?php echo ((int)$auto_scroll==1 ? " selected='selected'" : ""); ?>><?php esc_html_e('yes', 'timetable'); ?></option>
 			</select>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('custom_url'); ?>"><?php _e('Custom event url', 'timetable'); ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id('custom_url'); ?>" name="<?php echo $this->get_field_name('custom_url'); ?>" type="text" value="<?php echo $custom_url; ?>" />
+			<label for="<?php echo esc_attr($this->get_field_id('custom_url')); ?>"><?php esc_html_e('Custom event url', 'timetable'); ?></label>
+			<input class="widefat" id="<?php echo esc_attr($this->get_field_id('custom_url')); ?>" name="<?php echo esc_attr($this->get_field_name('custom_url')); ?>" type="text" value="<?php echo esc_attr($custom_url); ?>" />
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('event_featured_image'); ?>"><?php _e('Event featured image', 'timetable'); ?></label>
-			<select id="<?php echo $this->get_field_id('event_featured_image'); ?>" name="<?php echo $this->get_field_name('event_featured_image'); ?>">
-				<option value="0"<?php echo ((int)$event_featured_image==0 ? " selected='selected'" : ""); ?>><?php _e('Hide', 'timetable'); ?></option>
-				<option value="1"<?php echo ((int)$event_featured_image==1 ? " selected='selected'" : ""); ?>><?php _e('Show', 'timetable'); ?></option>				
+			<label for="<?php echo esc_attr($this->get_field_id('event_featured_image')); ?>"><?php esc_html_e('Event featured image', 'timetable'); ?></label>
+			<select id="<?php echo esc_attr($this->get_field_id('event_featured_image')); ?>" name="<?php echo esc_attr($this->get_field_name('event_featured_image')); ?>">
+				<option value="0"<?php echo ((int)$event_featured_image==0 ? " selected='selected'" : ""); ?>><?php esc_html_e('Hide', 'timetable'); ?></option>
+				<option value="1"<?php echo ((int)$event_featured_image==1 ? " selected='selected'" : ""); ?>><?php esc_html_e('Show', 'timetable'); ?></option>				
 			</select>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('disable_url'); ?>"><?php _e('Disable event url', 'timetable'); ?></label>
-			<select id="<?php echo $this->get_field_id('disable_url'); ?>" name="<?php echo $this->get_field_name('disable_url'); ?>">
-				<option value="0"<?php echo ((int)$disable_url==0 ? " selected='selected'" : ""); ?>><?php _e('no', 'timetable'); ?></option>
-				<option value="1"<?php echo ((int)$disable_url==1 ? " selected='selected'" : ""); ?>><?php _e('yes', 'timetable'); ?></option>
+			<label for="<?php echo esc_attr($this->get_field_id('disable_url')); ?>"><?php esc_html_e('Disable event url', 'timetable'); ?></label>
+			<select id="<?php echo esc_attr($this->get_field_id('disable_url')); ?>" name="<?php echo esc_attr($this->get_field_name('disable_url')); ?>">
+				<option value="0"<?php echo ((int)$disable_url==0 ? " selected='selected'" : ""); ?>><?php esc_html_e('no', 'timetable'); ?></option>
+				<option value="1"<?php echo ((int)$disable_url==1 ? " selected='selected'" : ""); ?>><?php esc_html_e('yes', 'timetable'); ?></option>
 			</select>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('background_color'); ?>"><?php _e('Background color', 'timetable'); ?></label>
+			<label for="<?php echo esc_attr($this->get_field_id('background_color')); ?>"><?php esc_html_e('Background color', 'timetable'); ?></label>
 			<span class="color_preview" style="background-color: #<?php echo ($background_color!="" ? $background_color : 'FFFFFF'); ?>;"></span>
-			<input class="regular-text color" id="<?php echo $this->get_field_id('background_color'); ?>" name="<?php echo $this->get_field_name('background_color'); ?>" type="text" value="<?php echo $background_color; ?>" data-default-color="FFFFFF" />
+			<input class="regular-text color" id="<?php echo esc_attr($this->get_field_id('background_color')); ?>" name="<?php echo esc_attr($this->get_field_name('background_color')); ?>" type="text" value="<?php echo esc_attr($background_color); ?>" data-default-color="FFFFFF" />
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('hover_background_color'); ?>"><?php _e('Hover background color', 'timetable'); ?></label>
+			<label for="<?php echo esc_attr($this->get_field_id('hover_background_color')); ?>"><?php esc_html_e('Hover background color', 'timetable'); ?></label>
 			<span class="color_preview" style="background-color: #<?php echo ($hover_background_color!="" ? $hover_background_color : '00A27C'); ?>;"></span>
-			<input class="regular-text color" id="<?php echo $this->get_field_id('hover_background_color'); ?>" name="<?php echo $this->get_field_name('hover_background_color'); ?>" type="text" value="<?php echo $hover_background_color; ?>" data-default-color="00A27C" />
+			<input class="regular-text color" id="<?php echo esc_attr($this->get_field_id('hover_background_color')); ?>" name="<?php echo esc_attr($this->get_field_name('hover_background_color')); ?>" type="text" value="<?php echo esc_attr($hover_background_color); ?>" data-default-color="00A27C" />
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('text_color'); ?>"><?php _e('Text color', 'timetable'); ?></label>
+			<label for="<?php echo esc_attr($this->get_field_id('text_color')); ?>"><?php esc_html_e('Text color', 'timetable'); ?></label>
 			<span class="color_preview" style="background-color: #<?php echo ($text_color!="" ? $text_color : '34495E'); ?>;"></span>
-			<input class="regular-text color" id="<?php echo $this->get_field_id('text_color'); ?>" name="<?php echo $this->get_field_name('text_color'); ?>" type="text" value="<?php echo $text_color; ?>" data-default-color="34495E" />
+			<input class="regular-text color" id="<?php echo esc_attr($this->get_field_id('text_color')); ?>" name="<?php echo esc_attr($this->get_field_name('text_color')); ?>" type="text" value="<?php echo esc_attr($text_color); ?>" data-default-color="34495E" />
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('hover_text_color'); ?>"><?php _e('Hover text color', 'timetable'); ?></label>
+			<label for="<?php echo esc_attr($this->get_field_id('hover_text_color')); ?>"><?php esc_html_e('Hover text color', 'timetable'); ?></label>
 			<span class="color_preview" style="background-color: #<?php echo ($hover_text_color!="" ? $hover_text_color : 'FFFFFF'); ?>;"></span>
-			<input class="regular-text color" id="<?php echo $this->get_field_id('hover_text_color'); ?>" name="<?php echo $this->get_field_name('hover_text_color'); ?>" type="text" value="<?php echo $hover_text_color; ?>" data-default-color="FFFFFF" />
+			<input class="regular-text color" id="<?php echo esc_attr($this->get_field_id('hover_text_color')); ?>" name="<?php echo esc_attr($this->get_field_name('hover_text_color')); ?>" type="text" value="<?php echo esc_attr($hover_text_color); ?>" data-default-color="FFFFFF" />
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('item_border_color'); ?>"><?php _e('Item border color', 'timetable'); ?></label>
+			<label for="<?php echo esc_attr($this->get_field_id('item_border_color')); ?>"><?php esc_html_e('Item border color', 'timetable'); ?></label>
 			<span class="color_preview" style="background-color: #<?php echo ($item_border_color!="" ? $item_border_color : '00A27C'); ?>;"></span>
-			<input class="regular-text color" id="<?php echo $this->get_field_id('item_border_color'); ?>" name="<?php echo $this->get_field_name('item_border_color'); ?>" type="text" value="<?php echo $item_border_color; ?>" data-default-color="00A27C" />
+			<input class="regular-text color" id="<?php echo esc_attr($this->get_field_id('item_border_color')); ?>" name="<?php echo esc_attr($this->get_field_name('item_border_color')); ?>" type="text" value="<?php echo esc_attr($item_border_color); ?>" data-default-color="00A27C" />
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('hover_item_border_color'); ?>"><?php _e('Hover item border color', 'timetable'); ?></label>
+			<label for="<?php echo esc_attr($this->get_field_id('hover_item_border_color')); ?>"><?php esc_html_e('Hover item border color', 'timetable'); ?></label>
 			<span class="color_preview" style="background-color: #<?php echo ($hover_item_border_color!="" ? $hover_item_border_color : '00A27C'); ?>;"></span>
-			<input class="regular-text color" id="<?php echo $this->get_field_id('hover_item_border_color'); ?>" name="<?php echo $this->get_field_name('hover_item_border_color'); ?>" type="text" value="<?php echo $hover_item_border_color; ?>" data-default-color="00A27C" />
+			<input class="regular-text color" id="<?php echo esc_attr($this->get_field_id('hover_item_border_color')); ?>" name="<?php echo esc_attr($this->get_field_name('hover_item_border_color')); ?>" type="text" value="<?php echo esc_attr($hover_item_border_color); ?>" data-default-color="00A27C" />
 		</p>
-		<script type="text/javascript">
-		jQuery(document).ready(function($){
-			$("[name='<?php echo $this->get_field_name('time_format'); ?>']").change(function(){
-				if($(this).val()!="custom")
-				{
-					$(this).parent().siblings("input:last").val($(this).val());
-					$(this).parent().siblings(".example").html($(this).next().html());
-				}
-			});
-			$("[name='<?php echo $this->get_field_name('time_format_custom'); ?>']").on('focus', function(){
-				$(this).prev().children().prop("checked", true);
-			});
-			$("[name='<?php echo $this->get_field_name('time_format_custom'); ?>']").on('change', function(){
-				var format = $(this).val();
-				var self = $(this);
-				$.ajax({
-						url: ajaxurl,
-						type: 'post',
-						data: {
-							action: 'time_format',
-							date: format
-						},
-						success: function(data){
-							self.next().html(data);
-						}
-				});
-			});
-			$("#<?php echo $this->get_field_id('display_settings');?>").change(function(){
-				if($(this).val()=="all")
-					$(this).parent().next().css("display", "block");
-				else
-					$(this).parent().next().css("display", "none");
-			});
-			//colorpicker
-			if($(".color").length)
-			{
-				$(".color").ColorPicker({
-					onChange: function(hsb, hex, rgb, el) {
-						$(el).val(hex).trigger("change");
-						$(el).prev(".color_preview").css("background-color", "#" + hex);
-					},
-					onSubmit: function(hsb, hex, rgb, el){
-						$(el).val(hex).trigger("change");
-						$(el).ColorPickerHide();
-					},
-					onBeforeShow: function (){
-						var color = (this.value!="" ? this.value : $(this).attr("data-default-color"));
-						$(this).ColorPickerSetColor(color);
-						$(this).prev(".color_preview").css("background-color", color);
-					}
-				}).on('keyup', function(event, param){
-					$(this).ColorPickerSetColor(this.value);
-					
-					var default_color = ($("#color_scheme").val()!="blue" && typeof($(this).attr("data-default-color-" + $("#color_scheme").val()))!="undefined" ? $(this).attr("data-default-color-" + $("#color_scheme").val()) : $(this).attr("data-default-color"));
-					$(this).prev(".color_preview").css("background-color", (this.value!="none" ? (this.value!="" ? "#" + (typeof(param)=="undefined" ? $(".colorpicker:visible .colorpicker_hex input").val() : this.value) : (default_color!="transparent" ? "#" + default_color : default_color)) : "transparent"));
-				});
-			}
-		});
-		</script>
 		<?php
 	}
 }

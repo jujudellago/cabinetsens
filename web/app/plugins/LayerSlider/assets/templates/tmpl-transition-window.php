@@ -1,108 +1,135 @@
 <?php defined( 'LS_ROOT_FILE' ) || exit; ?>
-<script type="text/html" id="tmpl-ls-transition-modal">
-	<div id="ls-transition-window" class="<?php echo ( LS_Config::get('theme_bundle') && ! $lsActivated ) ? 'hide-special-effects' : '' ?>">
 
-		<h1 class="kmw-modal-title"><?php _e('Select slide transitions', 'LayerSlider') ?></h1>
+<script type="text/html" id="tmpl-transition-modal-siderbar">
 
-		<div id="transitiongallery-header">
-			<div id="tryorigami">
-				<img src="<?php echo LS_ROOT_URL ?>/static/admin/img/origami.png" alt="Try the Origami Effect!">
-			</div>
+	<lse-b id="transition-modal-siderbar">
+		<lse-b class="kmw-sidebar-title">
+			<?= __('Slide Transitions', 'LayerSlider') ?>
+		</lse-b>
+		<kmw-navigation class="km-tabs-list" data-target="#lse-transitions-list">
 
-			<div id="transitionmenu" class="filters">
-				<span><?php _e('Show transitions:', 'LayerSlider') ?></span>
-				<ul>
-					<li class="active"><?php _e('2D', 'LayerSlider') ?></li>
-					<li><?php _e('3D', 'LayerSlider') ?></li>
-					<li><?php _e('Custom 2D &amp; 3D', 'LayerSlider') ?></li>
+			<kmw-menutitle>
+				<kmw-menutext><?= __('Built-in', 'LayerSlider') ?></kmw-menutext>
+			</kmw-menutitle>
 
-					<?php if( ! LS_Config::get('theme_bundle') || $lsActivated ) : ?>
-					<li><?php _e('Special Effects', 'LayerSlider') ?></li>
-					<?php endif ?>
-				</ul>
-				<i><?php _e('Apply to others', 'LayerSlider') ?></i>
-				<i class="off"><?php _e('Select all', 'LayerSlider') ?></i>
-			</div>
-		</div>
+			<kmw-menuitem class="kmw-active">
+				<?= lsGetSVGIcon('th-large', false, false, 'kmw-icon') ?>
+				<kmw-menutext><?= __('2D Transitions', 'LayerSlider') ?></kmw-menutext>
+			</kmw-menuitem>
+			<kmw-menuitem>
+				<?= lsGetSVGIcon('cube', 'regular', false, 'kmw-icon') ?>
+				<kmw-menutext><?= __('3D Transitions', 'LayerSlider') ?></kmw-menutext>
+			</kmw-menuitem>
+			<kmw-menuitem class="lse-transitions-special-effects">
+				<?= lsGetSVGIcon('magic', false, false, 'kmw-icon') ?>
+				<kmw-menutext><?= __('Special Effects', 'LayerSlider') ?></kmw-menutext>
+			</kmw-menuitem>
 
-		<div class="inner">
-			<div id="ls-transitions-list">
+			<kmw-menutitle>
+				<kmw-menutext><?= __('User Transitions', 'LayerSlider') ?></kmw-menutext>
+			</kmw-menutitle>
 
-				<!-- 2D -->
-				<section data-tr-type="2d_transitions">
-					<div></div>
-				</section>
+			<kmw-menuitem>
+				<?= lsGetSVGIcon('th-large', false, false, 'kmw-icon') ?>
+				<kmw-menutext><?= __('Custom 2D', 'LayerSlider') ?></kmw-menutext>
+			</kmw-menuitem>
+			<kmw-menuitem>
+				<?= lsGetSVGIcon('cube', 'regular', false, 'kmw-icon') ?>
+				<kmw-menutext><?= __('Custom 3D', 'LayerSlider') ?></kmw-menutext>
+			</kmw-menuitem>
+		</kmw-navigation>
+	</lse-b>
+</script>
 
-				<!-- 3D -->
-				<section data-tr-type="3d_transitions">
-					<div></div>
-				</section>
+<script type="text/html" id="tmpl-transition-modal-content">
+	<div id="lse-transition-window">
 
-				<!-- Custom 2D -->
-				<section data-tr-type="custom_2d_transitions">
-					<h4><?php _e('Custom 2D transitions', 'LayerSlider') ?></h4>
-					<div>
-						<p><?php _e('You haven’t created any custom 2D transitions yet.', 'LayerSlider') ?></p>
-					</div>
-				</section>
+		<lse-b class="kmw-modal-toolbar" style="margin-top: 10px;">
+			<lse-button id="lse-transitions-modal-apply-button"><?= __('Apply to other slides', 'LayerSlider') ?></lse-button>
+			<lse-button id="lse-transitions-modal-select-button"><?= __('Select all', 'LayerSlider') ?></lse-button>
+		</lse-b>
 
-				<!-- Custom 3D -->
-				<section data-tr-type="custom_3d_transitions">
-					<h4><?php _e('Custom 3D transitions', 'LayerSlider') ?></h4>
-					<div>
-						<p><?php _e('You haven’t created any custom 3D transitions yet.', 'LayerSlider') ?></p>
-					</div>
-				</section>
+		<kmw-h1 class="kmw-modal-title">
+			<?= __('2D Transitions', 'LayerSlider') ?>
+		</kmw-h1>
 
-				<!-- Special Effects -->
-				<section data-tr-type="special_effects" id="ls-special-effects">
 
-				<p class="ls-description">
-					<small>
-						<?php _e('Special effects are like regular slide transitions and they work in the same way. You can set them on each slide individually. Mixing them with other transitions on other slides is perfectly fine. You can also apply them on all of your slides at once by pressing the “Apply to others” button above. In case of 3D special effects, selecting additional 2D transitions can ensure backward compatibility for older browsers.', 'LayerSlider') ?>
-					</small>
-				</p>
+		<lse-b id="lse-transitions-list" class="km-tabs-content">
 
-					<div class="separated">
+			<!-- 2D -->
+			<lse-grid class="lse-transitions-section kmw-active" data-tr-type="2d_transitions" >
+				<lse-row></lse-row>
+			</lse-grid>
 
-						<table>
-							<tr>
-								<td>
-									<h4><?php _e('Origami transition', 'LayerSlider') ?></h4>
-								</td>
-								<td rowspan="2">
-									<p>
-										<?php _e('Share your gorgeous photos with the world or your loved ones in a truly inspirational way and create sliders with stunning effects with Origami.', 'LayerSlider') ?>
-									</p>
-									<small>
-										<?php _e('Origami is a form of 3D transition and it works in the same way as regular slide transitions do. Besides Internet Explorer, Origami works in all the modern browsers (including Edge).', 'LayerSlider') ?>
-									</small>
-								</td>
-							</tr>
-							<tr>
-								<td class="center">
-									<div class="ls-select-special-transition <?php echo ! $lsActivated ? 'locked' : '' ?>" data-name="transitionorigami">
-										<span class="dashicons dashicons-yes"></span>
-										<?php _e('Use it on this slide', 'LayerSlider') ?>
-										<?php if( ! $lsActivated ) : ?>
-										<a class="ls-activation-lock dashicons dashicons-lock" target="_blank" href="<?php echo admin_url('admin.php?page=layerslider-addons' ) ?>" data-help="<?php _e('This feature requires product activation. Click on the padlock icon to learn more.', 'LayerSlider') ?>" data-help-delay="100"></a>
-										<?php endif ?>
-									</div>
-									<div class="center ls-example-link">
-										<a href="https://layerslider.kreaturamedia.com/sliders/origami/" target="_blank"><?php _e('Click here for live example', 'LayerSlider') ?></a>
-									</div>
-								</td>
-							</tr>
-						</table>
+			<!-- 3D -->
+			<lse-grid class="lse-transitions-section" data-tr-type="3d_transitions">
+				<lse-row></lse-row>
+			</lse-grid>
 
-					</div>
+			<!-- Special Effects -->
+			<lse-b class="lse-transitions-section" data-tr-type="special_effects">
 
-					<div class="separated ls-future">
-						<h4><?php _e('More effects are coming soon', 'LayerSlider') ?></h4>
-					</div>
+				<?php if( ! LS_Config::isActivatedSite() ) : ?>
+				<lse-b class="lse-notification lse-bg-highlight">
+					<?= lsGetSVGIcon('info-circle') ?>
+					<lse-text><?= sprintf(__('Special Effects are premium features. You can preview them with the buttons below, but you need to register your LayerSlider license in order to use them on front end pages. %sPurchase a license%s or %sread the documentation%s to learn more. %sGot LayerSlider in a theme?%s', 'LayerSlider'), '<a href="'.LS_Config::get('purchase_url').'" target="_blank">', '</a>', '<a href="https://layerslider.com/documentation/#activation" target="_blank">', '</a>', '<a href="https://layerslider.com/documentation/#activation-bundles" target="_blank">', '</a>') ?></lse-text>
+				</lse-b>
+				<?php endif ?>
 
-				</section>
-			</div>
-		</div>
+				<lse-p>
+					<?= __('Special effects are like regular slide transitions and they work in the same way. You can set them on each slide individually. Mixing them with other transitions on other slides is perfectly fine. You can also apply them on all of your slides at once by pressing the “Apply to other slides” button above.', 'LayerSlider') ?>
+				</lse-p>
+
+				<lse-grid id="lse-special-transitions">
+					<lse-row id="lse-transition-origami">
+						<lse-col>
+							<lse-h2><?= __('Origami transition', 'LayerSlider') ?></lse-h2>
+							<lse-p>
+								<?= __('Share your gorgeous photos with the world or your loved ones in a truly inspirational way and create sliders with stunning effects with Origami.', 'LayerSlider') ?>
+							</lse-p>
+							<lse-p class="lse-font-s">
+									<?= __('Origami is a form of 3D transition and it works in the same way as regular slide transitions do. Besides Internet Explorer, Origami works in all the modern browsers (including Edge).', 'LayerSlider') ?>
+							</lse-p>
+							<lse-p class="lse-tac">
+								<lse-button-group>
+									<a class="lse-button" href="https://layerslider.com/sliders/origami/" target="_blank">
+										<lse-text>
+											<?= __('Live example', 'LayerSlider') ?>
+										</lse-text>
+									</a>
+
+									<?php if( LS_Config::isActivatedSite() ) : ?>
+									<lse-button class="lse-select-special-transition" data-name="transitionorigami">
+										<lse-text>
+											<?= __('Use it on this slide', 'LayerSlider') ?>
+										</lse-text>
+										<?= lsGetSVGIcon('check',false,['class' => 'lse-it-fix']) ?>
+									</lse-button>
+									<?php endif ?>
+								</lse-button-group>
+							</lse-p>
+						</lse-col>
+						<lse-col class="lse-transition-thumbnail"></lse-col>
+					</lse-row>
+				</lse-grid>
+
+			</lse-b>
+
+
+			<!-- Custom 2D -->
+			<lse-grid class="lse-transitions-section" data-tr-type="custom_2d_transitions">
+				<lse-row>
+					<lse-p><?= __('You haven’t created any custom 2D transitions yet.', 'LayerSlider') ?></lse-p>
+				</lse-row>
+			</lse-grid>
+
+			<!-- Custom 3D -->
+			<lse-grid class="lse-transitions-section" data-tr-type="custom_3d_transitions">
+				<lse-row>
+					<lse-p><?= __('You haven’t created any custom 3D transitions yet.', 'LayerSlider') ?></lse-p>
+				</lse-row>
+			</lse-grid>
+
+		</lse-b>
 	</div>
 </script>

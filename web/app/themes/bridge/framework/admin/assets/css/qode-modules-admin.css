@@ -109,7 +109,7 @@
   line-height: inherit !important;
   letter-spacing: inherit !important;
   font-weight: inherit !important;
-  margin: 0;
+  margin: 0 auto;
 }
 
 .block-editor .edit-post-visual-editor p.wp-block-subhead {

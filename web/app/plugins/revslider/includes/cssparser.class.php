@@ -2,7 +2,7 @@
 /**
  * @author    ThemePunch <info@themepunch.com>
  * @link      https://www.themepunch.com/
- * @copyright 2019 ThemePunch
+ * @copyright 2022 ThemePunch
  */
 
 if(!defined('ABSPATH')) exit();
@@ -18,7 +18,6 @@ class RevSliderCssParser extends RevSliderFunctions {
 	public function init_css($css){
 		$this->css = $css;
 	}
-	
 	
 	/**
 	 * get array of slide classes, between two sections.
@@ -826,5 +825,3 @@ class RevSliderCssParser extends RevSliderFunctions {
 		return ($raw) ? $ret : 'rgba('.$ret.')';
     }
 }
-
-?>

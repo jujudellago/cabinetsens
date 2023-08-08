@@ -15,6 +15,8 @@ class BridgeQodeIconsFontKiko implements iIconCollection {
     public $title;
     public $param;
     public $styleUrl;
+	public $socialIcons;
+	public $backTopTopIcons;
 
     public function __construct($title = "", $param = "") {
         $this->icons = array();
@@ -1262,7 +1264,7 @@ class BridgeQodeIconsFontKiko implements iIconCollection {
 
     public function getSearchClose() {
 
-        return $this->render('icon_close kikol');
+        return $this->render('kiko-cross-line kikol');
     }
 
     public function getMenuIcon() {

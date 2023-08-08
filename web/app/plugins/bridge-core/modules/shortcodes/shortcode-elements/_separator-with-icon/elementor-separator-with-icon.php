@@ -17,7 +17,7 @@ class BridgeCoreElementorSeparatorWithIcon extends \Elementor\Widget_Base{
         return [ 'qode' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
 		global $qodeIconCollections;
 		$collection = $qodeIconCollections->getIconCollection('font_awesome');
@@ -77,4 +77,4 @@ class BridgeCoreElementorSeparatorWithIcon extends \Elementor\Widget_Base{
 
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorSeparatorWithIcon() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorSeparatorWithIcon() );

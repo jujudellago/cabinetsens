@@ -1,3 +1,372 @@
+29.6
+- Added PHP 8.2 compatibility
+- Added categories and tags in single portfolio admin when editing with gutenberg mode
+- Updated Bridge Core to 3.0.9
+- Updated Qode News to 3.0.4
+- Updated Qode Music to 2.1.4
+- Updated WPBakery page builder to 6.13.0
+- Updated Revolution Slider to 6.6.14
+- Updated LayerSlider to 7.7.7
+- Updated Timetable Responsive Schedule For WordPress to 7.2
+- Fixed Mobile Menu opener not showing when Top/Divided Navigation is not set
+- Fixed Qode Slider transition error
+- Fixed missing alt attribute for images within 'Latest Posts' shortcode
+- Fixed potential issue for Qode News shortcodes
+
+29.5
+- Added option to enable text wrapping for 'Button' shortcode in Qode Options -> Elements -> Button
+- Updated Bridge Core to 3.0.8
+- Updated Qode Tours to 3.0.8
+- Updated Revolution Slider to 6.6.12
+- Updated Timetable Responsive Schedule For WordPress to 7.1
+- Fixed tour price slider not applying proper prices when sliding it
+- Fixed WPML translation of repeater fields for WPBakery shortcodes ( urlencoded shortcodes )
+- Fixed potential fatal error for 'Product List' shortcode when used with filters
+- Improved Demo Import - adjusted demo names
+- Improved Portfolio Custom Post Type - enabled Gutenberg editor for editing
+
+29.4
+- Added WooCommerce 7.4.0 compatibility
+- Updated Bridge Core to 3.0.7
+- Updated Qode Tours to 3.0.7
+- Updated Qode Music to 2.1.3
+- Updated Revolution Slider to 6.6.11
+- Updated LayerSlider to 7.6.9
+- Improved function that removes WPBakery Frontend Editor - it is set on action so it can be disabled via child theme
+- Improved Google Maps Api with callback function
+- Improved TypeOut effect functionality for 'Custom Font' shortcode
+- Fixed Tours tables not being setup when Qode Tours is firstly installed/activated via ajax
+- Fixed potential display issue of single Album item when no tracks are set for it
+- Removed 'jplayer' js script due to potential vulnerabilities
+
+29.3
+- Added WooCommerce 7.2.3 compatibility
+- Updated Bridge Core to 3.0.6
+- Updated Revolution Slider to 6.6.8
+- Updated LayerSlider to 7.6.7
+- Updated Qode Tours to 3.0.6
+- Updated translations
+- Fixed Cart Page Update Cart button not working
+- Fixed 'Space Between Images' option for 'Image Gallery' shortcode when used with 6 columns
+- Fixed left/right datepicker arrows for Booking Sidebar on Tour Item page
+- Fixed WooCommerce Dropdown Cart widget error when adding Course in cart
+- Improved responsiveness for 'Image Gallery' shortcode when used with 6 columns
+
+29.2
+- Added WooCommerce 7.0.1 compatibility
+- Updated WPBakery page builder to 6.10.0
+- Updated Revolution Slider to 6.6.5
+- Updated LayerSlider to 7.5.3
+- Fixed Blog Headlines not applying proper font size if global font size option is set for H2
+
+29.1
+- Added Bridge Original (Gutenberg) Demo
+- Added 'Qi Blocks' plugin compatibility
+- Updated Bridge Core to 3.0.5
+- Updated LayerSlider to 7.5.0
+
+29.0
+- Added WooCommerce 6.9.0 compatibility
+- Updated Bridge Core to 3.0.4
+- Updated Qode Listing to 3.0.5
+- Updated Qode LMS to 3.0.6
+- Updated Qode Music to 2.1.2
+- Updated Qode News to 3.0.3
+- Updated Qode Real Estate to 1.1.3
+- Updated Qode Restaurant to 3.0.2
+- Updated Qode Tours to 3.0.5
+- Updated Qode Twitter Feed to 2.0.4
+- Updated jQuery FitVids script
+- Fixed deprecated Elementor functions
+
+28.9
+- Updated Bridge Core to 3.0.3
+- Updated Qode Real Estate to 1.1.2
+- Updated Revolution Slider to 6.5.31
+- Updated LayerSlider to 7.3.0
+- Various Qode Real Estate fixes
+
+28.8
+- Updated FontAwesome icon pack
+- Updated Bridge Core to 3.0.2
+- Updated Qode Real Estate to 1.1.1
+- Updated WPBakery page builder to 6.9.0
+- Updated Revolution Slider to 6.5.21
+- Updated LayerSlider to 7.2.1
+- Fixed 'fluidvids' js plugin enqueue
+- Fixed portfolio single video iframe functionality
+- Fixed title notice for 'Portfolio List' shortcode
+- Fixed issue with number of posts in 'Latest Post Two' shortcode when there are sticky posts
+- Fixed 'Multi-Device Slider' shortcode
+- Fixed 'Property Search' shortcode options not working properly
+- Fixed scripts dependency for Qode Real Estate plugin
+- Fixed LinkedIn Share link title for 'Social Share' shortcode
+- Fixed Twitter share functionality for 'Social Share' shortcode
+- Fixed excerpt length not working properly with PHP8+
+- Fixed mobile menu anchor links not working properly when item has submenu items
+
+28.7
+- Added WooCommerce 6.1.1 compatibility
+- Updated Revolution Slider to 6.5.14
+- Updated WPBakery page builder to 6.8.0
+- Updated LayerSlider to 7.0.7
+- Updated Timetable Responsive Schedule For WordPress to 7.0
+
+28.6
+- Improved compatibility with WPML - footer widgets are properly translated when Page Transitions are enabled
+- Updated Revolution Slider to 6.5.11
+- Updated LayerSlider to 7.0.5
+- Updated Timetable Responsive Schedule For WordPress to 6.9
+- Updated Qode LMS to 3.0.5
+- Updated Qode Tours to 3.0.4
+- Fixed category option for Tour List widget
+- Fixed issue with course reviews callback function
+- Fixed Product list masonry type not appearing in Elementor editor
+- Fixed 'Accordion Toggle' when used in 'Vertical Split Slider' Shortcode
+- Fixed read more external link for 'Portfolio Project Slider'
+
+28.5
+- Added 'Light' ( Elementor ) demo
+- Added 'Estate' ( Elementor ) demo
+- Added 'Creative Business' ( Elementor ) demo
+- Updated Bridge Core to 3.0.1
+- Updated Revolution Slider to 6.5.9
+
+28.4
+- Added 'Clothing Store' ( Elementor ) demo
+- Added 'Freelancer' ( Elementor ) demo
+- Added 'Business' ( Elementor ) demo
+- Added 'One Page' ( Elementor ) demo
+- Updated Bridge Core to 3.0
+- Updated Qode Tours to 3.0.3
+- Updated LayerSlider to 6.11.9
+
+28.3
+- Added 'Startup' ( Elementor ) demo
+- Added 'Life Coach' ( Elementor ) demo
+- Added 'Environmental Organization' ( Elementor ) demo
+- Added 'Outdoors' ( Elementor ) demo
+- Added 'Twitter Feed' Elementor widget
+- Updated Bridge Core to 2.9.9
+- Updated Qode Twitter Feed plugin to to 2.0.3
+
+28.2
+- Added 'Makeup Artist' ( Elementor ) demo
+- Added 'Dentist' ( Elementor ) demo
+- Added 'City Listing' ( Elementor ) demo
+- Added 'Vacation Rental' ( Elementor ) demo
+- Updated Bridge Core to 2.9.8
+- Updated Qode Listing plugin to 3.0.4
+- Fixed issue with 'Numbered Carousel' shortcode on touch devices
+- Fixed potential security issue
+
+28.1
+- Added 'Car Dealership' ( Elementor ) demo
+- Added 'Architectural Firm' ( Elementor ) demo
+- Added 'Moving Company' ( Elementor ) demo
+- Added 'Architect Studio' ( Elementor ) demo
+- Updated Bridge Core to 2.9.7
+
+28.0
+- Added 'Web Studio' ( Elementor ) demo
+- Added 'Wristwatch Shop' ( Elementor ) demo
+- Added 'Babysitter' ( Elementor ) demo
+- Added 'Designer Presentation' ( Elementor ) demo
+- Updated Bridge Core to 2.9.6
+- Updated Revolution Slider to 6.5.8
+
+27.9
+- Added 'Explorer' ( Elementor ) demo
+- Added 'Transport' ( Elementor ) demo
+- Added 'Digital Studio' ( Elementor ) demo
+- Added 'Organic Market' ( Elementor ) demo
+- Updated Bridge Core to 2.9.5
+
+27.8
+- Added 'Tiles' ( Elementor ) demo
+- Added 'Exotic Travels' ( Elementor ) demo
+- Added 'Gardening' ( Elementor ) demo
+- Added 'Jewelry Store' ( Elementor ) demo
+- Updated Bridge Core to 2.9.4
+- Updated Qode Membership to 2.0.3
+
+27.7
+- Added 'Educational Center' ( Elementor ) demo
+- Added 'Delivery' ( Elementor ) demo
+- Added 'Business Consultant' ( Elementor ) demo
+- Added 'Restaurant and Bar' ( Elementor ) demo
+- Updated Bridge Core to 2.9.3
+- Updated Revolution Slider to 6.5.7
+- Updated Qode LMS to 3.0.4
+- Updated Qode Woocommerce Checkout Integration to 2.0.2
+- Improved Qode Woocommerce Checkout Integration plugin with tax functionality
+
+27.6
+- Added 'Psychotherapy' ( Elementor ) demo
+- Added 'Organic Food Store' ( Elementor ) demo
+- Added 'Travel' ( Elementor ) demo
+- Added 'Online Agency' ( Elementor ) demo
+- Updated Bridge Core to 2.9.2
+- Updated Revolution Slider to 6.5.6
+- Fixed 'Bulk Select' functionality with Menus
+
+27.5
+- Added 'Medical' ( Elementor ) demo
+- Added 'Law Office' ( Elementor ) demo
+- Added 'Interior Decor' ( Elementor ) demo
+- Added 'Book Landing' ( Elementor ) demo
+- Updated Bridge Core to 2.9.1
+
+27.4
+- Added 'Construction Company' ( Elementor ) demo
+- Added 'Factory' ( Elementor ) demo
+- Added 'Pottery' ( Elementor ) demo
+- Added 'Music Magazine' ( Elementor ) demo
+- Updated Bridge Core to 2.9.0
+- Improved addition of Custom Widget Areas
+- Improved 'Qode Import' interface
+
+27.3
+- Added Nail Bar demo
+- Updated Bridge Core to 2.8.9
+- Updated Qode Listing to 3.0.3
+- Updated Qode LMS to 3.0.3
+- Improved Gutenberg editor style for paragraph
+- Improved WPML compatibility - all Elementor widget are translatable
+- Fixed addition of Custom Widget Area with new widgets interface
+- Fixed potential fatal error for 'Listing List', 'Listing Slider' and 'Listing Advanced Search' shortcodes
+- Fixed error for Qode Lms when WooCommerce is not installed
+
+27.2.1
+- Updated Revolution Slider to 6.5.5
+- Fixed 'Bridge WooCommerce Dropdown Cart' widget not working with WordPress 5.8
+- Fixed Sticky sidebar widget not working properly in some cases when used with Elementor
+
+27.2
+- Added Outdoor Recreation demo
+- Updated Bridge Core to 2.8.8
+- Updated Revolution Slider to 6.5.4
+- Updated WPBakery page builder to 6.7.0
+
+27.1
+- Added Consulting Firm demo
+- Updated Bridge Core to 2.8.7
+
+27.0
+- Added Wedding Ceremony demo
+- Updated Bridge Core to 2.8.6
+
+26.9
+- Added Real Estate Agency demo
+- Added Elementor compatibility for Qode Real Estate plugin
+- Updated Bridge Core to 2.8.5
+- Updated Qode Real Estate to 1.1
+- Updated Revolution Slider to 6.5.3
+- Fixed Left Side Area Alignment option when Slide from Right Over Content Side Area type is selected
+
+26.8
+- Added Design Portfolio demo
+- Added 'Intro Section' shortcode
+- Updated Bridge Core to 2.8.4
+- Updated Revolution Slider to 6.5.2
+
+26.7
+- Added Alternating Portfolio demo
+- Updated Bridge Core to 2.8.3
+
+26.6
+- Added App Showcase Split demo
+- Updated Bridge Core to 2.8.2
+
+26.5.1
+- Minor style tweaks
+- Updated Bridge Core to 2.8.1
+
+26.5
+- Added Cloud Storage demo
+- Theme options, shorcodes and meta boxes are now disabled if theme purchase code is not registered on live server
+- Updated Bridge Core to 2.8
+- Updated Timetable Responsive Schedule For WordPress to 6.7
+- Improved Core Dashboard's System Info page responsiveness
+
+26.4
+- Added Web Agency Showcase demo
+- Updated Bridge Core to 2.7.9
+
+26.3
+- Added Transport Firm demo
+- Added WooCommerce 5.3.0 compatibility
+- Updated Bridge Core to 2.7.8
+- Updated Qode Instagram Widget plugin to 2.1.3
+- Fixed Qode Instagram Feed connection and feed fetching issue
+- Fixed warning for 'Call to Action' shortcode
+
+26.2
+- Added Wedding Reception demo
+- Updated Bridge Core to 2.7.7
+- Improved compatibility with WPML - WPBakery shortcode that used repeater fields are now translatable through WPML translation editor
+- Improved compatibility with WPML - Elementor widgets are now translatable through WPML translation editor
+
+26.1
+- Added Music Presentation demo
+- Updated Bridge Core to 2.7.6
+- Updated Revolution Slider to 6.4.11
+- Updated Modernizr script
+- Improved compatibility with QI Addons for Elementor plugin
+
+26.0
+- Added Backpack Presentation demo
+- Updated Bridge Core to 2.7.5
+- Updated LayerSlider to 6.11.8
+
+25.9
+- Added Cooking Blog demo
+- Added compatibility with QI Addons for Elementor plugin
+- Added QI Addons for Elementor plugin as recommended
+- Updated Bridge Core to 2.7.4
+- Updated Revolution Slider to 6.4.8
+- Updated Charts script
+- Fixed close icon for 'Kiko' icon pack
+- Fixed Legend Text Color option for 'Pie Chart 2 ( Pie )' shortcode
+- Fixed Legend Text Color option for 'Pie Chart 3 ( Doughnut )' shortcode
+- Fixed Load More pagination for Blog Templates when used on front page
+
+25.8
+- Added Climate Conference demo
+- Updated Bridge Core to 2.7.3
+- Fixed 'Fullscreen Section' Elementor widget not loading properly in editor
+- Fixed 'Google Map' zoom error
+- Fixed separator for 'Icon With Text' Elementor widget
+- Fixed h1 title tag option for 'Progress Bar' shortcode
+- Fixed h1 title tag option for 'Team' shortcode
+
+25.7
+- Added Web Design Agency demo
+- Updated Bridge Core to 2.7.2
+
+25.6
+- Added Cleaning Services demo
+- Updated Bridge Core to 2.7.1
+- Updated Revolution Slider to 6.4.6
+
+25.5
+- Added Smartwatch Presentation demo
+- Updated Bridge Core to 2.7.0
+- Updated Qode Real Estate plugin to 1.0.1
+- Updated Revolution Slider to 6.4.5
+- Fixed Availability table entry not showing properly on Property Single
+- Fixed 'Size Label' and 'Size Label Position' option for single property page not overriding same global options
+
+25.4
+- Added Bike Brand demo
+- Updated Bridge Core to 2.6.9
+- Updated Revolution Slider to 6.4.3
+- Updated LayerSlider to 6.11.6
+- Updated Google fonts
+- Fixed One Category and One Tag options for 'Portfolio Carousel' shortcode
+- Fixed One Category and One Tag options for 'Inverted Portfolio Slider' shortcode
+- Fixed One Category and One Tag options for 'Vertical Portfolio Slider' shortcode
+
 25.3
 - Added Product Presentation demo
 - Updated Bridge Core to 2.6.8

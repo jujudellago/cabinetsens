@@ -227,7 +227,7 @@ class ListingList implements ShortcodeInterface {
 			$classes[] = 'qode-ls-list-'.$column_number.'-columns';
 		}
 
-		return implode($classes, ' ');
+		return implode(' ', $classes);
 	}
 	
 	

@@ -17,7 +17,7 @@ class BridgeCoreElementorAction extends \Elementor\Widget_Base{
         return [ 'qode' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -337,10 +337,11 @@ class BridgeCoreElementorAction extends \Elementor\Widget_Base{
         }
 
         $params['icon'] = bridge_qode_icon_collections()->getElementorIconFromIconPack( $params );
+        $params['text_color'] = ''; //used only when shortcode is called from call to action widget
 
         echo bridge_core_get_shortcode_template_part('templates/action', '_action', '', $params);
     }
 
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorAction() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorAction() );

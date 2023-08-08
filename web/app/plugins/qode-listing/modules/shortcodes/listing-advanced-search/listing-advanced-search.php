@@ -294,8 +294,8 @@ class ListingAdvancedSearch implements ShortcodeInterface {
 	    if($map_flag){
 		$classes[] = 'qode-ls-adv-with-map';
 	    }
-	    
-	    return implode($classes, ' ');
+
+		return implode(' ', $classes);
 	    
 	}
 

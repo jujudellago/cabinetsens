@@ -9,11 +9,18 @@ if (class_exists('WPBakeryVisualComposerAbstract')) {
 
 	function bridge_qode_require_vc_extend(){
 
-		require_once QODE_ROOT_DIR . '/extendvc/extend-vc.php';
+		if( bridge_qode_is_theme_registered() ) {
+			require_once QODE_ROOT_DIR . '/extendvc/extend-vc.php';
 
-		do_action('bridge_qode_action_vc_map');
+			do_action('bridge_qode_action_vc_map');
+		}
 	}
 	add_action('init', 'bridge_qode_require_vc_extend', 11);
+}
+
+if ( function_exists( 'vc_set_shortcodes_templates_dir' ) && ! bridge_qode_is_theme_registered() ) {
+	$dir = '';
+	vc_set_shortcodes_templates_dir( $dir );
 }
 
 if(class_exists('WPBakeryShortCodesContainer')) {

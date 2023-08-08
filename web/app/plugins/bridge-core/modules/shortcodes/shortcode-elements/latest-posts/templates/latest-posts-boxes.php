@@ -11,7 +11,7 @@
                 } ?>
                 <a itemprop="url" href="<?php echo get_permalink(); ?>"><?php echo get_the_post_thumbnail(get_the_ID(), $image_size); ?></a>
             </div>
-            <div class="latest_post"  <?php echo esc_attr($padding_latest_post); ?>>
+            <div class="latest_post"  <?php echo wp_kses_post($padding_latest_post); ?>>
                 <div class="latest_post_text">
                     <div class="latest_post_inner">
                         <div class="latest_post_text_inner">

@@ -3,6 +3,16 @@
 // Prevent direct file access
 defined( 'LS_ROOT_FILE' ) || exit;
 
+// Override popup triggers for layer action
+if( ! empty( $GLOBALS['lsAjaxOverridePopupSettings'] ) ) {
+	$slides['properties']['attrs']['popupShowOnTimeout'] = 0;
+	$slides['properties']['attrs']['popupShowOnce'] = false;
+
+	if( ! empty( $_GET['slide'] ) ) {
+		$slides['properties']['attrs']['firstSlide'] = (int) $_GET['slide'];
+	}
+}
+
 // Get init code
 foreach($slides['properties']['attrs'] as $key => $val) {
 
@@ -23,6 +33,7 @@ if( !empty($slides['properties']['attrs']['type']) && $slides['properties']['att
 	$lsPlugins[] = 'popup';
 }
 
+
 if( ! empty( $lsPlugins ) ) {
 	$lsPlugins = array_unique( $lsPlugins );
 	sort( $lsPlugins );
@@ -33,7 +44,12 @@ if( get_option('ls_suppress_debug_info', false ) ) {
 	$init[] = 'hideWelcomeMessage: true';
 }
 
-$callbacks = array();
+
+if( ! empty( $GLOBALS['lsInitAjaxURL'] ) ) {
+	$init[] = "ajaxURL: '".admin_url( 'admin-ajax.php' )."'";
+}
+
+$callbacks = [];
 
 if( ! empty( $slides['callbacks'] ) && is_array( $slides['callbacks'] ) ) {
 	foreach( $slides['callbacks'] as $event => $function ) {
@@ -44,5 +60,13 @@ if( ! empty( $slides['callbacks'] ) && is_array( $slides['callbacks'] ) ) {
 $separator = apply_filters( 'layerslider_init_props_separator', ', ');
 $initObj = implode( $separator, $init );
 $eventsObj = ! empty( $callbacks ) ? ', {'.implode( $separator, $callbacks ).'}' : '';
+
+if( ! empty( $slides['properties']['props']['loadOrder'] ) ) {
+	$loadOrder = $slides['properties']['props']['loadOrder'];
+
+	$lsInit[] = 'window._layerSlidersOrder = window._layerSlidersOrder || [];';
+	$lsInit[] = 'window._layerSlidersOrder['.$loadOrder.'] = window._layerSlidersOrder['.$loadOrder.'] || [];';
+	$lsInit[] = 'window._layerSlidersOrder['.$loadOrder.'].push( \'#'.$sliderID.'\' );';
+}
 
 $lsInit[] = 'jQuery(function() { _initLayerSlider( \'#'.$sliderID.'\', {'.$initObj.'}'.$eventsObj.'); });';

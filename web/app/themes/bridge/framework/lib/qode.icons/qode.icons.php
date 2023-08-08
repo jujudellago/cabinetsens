@@ -70,7 +70,7 @@ class BridgeQodeIconCollections {
             }
 
             if( is_array( $icon_packs_to_load ) && in_array('font_awesome_5', $icon_packs_to_load) ){
-                $this->addIconCollection('font_awesome_5', new BridgeQodeIconsFontAwesome5("Font Awesome 5", "font_awesome_5"));
+                $this->addIconCollection('font_awesome_5', new BridgeQodeIconsFontAwesome5("Font Awesome 5+", "font_awesome_5"));
             }
         } else{
             //fallback if you import demo that has not set these options
@@ -78,7 +78,7 @@ class BridgeQodeIconCollections {
             $this->addIconCollection('linea_icons', new BridgeQodeIconsFontLinea("Linea Icons", "linea_icon"));
             $this->addIconCollection('dripicons', new BridgeQodeIconsFontDripicons("Dripicons", "dripicon"));
             $this->addIconCollection('kiko', new BridgeQodeIconsFontKiko("Kiko", "kiko"));
-            $this->addIconCollection('font_awesome_5', new BridgeQodeIconsFontAwesome5("Font Awesome 5", "font_awesome_5"));
+            $this->addIconCollection('font_awesome_5', new BridgeQodeIconsFontAwesome5("Font Awesome 5+", "font_awesome_5"));
         }
     }
 
@@ -130,7 +130,7 @@ class BridgeQodeIconCollections {
 				'linea_icons'       => esc_html__('Linea Icons', 'bridge'),
 				'dripicons'         => esc_html__('Dripicons', 'bridge'),
 				'kiko'         => esc_html__('Kiko', 'bridge'),
-				'font_awesome_5'         => esc_html__('Font Awesome 5', 'bridge'),
+				'font_awesome_5'         => esc_html__('Font Awesome 5+', 'bridge'),
 			);
 		}
 

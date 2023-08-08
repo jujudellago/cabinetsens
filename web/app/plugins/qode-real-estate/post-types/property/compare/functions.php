@@ -55,7 +55,7 @@ if ( ! function_exists( 'qodef_re_get_compare_area' ) ) {
         }
     }
 
-    add_action( 'bridge_qode_after_body_tag', 'qodef_re_get_compare_area', 10 );
+    add_action( 'bridge_qode_action_after_wrapper_inner', 'qodef_re_get_compare_area', 10 );
 }
 
 if ( !function_exists( 'qodef_re_get_add_to_compare_list_button' ) ) {
@@ -112,7 +112,7 @@ if ( ! function_exists( 'qodef_re_get_compare_popup_holder' ) ) {
         }
     }
 
-    add_action( 'bridge_qode_before_page_header', 'qodef_re_get_compare_popup_holder', 10 );
+    add_action( 'bridge_qode_action_after_wrapper_inner', 'qodef_re_get_compare_popup_holder', 10 );
 }
 
 if ( !function_exists( 'qodef_re_get_compare_list_items_structured' ) ) {

@@ -49,7 +49,7 @@ class QodeLmsInstructorList extends \Elementor\Widget_Base{
         return $formated_courses;
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -189,6 +189,19 @@ class QodeLmsInstructorList extends \Elementor\Widget_Base{
             ]
         );
 
+        $this->add_control(
+            'enable_excerpt',
+            [
+                'label' => esc_html__( 'Enable Excerpt', 'qode-lms' ),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'options' => bridge_qode_get_yes_no_select_array(false, false),
+                'default' => 'yes',
+                'condition' => [
+                    'instructor_layout' => [ 'info-bellow' ]
+                ]
+            ]
+        );
+
         $this->end_controls_section();
     }
 
@@ -209,7 +222,8 @@ class QodeLmsInstructorList extends \Elementor\Widget_Base{
             'slider_navigation'    => 'no',
             'slider_pagination'    => 'no',
             'name_title_tag'	   => '',
-            'position_title_tag'   => ''
+            'position_title_tag'   => '',
+            'enable_excerpt'       => 'yes'
         );
         $params = shortcode_atts( $args, $atts );
 
@@ -345,4 +359,4 @@ class QodeLmsInstructorList extends \Elementor\Widget_Base{
     }
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new QodeLmsInstructorList() );
+\Elementor\Plugin::instance()->widgets_manager->register( new QodeLmsInstructorList() );

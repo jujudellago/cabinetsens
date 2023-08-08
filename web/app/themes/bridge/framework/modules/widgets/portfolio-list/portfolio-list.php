@@ -20,9 +20,9 @@ if(class_exists('BridgeQodeWidget')) {
                     'type' => 'dropdown',
                     'title' => esc_html__('Type', 'bridge'),
                     'options' => [
-                        'standard' => esc_html__( 'Standard', 'bridge-core' ),
-                        'standard_no_space' => esc_html__( 'Standard No Space', 'bridge-core' ),
-                        'masonry_with_space' => esc_html__( 'Masonry(Pinterest) with space', 'bridge-core' ),
+                        'standard' => esc_html__( 'Standard', 'bridge' ),
+                        'standard_no_space' => esc_html__( 'Standard No Space', 'bridge' ),
+                        'masonry_with_space' => esc_html__( 'Masonry(Pinterest) with space', 'bridge' ),
                     ]
                 ),
                 array(
@@ -30,13 +30,13 @@ if(class_exists('BridgeQodeWidget')) {
                     'type' => 'dropdown',
                     'title' => esc_html__('Hover Type', 'bridge'),
                     'options' => [
-                        'default' => esc_html__( 'Default', 'bridge-core' ),
-                        'subtle_vertical_hover' => esc_html__( 'Subtle Vertical', 'bridge-core' ),
-                        'image_subtle_rotate_zoom_hover' => esc_html__( 'Image Subtle Rotate Zoom', 'bridge-core' ),
-                        'image_text_zoom_hover' => esc_html__( 'Image Subtle Rotate Zoom', 'bridge-core' ),
-                        'thin_plus_only' => esc_html__( 'Thin Plus Only', 'bridge-core' ),
-                        'slow_zoom' => esc_html__( 'Slow Zoom', 'bridge-core' ),
-                        'split_up' => esc_html__( 'Split Up', 'bridge-core' ),
+                        'default' => esc_html__( 'Default', 'bridge' ),
+                        'subtle_vertical_hover' => esc_html__( 'Subtle Vertical', 'bridge' ),
+                        'image_subtle_rotate_zoom_hover' => esc_html__( 'Image Subtle Rotate Zoom', 'bridge' ),
+                        'image_text_zoom_hover' => esc_html__( 'Image Subtle Rotate Zoom', 'bridge' ),
+                        'thin_plus_only' => esc_html__( 'Thin Plus Only', 'bridge' ),
+                        'slow_zoom' => esc_html__( 'Slow Zoom', 'bridge' ),
+                        'split_up' => esc_html__( 'Split Up', 'bridge' ),
                     ]
                 ),
                 array(
@@ -68,10 +68,10 @@ if(class_exists('BridgeQodeWidget')) {
                     'type'		=> 'dropdown',
                     'title'		=> esc_html__('Image Proportions', 'bridge'),
                     'options'	=> [
-                        '' => esc_html__( 'Original', 'bridge-core' ),
-                        'square' => esc_html__( 'Square', 'bridge-core' ),
-                        'landscape' => esc_html__( 'Landscape', 'bridge-core' ),
-                        'portrait' => esc_html__( 'Portrait', 'bridge-core' ),
+                        '' => esc_html__( 'Original', 'bridge' ),
+                        'square' => esc_html__( 'Square', 'bridge' ),
+                        'landscape' => esc_html__( 'Landscape', 'bridge' ),
+                        'portrait' => esc_html__( 'Portrait', 'bridge' ),
                     ]
                 ),
                 array(
@@ -80,9 +80,9 @@ if(class_exists('BridgeQodeWidget')) {
                     'title'		=> esc_html__('Order By', 'bridge'),
                     'options'	=> [
                         '' => '',
-                        'menu_order' => esc_html__( 'Menu Order', 'bridge-core' ),
-                        'title' => esc_html__( 'Title', 'bridge-core' ),
-                        'date' => esc_html__( 'Date', 'bridge-core' )
+                        'menu_order' => esc_html__( 'Menu Order', 'bridge' ),
+                        'title' => esc_html__( 'Title', 'bridge' ),
+                        'date' => esc_html__( 'Date', 'bridge' )
                     ]
                 ),
                 array(
@@ -91,32 +91,32 @@ if(class_exists('BridgeQodeWidget')) {
                     'title'		=> esc_html__('Order', 'bridge'),
                     'options'	=> [
                         '' => '',
-                        'ASC' => esc_html__( 'ASC', 'bridge-core' ),
-                        'DESC' => esc_html__( 'DESC', 'bridge-core' ),
+                        'ASC' => esc_html__( 'ASC', 'bridge' ),
+                        'DESC' => esc_html__( 'DESC', 'bridge' ),
                     ]
                 ),
                 array(
                     'name'		=> 'number',
                     'type'		=> 'textfield',
-                    "description" => esc_html__( "Number of portfolios on page (-1 is all)", 'bridge-core' ),
+                    "description" => esc_html__( "Number of portfolios on page (-1 is all)", 'bridge' ),
                     'title'		=> esc_html__('Numbers', 'bridge')
                 ),
                 array(
                     'name'		=> 'category',
                     'type'		=> 'textfield',
-                    "description" => esc_html__( "Category Slug (leave empty for all)", 'bridge-core' ),
+                    "description" => esc_html__( "Category Slug (leave empty for all)", 'bridge' ),
                     'title'		=> esc_html__('Category', 'bridge')
                 ),
                 array(
                     'name'		=> 'selected_projects',
                     'type'		=> 'textfield',
-                    "description" => esc_html__( "Selected Projects (leave empty for all, delimit by comma)", 'bridge-core' ),
-                    'title'		=> esc_html__( "Selected Projects", 'bridge-core' ),
+                    "description" => esc_html__( "Selected Projects (leave empty for all, delimit by comma)", 'bridge' ),
+                    'title'		=> esc_html__( "Selected Projects", 'bridge' ),
                 ),
                 array(
                     'name'		=> 'title_tag',
                     'type'		=> 'dropdown',
-                    'title'		=> esc_html__( "Title Tag", 'bridge-core' ),
+                    'title'		=> esc_html__( "Title Tag", 'bridge' ),
                     'options'   => [
                         "h2" => "h2",
                         "h3" => "h3",
@@ -128,18 +128,18 @@ if(class_exists('BridgeQodeWidget')) {
                 array(
                     'name'		=> 'show_categories',
                     'type'		=> 'dropdown',
-                    'title'		=> esc_html__( "Show Categories", 'bridge-core' ),
+                    'title'		=> esc_html__( "Show Categories", 'bridge' ),
                     'options'   => bridge_qode_get_yes_no_select_array(true, true)
                 ),
                 array(
                     'name'		=> 'text_align',
                     'type'		=> 'dropdown',
-                    'title'		=> esc_html__( "Text align", 'bridge-core' ),
+                    'title'		=> esc_html__( "Text align", 'bridge' ),
                     'options'   => [
                         '' => '',
-                        'left' => esc_html__( 'Left', 'bridge-core' ),
-                        'center' => esc_html__( 'Center', 'bridge-core' ),
-                        'right' => esc_html__( 'Right', 'bridge-core' ),
+                        'left' => esc_html__( 'Left', 'bridge' ),
+                        'center' => esc_html__( 'Center', 'bridge' ),
+                        'right' => esc_html__( 'Right', 'bridge' ),
                     ]
                 ),
             );

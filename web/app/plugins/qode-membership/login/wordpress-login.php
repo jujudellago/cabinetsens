@@ -77,7 +77,14 @@ if ( ! function_exists( 'qode_membership_register_user' ) ) {
 					if ( is_wp_error( $user_save_flag ) ) {
 						qode_membership_ajax_response( 'error', esc_html__( 'Something went wrong', 'qode-membership' ) );
 					} else {
-						wp_update_user( array( 'ID' => $user_save_flag, 'role' => get_option( 'default_role' ) ) );
+                        $default_params = array(
+                            'ID' => $user_save_flag
+                        );
+                        $additional_params = array(
+                            'role' =>  apply_filters('qode_membership_default_role', get_option('default_role'))
+                        );
+                        $additional_params = apply_filters('qode_membership_additional_registration_params', $additional_params, $register_data);
+                        wp_update_user( array_merge($default_params, $additional_params) );
 						$mail_to = $credentials['user_email'];
 						
 						$subject = esc_html__( 'User Registration', 'qode-membership' ); //Subject

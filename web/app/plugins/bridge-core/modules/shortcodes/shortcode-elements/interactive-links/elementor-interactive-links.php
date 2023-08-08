@@ -17,7 +17,7 @@ class BridgeCoreElementorInteractiveLinks extends \Elementor\Widget_Base{
         return [ 'select' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -127,4 +127,4 @@ class BridgeCoreElementorInteractiveLinks extends \Elementor\Widget_Base{
     }
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorInteractiveLinks() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorInteractiveLinks() );

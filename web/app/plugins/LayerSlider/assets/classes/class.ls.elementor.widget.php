@@ -24,53 +24,49 @@ class LS_Elementor_Widget extends Widget_Base {
 	}
 
 	public function get_categories() {
-		return [
-			'general',
-		];
+		return ['general'];
 	}
 
 	public function get_script_depends() {
-		return empty( $_GET['elementor-preview'] ) ? [] : [
-			'ls-elementor-frontend',
-		];
+		return empty( $_GET['elementor-preview'] ) ? [] : ['ls-elementor-frontend'];
 	}
 
-	protected function _register_controls() {
+	protected function register_controls() {
 
 		// ------------ CONTENT SECTION ------------
 		$this->start_controls_section( 'content_section', [
-			'label' => __( 'Content', 'LayerSlider' ),
-			'tab' 	=> Controls_Manager::TAB_CONTENT,
-		] );
+			'label' 	=> __( 'Content', 'LayerSlider' ),
+			'tab' 		=> Controls_Manager::TAB_CONTENT
+		]);
 
 		$this->add_control( 'identifier', [
-			'classes' => 	'ls-id',
-			'type' => 		Controls_Manager::HIDDEN,
-		] );
+			'classes' 	=> 	'ls-id',
+			'type' 		=> 	Controls_Manager::HIDDEN
+		]);
 
 		$this->add_control( 'slider-library', [
-			'type' 	=> Controls_Manager::RAW_HTML,
-			'raw' 	=>
-				'<label class="elementor-control-title">' . __( 'Choose Slider', 'LayerSlider' ) . '</label>' .
+			'type' 		=> Controls_Manager::RAW_HTML,
+			'raw' 		=>
+				'<label class="elementor-control-title">'.__( 'Choose Project', 'LayerSlider' ).'</label>' .
 				'<br><br>' .
 				'<button type="button" class="elementor-button elementor-button-default" onclick="LS_Widget.chooseSlider()">' .
-					'<i class="fa fa-folder-open"></i>' . __( 'Open Slider Library', 'LayerSlider' ) .
-				'</button>',
-		] );
+					'<i class="eicon-folder"></i>'.__( 'Open Project Library', 'LayerSlider' ) .
+				'</button>'
+		]);
 
 		$this->add_control( 'sliderbuilder', [
 			'type' 		=> Controls_Manager::RAW_HTML,
 			'raw' 		=>
-				'<label class="elementor-control-title">' . __( 'Edit Slider', 'LayerSlider' ) . '</label>' .
+				'<label class="elementor-control-title">'.__( 'Edit Project', 'LayerSlider' ).'</label>' .
 				'<br><br>' .
 				'<button type="button" class="elementor-button elementor-button-default" onclick="LS_Widget.openEditor()">' .
-					'<i class="fa fa-external-link-square"></i>' . __( 'Open Slider Builder', 'LayerSlider' ) .
+					'<i class="eicon-pencil"></i>'.__( 'Open Project Editor', 'LayerSlider' ) .
 				'</button>',
 			'separator' => 'before',
 			'condition' => [
-				'identifier!' 	=> '',
-			],
-		] );
+				'identifier!' => ''
+			]
+		]);
 
 		$this->end_controls_section();
 
@@ -78,12 +74,12 @@ class LS_Elementor_Widget extends Widget_Base {
 		// ------------ OVERRIDES SECTION ------------
 		$this->start_controls_section( 'overrides_section', [
 			'classes' 	=> 'ls-overrides',
-			'label' 	=> __( 'Override Slider Settings', 'LayerSlider' ),
+			'label' 	=> __( 'Override Project Settings', 'LayerSlider' ),
 			'tab' 		=> Controls_Manager::TAB_CONTENT,
 			'condition' => [
-				'identifier!' 	=> '',
-			],
-		] );
+				'identifier!' => ''
+			]
+		]);
 
 		$this->add_control( 'type', [
 			'label' 	=> __( 'Layout Mode', 'LayerSlider' ),
@@ -94,10 +90,10 @@ class LS_Elementor_Widget extends Widget_Base {
 				'fixedsize'  	=> __('Fixed size', 'LayerSlider'),
 				'responsive' 	=> __('Responsive', 'LayerSlider'),
 				'fullwidth' 	=> __('Full width', 'LayerSlider'),
-				'fullsize' 		=> __('Full size', 'LayerSlider'),
 				'hero' 			=> __('Hero scene', 'LayerSlider'),
+				'fullsize' 		=> __('Full size', 'LayerSlider')
 			]
-		] );
+		]);
 
 		$skins = \LS_Sources::getSkins();
 		$skinsOptions = [ '' => __( 'No override', 'LayerSlider' ) ];
@@ -108,8 +104,8 @@ class LS_Elementor_Widget extends Widget_Base {
 		$this->add_control( 'skin', [
 			'label' 	=> __( 'Skin', 'LayerSlider' ),
 			'type' 		=> Controls_Manager::SELECT,
-			'options' 	=> $skinsOptions,
-		] );
+			'options' 	=> $skinsOptions
+		]);
 
 		$this->add_control( 'autostart', [
 			'label' 	=> __( 'Auto-Start', 'LayerSlider' ),
@@ -117,17 +113,17 @@ class LS_Elementor_Widget extends Widget_Base {
 			'options' 	=> [
 				''  			=> __( 'No override', 'LayerSlider' ),
 				'enabled'  		=> __( 'Enabled', 'LayerSlider' ),
-				'disabled'  	=> __( 'Disabled', 'LayerSlider' ),
+				'disabled'  	=> __( 'Disabled', 'LayerSlider' )
 			]
-		] );
+		]);
 
 		$this->add_control( 'firstslide', [
 			'classes' 		=> 'ls-firstslide',
 			'label' 		=> __( 'Start with Slide', 'LayerSlider' ),
 			'type' 			=> Controls_Manager::NUMBER,
 			'placeholder' 	=> __( 'No override', 'LayerSlider' ),
-			'min' 			=> 1,
-		] );
+			'min' 			=> 1
+		]);
 
 		$this->end_controls_section();
 	}
@@ -145,7 +141,7 @@ class LS_Elementor_Widget extends Widget_Base {
 			'type',
 			'skin',
 			'autostart',
-			'firstslide',
+			'firstslide'
 		];
 
 		foreach( $overrides as $key ) {
@@ -162,20 +158,9 @@ class LS_Elementor_Widget extends Widget_Base {
 		parent::__construct( $data, $args );
 
 		if( ! empty( $_GET['elementor-preview'] ) ) {
-			wp_enqueue_style(
-				'ls-elementor',
-				LS_ROOT_URL.'/static/admin/css/elementor.css',
-				false,
-				LS_PLUGIN_VERSION
-			);
+			wp_enqueue_style( 'ls-elementor', LS_ROOT_URL.'/static/admin/css/elementor.css', false, LS_PLUGIN_VERSION );
 		}
 
-		wp_register_script(
-			'ls-elementor-frontend',
-			LS_ROOT_URL.'/static/admin/js/elementor-frontend.js',
-			['elementor-frontend'],
-			LS_PLUGIN_VERSION,
-			true
-		);
+		wp_register_script( 'ls-elementor-frontend', LS_ROOT_URL.'/static/admin/js/elementor-frontend.js', ['elementor-frontend'], LS_PLUGIN_VERSION, true );
 	}
 }

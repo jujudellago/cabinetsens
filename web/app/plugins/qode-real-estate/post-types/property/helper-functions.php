@@ -1109,3 +1109,50 @@ if ( ! function_exists( 'qode_re_add_share_option_to_album_post_type' ) ) {
 
     add_action( 'bridge_qode_action_option_social_page_map', 'qode_re_add_share_option_to_album_post_type', 10, 1 );
 }
+
+if( ! function_exists('qodef_re_add_item_to_favorites') ) {
+    function qodef_re_add_item_to_favorites() {
+        $user_id = get_current_user_id();
+
+        if( empty( $_POST ) || ! isset( $_POST ) ) {
+            qodef_re_ajax_status('error', esc_html__('All fields are empty', 'qode-real-estate'));
+        } else {
+            $item_id                = $_POST['item_id'];
+
+            $current_items_array    = get_user_meta( $user_id, 'qodef_item_favorites', true);
+            $current_items_array 	= !empty($current_items_array) ? $current_items_array : array();
+
+            $current_users_array    = get_post_meta( $item_id, 'qodef_users_favorites', true );
+            $current_users_array 	= !empty($current_users_array) ? $current_users_array : array();
+
+            if ( ! empty( $current_items_array ) && in_array( $item_id, $current_items_array ) ) {
+                $temp_array[]           = $item_id;
+                $current_items_array    = array_diff( $current_items_array, $temp_array );
+                $data['message']        = esc_html__( 'Add To Wishlist', 'qode-real-estate' );
+                $data['icon']           = 'fa-heart-o';
+            } else {
+                $current_items_array[] = $item_id;
+                $current_items_array   = array_unique( $current_items_array );
+                $data['message']       = esc_html__( 'Remove from Wishlist', 'qode-real-estate' );
+                $data['icon']          = 'fa-heart';
+            }
+
+            update_user_meta( $user_id, 'qodef_item_favorites', $current_items_array );
+
+            if ( ! empty( $current_users_array ) && in_array( $user_id, $current_users_array ) ) {
+                $temp_array[]        = $user_id;
+                $current_users_array = array_diff( $current_users_array, $temp_array );
+            } else {
+                $current_users_array[] = $user_id;
+                $current_users_array   = array_unique( $current_users_array );
+            }
+
+            update_post_meta( $item_id, 'qodef_users_favorites', $current_users_array );
+
+            qodef_re_ajax_status('success', esc_html__('Success', 'qode-real-estate'), $data );
+        }
+    }
+
+    add_action('wp_ajax_nopriv_qodef_re_add_item_to_favorites', 'qodef_re_add_item_to_favorites');
+    add_action('wp_ajax_qodef_re_add_item_to_favorites', 'qodef_re_add_item_to_favorites');
+}

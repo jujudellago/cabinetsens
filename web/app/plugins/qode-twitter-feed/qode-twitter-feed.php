@@ -3,9 +3,9 @@
 Plugin Name: Qode Twitter Feed
 Description: Plugin that adds Twitter feed functionality to our theme
 Author: Qode Themes
-Version: 2.0.2
+Version: 2.0.4
 */
-define('QODE_TWITTER_FEED_VERSION', '2.0.2');
+define('QODE_TWITTER_FEED_VERSION', '2.0.4');
 define('QODE_TWITTER_FEED_REL_PATH', dirname(plugin_basename(__FILE__ )));
 
 include_once 'load.php';

@@ -671,8 +671,7 @@ if ( !function_exists('qodef_real_estate_dashboard_edit_property_fields') ) {
 ?>
 <div class="qodef-membership-dashboard-page qodef-real-estate-dashboard-page">
 	<div class="qodef-edit-property-page">
-		<h2 class="qodef-membership-page-title"><?php esc_html_e('Edit Property', 'qode-real-estate'); ?></h2>
-		<p><?php esc_html_e('Edit Property', 'qode-real-estate'); ?></p>
+		<h5 class="qodef-membership-page-title"><?php esc_html_e('Edit Property', 'qode-real-estate'); ?></h5>
 		<div>
 			<?php qodef_real_estate_dashboard_edit_property_fields(qodef_re_get_property_meta($property_db_id),$property_db_id);?>
 			<?php do_action( 'qode_membership_action_login_ajax_response' ); ?>

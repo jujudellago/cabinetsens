@@ -19,16 +19,16 @@ class LS_ModuleManager {
 	public $errCode = '';
 
 
-	public function __construct( $moduleHandle, $moduleProperties = array() ) {
+	public function __construct( $moduleHandle, $moduleProperties = [] ) {
 
 		if( empty( $moduleHandle ) ) {
 			return false;
 		}
 
-		$moduleProperties = array_merge(array(
+		$moduleProperties = array_merge([
 			'autoCheck' => true,
 			'autoDownload' => true,
-		), $moduleProperties );
+		], $moduleProperties );
 
 		$this->moduleHandle = $moduleHandle;
 		$this->repoURL = LS_REPO_BASE_URL.'modules/';
@@ -51,32 +51,24 @@ class LS_ModuleManager {
 
 	public function checkDirectories( ) {
 
-		$uploadsDir = wp_upload_dir();
-		$uploadsBaseDir = $uploadsDir['basedir'];
-		$uploadsBaseURL = $uploadsDir['baseurl'];
-
-		$this->uploadsDir = $uploadsBaseDir . DIRECTORY_SEPARATOR . 'layerslider';
-		$this->uploadsURL = $uploadsBaseURL.'/layerslider';
-
-		$this->modulesDir = $this->uploadsDir . DIRECTORY_SEPARATOR . 'modules';
-		$this->modulesURL = $this->uploadsURL.'/modules';
-
-		$this->moduleDir  = $this->modulesDir . DIRECTORY_SEPARATOR . $this->moduleHandle;
-		$this->moduleURL  = $this->modulesURL.'/'.$this->moduleHandle;
-
-		if( ! file_exists( $this->uploadsDir ) ) {
-			if( ! mkdir( $this->uploadsDir, 0755 ) ) {
-				$this->logError('ERR_UPLOADS_DIR_NOT_WRITABLE', sprintf( __('LayerSlider was unable to create the directory for the Image Editor module. Please verify that your uploads folder is writable. See the %sCodex%s for more information.', 'LayerSlider'), '<a href="https://wordpress.org/support/article/changing-file-permissions/" target="_blank">', '</a>' ));
+		if( ! LS_FileSystem::createUploadDirs() ) {
+			$this->logError('ERR_UPLOADS_DIR_NOT_WRITABLE', sprintf( __('LayerSlider was unable to create the directory for the module. Please verify that your uploads folder is writable. See the %sCodex%s for more information.', 'LayerSlider'), '<a href="https://wordpress.org/support/article/changing-file-permissions/" target="_blank">', '</a>' ));
 				return false;
-			}
 		}
 
-		if( ! file_exists( $this->modulesDir ) ) {
-			if( ! mkdir( $this->modulesDir, 0755 ) ) {
-				$this->logError('ERR_MODULES_DIR_NOT_WRITABLE', sprintf( __('LayerSlider was unable to create the directory for the Image Editor module. Please verify that your uploads folder is writable. See the %sCodex%s for more information.', 'LayerSlider'), '<a href="https://wordpress.org/support/article/changing-file-permissions/" target="_blank">', '</a>' ));
-				return false;
-			}
-		}
+		$uploadsDir 		= wp_upload_dir();
+		$uploadsBaseDir 	= $uploadsDir['basedir'];
+		$uploadsBaseURL 	= $uploadsDir['baseurl'];
+
+		$this->uploadsDir 	= $uploadsBaseDir . DIRECTORY_SEPARATOR . 'layerslider';
+		$this->uploadsURL 	= $uploadsBaseURL.'/layerslider';
+
+		$this->modulesDir 	= $this->uploadsDir . DIRECTORY_SEPARATOR . 'modules';
+		$this->modulesURL 	= $this->uploadsURL.'/modules';
+
+		$this->moduleDir  	= $this->modulesDir . DIRECTORY_SEPARATOR . $this->moduleHandle;
+		$this->moduleURL  	= $this->modulesURL.'/'.$this->moduleHandle;
+
 
 		return true;
 	}
@@ -110,25 +102,37 @@ class LS_ModuleManager {
 		$zipContent = $GLOBALS['LS_AutoUpdate']->sendApiRequest( $targetURL );
 
 		if( ! $zipContent || is_wp_error( $zipContent ) ) {
-			$this->logError('ERR_DOWNLOAD', sprintf( __('LayerSlider was unable to download the Image Editor module. Please check %sLayerSlider → Options → System Status%s for potential issues. The WP Remote functions may be unavailable or your web hosting provider has to allow external connections to our domain.', 'LayerSlider'), '<a href="'.admin_url( 'admin.php?page=layerslider-options&section=system-status' ).'" target="_blank">', '</a>' ) );
+			$this->logError('ERR_DOWNLOAD', sprintf( __('LayerSlider was unable to download the module. Please check %sSystem Status%s for potential issues. The WP Remote functions may be unavailable or your web hosting provider has to allow external connections to our domain.', 'LayerSlider'), '<a href="'.admin_url( 'admin.php?page=layerslider&section=system-status' ).'" target="_blank">', '</a>' ) );
 			return false;
 		}
+
+		// Check for errors sent back by the remote by trying
+		// to parse the response data as JSON.
+		if( $zipContent && $zipContent[0] === '{' && $zipContent[1] === '"' )  {
+			if( $json = json_decode( $zipContent, true ) ) {
+
+				// Check activation state
+				if( ! empty( $json['message'] ) ) {
+					$subDeactivated = ! empty( $json['_sub_deactivated'] );
+					$GLOBALS['LS_AutoUpdate']->check_activation_state( $subDeactivated );
+					$this->logError( $json['errCode'], $json['message'] );
+					return false;
+				}
+			}
+		}
+
 
 		$dlFilePath = tempnam( sys_get_temp_dir(), 'ZIP_' );
 		file_put_contents( $dlFilePath, $zipContent );
 
-		$zip = new ZipArchive();
 
-		if( $zip->open( $dlFilePath ) === true ) {
-			if( $zip->extractTo( $this->moduleDir ) ) {
-				$zip->close();
-				unlink( $dlFilePath );
-
-				return true;
-			}
+		if( LS_FileSystem::unzip( $dlFilePath, $this->moduleDir ) ) {
+			unlink( $dlFilePath );
+			LS_FileSystem::addIndexPHP( $this->moduleDir );
+			return true;
 		}
 
-		$this->logError('ERR_ZIP_EXTRACTION', sprintf( __('LayerSlider was unable to uncompress the Image Editor module. Please check %sLayerSlider → Options → System Status%s for potential issues. The WP Remote functions may be unavailable or your web hosting provider has to allow external connections to our domain.', 'LayerSlider'), '<a href="'.admin_url( 'admin.php?page=layerslider-options&section=system-status' ).'" target="_blank">', '</a>' ) );
+		$this->logError('ERR_ZIP_EXTRACTION', sprintf( __('LayerSlider was unable to uncompress the module. Please check %sSystem Status%s for potential issues.', 'LayerSlider'), '<a href="'.admin_url( 'admin.php?page=layerslider&section=system-status' ).'" target="_blank">', '</a>' ) );
 		unlink( $dlFilePath );
 		return false;
 	}

@@ -1,5 +1,5 @@
 <?php
-define('QODE_LISTING_VERSION', '3.0.2');
+define('QODE_LISTING_VERSION', '3.0.5');
 define('QODE_LISTING_ABS_PATH', dirname(__FILE__));
 define('QODE_LISTING_REL_PATH', dirname(plugin_basename(__FILE__ )));
 define('QODE_LISTING_URL_PATH', plugin_dir_url( __FILE__ ));

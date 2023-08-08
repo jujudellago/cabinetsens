@@ -4,6 +4,7 @@ require_once( QODE_FRAMEWORK_ROOT_DIR . "/lib/qode.layout2.php" );
 require_once( QODE_FRAMEWORK_ROOT_DIR . "/lib/qode.layout3.php" );
 require_once( QODE_FRAMEWORK_ROOT_DIR . "/lib/qode.layout.tax.php" );
 require_once( QODE_FRAMEWORK_ROOT_DIR . "/lib/qode.layout.user.php" );
+require_once( QODE_FRAMEWORK_ROOT_DIR . "/lib/qode.layout.dashboard.php" );
 require_once( QODE_FRAMEWORK_ROOT_DIR . "/lib/qode.optionsapi.php" );
 require_once( QODE_FRAMEWORK_ROOT_DIR . "/lib/qode.framework.php" );
 require_once( QODE_FRAMEWORK_ROOT_DIR . "/lib/qode.functions.php" );
@@ -48,8 +49,9 @@ if(!function_exists('bridge_qode_admin_script_init')) {
 				$google_maps_extensions .= implode(',', $google_maps_extensions_array);
 			}
 			if (!empty($google_maps_api_key)) {
-				wp_enqueue_script('qodef-admin-maps', '//maps.googleapis.com/maps/api/js?key=' . esc_attr($google_maps_api_key) . $google_maps_extensions, array(), false, true);
+				wp_enqueue_script('qodef-admin-maps', '//maps.googleapis.com/maps/api/js?key=' . esc_attr($google_maps_api_key) . "&callback=qodeEmptyCallback" . $google_maps_extensions, array(), false, true);
 				wp_enqueue_script('jquery.geocomplete', get_template_directory_uri() . '/framework/admin/assets/js/jquery.geocomplete.min.js', array('qodef-admin-maps'), false, true);
+				wp_add_inline_script('qodef-admin-maps', 'window.qodeEmptyCallback = function () {};','before');
 			}
 		}
 
@@ -178,7 +180,7 @@ if ( ! function_exists('bridge_qode_save_options') ) {
 		global $bridge_qode_options;
 		global $bridge_qode_framework;
 
-		if (current_user_can('administrator')) {
+		if (current_user_can('edit_theme_options')) {
 			$_REQUEST = stripslashes_deep($_REQUEST);
 			check_ajax_referer('qode_ajax_save_nonce', 'qode_ajax_save_nonce');
 
@@ -439,7 +441,7 @@ if(!function_exists('bridge_qode_meta_box_save')) {
 		$portfolios = false;
 		if (isset($_POST['optionLabel'])) {
 			foreach ($_POST['optionLabel'] as $key => $value) {
-				$portfolios_val[$key] = array('optionLabel' => $value, 'optionValue' => sanitize_text_field($_POST['optionValue'][$key]), 'optionUrl' => esc_url($_POST['optionUrl'][$key]), 'optionlabelordernumber' => sanitize_text_field($_POST['optionlabelordernumber'][$key]));
+				$portfolios_val[$key] = array('optionLabel' => $value, 'optionValue' => sanitize_textarea_field($_POST['optionValue'][$key]), 'optionUrl' => esc_url($_POST['optionUrl'][$key]), 'optionlabelordernumber' => sanitize_text_field($_POST['optionlabelordernumber'][$key]));
 				$portfolios = true;
 
 			}

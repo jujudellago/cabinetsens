@@ -1,7 +1,21 @@
 <?php
 
 //Disable the default WooCommerce stylesheet.
-add_filter( 'woocommerce_enqueue_styles', '__return_false' );
+if( ! function_exists( 'bridge_qode_disable_default_woocommerce_styles' ) ) {
+	function bridge_qode_disable_default_woocommerce_styles() {
+		$wc_version = get_option( 'woocommerce_version' );
+
+		if ( version_compare( $wc_version, '6.9.0', '<' ) ) {
+			// Old version
+			add_filter( 'woocommerce_enqueue_styles', '__return_false' );
+		} else {
+			// New version
+			add_filter( 'woocommerce_enqueue_styles', '__return_empty_array' );
+		}
+	}
+}
+
+add_action( 'init', 'bridge_qode_disable_default_woocommerce_styles' );
 
 if(!function_exists('bridge_qode_woo_related_products_args')) {
 	/**

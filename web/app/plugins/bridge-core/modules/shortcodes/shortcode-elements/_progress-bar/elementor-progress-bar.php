@@ -17,7 +17,7 @@ class BridgeCoreElementorProgressBar extends \Elementor\Widget_Base{
         return [ 'qode' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
 	   $this->start_controls_section(
             'general',
@@ -124,7 +124,7 @@ class BridgeCoreElementorProgressBar extends \Elementor\Widget_Base{
 		$this->add_control(
 			'gradient',
 			[
-				'label' => esc_html__( 'Percentage Font weight', 'bridge-core' ),
+				'label' => esc_html__( 'Enable Gradient', 'bridge-core' ),
 				'type' => \Elementor\Controls_Manager::SELECT,
 				'options' => bridge_qode_get_yes_no_select_array(false),
 				'default' => 'no'
@@ -161,4 +161,4 @@ class BridgeCoreElementorProgressBar extends \Elementor\Widget_Base{
 
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorProgressBar() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorProgressBar() );

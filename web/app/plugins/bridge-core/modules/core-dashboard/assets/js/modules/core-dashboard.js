@@ -335,6 +335,75 @@
         },
     };
 
+    var qodefDemosInstallPluginPerDemo = {
+        init: function () {
+            $( '.qodef-popup-required-plugins-holder' ).on(
+                'click',
+                '.qodef-install-plugin-link',
+                function ( e ) {
+                    e.preventDefault();
+                    var link = $( this ),
+                        allLinks = $('.qodef-install-plugin-link');
+
+                    allLinks.addClass('qodef-disabled');
+                    link.removeClass('qodef-disabled');
+                    link.next( '.spinner' ).addClass( 'active' );
+                    var requredPlugins = link.closest( '.qodef-popup-required-plugins-holder' ).find( '.qode-required-demo-plugins-list' ).data( 'required-demo-plugins' );
+                    var pluginAction   = 'install';
+                    var pluginSlug     = '';
+
+                    if ( typeof link.data( 'plugin-action' ) !== 'undefined' && link.data( 'plugin-action' ) !== '' ) {
+                        pluginAction = link.data( 'plugin-action' );
+                    }
+
+                    if ( typeof link.data( 'plugin-slug' ) !== 'undefined' && link.data( 'plugin-slug' ) !== '' ) {
+                        pluginSlug = link.data( 'plugin-slug' );
+                    }
+
+                    jQuery.ajax( {
+                        type: 'POST',
+                        url: ajaxurl,
+                        data: {
+                            action: 'install_plugin_per_demo',
+                            requredPlugins: requredPlugins,
+                            pluginAction: pluginAction,
+                            pluginSlug: pluginSlug
+                        },
+                        success: function ( data ) {
+                            var response = JSON.parse( data );
+
+                            if ( pluginAction == 'install' ) {
+                                if ( response.status == 'success' ) {
+                                    link.next( '.spinner' ).removeClass( 'active' );
+                                    link.text( response.message );
+                                    link.data(
+                                        'plugin-action',
+                                        'activate'
+                                    );
+                                }
+                            } else {
+                                if ( response.status == 'success' ) {
+                                    link.next( '.spinner' ).removeClass( 'active' );
+                                    link.replaceWith( response.data.html );
+                                    link.data(
+                                        'plugin-action',
+                                        'activate'
+                                    );
+                                }
+                            }
+
+                            allLinks.removeClass('qodef-disabled');
+                        },
+                        error: function () {
+
+                        }
+                    } );
+                    return false;
+                }
+            );
+        }
+    }
+
     var qodefThemeRegistration = {
         init: function () {
             qodefThemeRegistration.holder = $('#qode-register-purchase-form');
@@ -541,10 +610,15 @@
             if( demoImportLinks.length ){
                 demoImportLinks.each(function(){
                     var demoImportLink = $(this),
-                        demoId = '';
+                        demoId = '',
+                        originalDemoId = '';
 
                     if( typeof demoImportLink.data('demo-id') !== 'undefined' && demoImportLink.data('demo-id') !== ''){
                         demoId = demoImportLink.data('demo-id');
+                    }
+
+                    if( typeof demoImportLink.data('original-demo-id') !== 'undefined' && demoImportLink.data('original-demo-id') !== ''){
+                        originalDemoId = demoImportLink.data('original-demo-id');
                     }
 
                     demoImportLink.on('click', function(e){
@@ -555,13 +629,15 @@
                             url: ajaxurl,
                             data: {
                                 action: 'demo_import_popup',
-                                demoId: demoId
+                                demoId: demoId,
+                                originalDemoId: originalDemoId
                             },
                             success: function (data) {
                                 qodefInitAppendPopup.init(data);
                                 qodefImport.init();
                                 qodefInitRemovePopup.init();
-	                            qodefDemosPluginsToInstall.init();
+	                            // qodefDemosPluginsToInstall.init();
+                                qodefDemosInstallPluginPerDemo.init();
                                 qodefInitSwitch();
                             },
                             error: function (data) {

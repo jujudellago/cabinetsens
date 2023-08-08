@@ -3,22 +3,11 @@
  * Provide a admin area view for the plugin TIMELINE SETTINGS
  * @author    ThemePunch <info@themepunch.com>
  * @link      https://www.themepunch.com/
- * @copyright 2019 ThemePunch
+ * @copyright 2022 ThemePunch
  */
 
 if(!defined('ABSPATH')) exit();
 ?>
-
-
-newSlider.snap = _d(obj.snap,{
-			toGrid:false,
-			toStage:false,
-			toLayers:false,
-			gridLines:false,
-			snapLines:false,
-			cellSize:20
-		});
-
 
 <!-- TIMELINE -->
 <div id="timeline_settings">
@@ -121,6 +110,3 @@ newSlider.snap = _d(obj.snap,{
 		</div>
 	</div>
 </div><!-- END OF TIMELINE  -->
-
-
-

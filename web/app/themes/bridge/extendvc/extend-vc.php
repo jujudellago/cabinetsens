@@ -170,10 +170,6 @@ if (function_exists('vc_remove_param') && bridge_qode_vc_grid_elements_enabled()
 	vc_remove_param('vc_masonry_media_grid', 'arrows_color');
 }
 
-/*** Remove frontend editor ***/
-if(function_exists('vc_disable_frontend')){
-	vc_disable_frontend();
-}
 $fa_icons = getFontAwesomeIconArray();
 $collection = $qodeIconCollections->getIconCollection('font_awesome');
 if( $collection ){
@@ -2346,7 +2342,7 @@ vc_map( array(
     'params' => array(
         array(
             "type" => "dropdown",
-            "heading" => esc_html__( 'Frame Skin', 'bridge-core'),
+            "heading" => esc_html__( 'Frame Skin', 'bridge'),
             "param_name" => "skin",
             "admin_label" => true,
             "value" => array(
@@ -2369,7 +2365,7 @@ vc_map( array(
     "params" => array(
         array(
             "type" => "dropdown",
-            "heading" => esc_html__( 'Frame Skin', 'bridge-core'),
+            "heading" => esc_html__( 'Frame Skin', 'bridge'),
             "param_name" => "skin",
             "admin_label" => true,
             "value" => array(
@@ -2642,3 +2638,13 @@ vc_map_update( 'vc_accordion', $vc_map_deprecated_settings );
 vc_map_update( 'vc_tabs', $vc_map_deprecated_settings );
 vc_map_update( 'vc_tab', array('deprecated' => false) );
 vc_map_update( 'vc_accordion_tab', array('deprecated' => false) );
+
+if( ! function_exists( 'bridge_qode_remove_vc_frontend_editor' ) ) {
+	function bridge_qode_remove_vc_frontend_editor() {
+		if( function_exists( 'vc_disable_frontend' ) ) {
+			vc_disable_frontend();
+		}
+	}
+	
+	add_action( 'admin_init', 'bridge_qode_remove_vc_frontend_editor' );
+}

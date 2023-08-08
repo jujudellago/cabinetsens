@@ -67,7 +67,7 @@ class QodeLmsCourseList extends \Elementor\Widget_Base{
         return $formated_courses;
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -767,4 +767,4 @@ class QodeLmsCourseList extends \Elementor\Widget_Base{
     }
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new QodeLmsCourseList() );
+\Elementor\Plugin::instance()->widgets_manager->register( new QodeLmsCourseList() );

@@ -17,7 +17,7 @@ class BridgeCoreElementorPieChartWithIcon extends \Elementor\Widget_Base{
         return [ 'qode' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -147,4 +147,4 @@ class BridgeCoreElementorPieChartWithIcon extends \Elementor\Widget_Base{
 
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorPieChartWithIcon() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorPieChartWithIcon() );

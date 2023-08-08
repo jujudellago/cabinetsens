@@ -2,7 +2,7 @@
 /**
  * @author    ThemePunch <info@themepunch.com>
  * @link      https://www.themepunch.com/
- * @copyright 2019 ThemePunch
+ * @copyright 2022 ThemePunch
  */
 
 if(!defined('ABSPATH')) exit();
@@ -11,32 +11,36 @@ class RevSliderAddons extends RevSliderFunctions { //before: Rev_addon_Admin
 	//private $addon_version_required = '2.0.0'; //this holds the globally needed addon version for the current RS version
 	
 	private $addon_version_required = array(
-		'revslider-whiteboard-addon' => '2.2.0',
-		'revslider-backup-addon' => '2.0.0',
-		'revslider-gallery-addon' => '2.0.0',
-		'revslider-rel-posts-addon' => '2.0.0',
-		'revslider-typewriter-addon' => '2.0.0',
-		'revslider-sharing-addon' => '2.0.0',
-		'revslider-maintenance-addon' => '2.0.0',
-		'revslider-snow-addon' => '2.0.0',
-		'revslider-particles-addon' => '2.3.1',
-		'revslider-polyfold-addon' => '2.0.0',
 		'revslider-404-addon' => '2.0.0',
-		'revslider-prevnext-posts-addon' => '2.0.0',
-		'revslider-filmstrip-addon' => '2.0.0',
-		'revslider-login-addon' => '2.0.0',
+		'revslider-backup-addon' => '2.0.0',
+		'revslider-beforeafter-addon' => '3.0.0',
+		'revslider-bubblemorph-addon' => '3.0.0',
+		'revslider-charts-addon' => '3.0.0',
+		'revslider-duotonefilters-addon' => '3.0.0',
+		'revslider-explodinglayers-addon' => '3.0.0',
 		'revslider-featured-addon' => '2.0.0',
-		'revslider-slicey-addon' => '2.0.0',
-		'revslider-beforeafter-addon' => '2.0.9',
+		'revslider-filmstrip-addon' => '3.0.0',
+		'revslider-gallery-addon' => '2.0.0',
+		'revslider-liquideffect-addon' => '3.0.0',
+		'revslider-login-addon' => '2.0.0',
+		'revslider-lottie-addon' => '3.0.0',
+		'revslider-maintenance-addon' => '2.0.0',
+		'revslider-mousetrap-addon' => '3.0.0',
+		'revslider-paintbrush-addon' => '3.0.0',
+		'revslider-panorama-addon' => '3.0.0',
+		'revslider-particles-addon' => '3.0.0',
+		'revslider-polyfold-addon' => '3.0.0',
+		'revslider-prevnext-posts-addon' => '2.0.0',
+		'revslider-rel-posts-addon' => '2.0.0',
+		'revslider-refresh-addon' => '3.0.0',
+		'revslider-revealer-addon' => '3.0.0',
+		'revslider-scrollvideo-addon' => '3.0.0',
+		'revslider-sharing-addon' => '3.0.0',
+		'revslider-slicey-addon' => '3.0.0',
+		'revslider-snow-addon' => '3.0.0',
+		'revslider-typewriter-addon' => '3.0.0',
 		'revslider-weather-addon' => '2.0.0',
-		'revslider-panorama-addon' => '2.0.0',
-		'revslider-duotonefilters-addon' => '2.0.0',
-		'revslider-revealer-addon' => '2.0.0',
-		'revslider-refresh-addon' => '2.0.0',
-		'revslider-bubblemorph-addon' => '2.0.0',
-		'revslider-liquideffect-addon' => '2.0.0',
-		'revslider-explodinglayers-addon' => '2.0.0',
-		'revslider-paintbrush-addon' => '2.0.0'
+		'revslider-whiteboard-addon' => '3.0.0',
 	);
 	
 	public function __construct(){
@@ -47,6 +51,7 @@ class RevSliderAddons extends RevSliderFunctions { //before: Rev_addon_Admin
 	 * get all the addons with information
 	 **/
 	public function get_addon_list(){
+
 		$addons	= get_option('revslider-addons');
 		$addons	= (array)$addons;
 		$addons = array_reverse($addons, true);
@@ -57,10 +62,10 @@ class RevSliderAddons extends RevSliderFunctions { //before: Rev_addon_Admin
 				if(!is_object($addon)) continue;
 				if(array_key_exists($addon->slug.'/'.$addon->slug.'.php', $plugins)){
 					$addons[$k]->full_title	= $plugins[$addon->slug.'/'.$addon->slug.'.php']['Name'];
-					$addons[$k]->active		= (is_plugin_active($addon->slug.'/'.$addon->slug.'.php')) ? true : false;
+					$addons[$k]->active = is_plugin_active($addon->slug.'/'.$addon->slug.'.php');
 					$addons[$k]->installed	= $plugins[$addon->slug.'/'.$addon->slug.'.php']['Version'];
 				}else{
-					$addons[$k]->active		= false;
+					$addons[$k]->active = false;
 					$addons[$k]->installed	= false;
 				}
 			}
@@ -93,10 +98,11 @@ class RevSliderAddons extends RevSliderFunctions { //before: Rev_addon_Admin
 				
 				$version = $this->get_val($this->addon_version_required, $handle, false);
 				if($version !== false && version_compare($installed, $version, '<')){
+					$available = (version_compare($version, $this->get_val($addon, 'available'), '>')) ? $version : $this->get_val($addon, 'available');
 					$update[$handle] = array(
 						'title' => $this->get_val($addon, 'full_title'),
 						'old'	=> $installed,
-						'new'	=> $this->get_val($addon, 'available'),
+						'new'	=> $available,
 						'status'=> '1' //1 is mandatory to use it
 					);
 				}
@@ -134,17 +140,14 @@ class RevSliderAddons extends RevSliderFunctions { //before: Rev_addon_Admin
 	 * @since    1.0.0
 	 */
 	public function download_addon($addon){
-		global $wp_version, $rslb;
+		global $rslb;
 		
 		if(get_option('revslider-valid', 'false') !== 'true') return __('Please activate Slider Revolution', 'revslider');
 		
 		$plugin_slug	= basename($addon);
-		$plugin_result	= false;
-		$plugin_message	= 'UNKNOWN';
-		
-		$code = get_option('revslider-code', '');
-		
 		if(0 !== strpos($plugin_slug, 'revslider-')) die( '-1' );
+
+		$code = get_option('revslider-code', '');
 		
 		$done	= false;
 		$count	= 0;
@@ -173,13 +176,18 @@ class RevSliderAddons extends RevSliderFunctions { //before: Rev_addon_Admin
 			$file		= $upload_dir['basedir']. '/revslider/templates/' . $plugin_slug . '.zip';
 			@mkdir(dirname($file), 0777, true);
 			$ret		= @file_put_contents($file, $get['body']);
-
+			
+			require_once(ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php');
+			require_once(ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php');
+			$fsd = new WP_Filesystem_Direct(false);
 			WP_Filesystem();
-
+			
 			global $wp_filesystem;
 
 			$upload_dir	= wp_upload_dir();
 			$d_path		= WP_PLUGIN_DIR;
+			$fsd->rmdir($d_path . '/' . $plugin_slug, true); //remove the addon folder if exists
+
 			$unzipfile	= unzip_file($file, $d_path);
 
 			if(is_wp_error($unzipfile)){
@@ -192,9 +200,9 @@ class RevSliderAddons extends RevSliderFunctions { //before: Rev_addon_Admin
 				if(is_wp_error($unzipfile)){
 					$d_path = WP_PLUGIN_DIR;
 					$unzipfile = unzip_file($file, $d_path);
-
+					
 					if(is_wp_error($unzipfile)){
-						$f = basename($file);
+						$f		= basename($file);
 						$d_path = str_replace($f, '', $file);
 
 						$unzipfile = unzip_file($file, $d_path);
@@ -237,10 +245,9 @@ class RevSliderAddons extends RevSliderFunctions { //before: Rev_addon_Admin
 	 */
 	public function deactivate_addon($addon){
 		// Verify that the incoming request is coming with the security nonce
-		$result = deactivate_plugins($addon);
-		return (is_wp_error($result)) ? false : true;
+		deactivate_plugins($addon);
+		return true;
 	}
 }
 
 class Rev_addon_Admin extends RevSliderAddons {}
-?>

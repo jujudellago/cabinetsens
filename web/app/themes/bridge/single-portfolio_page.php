@@ -157,7 +157,7 @@ if(get_post_meta($bridge_qode_id, "qode_margin_after_title", true) != ""){
 			<?php }  else {
 				get_template_part('templates/portfolio', 'loop');
 			?>
-				<div class="container_inner" <?php bridge_qode_inline_style($bridge_qode_content_style_spacing); ?>>
+				<div class="container_inner">
                     <?php get_template_part('templates/portfolio', 'related'); ?>
                     <?php get_template_part('templates/portfolio-comments'); ?>
 				</div>

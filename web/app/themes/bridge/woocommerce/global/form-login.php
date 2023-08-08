@@ -12,7 +12,7 @@
  *
  * @see 	    https://docs.woocommerce.com/document/template-structure/
  * @package 	WooCommerce/Templates
- * @version     3.6.0
+ * @version     7.1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -38,7 +38,7 @@ if ( is_user_logged_in() ) {
 		<input type="text" placeholder="<?php esc_html_e( 'Username or email', 'bridge' ); ?>" class="input-text placeholder" name="username" id="username" />
 	</p>
 	<p class="form-row form-row-last">
-		<input class="input-text placeholder" placeholder="<?php esc_html_e( 'Password', 'bridge' ); ?>" type="password" name="password" id="password" />
+		<input class="input-text placeholder woocommerce-Input" placeholder="<?php esc_html_e( 'Password', 'bridge' ); ?>" type="password" name="password" id="password" />
 	</p>
 	<div class="clear"></div>
 
@@ -50,7 +50,7 @@ if ( is_user_logged_in() ) {
 		</label>
 		<?php wp_nonce_field( 'woocommerce-login' ); ?>
 		<input type="hidden" name="redirect" value="<?php echo esc_url( $redirect ) ?>" />
-		<input type="submit" class="button" name="login" value="<?php esc_attr_e( 'Login', 'bridge' ); ?>" />
+		<input type="submit" class="button<?php echo esc_attr( wc_wp_theme_get_element_class_name( 'button' ) ? ' ' . wc_wp_theme_get_element_class_name( 'button' ) : '' ); ?>" name="login" value="<?php esc_attr_e( 'Login', 'bridge' ); ?>" />
 		<a class="lost_password" href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php esc_html_e( 'Lost your password?', 'bridge' ); ?></a>
 	</p>
 

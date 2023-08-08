@@ -124,7 +124,7 @@ class Vc_Settings {
 		}
 
 		if ( ! vc_is_network_plugin() || ( vc_is_network_plugin() && is_network_admin() ) ) {
-			if ( ! vc_is_updater_disabled() ) {
+			if ( ! vc_is_updater_disabled() && ! wpb_check_wordpress_com_env() ) {
 				$this->tabs['vc-updater'] = esc_html__( 'Product License', 'js_composer' );
 			}
 		}
@@ -205,6 +205,8 @@ class Vc_Settings {
 			'margin' => '35px',
 			'gutter' => '15',
 			'responsive_max' => '768',
+			'responsive_md' => '992',
+			'responsive_lg' => '1200',
 			'compiled_js_composer_less' => '',
 		);
 		if ( 'restore_color' === vc_post_param( 'vc_action' ) && vc_user_access()->check( 'wp_verify_nonce', vc_post_param( '_wpnonce' ), vc_settings()->getOptionGroup() . '_color' . '-options' )
@@ -265,6 +267,13 @@ class Vc_Settings {
 			$this,
 			'google_fonts_subsets_callback',
 		) );
+		$this->addField( $tab, esc_html__( 'Local Google Fonts', 'js_composer' ), 'local_google_fonts', array(
+			$this,
+			'sanitize_local_google_fonts_callback',
+		), array(
+			$this,
+			'local_google_fonts_callback',
+		) );
 
 		/**
 		 * Tab: Design Options
@@ -314,12 +323,26 @@ class Vc_Settings {
 		) );
 
 		// Responsive max width
-		$this->addField( $tab, esc_html__( 'Mobile screen width', 'js_composer' ), 'responsive_max', array(
+		$this->addField( $tab, esc_html__( 'Mobile breakpoint', 'js_composer' ), 'responsive_max', array(
 			$this,
 			'sanitize_responsive_max_callback',
 		), array(
 			$this,
 			'responsive_max_callback',
+		) );
+		$this->addField( $tab, esc_html__( 'Desktop breakpoint', 'js_composer' ), 'responsive_md', array(
+			$this,
+			'sanitize_responsive_md_callback',
+		), array(
+			$this,
+			'responsive_md_callback',
+		) );
+		$this->addField( $tab, esc_html__( 'Large Desktop breakpoint', 'js_composer' ), 'responsive_lg', array(
+			$this,
+			'sanitize_responsive_lg_callback',
+		), array(
+			$this,
+			'responsive_lg_callback',
 		) );
 		$this->addField( $tab, false, 'compiled_js_composer_less', array(
 			$this,
@@ -401,6 +424,8 @@ class Vc_Settings {
 		delete_option( self::$field_prefix . 'margin' );
 		delete_option( self::$field_prefix . 'gutter' );
 		delete_option( self::$field_prefix . 'responsive_max' );
+		delete_option( self::$field_prefix . 'responsive_md' );
+		delete_option( self::$field_prefix . 'responsive_lg' );
 		delete_option( self::$field_prefix . 'use_custom' );
 		delete_option( self::$field_prefix . 'compiled_js_composer_less' );
 		delete_option( self::$field_prefix . 'less_version' );
@@ -493,8 +518,7 @@ class Vc_Settings {
 		}
 		?>
 		<label>
-			<input type="checkbox"<?php echo $checked ? ' checked' : ''; ?> value="1"
-					id="wpb_js_not_responsive_css" name="<?php echo esc_attr( self::$field_prefix . 'not_responsive_css' ); ?>">
+			<input type="checkbox"<?php echo $checked ? ' checked' : ''; ?> value="1" id="wpb_js_not_responsive_css" name="<?php echo esc_attr( self::$field_prefix . 'not_responsive_css' ); ?>">
 			<?php esc_html_e( 'Disable', 'js_composer' ); ?>
 		</label><br/>
 		<p
@@ -514,8 +538,8 @@ class Vc_Settings {
 				?>
 				<label>
 					<input type="checkbox"<?php echo esc_attr( $checked ); ?> value="<?php echo esc_attr( $pt ); ?>"
-							id="wpb_js_gf_subsets_<?php echo esc_attr( $pt ); ?>"
-							name="<?php echo esc_attr( self::$field_prefix . 'google_fonts_subsets' ); ?>[]">
+						   id="wpb_js_gf_subsets_<?php echo esc_attr( $pt ); ?>"
+						   name="<?php echo esc_attr( self::$field_prefix . 'google_fonts_subsets' ); ?>[]">
 					<?php echo esc_html( $pt ); ?>
 				</label><br>
 				<?php
@@ -523,6 +547,21 @@ class Vc_Settings {
 		}
 		?>
 		<p class="description indicator-hint"><?php esc_html_e( 'Select subsets for Google Fonts available to content elements.', 'js_composer' ); ?></p>
+		<?php
+	}
+
+	public function local_google_fonts_callback() {
+		$checked = get_option( self::$field_prefix . 'local_google_fonts' );
+		if ( empty( $checked ) ) {
+			$checked = false;
+		}
+		?>
+		<label>
+			<input type="checkbox"<?php echo $checked ? ' checked' : ''; ?> value="1" id="local_google_fonts" name="<?php echo esc_attr( self::$field_prefix . 'local_google_fonts' ); ?>">
+			<?php esc_html_e( 'Enable', 'js_composer' ); ?>
+		</label><br/>
+		<p
+				class="description indicator-hint"><?php esc_html_e( 'This will automatically download all used Google Fonts locally.', 'js_composer' ); ?></p>
 		<?php
 	}
 
@@ -604,7 +643,7 @@ class Vc_Settings {
 		?>
 		<label>
 			<input type="checkbox"<?php echo( $checked ? ' checked' : '' ); ?> value="1"
-					id="wpb_js_<?php echo esc_attr( $field ); ?>" name="<?php echo esc_attr( self::$field_prefix . $field ); ?>">
+				   id="wpb_js_<?php echo esc_attr( $field ); ?>" name="<?php echo esc_attr( self::$field_prefix . $field ); ?>">
 			<?php esc_html_e( 'Enable', 'js_composer' ); ?>
 		</label><br/>
 		<p class="description indicator-hint"><?php esc_html_e( 'Enable the use of custom design options (Note: when checked - custom css file will be used).', 'js_composer' ); ?></p>
@@ -651,7 +690,23 @@ class Vc_Settings {
 		$value = get_option( self::$field_prefix . $field );
 		$value = $value ? $value : $this->getDefault( $field );
 		echo '<input type="text" name="' . esc_attr( self::$field_prefix . $field ) . '" value="' . esc_attr( $value ) . '" class="css-control"> px';
-		echo '<p class="description indicator-hint css-control">' . esc_html__( 'By default content elements "stack" one on top other when screen size is smaller than 768px. Change the value to change "stacking" size.', 'js_composer' ) . '</p>';
+		echo '<p class="description indicator-hint css-control">' . esc_html__( 'Content elements stack one on top other when the screen size is smaller than entered value. Change it to control when your layout stacks and adopts to a particular viewport or device size.', 'js_composer' ) . '</p>';
+	}
+
+	public function responsive_md_callback() {
+		$field = 'responsive_md';
+		$value = get_option( self::$field_prefix . $field );
+		$value = $value ? $value : $this->getDefault( $field );
+		echo '<input type="text" name="' . esc_attr( self::$field_prefix . $field ) . '" value="' . esc_attr( $value ) . '" class="css-control"> px';
+		echo '<p class="description indicator-hint css-control">' . esc_html__( 'Content elements stack one on top other when the screen size is smaller than entered value. Change it to control when your layout stacks and adopts to a particular viewport or device size.', 'js_composer' ) . '</p>';
+	}
+
+	public function responsive_lg_callback() {
+		$field = 'responsive_lg';
+		$value = get_option( self::$field_prefix . $field );
+		$value = $value ? $value : $this->getDefault( $field );
+		echo '<input type="text" name="' . esc_attr( self::$field_prefix . $field ) . '" value="' . esc_attr( $value ) . '" class="css-control"> px';
+		echo '<p class="description indicator-hint css-control">' . esc_html__( 'Content elements stack one on top other when the screen size is smaller than entered value. Change it to control when your layout stacks and adopts to a particular viewport or device size.', 'js_composer' ) . '</p>';
 	}
 
 	/**
@@ -692,6 +747,15 @@ class Vc_Settings {
 	 */
 	public function sanitize_not_responsive_css_callback( $rules ) {
 		return (bool) $rules;
+	}
+
+	/**
+	 * @param $checkbox
+	 *
+	 * @return mixed
+	 */
+	public function sanitize_local_google_fonts_callback( $checkbox ) {
+		return (bool) $checkbox;
 	}
 
 	/**
@@ -783,10 +847,36 @@ class Vc_Settings {
 	 */
 	public function sanitize_responsive_max_callback( $responsive_max ) {
 		if ( ! $this->_isNumberValid( $responsive_max ) ) {
-			add_settings_error( self::$field_prefix . 'responsive_max', 1, esc_html__( 'Invalid "Responsive max" value.', 'js_composer' ), 'error' );
+			add_settings_error( self::$field_prefix . 'responsive_max', 1, esc_html__( 'Invalid "Responsive mobile" value.', 'js_composer' ), 'error' );
 		}
 
 		return $responsive_max;
+	}
+
+	/**
+	 * @param $responsive_md
+	 *
+	 * @return mixed
+	 */
+	public function sanitize_responsive_md_callback( $responsive_md ) {
+		if ( ! $this->_isNumberValid( $responsive_md ) ) {
+			add_settings_error( self::$field_prefix . 'responsive_md', 1, esc_html__( 'Invalid "Responsive md" value.', 'js_composer' ), 'error' );
+		}
+
+		return $responsive_md;
+	}
+
+	/**
+	 * @param $responsive_lg
+	 *
+	 * @return mixed
+	 */
+	public function sanitize_responsive_lg_callback( $responsive_lg ) {
+		if ( ! $this->_isNumberValid( $responsive_lg ) ) {
+			add_settings_error( self::$field_prefix . 'responsive_lg', 1, esc_html__( 'Invalid "Responsive lg" value.', 'js_composer' ), 'error' );
+		}
+
+		return $responsive_lg;
 	}
 
 	/**

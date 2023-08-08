@@ -130,7 +130,14 @@ class ListingCategories implements ShortcodeInterface {
 					'heading'     => esc_html__('Number of items', 'qode-listing'),
 					'value'       => '',
 					'admin_label' => true
-				)
+				),
+                array(
+                    'type'        => 'dropdown',
+                    'param_name'  => 'categories_by_custom_order',
+                    'heading'     => esc_html__('Include Categories by Custom Order', 'qode-listing'),
+                    'value'       => array_flip(bridge_qode_get_yes_no_select_array(false, false)),
+                    'admin_label' => true
+                ),
 			)
 		));
 
@@ -140,7 +147,8 @@ class ListingCategories implements ShortcodeInterface {
 		$args = array(
 			'listing_cat_number' => '',
 			'listing_type' => '',
-			'category' => ''
+			'category' => '',
+            'categories_by_custom_order' => 'no'
 		);
 		$params = shortcode_atts($args, $atts);
 		extract($params);
@@ -148,7 +156,8 @@ class ListingCategories implements ShortcodeInterface {
 		$this->setBasicParams($params);
 
 		$query_params = array(
-			'number'     => $listing_cat_number
+			'number'     => $listing_cat_number,
+            'categories_by_custom_order' => $params['categories_by_custom_order']
 		);
 
 		if($listing_type !== ''){

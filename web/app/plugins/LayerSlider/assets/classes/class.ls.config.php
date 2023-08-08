@@ -5,22 +5,22 @@ defined( 'LS_ROOT_FILE' ) || exit;
 
 class LS_Config {
 
-	public static $config 	= array();
-	public static $forced 	= array();
-	public static $forcedBy = array();
+	public static $config 	= [];
+	public static $forced 	= [];
+	public static $forcedBy = [];
 
 	private function __construct() {}
 
 
 	public static function init() {
 
-		self::$config = array(
+		self::$config = [
 			'theme_bundle' => false,
 			'autoupdate' => true,
 			'notices' => true,
 			'promotions' => true,
 			'purchase_url' => get_option('ls-p-url', 'https://kreaturamedia.com/cart/ls-wp/')
-		);
+		];
 	}
 
 
@@ -42,7 +42,7 @@ class LS_Config {
 	public static function set( $keys, $value = null ) {
 
 		if( is_string( $keys ) ) {
-			$keys = array( "$keys" => $value );
+			$keys = [ "$keys" => $value ];
 		}
 
 		if( is_array( $keys ) ) {
@@ -55,11 +55,11 @@ class LS_Config {
 
 	public static function setAsTheme() {
 
-		self::set( array(
+		self::set( [
 			'theme_bundle' 	=> true,
 			'autoupdate' 	=> false,
 			'notices' 		=> false
-		) );
+		] );
 	}
 
 
@@ -74,7 +74,7 @@ class LS_Config {
 	public static function forceSettings( $name = 'Unknown', $keys = null, $value = null ) {
 
 		if( is_string( $keys ) ) {
-			$keys = array( "$keys" => $value );
+			$keys = [ "$keys" => $value ];
 		}
 
 		if( is_array( $keys) ) {
@@ -94,7 +94,7 @@ class LS_Config {
 	public static function isActivatedSite() {
 
 		$activated 	= get_option( 'layerslider-authorized-site', false );
-		$code 		= trim( get_option( 'layerslider-purchase-code', '' ) );
+		$code 		= self::getLicenseKey();
 
 
 		if( empty( $code ) || ! $activated ) {
@@ -123,5 +123,9 @@ class LS_Config {
 
 
 		return true;
+	}
+
+	public static function getLicenseKey() {
+		return trim( get_option( 'layerslider-purchase-code', '' ) );
 	}
 }

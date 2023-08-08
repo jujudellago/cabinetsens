@@ -7,6 +7,7 @@
     property.qodefShowHideEnquiryForm = qodefShowHideEnquiryForm;
     property.qodefSubmitEnquiryForm = qodefSubmitEnquiryForm;
     property.qodefMortgageCalculator = qodefMortgageCalculator;
+    property.qodefWishlist = qodefWishlist;
 
     property.qodefOnDocumentReady = qodefOnDocumentReady;
     property.qodefOnWindowLoad = qodefOnWindowLoad;
@@ -26,6 +27,7 @@
         qodefSubmitEnquiryForm();
         qodefMortgageCalculator();
         qodefDeleteProperty();
+        qodefWishlist();
     }
 
     /*
@@ -201,6 +203,44 @@
     	}
     }
 
+    function qodefWishlist() {
+        var favouritesLinks = $( '.qodef-re-item-favorites' );
+
+        if( favouritesLinks.length ) {
+            favouritesLinks.each( function() {
+                var favouritesLink = $(this),
+                    itemID = favouritesLink.data( 'item-id' );
+
+                favouritesLink.on( 'click', function() {
+                    var ajaxData = {
+                        action: 'qodef_re_add_item_to_favorites',
+                        item_id : itemID
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        data: ajaxData,
+                        url: QodeAdminAjax.ajaxurl,
+                        success: function (data) {
+                            var response = JSON.parse(data);
+
+                            if(response.status === 'success') {
+                                favouritesLink.find('span').text(response.data.message);
+                                favouritesLink.find('.qodef-re-favorites-icon').removeClass('fa-heart fa-heart-o').addClass(response.data.icon);
+
+                                if( favouritesLink.parents( '.qodef-re-profile-favorite-item' ).length ) {
+                                    favouritesLink.parents( '.qodef-re-profile-favorite-item' ).remove();
+                                }
+                            }
+                        }
+                    });
+
+                    return false;
+                } );
+            } );
+        }
+    }
+
 })(jQuery);
 (function($) {
     "use strict";
@@ -246,15 +286,15 @@
 
                 if (!compareHolderButtonOpen.hasClass('opened')) {
                     compareHolderButtonOpen.addClass('opened');
-                    qodef.body.addClass(cssClass);
+                    qode_body.addClass(cssClass);
 
                     $('.qodef-wrapper .qodef-cover').on('click', function () {
-                        qodef.body.removeClass(cssClass);
+                        qode_body.removeClass(cssClass);
                         compareHolderButtonOpen.removeClass('opened');
                     });
                 } else {
                     compareHolderButtonOpen.removeClass('opened');
-                    qodef.body.removeClass(cssClass);
+                    qode_body.removeClass(cssClass);
                 }
             });
 
@@ -283,14 +323,28 @@
     function qodefCompareHolderScroll(){
         var compareHolderScroll = $('.qodef-re-compare-holder .qodef-re-compare-holder-scroll');
         if(compareHolderScroll.length){
-            var itemsHolder = compareHolderScroll.find('.qodef-re-compare-items-holder');
-            var actionsHolder = compareHolderScroll.find('.qodef-re-compare-actions');
-            var completeHeight = itemsHolder.outerHeight() + actionsHolder.outerHeight();
-            compareHolderScroll.height(completeHeight + 30);
-            compareHolderScroll.perfectScrollbar({
+            var itemsHolder = compareHolderScroll.find('.qodef-re-compare-items-holder'),
+                titleHolder = $( '.qodef-re-compare-holder-title' ),
+                actionsHolder = compareHolderScroll.find('.qodef-re-compare-actions'),
+                itemsHolderHeight = titleHolder.outerHeight( true ) + actionsHolder.outerHeight( true );
+
+            itemsHolder.css('height', 'calc(100% - ' + itemsHolderHeight + 'px)');
+
+            var $defaultParams = {
                 wheelSpeed: 0.6,
                 suppressScrollX: true
-            });
+            };
+
+            var $compareHolderPS = new PerfectScrollbar(
+                itemsHolder[0],
+                $defaultParams
+            );
+
+            $( window ).resize(
+                function () {
+                    $compareHolderPS.update();
+                }
+            );
         }
     }
 
@@ -368,7 +422,6 @@
         if(comparePopupHolder.length) {
             if(!comparePopupHolder.hasClass('qodef-re-popup-opened')){
                 comparePopupHolder.addClass('qodef-re-popup-opened');
-                qode.modules.common.qodefDisableScroll();
 	            qodefInitComparePopupScroll();
             }
         }
@@ -377,16 +430,27 @@
     function qodefInitComparePopupScroll(){
         var comparePopupHolder = $('.qodef-re-compare-popup'),
             itemsHolder = comparePopupHolder.find('#qodef-re-popup-items');
-	    itemsHolder.perfectScrollbar({
+
+        var $defaultParams = {
             wheelSpeed: 0.6,
             suppressScrollX: true
-        });
+        };
+
+        var $comparePopUpPS = new PerfectScrollbar(
+            itemsHolder[0],
+            $defaultParams
+        );
+
+        $( window ).resize(
+            function () {
+                $comparePopUpPS.update();
+            }
+        );
     }
 
     function qodefInitComparePopupClose(){
         var comparePopupHolder = $('.qodef-re-compare-popup');
         comparePopupHolder.removeClass('qodef-re-popup-opened');
-	    qode.modules.common.qodefEnableScroll();
     }
 
     function qodefInitItemsReset() {
@@ -549,111 +613,65 @@
 
 })(jQuery);
 (function($) {
-    'use strict';
+	'use strict';
 
-    var propertySearch = {};
-    qode.modules.propertySearch = propertySearch;
+	var elementorPropertyCityListSlider = {};
+	qode.modules.elementorPropertyCityListSlider = elementorPropertyCityListSlider;
 
-    propertySearch.qodefOnDocumentReady = qodefOnDocumentReady;
-    propertySearch.qodefOnWindowLoad = qodefOnWindowLoad;
-    propertySearch.qodefOnWindowResize = qodefOnWindowResize;
-    propertySearch.qodefOnWindowScroll = qodefOnWindowScroll;
+	elementorPropertyCityListSlider.qodeInitElementorPropertyCityListSlider = qodeInitElementorPropertyCityListSlider;
 
-    $(document).ready(qodefOnDocumentReady);
-    $(window).on('load', qodefOnWindowLoad);
-    $(window).resize(qodefOnWindowResize);
-    $(window).scroll(qodefOnWindowScroll);
 
-    /*
-     All functions to be called on $(document).ready() should be in this function
-     */
-    function qodefOnDocumentReady() {
-        initSearchParams();
-    }
+	elementorPropertyCityListSlider.qodeOnWindowLoad = qodeOnWindowLoad;
 
-    /*
-     All functions to be called on $(window).load() should be in this function
-     */
-    function qodefOnWindowLoad() {
+	$(window).on('load', qodeOnWindowLoad);
 
-    }
+	/*
+	 ** All functions to be called on $(window).load() should be in this function
+	 */
+	function qodeOnWindowLoad() {
+		qodeInitElementorPropertyCityListSlider();
+	}
 
-    /*
-     All functions to be called on $(window).resize() should be in this function
-     */
-    function qodefOnWindowResize() {
-
-    }
-
-    /*
-     All functions to be called on $(window).scroll() should be in this function
-     */
-    function qodefOnWindowScroll() {
-
-    }
-
-    function initSearchParams() {
-        var searchHolder = $('.qodef-property-search-holder');
-        if(searchHolder.length) {
-            searchHolder.each(function() {
-               var thisSearch = $(this);
-
-                //INIT STATUS FIELD
-                var status = thisSearch.find('.qodef-search-status-section');
-                if(status.length) {
-                    status.each(function() {
-                        var selectStatus = status.find('select');
-                        if(selectStatus.length) {
-                            selectStatus.select2({
-                                minimumResultsForSearch: -1
-                            }).on('select2:select', function (e) {
-
-                            });
-                        }
-                    });
-                }
-
-                //INIT TYPE FIELD
-                var type = thisSearch.find('.qodef-search-type-section');
-                if(type.length) {
-                    type.each(function() {
-                        var thisTypeSection = $(this),
-                            thisTypeInput = thisTypeSection.find('input[name=qodef-search-type]'),
-                            typeItems = thisTypeSection.find('.qodef-ptl-item');
-                        typeItems.on('click', function (e) {
-                            e.preventDefault();
-                            var selectedItem = $(this);
-                            if(selectedItem.hasClass('active')) {
-                                thisTypeInput.val('');
-                                selectedItem.removeClass('active');
-                            } else {
-                                typeItems.removeClass('active');
-                                selectedItem.addClass('active');
-                                thisTypeInput.val(selectedItem.data('id'));
-                            }
-                        })
-                    });
-                }
-
-                //INIT CITY FIELD
-                var city = thisSearch.find('.qodef-search-city-section');
-                if(city.length) {
-                    city.each(function() {
-                        var selectCity = city.find('select');
-                        if (selectCity.length) {
-                            selectCity.select2({
-                                minimumResultsForSearch: -1
-                            }).on('select2:select', function (e) {
-
-                            });
-                        }
-                    });
-                }
-            });
-        }
-    }
+	function qodeInitElementorPropertyCityListSlider(){
+		$j(window).on('elementor/frontend/init', function () {
+			elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_property_city_list_slider.default', function() {
+				qodeOwlSlider();
+			} );
+		});
+	}
 
 })(jQuery);
+
+(function($) {
+	'use strict';
+
+	var elementorPropertyLargeSlider = {};
+	qode.modules.elementorPropertyLargeSlider = elementorPropertyLargeSlider;
+
+	elementorPropertyLargeSlider.qodeInitElementorPropertyLargeSlider = qodeInitElementorPropertyLargeSlider;
+
+
+	elementorPropertyLargeSlider.qodeOnWindowLoad = qodeOnWindowLoad;
+
+	$(window).on('load', qodeOnWindowLoad);
+
+	/*
+	 ** All functions to be called on $(window).load() should be in this function
+	 */
+	function qodeOnWindowLoad() {
+		qodeInitElementorPropertyLargeSlider();
+	}
+
+	function qodeInitElementorPropertyLargeSlider(){
+		$j(window).on('elementor/frontend/init', function () {
+			elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_property_large_slider.default', function() {
+				qodeOwlSlider();
+			} );
+		});
+	}
+
+})(jQuery);
+
 (function($) {
     'use strict';
 
@@ -1194,7 +1212,7 @@
                     var resultHolder = queryHolder.find('.qodef-query-result');
 
                     saveQueryButton.on('click', function () {
-                        if(qodef.body.hasClass('logged-in')) {
+                        if(qode_body.hasClass('logged-in')) {
                             resultHolder.html('<span class="fa fa-spinner fa-spin" aria-hidden="true"></span>');
 
                             var statusValue = status.data('status'),
@@ -1342,6 +1360,206 @@
     }
 
 })(jQuery);
+(function($) {
+	'use strict';
+
+	var elementorPropertySearch = {};
+	qode.modules.elementorPropertySearch = elementorPropertySearch;
+
+	elementorPropertySearch.qodeInitElementorPropertySearch = qodeInitElementorPropertySearch;
+
+
+	elementorPropertySearch.qodeOnWindowLoad = qodeOnWindowLoad;
+
+	$(window).on('load', qodeOnWindowLoad);
+
+	/*
+	 ** All functions to be called on $(window).load() should be in this function
+	 */
+	function qodeOnWindowLoad() {
+		qodeInitElementorPropertySearch();
+	}
+
+	function qodeInitElementorPropertySearch(){
+		$j(window).on('elementor/frontend/init', function () {
+			elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_property_search.default', function() {
+				qode.modules.propertySearch.initSearchParams();
+			} );
+		});
+	}
+
+})(jQuery);
+
+(function($) {
+    'use strict';
+
+    var propertySearch = {};
+    qode.modules.propertySearch = propertySearch;
+
+    propertySearch.initSearchParams = initSearchParams;
+    propertySearch.qodefOnDocumentReady = qodefOnDocumentReady;
+    propertySearch.qodefOnWindowLoad = qodefOnWindowLoad;
+    propertySearch.qodefOnWindowResize = qodefOnWindowResize;
+    propertySearch.qodefOnWindowScroll = qodefOnWindowScroll;
+
+    $(document).ready(qodefOnDocumentReady);
+    $(window).on('load', qodefOnWindowLoad);
+    $(window).resize(qodefOnWindowResize);
+    $(window).scroll(qodefOnWindowScroll);
+
+    /*
+     All functions to be called on $(document).ready() should be in this function
+     */
+    function qodefOnDocumentReady() {
+        initSearchParams();
+    }
+
+    /*
+     All functions to be called on $(window).load() should be in this function
+     */
+    function qodefOnWindowLoad() {
+
+    }
+
+    /*
+     All functions to be called on $(window).resize() should be in this function
+     */
+    function qodefOnWindowResize() {
+
+    }
+
+    /*
+     All functions to be called on $(window).scroll() should be in this function
+     */
+    function qodefOnWindowScroll() {
+
+    }
+
+    function initSearchParams() {
+        var searchHolder = $('.qodef-property-search-holder');
+        if(searchHolder.length) {
+            searchHolder.each(function() {
+               var thisSearch = $(this);
+
+                //INIT STATUS FIELD
+                var status = thisSearch.find('.qodef-search-status-section');
+                if(status.length) {
+                    status.each(function() {
+                        var selectStatus = status.find('select');
+                        if(selectStatus.length) {
+                            selectStatus.select2({
+                                minimumResultsForSearch: -1
+                            }).on('select2:select', function (e) {
+
+                            });
+                        }
+                    });
+                }
+
+                //INIT TYPE FIELD
+                var type = thisSearch.find('.qodef-search-type-section');
+                if(type.length) {
+                    type.each(function() {
+                        var thisTypeSection = $(this),
+                            thisTypeInput = thisTypeSection.find('input[name=qodef-search-type]'),
+                            typeItems = thisTypeSection.find('.qodef-ptl-item');
+                        typeItems.on('click', function (e) {
+                            e.preventDefault();
+                            var selectedItem = $(this);
+                            if(selectedItem.hasClass('active')) {
+                                thisTypeInput.val('');
+                                selectedItem.removeClass('active');
+                            } else {
+                                typeItems.removeClass('active');
+                                selectedItem.addClass('active');
+                                thisTypeInput.val(selectedItem.data('id'));
+                            }
+                        })
+                    });
+                }
+
+                //INIT CITY FIELD
+                var city = thisSearch.find('.qodef-search-city-section');
+                if(city.length) {
+                    city.each(function() {
+                        var selectCity = city.find('select');
+                        if (selectCity.length) {
+                            selectCity.select2({
+                                minimumResultsForSearch: -1
+                            }).on('select2:select', function (e) {
+
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+})(jQuery);
+
+(function($) {
+	'use strict';
+
+	var elementorPropertySlider = {};
+	qode.modules.elementorPropertySlider = elementorPropertySlider;
+
+	elementorPropertySlider.qodeInitElementorPropertySlider = qodeInitElementorPropertySlider;
+
+
+	elementorPropertySlider.qodeOnWindowLoad = qodeOnWindowLoad;
+
+	$(window).on('load', qodeOnWindowLoad);
+
+	/*
+	 ** All functions to be called on $(window).load() should be in this function
+	 */
+	function qodeOnWindowLoad() {
+		qodeInitElementorPropertySlider();
+	}
+
+	function qodeInitElementorPropertySlider(){
+		$j(window).on('elementor/frontend/init', function () {
+			elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_property_slider.default', function() {
+				console.log('krga');
+				qodeOwlSlider();
+			} );
+		});
+	}
+
+})(jQuery);
+
+(function($) {
+	'use strict';
+
+	var elementorPropertyTypeSlider = {};
+	qode.modules.elementorPropertyTypeSlider = elementorPropertyTypeSlider;
+
+	elementorPropertyTypeSlider.qodeInitElementorPropertyTypeSlider = qodeInitElementorPropertyTypeSlider;
+
+
+	elementorPropertyTypeSlider.qodeOnWindowLoad = qodeOnWindowLoad;
+
+	$(window).on('load', qodeOnWindowLoad);
+
+	/*
+	 ** All functions to be called on $(window).load() should be in this function
+	 */
+	function qodeOnWindowLoad() {
+		qodeInitElementorPropertyTypeSlider();
+	}
+
+	function qodeInitElementorPropertyTypeSlider(){
+		$j(window).on('elementor/frontend/init', function () {
+			elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_property_type_slider.default', function() {
+				console.log('slider');
+				qodeOwlSlider();
+			} );
+		});
+	}
+
+})(jQuery);
+
 (function($) {
     'use strict';
 
@@ -3272,38 +3490,6 @@ ClusterIcon.prototype['onAdd'] = ClusterIcon.prototype.onAdd;
 ClusterIcon.prototype['draw'] = ClusterIcon.prototype.draw;
 ClusterIcon.prototype['onRemove'] = ClusterIcon.prototype.onRemove;
 (function($) {
-    'use strict';
-
-    var roles = {};
-    qode.modules.roles = roles;
-
-    roles.qodefOnDocumentReady = qodefOnDocumentReady;
-
-    $(document).ready(qodefOnDocumentReady);
-
-    /*
-     All functions to be called on $(document).ready() should be in this function
-     */
-    function qodefOnDocumentReady() {
-        qodefInitRegisterSelect();
-    }
-
-    function qodefInitRegisterSelect() {
-        var registerForm = $('.qodef-register-content-inner');
-        var select = registerForm.find('select');
-        if (select.length) {
-            select.each(function() {
-                var thisSelect = $(this);
-
-                thisSelect.select2({
-                    minimumResultsForSearch: Infinity
-                });
-            });
-        }
-    }
-
-})(jQuery);
-(function($) {
     "use strict";
 
     var realEstateReviews = {};
@@ -3354,6 +3540,38 @@ ClusterIcon.prototype['onRemove'] = ClusterIcon.prototype.onRemove;
             addActive();
         });
 
+    }
+
+})(jQuery);
+(function($) {
+    'use strict';
+
+    var roles = {};
+    qode.modules.roles = roles;
+
+    roles.qodefOnDocumentReady = qodefOnDocumentReady;
+
+    $(document).ready(qodefOnDocumentReady);
+
+    /*
+     All functions to be called on $(document).ready() should be in this function
+     */
+    function qodefOnDocumentReady() {
+        qodefInitRegisterSelect();
+    }
+
+    function qodefInitRegisterSelect() {
+        var registerForm = $('.qodef-register-content-inner');
+        var select = registerForm.find('select');
+        if (select.length) {
+            select.each(function() {
+                var thisSelect = $(this);
+
+                thisSelect.select2({
+                    minimumResultsForSearch: Infinity
+                });
+            });
+        }
     }
 
 })(jQuery);

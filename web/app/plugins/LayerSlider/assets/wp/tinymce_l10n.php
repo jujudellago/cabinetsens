@@ -3,7 +3,7 @@
 // Prevent direct file access
 defined( 'LS_ROOT_FILE' ) || exit;
 
-$l10n_ls_mce = array(
+$l10n_ls_mce = [
 
 	// TinyMCE slider chooser widget
 	'MCEAddLayerSlider' => __('Add LayerSlider', 'LayerSlider'),
@@ -13,5 +13,5 @@ $l10n_ls_mce = array(
 	'MCENoOverride' 	=> __('no override', 'LayerSlider'),
 	'MCEInsertButton' 	=> __('Insert into post', 'LayerSlider'),
 	'MCENoPreview' 		=> __('No Preview', 'LayerSlider'),
-	'MCENoPreviewText' 	=> __('Previews are automatically generated from slide images in sliders.', 'LayerSlider')
-);
+	'MCENoPreviewText' 	=> __('Previews are automatically generated from slide images in projects.', 'LayerSlider')
+];

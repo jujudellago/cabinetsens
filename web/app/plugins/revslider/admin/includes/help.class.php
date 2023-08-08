@@ -2,11 +2,15 @@
 /**
 * @author    ThemePunch <info@themepunch.com>
 * @link      https://www.themepunch.com/
-* @copyright 2019 ThemePunch
+* @copyright 2022 ThemePunch
 */
 if(!defined('ABSPATH')) exit();
 
 class RevSliderHelp {
+
+	/**
+	 * @return array
+	 */
 	public static function getIndex() {
 		$translations = array(
 			'docs' => __('Docs', 'revsliderhelp'),
@@ -27,7 +31,6 @@ class RevSliderHelp {
 			'option' => __('Option', 'revsliderhelp'),
 			'options' => __('Options', 'revsliderhelp'),
 			'faqs' => __('FAQs', 'revsliderhelp'),
-			'options' => __('Options', 'revsliderhelp'),
 			'search' => __('Search Keywords, e.g. "Background"', 'revsliderhelp'),
 			'instructions' => __('Hover over any option to learn more', 'revsliderhelp'),
 			'selectresult' => __('Select a Search Result')
@@ -1049,9 +1052,9 @@ class RevSliderHelp {
 								)
 							),
 							'photoset' => array(
-								$t => __("Photoset", 'revsliderhelp'),
+								$t => __("Album", 'revsliderhelp'),
 								$h => "source.flickr.photoSet",
-								$k => array("flickr", "photoset", "flickr photoset", "flickr photos"),
+								$k => array("flickr", "photoset", "album", "flickr album", "flickr photoset", "flickr photos"),
 								$d => __("Select the photo album you wish to include from the Flickr account", 'revsliderhelp'),
 								$a => $u . "module-content/#flickr",
 								$hl => array(
@@ -2075,6 +2078,58 @@ class RevSliderHelp {
 					),
 					'gst_sl_3' => array(
 						'layout' => array(
+							'orientation' => array(
+								$t => __("Carousel Orientation", 'revsliderhelp'),
+								$h => "carousel.orientation",
+								$k => array("carousel", "orientation", "direction"),
+								$d => __("Changes carousel orientation to allow you to drag either horizontally or vertically", 'revsliderhelp'),
+								$a => $u . "carousel-settings/",
+								$hl => array(
+									$dp => array(array($p => 'settings.orientation', $v => 'carousel', $o => 'slider_layout_type_carousel')), 
+									$m => "#module_settings_trigger, #gst_sl_3", 
+									$st => '#form_slidergeneral_caroussel', 
+									$f => "#sr_ca_orient"
+								)
+							),
+							'Justify' => array(
+								$t => __("Keep Aspect Ratio(Justify)", 'revsliderhelp'),
+								$h => "carousel.justify",
+								$k => array("carousel", "justify", "orientation"),
+								$d => __("Keep aspect ratio of the Carousel Items to use the same height with auto width.", 'revsliderhelp'),
+								$a => $u . "carousel-settings/",
+								$hl => array(
+									$dp => array(array($p => 'settings.justify', $v => 'carousel', $o => 'slider_layout_type_carousel')), 
+									$m => "#module_settings_trigger, #gst_sl_3", 
+									$st => '#form_slidergeneral_caroussel', 
+									$f => "#sr_ca_justi"
+								)
+							),
+							'vertical_visibility' => array(
+								$t => __("Prev/Next Visibility", 'revsliderhelp'),
+								$h => "carousel.prevNextVis",
+								$k => array("carousel", "vertical space", "vertical visibility", "prev next visibility"),
+								$d => __("Determines visiblity of previous and next slides. A value of 100px will show 50px of previous and next slides. If value is set in percent for example 50% then 25% of previous slide will be visible, and 25% of next slide.", 'revsliderhelp'),
+								$a => $u . "carousel-settings/",
+								$hl => array(
+									$dp => array(array($p => 'settings.prevNextVis', $v => 'carousel', $o => 'slider_layout_type_carousel')), 
+									$m => "#module_settings_trigger, #gst_sl_3", 
+									$st => '#form_slidergeneral_caroussel', 
+									$f => "#sr_ca_pdt"
+								)
+							),
+							'snap' => array(
+								$t => __("Carousel Snap", 'revsliderhelp'),
+								$h => "carousel.snap",
+								$k => array("carousel", "vertical snap", "horizontal snap", "snap"),
+								$d => __("Snap carousel to slides based on slides alignment settings.", 'revsliderhelp'),
+								$a => $u . "carousel-settings/",
+								$hl => array(
+									$dp => array(array($p => 'settings.snap', $v => 'carousel', $o => 'slider_layout_type_carousel')), 
+									$m => "#module_settings_trigger, #gst_sl_3", 
+									$st => '#form_slidergeneral_caroussel', 
+									$f => "#sr_ca_snap"
+								)
+							),
 							'infinity_scroll' => array(
 								$t => __("Infinity Scroll", 'revsliderhelp'),
 								$h => "carousel.infinity",
@@ -2086,6 +2141,19 @@ class RevSliderHelp {
 									$m => "#module_settings_trigger, #gst_sl_3", 
 									$st => '#form_slidergeneral_caroussel', 
 									$f => "#sr_ca_inf"
+								)
+							),
+							'stopOnClick' => array(
+								$t => __("Stop Progress On Click", 'revsliderhelp'),
+								$h => "carousel.stopOnClick",
+								$k => array("carousel", "stop", "scroll", "stop on click"),
+								$d => __("Autorotate progress will get stopped if user clicks on slider", 'revsliderhelp'),
+								$a => $u . "carousel-settings/",
+								$hl => array(
+									$dp => array(array($p => 'settings.type', $v => 'carousel', $o => 'slider_layout_type_carousel')), 
+									$m => "#module_settings_trigger, #gst_sl_3", 
+									$st => '#form_slidergeneral_caroussel', 
+									$f => "#sr_ca_socl"
 								)
 							),
 							'layers_visible' => array(
@@ -2232,9 +2300,78 @@ class RevSliderHelp {
 									$st => '#form_slidergeneral_caroussel_animation', 
 									$f => "#sr_ca_speed"
 								)
+							),
+							'overshoot' => array(
+								$t => __("Overshoot", 'revsliderhelp'),
+								$h => "carousel.overshoot",
+								$k => array("carousel", "carousel bounce", "carousel overshoot", "physics"),
+								$d => __("This option mimics physics when you drag and throw carousel quickly, carousel will smoothly go past the predicted slide and animate back to target slide using ease set by user.", 'revsliderhelp'),
+								$a => $u . "carousel-settings/",
+								$hl => array(
+									$dp => array(array($p => 'settings.overshoot', $v => 'carousel', $o => 'slider_layout_type_carousel')), 
+									$m => "#module_settings_trigger, #gst_sl_3", 
+									$st => '#form_slidergeneral_caroussel_animation', 
+									$f => "#sr_ca_overshoot"
+								)
 							)
 						),
 						'effects' => array(
+							'spin' => array(
+								$di => "slider_carousel_spin",
+								$t => __("Spin", 'revsliderhelp'),
+								$h => "carousel.spin",
+								$k => array("carousel", "carousel spin", "2d spin", "3d spin", "spin"),
+								$d => __("Set carousel to spin in 2d or 3d space, change angle settings to determine direction of the spin.", 'revsliderhelp'),
+								$a => $u . "carousel-settings/",
+								$hl => array(
+									$dp => array(array($p => 'settings.spin', $v => 'carousel', $o => 'slider_layout_type_carousel')), 
+									$m => "#module_settings_trigger, #gst_sl_3", 
+									$st => '#form_slidergeneral_caroussel_effects', 
+									$f => "#sr_ca_spin"
+								)
+							),
+							'spin_angle' => array(
+								$di => "slider_carousel_spinangle",
+								$t => __("Spin Angle", 'revsliderhelp'),
+								$h => "carousel.spinAngle",
+								$k => array("carousel", "spin", "spin angle", "spin angle spacing"),
+								$d => __("Sets the angle between two slides for spin effect. In 2D spin, angle determines spin direction. In 3D spin, angle determines if slides will spin inwards or outwards in 3D space.", 'revsliderhelp'),
+								$a => $u . "carousel-settings/",
+								$hl => array(
+									$dp => array(array($p => 'settings.spinAngle', $v => 'carousel', $o => 'slider_layout_type_carousel')), 
+									$m => "#module_settings_trigger, #gst_sl_3", 
+									$st => '#form_slidergeneral_caroussel_effects', 
+									$f => "#sr_ca_spinangle"
+								)
+							),
+							'skewX' => array(
+								$di => "slider_carousel_skewx",
+								$t => __("Carousel Skew", 'revsliderhelp'),
+								$h => "carousel.skewX",
+								$k => array("carousel", "skew", "drag skew"),
+								$d => __("Entire carousel will horizontally skew based on angle set and based on current speed of carousel", 'revsliderhelp'),
+								$a => $u . "carousel-settings/",
+								$hl => array(
+									$dp => array(array($p => 'settings.skewX', $v => 'carousel', $o => 'slider_layout_type_carousel')), 
+									$m => "#module_settings_trigger, #gst_sl_3", 
+									$st => '#form_slidergeneral_caroussel_effects', 
+									$f => "#sr_ca_skewxall"
+								)
+							),
+							'skewY' => array(
+								$di => "slider_carousel_skewy",
+								$t => __("Carousel SkewY", 'revsliderhelp'),
+								$h => "carousel.skewY",
+								$k => array("carousel", "skew", "drag skew"),
+								$d => __("Entire carousel will vertically skew based on angle set and based on current speed of carousel", 'revsliderhelp'),
+								$a => $u . "carousel-settings/",
+								$hl => array(
+									$dp => array(array($p => 'settings.skewY', $v => 'carousel', $o => 'slider_layout_type_carousel')), 
+									$m => "#module_settings_trigger, #gst_sl_3", 
+									$st => '#form_slidergeneral_caroussel_effects', 
+									$f => "#sr_ca_skewyall"
+								)
+							),
 							'fade' => array(
 								$di => "slider_carousel_fadeout",
 								$t => __("Fade Items", 'revsliderhelp'),
@@ -2852,6 +2989,14 @@ class RevSliderHelp {
 							$d => __("Choose 'All' to LazyLoad all images in the Slider when the Slider first loads, 'Smart' to only LazyLoad the prev/next Slide's images, and 'Single' to only LazyLoad the current Slide's images.", 'revsliderhelp'),
 							$a => $u . "advanced-module-settings/",
 							$hl => array($m => "#module_settings_trigger, #gst_sl_10", $st => '#form_slidergeneral_advanced_loading', $f => "#sr_adv_performance_load")
+						),
+						'bgdpr' => array(
+							$t => __("Device Pixel Ratio", 'revsliderhelp'),
+							$h => "general.DPR",
+							$k => array("dpr", "device aspect ratio", "image quality", "background", "blurry"),
+							$d => __("Allows to use higher DPR on 4k, 5k , Retina displays.  Higher Maximum value can have negativ influence on complex Canvas animations. Lower Value can have negative influence on Image Quality on 4K+ Devices. In cae animations or Pan Zoom are not smooth, try lower DPR, and incase BG Image blurry, try higher DPR.", 'revsliderhelp'),
+							$a => $u . "advanced-module-settings/",
+							$hl => array($m => "#module_settings_trigger, #gst_sl_10", $st => '#form_slidergeneral_advanced_loading', $f => "#sliderbgdpr")
 						),
 						'simplify' => array(
 							$t => __("Simplify on IOS4/IE8", 'revsliderhelp'),
@@ -4786,6 +4931,45 @@ class RevSliderHelp {
 								$st => '#form_nav_mousescroll', 
 								$f => "*[name='sr_reversemousenavigation'][value='reverse']"
 							)
+						),
+						'target' => array(
+							$t => __("Scroll Target", 'revsliderhelp'),
+							$h => "nav.mouse.target",
+							$k => array("mouse scroll", "scroll", "mouse", "scroll target", "target"),
+							$d => __("Choose the page target object which scrolls in your theme so its scroll position can be animated while snapping", 'revsliderhelp'),
+							$a => $u . "keyboard-arrows-mouse-wheel/",
+							$hl => array(
+								$dp => array(array($p => 'settings.type', $v => 'standard::carousel', $o => 'slider_layout_type_standard')),
+								$m => "#module_navigation_trigger, #gst_nav_9", 
+								$st => '#form_nav_mousescroll', 
+								$f => "*[name='sr_targetmousenavigation']"
+							)
+						),
+						'threshold' => array(
+							$t => __("Snap Threshold", 'revsliderhelp'),
+							$h => "nav.mouse.threshold",
+							$k => array("mouse scroll", "scroll", "mouse", "scroll snap", "snap threshold"),
+							$d => __("Sets the threshold within which slider will snap into position while scrolling, threshold is calculated based on slider's distance from top and bottom", 'revsliderhelp'),
+							$a => $u . "keyboard-arrows-mouse-wheel/",
+							$hl => array(
+								$dp => array(array($p => 'settings.type', $v => 'standard::carousel', $o => 'slider_layout_type_standard')),
+								$m => "#module_navigation_trigger, #gst_nav_9", 
+								$st => '#form_nav_mousescroll', 
+								$f => "#wheelsnapthreshold"
+							)
+						),
+						'viewport' => array(
+							$t => __("In ViewPort (%)", 'revsliderhelp'),
+							$h => "nav.mouse.viewport",
+							$k => array("mouse scroll", "scroll", "mouse", "scroll viewport"),
+							$d => __("Determines how much % of slider should be visible when slider should change slide on scroll", 'revsliderhelp'),
+							$a => $u . "keyboard-arrows-mouse-wheel/",
+							$hl => array(
+								$dp => array(array($p => 'settings.type', $v => 'standard::carousel', $o => 'slider_layout_type_standard')),
+								$m => "#module_navigation_trigger, #gst_nav_9", 
+								$st => '#form_nav_mousescroll', 
+								$f => "#wheelifvisible"
+							)
 						)
 					)
 				),
@@ -4827,6 +5011,19 @@ class RevSliderHelp {
 							)
 						),
 						'image_background' => array(
+							'cross_origin_video' => array(
+								$t => __("Cross Origin Video", 'revsliderhelp'),
+								$h => "bg.crossOriginVideo",
+								$k => array("cross origin video", "video background"),
+								$d => __("By default videos are not requested with CORS header and you may get CORS error (Cross-Origin Request Blocked), to resolve it please enable this option. If your third party server does not deliver videos with CORS permission then you will get CORS error. In that case either use videos from same server as your website's origin or enable CORS permissions for videos on third party server.", 'revsliderhelp'),
+								$a => $u . "slide-background/#video",
+								$hl => array(
+									$dp => array(array($p => '#slide#.slide.bg.type', $v => 'html5', $o => 'slide_bg_type')),
+									$m => "#module_slide_trigger, #gst_slide_1", 
+									$st => '#form_slidebg_source', 
+									$f => "*[data-r='bg.crossOriginVideo']"
+								)
+							),
 							'image_from_stream' => array(
 								$t => __("Image from Stream", 'revsliderhelp'),
 								$h => "bg.imageFromStream",
@@ -5102,19 +5299,20 @@ class RevSliderHelp {
 										$f => "#slide_vid_loop"
 									)
 								),
-								'force_cover' => array(
-									$t => __("Force Cover", 'revsliderhelp'),
-									$h => "bg.video.forceCover",
+								'fitCover' => array(
+									$t => __("Video Fit Cover", 'revsliderhelp'),
+									$h => "bg.video.fitCover",
 									$k => array("cover", "force cover"),
-									$d => __("Ensures that the video will be displayed full-width and full-height regardless of its aspect ratio", 'revsliderhelp'),
+									$d => __("Video will fit in container with CSS property object-fit cover. Disable this option in case video size jumps on slide change.", 'revsliderhelp'),
 									$a => $u . "slide-background/#video-settings",
 									$hl => array(
-										$dp => array(array($p => '#slide#.slide.bg.type', $v => 'youtube::vimeo::html5', $o => 'slide_bg_type')),
+										$dp => array(array($p => '#slide#.slide.bg.type', $v => 'html5', $o => 'slide_bg_type')),
 										$m => "#module_slide_trigger, #gst_slide_1", 
 										$st => '#form_slidebg_ssettings', 
-										$f => "#sl_vid_force_cover"
+										$f => "#sl_vid_fit_cover"
 									)
 								),
+								
 								'next_slide_at_end' => array(
 									$t => __("Next Slide at End", 'revsliderhelp'),
 									$h => "bg.video.nextSlideAtEnd",
@@ -5308,6 +5506,19 @@ class RevSliderHelp {
 								$m => "#module_slide_trigger, #gst_slide_2,#slidebasic_ts_wrapbrtn > div", 
 								$st => '#sltrans_all_globals', 
 								$f => "#sltrans_duration"
+							)
+						),
+
+						'adpr' => array(
+							$t => __("Prioritize Performance", 'revsliderhelp'),
+							$h => "slideChange.adpr",
+							$k => array("slide transition", "slide animation", "animation performance", "animation blurry", "animation quality"),
+							$d => __("Win performance in complex transitions by reducing the image quality during animations", 'revsliderhelp'),
+							$a => $u . "slide-animation/",
+							$hl => array(
+								$m => "#module_slide_trigger, #gst_slide_2", 
+								$st => '#sltrans_all_globals', 
+								$f => "#sltrans_dpr"
 							)
 						),
 
@@ -6703,6 +6914,21 @@ class RevSliderHelp {
 										)
 									)
 								),
+
+								'fitCover' => array(
+									$t => __("Video Fit Cover", 'revsliderhelp'),
+									$h => "media.fitCover",
+									$k => array("fit cover", "video size", "video fit cover"),
+									$d => __("Video will fit in container with CSS property object-fit cover. Disable this option in case video size jumps on slide change.", 'revsliderhelp'),
+									$a => $u . "layer-video-audio-settings/",
+									$hl => array(
+										$dp => array('layerselected::video'), 
+										$m => "#module_layers_trigger, #gst_layer_1", 
+										$st => '#form_layercontent_content_video', 
+										$f => "#video_layer_fit_cover"
+									)
+								),
+
 								'preloading' => array(
 									'preload' => array(
 										$t => __("Preload", 'revsliderhelp'),
@@ -6758,6 +6984,19 @@ class RevSliderHelp {
 										$m => "#module_layers_trigger, #gst_layer_1", 
 										$st => '#form_layercontent_content_video', 
 										$f => "#layer_video_autoplay"
+									)
+								),
+								'pauseOnSlideChange' => array(
+									$t => __("Autoplay", 'revsliderhelp'),
+									$h => "media.pauseOnSlideChange",
+									$k => array("pause video", "carousel video pause", "carousel change pause"),
+									$d => __("Pauses video on carousel change even if video layer is set to be visible always", 'revsliderhelp'),
+									$a => $u . "layer-video-audio-settings/",
+									$hl => array(
+										$dp => array('layerselected::video||audio'), 
+										$m => "#module_layers_trigger, #gst_layer_1", 
+										$st => '#form_layercontent_content_video', 
+										$f => "#layer_video_pauseOnSlideChange"
 									)
 								),
 								'loop' => array(
@@ -7307,6 +7546,19 @@ class RevSliderHelp {
 							)
 						),
 						'svg' => array(
+							'originalColor' => array(
+								$t => __("SVG Original Color", 'revsliderhelp'),
+								$h => "idle.svg.originalColor",
+								$k => array("svg", "svg color", "layer svg", "svg original color", "original color"),
+								$d => __("Disable this option to change color of svg elements in layer", 'revsliderhelp'),
+								$a => $u . "font-colors-styling/",
+								$hl => array(
+									$dp => array('layerselected::object'), 
+									$m => "#module_layers_trigger, #gst_layer_3, #", 
+									$st => '#form_layerstyle_svg', 
+									$f => "*[data-r='idle.svg.originalColor']"
+								)
+							),
 							'color' => array(
 								$t => __("SVG Color", 'revsliderhelp'),
 								$h => "idle.svg.color.#size#.v",
@@ -7370,6 +7622,19 @@ class RevSliderHelp {
 									$m => "#module_layers_trigger, #gst_layer_3", 
 									$st => '#form_layerstyle_svg', 
 									$f => "*[data-r='idle.svg.strokeDashOffset']"
+								)
+							),
+							'styleAll' => array(
+								$t => __("SVG Style All Elements", 'revsliderhelp'),
+								$h => "idle.svg.styleAll",
+								$k => array("svg", "svg color", "layer svg", "svg style all", "style all elements"),
+								$d => __("By default only SVG path gets custom style, Enabling this option will style all svg elements like ellipse, polygon etc", 'revsliderhelp'),
+								$a => $u . "font-colors-styling/",
+								$hl => array(
+									$dp => array('layerselected::object'), 
+									$m => "#module_layers_trigger, #gst_layer_3, #", 
+									$st => '#form_layerstyle_svg', 
+									$f => "*[data-r='idle.svg.styleAll']"
 								)
 							)
 						),
@@ -8667,7 +8932,7 @@ class RevSliderHelp {
 									$t => __("Clip Path Type", 'revsliderhelp'),
 									$h => "timeline.clipPath.type",
 									$k => array("clip path", "clippath", "mask", "masking", "clip path type"),
-									$d => __("Choose 'Rectangle' or 'Circle' for traditional wipes from the sides, center or corners, and 'Inverts' for curtain-type reveals", 'revsliderhelp'),
+									$d => __("Choose 'Rectangle' or 'Circle' for traditional wipes from the sides, center or corners, and 'Custom Mask' for curtain-type reveals", 'revsliderhelp'),
 									$a => $u . "layer-animations/#advanced-settings",
 									$hl => array(
 										$dp => array(

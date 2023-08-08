@@ -1,8 +1,9 @@
 
     $(document).ready(function() 
     {
+		"use strict";
         $('.tabs').tabs();
         
-        jQuery.getScript('http://quanticalabs.com/.tools/EnvatoItems/js/getItems.js',function() { });
+        jQuery.getScript('https://quanticalabs.com/.tools/EnvatoItems/js/getItems.js',function() { });
     });
 

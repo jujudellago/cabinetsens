@@ -17,7 +17,7 @@ class QodeToursElementorDestinationGrid extends \Elementor\Widget_Base{
 		return [ 'qode-tours' ];
 	}
 	
-	protected function _register_controls() {
+	protected function register_controls() {
 		
 		$this->start_controls_section(
 			'design',
@@ -176,7 +176,7 @@ class QodeToursElementorDestinationGrid extends \Elementor\Widget_Base{
 	}
 	
 	private function buildQueryObject($params) {
-		$queryArray['post_status'] = 'published';
+		$queryArray['post_status'] = 'publish';
 		$queryArray['post_type'] = 'destinations';
 		
 		if(!empty($params['orderby'])) {
@@ -218,4 +218,4 @@ class QodeToursElementorDestinationGrid extends \Elementor\Widget_Base{
 	}
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new QodeToursElementorDestinationGrid() );
+\Elementor\Plugin::instance()->widgets_manager->register( new QodeToursElementorDestinationGrid() );

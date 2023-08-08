@@ -3,12 +3,12 @@
 Plugin Name: Qode Real Estate
 Description: Plugin that adds post types for Real Estate extension
 Author: Qode Themes
-Version: 1.0
+Version: 1.1.3
 */
 
 require_once 'load.php';
 
-add_action( 'after_setup_theme', array( QodefRE\CPT\PostTypesRegister::getInstance(), 'register' ) );
+add_action( 'after_setup_theme', array( QodefRE\CPT\PostTypesRegister::getInstance(), 'register' ), 11 );
 
 if ( ! function_exists( 'qodef_re_activation' ) ) {
 	/**
@@ -50,6 +50,7 @@ if ( ! function_exists( 'qodef_re_scripts' ) ) {
 			$array_deps_css_responsive[] = 'bridge-responsive';
 			$array_deps_js[]             = 'bridge-default';
 			$array_deps_js[]             = 'google_map_api';
+			$array_deps_js[]             = 'underscore';
 		}
 		
 		wp_enqueue_style( 'qodef-re-style', plugins_url( QODE_RE_REL_PATH . '/assets/css/real-estate.min.css' ), $array_deps_css );
@@ -62,8 +63,11 @@ if ( ! function_exists( 'qodef_re_scripts' ) ) {
 		if ( wp_is_mobile() ) {
 			wp_enqueue_script( 'jquery-touch-punch' );
 		}
-		
-		wp_enqueue_script( 'qodef-re-script', plugins_url( QODE_RE_REL_PATH . '/assets/js/real-estate.min.js' ), $array_deps_js, false, true );
+
+        wp_enqueue_script( 'perfect-scrollbar', plugins_url( QODE_RE_REL_PATH . '/assets/js/plugins/perfect-scrollbar.jquery.min.js' ), $array_deps_js, false, true );
+        wp_enqueue_style( 'perfect-scrollbar', plugins_url( QODE_RE_REL_PATH . '/assets/css/plugins/perfect-scrollbar.css' ), $array_deps_css );
+
+        wp_enqueue_script( 'qodef-re-script', plugins_url( QODE_RE_REL_PATH . '/assets/js/real-estate.min.js' ), $array_deps_js, false, true );
 
 		// If theme is installed and not WooCommerce include theme select2 script as well as default theme styles for select2
         if( qodef_re_theme_installed() && ! qodef_re_is_woocommerce_installed() ) {
@@ -171,3 +175,19 @@ if ( ! function_exists( 'qodef_re_qodef_core_plugin_installed' ) ) {
 		return defined( 'BRIDGE_CORE_VERSION' );
 	}
 }
+
+if( ! function_exists('qode_re_add_elementor_widget_categories') ) {
+	function qode_re_add_elementor_widget_categories($elements_manager) {
+
+		$elements_manager->add_category(
+			'qode-real-estate',
+			[
+				'title' => esc_html__('Qode Real Estate', 'qode-real-estate'),
+				'icon' => 'fa fa-plug',
+			]
+		);
+
+	}
+
+	add_action('elementor/elements/categories_registered', 'qode_re_add_elementor_widget_categories');
+};

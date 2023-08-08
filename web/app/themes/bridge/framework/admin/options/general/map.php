@@ -20,11 +20,11 @@ if(!function_exists('bridge_qode_general_options_map')) {
 				"dependence_show_on_yes" => ""));
 		$panel1->addChild("disable_google_fonts",$disable_google_fonts);
 
-		$google_fonts = new BridgeQodeField("font", "google_fonts", "-1", esc_html__("Font Family", "bridge"), esc_html__("Choose a default font for your site", "bridge"));
-        $panel1->addChild("google_fonts", $google_fonts);
-
 		$disable_google_fonts_container = new BridgeQodeContainer("disable_google_fonts_container","disable_google_fonts","yes");
 		$panel1->addChild("disable_google_fonts_container",$disable_google_fonts_container);
+	
+	    $google_fonts = new BridgeQodeField("font", "google_fonts", "-1", esc_html__("Font Family", "bridge"), esc_html__("Choose a default font for your site", "bridge"));
+	    $disable_google_fonts_container->addChild("google_fonts", $google_fonts);
 
         $additional_google_fonts = new BridgeQodeField("yesno","additional_google_fonts","no",esc_html__("Additional Google Fonts", "bridge"),"", array(),
             array("dependence" => true,

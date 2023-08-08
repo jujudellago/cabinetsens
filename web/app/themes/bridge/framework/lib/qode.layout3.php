@@ -785,6 +785,7 @@ class BridgeQodeRepeater implements iBridgeQodeRender
     private $description;
     private $name;
     private $fields;
+    private $field_domain;
     private $num_of_rows;
     private $button_text;
 

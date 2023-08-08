@@ -713,7 +713,7 @@ if ( ! function_exists( 'qode_re_get_holder_data_for_cpt' ) ) {
         }
 
         foreach ( $params as $key => $value ) {
-            if ( $value !== '' ) {
+            if ( ! is_array( $value ) && $value !== '' ) {
                 $new_key = str_replace( '_', '-', $key );
 
                 $dataString .= ' data-' . $new_key . '=' . esc_attr( str_replace( ' ', '', $value ) );

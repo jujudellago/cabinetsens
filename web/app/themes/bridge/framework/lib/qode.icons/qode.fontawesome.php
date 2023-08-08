@@ -16,6 +16,8 @@ class BridgeQodeIconsFontAwesome implements iIconCollection {
 	public $title;
 	public $param;
 	public $styleUrl;
+	public $socialIcons;
+	public $backTopTopIcons;
 
 	function __construct($title = "", $param = "") {
 		$this->icons = array();

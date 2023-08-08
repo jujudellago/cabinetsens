@@ -1,8 +1,7 @@
 <div class="qodef-membership-dashboard-page qodef-real-estate-dashboard-page">
 	<div class="qodef-re-profile-searches-holder">
 	    <?php if ( ! empty( $user_searches ) ) { ?>
-	        <h2 class="qodef-membership-page-title"><?php esc_html_e('Saved searches', 'qode-real-estate'); ?></h2>
-	        <p><?php esc_html_e('Saved searches', 'qode-real-estate'); ?></p>
+	        <h5 class="qodef-membership-page-title"><?php esc_html_e('Saved searches', 'qode-real-estate'); ?></h5>
 	        <table>
 	            <thead>
 	                <tr>
@@ -93,7 +92,7 @@
 	            </tbody>
 	        </table>
 	    <?php } else { ?>
-	        <h3><?php esc_html_e( 'You don\'t have saved searches yet.', 'qode-real-estate' ) ?> </h3>
+	        <h5><?php esc_html_e( 'You don\'t have saved searches yet.', 'qode-real-estate' ) ?> </h5>
 	    <?php } ?>
 	</div>
 </div>

@@ -1,17 +1,17 @@
-# Copyright (C) 2020 Qode Interactive
-# This file is distributed under the GNU General Public License.
+# Copyright (C) 2023 Qode Interactive
+# This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Bridge 24.2\n"
+"Project-Id-Version: Bridge 29.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/bridge\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-11-27T14:43:05+01:00\n"
+"POT-Creation-Date: 2023-01-12T13:07:25+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.3.0\n"
+"X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: bridge\n"
 
 #. Theme Name of the theme
@@ -19,7 +19,7 @@ msgid "Bridge"
 msgstr ""
 
 #. Theme URI of the theme
-msgid "http://bridgelanding.qodeinteractive.com/"
+msgid "https://bridgelanding.qodeinteractive.com/"
 msgstr ""
 
 #. Description of the theme
@@ -31,7 +31,7 @@ msgid "Qode Interactive"
 msgstr ""
 
 #. Author URI of the theme
-msgid "http://qodethemes.com/"
+msgid "https://qodeinteractive.com/"
 msgstr ""
 
 #: 404.php:11
@@ -174,12 +174,12 @@ msgstr ""
 #: templates/blog_small_image-loop.php:208
 #: templates/blog_small_image-loop.php:254
 #: templates/blog_small_image-loop.php:300
-#: templates/blog_vertical-loop.php:103
-#: templates/blog_vertical-loop.php:173
-#: templates/blog_vertical-loop.php:244
-#: templates/blog_vertical-loop.php:316
-#: templates/blog_vertical-loop.php:389
-#: templates/blog_vertical-loop.php:462
+#: templates/blog_vertical-loop.php:104
+#: templates/blog_vertical-loop.php:174
+#: templates/blog_vertical-loop.php:245
+#: templates/blog_vertical-loop.php:317
+#: templates/blog_vertical-loop.php:390
+#: templates/blog_vertical-loop.php:463
 msgid "Comment"
 msgstr ""
 
@@ -224,12 +224,12 @@ msgstr ""
 #: templates/blog_small_image-loop.php:208
 #: templates/blog_small_image-loop.php:254
 #: templates/blog_small_image-loop.php:300
-#: templates/blog_vertical-loop.php:103
-#: templates/blog_vertical-loop.php:173
-#: templates/blog_vertical-loop.php:244
-#: templates/blog_vertical-loop.php:316
-#: templates/blog_vertical-loop.php:389
-#: templates/blog_vertical-loop.php:462
+#: templates/blog_vertical-loop.php:104
+#: templates/blog_vertical-loop.php:174
+#: templates/blog_vertical-loop.php:245
+#: templates/blog_vertical-loop.php:317
+#: templates/blog_vertical-loop.php:390
+#: templates/blog_vertical-loop.php:463
 msgid "Comments"
 msgstr ""
 
@@ -473,6 +473,7 @@ msgstr ""
 #: extendvc/extend-vc.php:2027
 #: framework/modules/widgets/icon-with-text/icon-with-text.php:202
 #: framework/modules/widgets/latest-posts/latest-posts.php:54
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:119
 msgid "Title Tag"
 msgstr ""
 
@@ -764,6 +765,7 @@ msgstr ""
 #: framework/modules/widgets/button/button.php:24
 #: framework/modules/widgets/button/button.php:38
 #: framework/modules/widgets/button/button.php:83
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:33
 #: framework/modules/woocommerce/admin/meta-boxes/woocommerce-meta-boxes.php:32
 #: framework/modules/woocommerce/admin/options-map/map.php:330
 #: framework/modules/woocommerce/admin/options-map/map.php:340
@@ -880,7 +882,7 @@ msgstr ""
 #: framework/modules/timetable-schedule/visual-composer-map.php:61
 #: framework/modules/widgets/portfolio-list/portfolio-list.php:21
 #: framework/modules/widgets/social-icon/social-icon.php:195
-#: includes/nav_menu/edit_custom_walker.php:207
+#: includes/nav_menu/edit_custom_walker.php:216
 #: includes/plugins/class-tgm-plugin-activation.php:2634
 msgid "Type"
 msgstr ""
@@ -1023,6 +1025,7 @@ msgstr ""
 #: framework/modules/widgets/button/button.php:176
 #: framework/modules/widgets/icon-with-text/icon-with-text.php:75
 #: framework/modules/widgets/icon-with-text/icon-with-text.php:88
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:140
 #: framework/modules/woocommerce/admin/options-map/map.php:115
 #: framework/modules/woocommerce/admin/options-map/map.php:166
 msgid "Left"
@@ -1056,6 +1059,7 @@ msgstr ""
 #: framework/admin/options/title/map.php:38
 #: framework/modules/widgets/button/button.php:178
 #: framework/modules/widgets/icon-with-text/icon-with-text.php:87
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:141
 #: framework/modules/woocommerce/admin/options-map/map.php:114
 #: framework/modules/woocommerce/admin/options-map/map.php:165
 msgid "Center"
@@ -1090,6 +1094,7 @@ msgstr ""
 #: framework/modules/widgets/button/button.php:177
 #: framework/modules/widgets/icon-with-text/icon-with-text.php:77
 #: framework/modules/widgets/icon-with-text/icon-with-text.php:89
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:142
 #: framework/modules/woocommerce/admin/options-map/map.php:116
 #: framework/modules/woocommerce/admin/options-map/map.php:167
 msgid "Right"
@@ -1563,6 +1568,7 @@ msgstr ""
 #: framework/modules/widgets/latest-posts/latest-posts.php:21
 #: framework/modules/widgets/latest-posts/latest-posts.php:33
 #: framework/modules/widgets/panel-area-opener/panel-area-opener.php:21
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:84
 #: includes/qode-custom-taxonomy-field.php:52
 #: includes/qode-custom-taxonomy-field.php:82
 #: includes/qode-custom-taxonomy-field.php:112
@@ -1608,7 +1614,7 @@ msgstr ""
 #: framework/lib/qode.icons/qode.icons.php:347
 #: framework/lib/qode.layout.tax.php:216
 #: framework/lib/qode.layout.tax.php:255
-#: includes/nav_menu/edit_custom_walker.php:259
+#: includes/nav_menu/edit_custom_walker.php:268
 msgid "Icon"
 msgstr ""
 
@@ -2256,6 +2262,7 @@ msgstr ""
 #: extendvc/extend-vc.php:1991
 #: framework/admin/meta-boxes/masonry_gallery/map.php:41
 #: framework/admin/options/blog/map.php:1177
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:23
 msgid "Standard"
 msgstr ""
 
@@ -2286,7 +2293,7 @@ msgid "Short Info"
 msgstr ""
 
 #: extendvc/extend-vc.php:2055
-#: framework/modules/woocommerce/woocommerce-config.php:425
+#: framework/modules/woocommerce/woocommerce-config.php:439
 msgid "Additional Info"
 msgstr ""
 
@@ -2450,6 +2457,11 @@ msgstr ""
 
 #: extendvc/extend-vc.php:2339
 msgid "Qode Preview Slider"
+msgstr ""
+
+#: extendvc/extend-vc.php:2349
+#: extendvc/extend-vc.php:2372
+msgid "Frame Skin"
 msgstr ""
 
 #: extendvc/extend-vc.php:2353
@@ -2962,12 +2974,13 @@ msgstr ""
 #: framework/lib/qode.optionsapi.php:735
 #: framework/modules/page/options-map/map.php:97
 #: framework/modules/widgets/latest-posts/latest-posts.php:34
-#: templates/portfolio-loop.php:227
-#: templates/portfolio-loop.php:402
-#: templates/portfolio-loop.php:581
-#: templates/portfolio-loop.php:797
-#: templates/portfolio-loop.php:1016
-#: templates/portfolio-loop.php:1201
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:85
+#: templates/portfolio-loop.php:237
+#: templates/portfolio-loop.php:412
+#: templates/portfolio-loop.php:591
+#: templates/portfolio-loop.php:817
+#: templates/portfolio-loop.php:1037
+#: templates/portfolio-loop.php:1222
 #: woocommerce/myaccount/my-orders.php:14
 msgid "Date"
 msgstr ""
@@ -3059,23 +3072,27 @@ msgstr ""
 
 #: framework/admin/meta-boxes/portfolio/map.php:65
 #: framework/admin/options/portfolio/map.php:78
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:71
 msgid "Original"
 msgstr ""
 
 #: framework/admin/meta-boxes/portfolio/map.php:66
 #: framework/admin/options/portfolio/map.php:81
 #: framework/modules/widgets/icon-with-text/icon-with-text.php:65
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:72
 #: framework/modules/widgets/social-icon/social-icon.php:199
 msgid "Square"
 msgstr ""
 
 #: framework/admin/meta-boxes/portfolio/map.php:67
 #: framework/admin/options/portfolio/map.php:80
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:74
 msgid "Portrait"
 msgstr ""
 
 #: framework/admin/meta-boxes/portfolio/map.php:68
 #: framework/admin/options/portfolio/map.php:79
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:73
 msgid "Landscape"
 msgstr ""
 
@@ -7929,7 +7946,7 @@ msgid "Please inset desired acceptance condition, or leave empty for default"
 msgstr ""
 
 #: framework/admin/options/contactform7/map.php:9
-#: includes/plugins/plugins-activation.php:220
+#: includes/plugins/plugins-activation.php:230
 msgid "Contact Form 7"
 msgstr ""
 
@@ -8688,12 +8705,12 @@ msgid "Define border styles for Tabs"
 msgstr ""
 
 #: framework/admin/options/elements/map.php:498
-#: templates/portfolio-loop.php:262
-#: templates/portfolio-loop.php:437
-#: templates/portfolio-loop.php:616
-#: templates/portfolio-loop.php:832
-#: templates/portfolio-loop.php:1051
-#: templates/portfolio-loop.php:1236
+#: templates/portfolio-loop.php:272
+#: templates/portfolio-loop.php:447
+#: templates/portfolio-loop.php:626
+#: templates/portfolio-loop.php:852
+#: templates/portfolio-loop.php:1072
+#: templates/portfolio-loop.php:1257
 msgid "Tags"
 msgstr ""
 
@@ -10933,7 +10950,7 @@ msgstr ""
 #: framework/lib/qode.icons/qode.icons.php:255
 #: framework/lib/qode.icons/qode.icons.php:312
 #: framework/modules/widgets/social-icon/social-icon.php:204
-#: includes/nav_menu/edit_custom_walker.php:242
+#: includes/nav_menu/edit_custom_walker.php:251
 msgid "Icon Pack"
 msgstr ""
 
@@ -12529,34 +12546,34 @@ msgstr ""
 
 #: framework/lib/qode.icons/qode.fontawesome5.php:5
 #: framework/lib/qode.icons/qode.icons.php:133
-msgid "Font Awesome 5"
+msgid "Font Awesome 5+"
 msgstr ""
 
-#: framework/lib/qode.icons/qode.fontawesome5.php:1513
+#: framework/lib/qode.icons/qode.fontawesome5.php:1949
 msgid "Angle Up"
 msgstr ""
 
-#: framework/lib/qode.icons/qode.fontawesome5.php:1514
+#: framework/lib/qode.icons/qode.fontawesome5.php:1950
 msgid "Angle Double Up"
 msgstr ""
 
-#: framework/lib/qode.icons/qode.fontawesome5.php:1515
+#: framework/lib/qode.icons/qode.fontawesome5.php:1951
 msgid "Alt Circle Up"
 msgstr ""
 
-#: framework/lib/qode.icons/qode.fontawesome5.php:1516
+#: framework/lib/qode.icons/qode.fontawesome5.php:1952
 msgid "Chevron Up"
 msgstr ""
 
-#: framework/lib/qode.icons/qode.fontawesome5.php:1517
+#: framework/lib/qode.icons/qode.fontawesome5.php:1953
 msgid "Hand Point Up"
 msgstr ""
 
-#: framework/lib/qode.icons/qode.fontawesome5.php:1518
+#: framework/lib/qode.icons/qode.fontawesome5.php:1954
 msgid "Alt Level Up"
 msgstr ""
 
-#: framework/lib/qode.icons/qode.fontawesome5.php:1519
+#: framework/lib/qode.icons/qode.fontawesome5.php:1955
 msgid "Alt Long Arrow Up"
 msgstr ""
 
@@ -12617,6 +12634,63 @@ msgstr ""
 msgid "Triangular Arrow Up - Solid"
 msgstr ""
 
+#: framework/lib/qode.layout.dashboard.php:346
+#: framework/lib/qode.layout.dashboard.php:350
+#: framework/lib/qode.layout.dashboard.php:408
+#: framework/lib/qode.layout.dashboard.php:412
+#: framework/lib/qode.layout1.php:823
+#: framework/lib/qode.layout1.php:886
+#: framework/lib/qode.layout1.php:937
+#: framework/lib/qode.layout3.php:60
+#: framework/lib/qode.layout3.php:147
+#: framework/lib/qode.layout3.php:197
+#: framework/lib/qode.layout3.php:302
+#: framework/lib/qode.layout3.php:353
+#: framework/lib/qode.layout3.php:452
+#: framework/lib/qode.layout3.php:506
+#: framework/lib/qode.layout3.php:624
+#: framework/lib/qode.layout3.php:694
+msgid "Upload"
+msgstr ""
+
+#: framework/lib/qode.layout.dashboard.php:355
+#: framework/lib/qode.layout.dashboard.php:417
+msgid "Remove Media"
+msgstr ""
+
+#: framework/lib/qode.layout.dashboard.php:721
+#: framework/lib/qode.layout2.php:942
+msgid "Reset Marker"
+msgstr ""
+
+#: framework/lib/qode.layout.dashboard.php:749
+#: framework/lib/qode.layout3.php:1343
+msgid "Add New Item"
+msgstr ""
+
+#: framework/lib/qode.layout.dashboard.php:808
+#: framework/modules/widgets/latest-posts/latest-posts.php:40
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:91
+#: woocommerce/myaccount/my-orders.php:13
+msgid "Order"
+msgstr ""
+
+#: framework/lib/qode.layout.dashboard.php:818
+#: framework/lib/qode.layout1.php:825
+#: framework/lib/qode.layout1.php:888
+#: framework/lib/qode.layout1.php:939
+#: framework/lib/qode.layout3.php:149
+#: framework/lib/qode.layout3.php:199
+#: framework/lib/qode.layout3.php:304
+#: framework/lib/qode.layout3.php:355
+#: framework/lib/qode.layout3.php:453
+#: framework/lib/qode.layout3.php:507
+#: framework/lib/qode.layout3.php:626
+#: framework/lib/qode.layout3.php:696
+#: includes/nav_menu/edit_custom_walker.php:344
+msgid "Remove"
+msgstr ""
+
 #: framework/lib/qode.layout.tax.php:82
 #: framework/lib/qode.layout.tax.php:104
 #: framework/lib/qode.layout.user.php:102
@@ -12660,36 +12734,6 @@ msgstr ""
 msgid "Select Image"
 msgstr ""
 
-#: framework/lib/qode.layout1.php:823
-#: framework/lib/qode.layout1.php:886
-#: framework/lib/qode.layout1.php:937
-#: framework/lib/qode.layout3.php:60
-#: framework/lib/qode.layout3.php:147
-#: framework/lib/qode.layout3.php:197
-#: framework/lib/qode.layout3.php:302
-#: framework/lib/qode.layout3.php:353
-#: framework/lib/qode.layout3.php:452
-#: framework/lib/qode.layout3.php:506
-#: framework/lib/qode.layout3.php:624
-#: framework/lib/qode.layout3.php:694
-msgid "Upload"
-msgstr ""
-
-#: framework/lib/qode.layout1.php:825
-#: framework/lib/qode.layout1.php:888
-#: framework/lib/qode.layout1.php:939
-#: framework/lib/qode.layout3.php:149
-#: framework/lib/qode.layout3.php:199
-#: framework/lib/qode.layout3.php:304
-#: framework/lib/qode.layout3.php:355
-#: framework/lib/qode.layout3.php:453
-#: framework/lib/qode.layout3.php:507
-#: framework/lib/qode.layout3.php:626
-#: framework/lib/qode.layout3.php:696
-#: includes/nav_menu/edit_custom_walker.php:332
-msgid "Remove"
-msgstr ""
-
 #: framework/lib/qode.layout1.php:885
 #: framework/lib/qode.layout1.php:886
 #: framework/lib/qode.layout1.php:936
@@ -12707,10 +12751,6 @@ msgstr ""
 
 #: framework/lib/qode.layout2.php:150
 msgid "Video"
-msgstr ""
-
-#: framework/lib/qode.layout2.php:942
-msgid "Reset Marker"
 msgstr ""
 
 #: framework/lib/qode.layout3.php:62
@@ -12912,10 +12952,6 @@ msgstr ""
 msgid "Additional Sidebar Item - "
 msgstr ""
 
-#: framework/lib/qode.layout3.php:1343
-msgid "Add New Item"
-msgstr ""
-
 #: framework/lib/qode.layout3.php:1377
 msgid "Export"
 msgstr ""
@@ -12955,6 +12991,7 @@ msgstr ""
 
 #: framework/lib/qode.optionsapi.php:737
 #: framework/modules/page/options-map/map.php:96
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:83
 msgid "Menu Order"
 msgstr ""
 
@@ -12968,11 +13005,13 @@ msgstr ""
 
 #: framework/lib/qode.optionsapi.php:761
 #: framework/modules/widgets/latest-posts/latest-posts.php:42
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:94
 msgid "ASC"
 msgstr ""
 
 #: framework/lib/qode.optionsapi.php:762
 #: framework/modules/widgets/latest-posts/latest-posts.php:43
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:95
 msgid "DESC"
 msgstr ""
 
@@ -13054,6 +13093,10 @@ msgstr ""
 msgid "Line-Through"
 msgstr ""
 
+#: framework/lib/qode.optionsapi.php:1124
+msgid "SUMBIT"
+msgstr ""
+
 #: framework/modules/header/templates/parts/ajax-loader.php:13
 msgid "Loader"
 msgstr ""
@@ -13066,7 +13109,7 @@ msgstr ""
 #: framework/modules/header/templates/search/types/search-slides-from-header-bottom.php:10
 #: framework/modules/header/templates/search/types/search.php:9
 #: framework/modules/header/templates/search/types/search.php:10
-#: functions.php:1808
+#: functions.php:1812
 msgid "Search"
 msgstr ""
 
@@ -13309,7 +13352,7 @@ msgstr ""
 #: framework/modules/welcome/templates/welcome.php:26
 #: framework/modules/welcome/templates/welcome.php:42
 #: includes/plugins/class-tgm-plugin-activation.php:334
-#: includes/plugins/plugins-activation.php:296
+#: includes/plugins/plugins-activation.php:346
 msgid "Install Required Plugins"
 msgstr ""
 
@@ -13645,12 +13688,6 @@ msgstr ""
 msgid "Number of posts"
 msgstr ""
 
-#: framework/modules/widgets/latest-posts/latest-posts.php:40
-#: framework/modules/widgets/portfolio-list/portfolio-list.php:91
-#: woocommerce/myaccount/my-orders.php:13
-msgid "Order"
-msgstr ""
-
 #: framework/modules/widgets/latest-posts/latest-posts.php:49
 msgid "Category Slug"
 msgstr ""
@@ -13671,6 +13708,35 @@ msgstr ""
 msgid "Display Portfolio List"
 msgstr ""
 
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:24
+msgid "Standard No Space"
+msgstr ""
+
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:25
+msgid "Masonry(Pinterest) with space"
+msgstr ""
+
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:34
+msgid "Subtle Vertical"
+msgstr ""
+
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:35
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:36
+msgid "Image Subtle Rotate Zoom"
+msgstr ""
+
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:37
+msgid "Thin Plus Only"
+msgstr ""
+
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:38
+msgid "Slow Zoom"
+msgstr ""
+
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:39
+msgid "Split Up"
+msgstr ""
+
 #: framework/modules/widgets/portfolio-list/portfolio-list.php:45
 msgid "This option only works with \"Masonry(Pinterest) with space\" type"
 msgstr ""
@@ -13679,12 +13745,38 @@ msgstr ""
 msgid "Spacing"
 msgstr ""
 
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:101
+msgid "Number of portfolios on page (-1 is all)"
+msgstr ""
+
 #: framework/modules/widgets/portfolio-list/portfolio-list.php:102
 msgid "Numbers"
 msgstr ""
 
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:107
+msgid "Category Slug (leave empty for all)"
+msgstr ""
+
 #: framework/modules/widgets/portfolio-list/portfolio-list.php:108
 msgid "Category"
+msgstr ""
+
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:113
+msgid "Selected Projects (leave empty for all, delimit by comma)"
+msgstr ""
+
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:114
+msgid "Selected Projects"
+msgstr ""
+
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:131
+msgid "Show Categories"
+msgstr ""
+
+#: framework/modules/widgets/portfolio-list/portfolio-list.php:137
+#: framework/modules/woocommerce/admin/options-map/map.php:113
+#: framework/modules/woocommerce/admin/options-map/map.php:164
+msgid "Text align"
 msgstr ""
 
 #: framework/modules/widgets/related-posts/related-posts.php:7
@@ -13783,7 +13875,7 @@ msgstr ""
 
 #. Template Name of the theme
 #: framework/modules/woocommerce/admin/options-map/map.php:9
-#: includes/plugins/plugins-activation.php:210
+#: includes/plugins/plugins-activation.php:220
 msgid "WooCommerce"
 msgstr ""
 
@@ -13851,11 +13943,6 @@ msgstr ""
 #: framework/modules/woocommerce/admin/options-map/map.php:71
 #: framework/modules/woocommerce/admin/options-map/map.php:371
 msgid "Define product title text style"
-msgstr ""
-
-#: framework/modules/woocommerce/admin/options-map/map.php:113
-#: framework/modules/woocommerce/admin/options-map/map.php:164
-msgid "Text align"
 msgstr ""
 
 #: framework/modules/woocommerce/admin/options-map/map.php:122
@@ -14035,75 +14122,75 @@ msgstr ""
 msgid "Display a shop cart icon with a dropdown that shows products that are in the cart"
 msgstr ""
 
-#: framework/modules/woocommerce/widgets/woocommerce-dropdown-cart.php:87
+#: framework/modules/woocommerce/widgets/woocommerce-dropdown-cart.php:89
 msgid "No products in the cart."
 msgstr ""
 
-#: framework/modules/woocommerce/widgets/woocommerce-dropdown-cart.php:91
+#: framework/modules/woocommerce/widgets/woocommerce-dropdown-cart.php:93
 msgid "Cart"
 msgstr ""
 
-#: framework/modules/woocommerce/widgets/woocommerce-dropdown-cart.php:92
+#: framework/modules/woocommerce/widgets/woocommerce-dropdown-cart.php:94
 #: woocommerce/checkout/thankyou.php:72
 msgid "Total:"
 msgstr ""
 
-#: framework/modules/woocommerce/woocommerce-config.php:81
-#: framework/modules/woocommerce/woocommerce-config.php:94
+#: framework/modules/woocommerce/woocommerce-config.php:95
+#: framework/modules/woocommerce/woocommerce-config.php:108
 msgid "First name"
 msgstr ""
 
-#: framework/modules/woocommerce/woocommerce-config.php:82
-#: framework/modules/woocommerce/woocommerce-config.php:95
+#: framework/modules/woocommerce/woocommerce-config.php:96
+#: framework/modules/woocommerce/woocommerce-config.php:109
 msgid "Last name"
 msgstr ""
 
-#: framework/modules/woocommerce/woocommerce-config.php:83
-#: framework/modules/woocommerce/woocommerce-config.php:96
+#: framework/modules/woocommerce/woocommerce-config.php:97
+#: framework/modules/woocommerce/woocommerce-config.php:110
 msgid "Company name"
 msgstr ""
 
-#: framework/modules/woocommerce/woocommerce-config.php:84
-#: framework/modules/woocommerce/woocommerce-config.php:97
+#: framework/modules/woocommerce/woocommerce-config.php:98
+#: framework/modules/woocommerce/woocommerce-config.php:111
 msgid "Address"
 msgstr ""
 
-#: framework/modules/woocommerce/woocommerce-config.php:85
+#: framework/modules/woocommerce/woocommerce-config.php:99
 #: woocommerce/myaccount/form-login.php:89
 msgid "Email"
 msgstr ""
 
-#: framework/modules/woocommerce/woocommerce-config.php:86
+#: framework/modules/woocommerce/woocommerce-config.php:100
 #: vc_templates/qode_preview_slider.php:32
 msgid "Phone"
 msgstr ""
 
-#: framework/modules/woocommerce/woocommerce-config.php:87
-#: framework/modules/woocommerce/woocommerce-config.php:98
-#: woocommerce/cart/shipping-calculator.php:89
+#: framework/modules/woocommerce/woocommerce-config.php:101
+#: framework/modules/woocommerce/woocommerce-config.php:112
+#: woocommerce/cart/shipping-calculator.php:94
 msgid "Postcode / ZIP"
 msgstr ""
 
-#: framework/modules/woocommerce/woocommerce-config.php:88
-#: framework/modules/woocommerce/woocommerce-config.php:99
+#: framework/modules/woocommerce/woocommerce-config.php:102
+#: framework/modules/woocommerce/woocommerce-config.php:113
 msgid "Town / City"
 msgstr ""
 
-#: framework/modules/woocommerce/woocommerce-config.php:89
-#: framework/modules/woocommerce/woocommerce-config.php:100
+#: framework/modules/woocommerce/woocommerce-config.php:103
+#: framework/modules/woocommerce/woocommerce-config.php:114
 msgid "State"
 msgstr ""
 
-#: framework/modules/woocommerce/woocommerce-config.php:245
+#: framework/modules/woocommerce/woocommerce-config.php:259
 #: searchform.php:2
 msgid "Search for:"
 msgstr ""
 
-#: framework/modules/woocommerce/woocommerce-config.php:246
+#: framework/modules/woocommerce/woocommerce-config.php:260
 msgid "Search Products"
 msgstr ""
 
-#: framework/modules/woocommerce/woocommerce-config.php:423
+#: framework/modules/woocommerce/woocommerce-config.php:437
 msgid "Additional Information"
 msgstr ""
 
@@ -14111,43 +14198,43 @@ msgstr ""
 msgid "SALE"
 msgstr ""
 
-#: framework/qode-framework.php:192
+#: framework/qode-framework.php:193
 msgid "Saved"
 msgstr ""
 
-#: framework/qode-framework.php:212
+#: framework/qode-framework.php:213
 msgid "qode_logo"
 msgstr ""
 
-#: framework/qode-framework.php:221
-#: framework/qode-framework.php:302
+#: framework/qode-framework.php:222
+#: framework/qode-framework.php:303
 msgid "Save Changes"
 msgstr ""
 
-#: framework/qode-framework.php:277
+#: framework/qode-framework.php:278
 msgid "You should save your changes"
 msgstr ""
 
-#: framework/qode-framework.php:279
+#: framework/qode-framework.php:280
 msgid "All your changes are successfully saved"
 msgstr ""
 
-#: framework/qode-framework.php:287
+#: framework/qode-framework.php:288
 msgid "Scroll To:"
 msgstr ""
 
-#: framework/qode-framework.php:524
+#: framework/qode-framework.php:525
 #: includes/plugins/class-tgm-plugin-activation.php:402
 msgid "Dismiss this notice"
 msgstr ""
 
-#: framework/qode-framework.php:775
-#: framework/qode-framework.php:879
+#: framework/qode-framework.php:776
+#: framework/qode-framework.php:880
 msgid "Not Set or Empty"
 msgstr ""
 
-#: framework/qode-framework.php:790
-#: framework/qode-framework.php:892
+#: framework/qode-framework.php:791
+#: framework/qode-framework.php:893
 msgid "Contact Administrator"
 msgstr ""
 
@@ -14316,27 +14403,31 @@ msgstr ""
 msgid "Right Top Navigation"
 msgstr ""
 
-#: functions.php:1790
+#: functions.php:1794
 msgid "Author:"
 msgstr ""
 
-#: functions.php:1819
+#: functions.php:1823
 msgid "404 - Page not found"
 msgstr ""
 
-#: functions.php:1848
+#: functions.php:1852
 msgid "Archive"
 msgstr ""
 
-#: functions.php:2474
+#: functions.php:2478
 msgid ""
 "Note that writing permissions aren't set for folders containing css and js files on your server.\n"
 "\t\t\t\t\tWe recommend setting writing permissions in order to optimize your site performance.\n"
 "\t\t\t\t\tFor further instructions, please refer to our "
 msgstr ""
 
-#: functions.php:2476
+#: functions.php:2480
 msgid "documentation"
+msgstr ""
+
+#: functions.php:3571
+msgid "Your copy of the theme has not been activated. Please navigate to <a href=\"%s\">Bridge Dashboard</a> where you can input your purchase code and activate your copy of the theme so you can have access to all the theme features, elements & options."
 msgstr ""
 
 #: includes/comment/comment.php:23
@@ -14386,124 +14477,124 @@ msgstr ""
 msgid "%s (Pending)"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:107
+#: includes/nav_menu/edit_custom_walker.php:116
 msgid "Move up"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:120
+#: includes/nav_menu/edit_custom_walker.php:129
 msgid "Move down"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:122
-#: includes/nav_menu/edit_custom_walker.php:124
+#: includes/nav_menu/edit_custom_walker.php:131
+#: includes/nav_menu/edit_custom_walker.php:133
 msgid "Edit Menu Item"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:133
+#: includes/nav_menu/edit_custom_walker.php:142
 msgid "URL"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:140
+#: includes/nav_menu/edit_custom_walker.php:149
 msgid "Navigation Label"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:146
+#: includes/nav_menu/edit_custom_walker.php:155
 msgid "Title Attribute"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:153
+#: includes/nav_menu/edit_custom_walker.php:162
 msgid "Open link in a new window/tab"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:158
+#: includes/nav_menu/edit_custom_walker.php:167
 msgid "CSS Classes (optional)"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:164
+#: includes/nav_menu/edit_custom_walker.php:173
 msgid "Link Relationship (XFN)"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:170
+#: includes/nav_menu/edit_custom_walker.php:179
 msgid "Description"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:172
+#: includes/nav_menu/edit_custom_walker.php:181
 msgid "The description will be displayed in the menu if the current theme supports it."
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:181
+#: includes/nav_menu/edit_custom_walker.php:190
 msgid "Anchor"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:192
+#: includes/nav_menu/edit_custom_walker.php:201
 msgid "Don't link"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:202
+#: includes/nav_menu/edit_custom_walker.php:211
 msgid "Don't show"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:210
+#: includes/nav_menu/edit_custom_walker.php:219
 msgid "wide"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:211
+#: includes/nav_menu/edit_custom_walker.php:220
 msgid "wide with icons"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:217
+#: includes/nav_menu/edit_custom_walker.php:226
 msgid "Wide menu position"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:220
+#: includes/nav_menu/edit_custom_walker.php:229
 msgid "left"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:221
+#: includes/nav_menu/edit_custom_walker.php:230
 msgid "right"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:248
+#: includes/nav_menu/edit_custom_walker.php:257
 msgid "Only with \"wide with icons\" menu type"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:280
+#: includes/nav_menu/edit_custom_walker.php:289
 msgid "Featured icon"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:283
+#: includes/nav_menu/edit_custom_walker.php:292
 msgid "Star"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:289
+#: includes/nav_menu/edit_custom_walker.php:298
 msgid "Custom widget area"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:300
+#: includes/nav_menu/edit_custom_walker.php:309
 msgid "Only with \"wide & wide with icons\" menu type"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:310
+#: includes/nav_menu/edit_custom_walker.php:319
 msgid "Show custom widget area in popup (only for 'wide' menu types)"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:319
+#: includes/nav_menu/edit_custom_walker.php:331
 msgid "Original: %s"
 msgstr ""
 
-#: includes/nav_menu/edit_custom_walker.php:333
+#: includes/nav_menu/edit_custom_walker.php:345
 #: woocommerce/myaccount/my-orders.php:83
 msgid "Cancel"
 msgstr ""
 
 #: includes/plugins/class-tgm-plugin-activation.php:335
-#: includes/plugins/plugins-activation.php:297
+#: includes/plugins/plugins-activation.php:347
 msgid "Install Plugins"
 msgstr ""
 
 #. translators: %s: plugin name.
 #: includes/plugins/class-tgm-plugin-activation.php:337
-#: includes/plugins/plugins-activation.php:298
+#: includes/plugins/plugins-activation.php:348
 msgid "Installing Plugin: %s"
 msgstr ""
 
@@ -14513,13 +14604,13 @@ msgid "Updating Plugin: %s"
 msgstr ""
 
 #: includes/plugins/class-tgm-plugin-activation.php:340
-#: includes/plugins/plugins-activation.php:299
+#: includes/plugins/plugins-activation.php:349
 msgid "Something went wrong with the plugin API."
 msgstr ""
 
 #. translators: 1: plugin name(s).
 #: includes/plugins/class-tgm-plugin-activation.php:341
-#: includes/plugins/plugins-activation.php:300
+#: includes/plugins/plugins-activation.php:350
 msgid "This theme requires the following plugin: %1$s."
 msgid_plural "This theme requires the following plugins: %1$s."
 msgstr[0] ""
@@ -14527,7 +14618,7 @@ msgstr[1] ""
 
 #. translators: 1: plugin name(s).
 #: includes/plugins/class-tgm-plugin-activation.php:347
-#: includes/plugins/plugins-activation.php:301
+#: includes/plugins/plugins-activation.php:351
 msgid "This theme recommends the following plugin: %1$s."
 msgid_plural "This theme recommends the following plugins: %1$s."
 msgstr[0] ""
@@ -14535,7 +14626,7 @@ msgstr[1] ""
 
 #. translators: 1: plugin name(s).
 #: includes/plugins/class-tgm-plugin-activation.php:353
-#: includes/plugins/plugins-activation.php:306
+#: includes/plugins/plugins-activation.php:356
 msgid "The following plugin needs to be updated to its latest version to ensure maximum compatibility with this theme: %1$s."
 msgid_plural "The following plugins need to be updated to their latest version to ensure maximum compatibility with this theme: %1$s."
 msgstr[0] ""
@@ -14550,7 +14641,7 @@ msgstr[1] ""
 
 #. translators: 1: plugin name(s).
 #: includes/plugins/class-tgm-plugin-activation.php:365
-#: includes/plugins/plugins-activation.php:303
+#: includes/plugins/plugins-activation.php:353
 msgid "The following required plugin is currently inactive: %1$s."
 msgid_plural "The following required plugins are currently inactive: %1$s."
 msgstr[0] ""
@@ -14558,14 +14649,14 @@ msgstr[1] ""
 
 #. translators: 1: plugin name(s).
 #: includes/plugins/class-tgm-plugin-activation.php:371
-#: includes/plugins/plugins-activation.php:304
+#: includes/plugins/plugins-activation.php:354
 msgid "The following recommended plugin is currently inactive: %1$s."
 msgid_plural "The following recommended plugins are currently inactive: %1$s."
 msgstr[0] ""
 msgstr[1] ""
 
 #: includes/plugins/class-tgm-plugin-activation.php:377
-#: includes/plugins/plugins-activation.php:308
+#: includes/plugins/plugins-activation.php:358
 msgid "Begin installing plugin"
 msgid_plural "Begin installing plugins"
 msgstr[0] ""
@@ -14584,7 +14675,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/plugins/class-tgm-plugin-activation.php:392
-#: includes/plugins/plugins-activation.php:310
+#: includes/plugins/plugins-activation.php:360
 msgid "Return to Required Plugins Installer"
 msgstr ""
 
@@ -14597,7 +14688,7 @@ msgstr ""
 
 #: includes/plugins/class-tgm-plugin-activation.php:394
 #: includes/plugins/class-tgm-plugin-activation.php:3244
-#: includes/plugins/plugins-activation.php:311
+#: includes/plugins/plugins-activation.php:361
 msgid "Plugin activated successfully."
 msgstr ""
 
@@ -14800,7 +14891,7 @@ msgid "Install"
 msgstr ""
 
 #: includes/plugins/class-tgm-plugin-activation.php:2808
-#: woocommerce/cart/shipping-calculator.php:94
+#: woocommerce/cart/shipping-calculator.php:99
 msgid "Update"
 msgstr ""
 
@@ -14908,102 +14999,126 @@ msgid "WPBakery Visual Composer"
 msgstr ""
 
 #: includes/plugins/plugins-activation.php:42
-msgid "LayerSlider WP"
+msgid "QI Addons for Elementor"
+msgstr ""
+
+#: includes/plugins/plugins-activation.php:47
+msgid "QI Blocks"
 msgstr ""
 
 #: includes/plugins/plugins-activation.php:52
-msgid "Revolution Slider"
+msgid "LayerSlider WP"
 msgstr ""
 
 #: includes/plugins/plugins-activation.php:62
+msgid "Revolution Slider"
+msgstr ""
+
+#: includes/plugins/plugins-activation.php:72
 msgid "Envato Market"
 msgstr ""
 
-#: includes/plugins/plugins-activation.php:68
+#: includes/plugins/plugins-activation.php:78
 msgid "Timetable Responsive Schedule For WordPress"
 msgstr ""
 
-#: includes/plugins/plugins-activation.php:78
+#: includes/plugins/plugins-activation.php:88
 msgid "Wp Job Manager"
 msgstr ""
 
-#: includes/plugins/plugins-activation.php:84
+#: includes/plugins/plugins-activation.php:94
 msgid "Regions for WP Job Manager"
 msgstr ""
 
-#: includes/plugins/plugins-activation.php:90
+#: includes/plugins/plugins-activation.php:100
 msgid "Qode Instagram Widget"
 msgstr ""
 
-#: includes/plugins/plugins-activation.php:100
+#: includes/plugins/plugins-activation.php:110
 msgid "Qode Twitter Feed"
 msgstr ""
 
-#: includes/plugins/plugins-activation.php:110
+#: includes/plugins/plugins-activation.php:120
 msgid "Quick Links"
 msgstr ""
 
-#: includes/plugins/plugins-activation.php:120
+#: includes/plugins/plugins-activation.php:130
 msgid "Qode Listing"
 msgstr ""
 
-#: includes/plugins/plugins-activation.php:130
+#: includes/plugins/plugins-activation.php:140
 msgid "Qode News"
 msgstr ""
 
-#: includes/plugins/plugins-activation.php:140
+#: includes/plugins/plugins-activation.php:150
 msgid "Qode Restaurant"
 msgstr ""
 
-#: includes/plugins/plugins-activation.php:150
+#: includes/plugins/plugins-activation.php:160
 msgid "Qode Membership"
 msgstr ""
 
-#: includes/plugins/plugins-activation.php:160
+#: includes/plugins/plugins-activation.php:170
 msgid "Qode Music"
 msgstr ""
 
-#: includes/plugins/plugins-activation.php:170
+#: includes/plugins/plugins-activation.php:180
 msgid "Qode Tours"
 msgstr ""
 
-#: includes/plugins/plugins-activation.php:180
+#: includes/plugins/plugins-activation.php:190
 msgid "Qode LMS"
 msgstr ""
 
-#: includes/plugins/plugins-activation.php:190
+#: includes/plugins/plugins-activation.php:200
 msgid "Qode Woocommerce Checkout Integration"
 msgstr ""
 
-#: includes/plugins/plugins-activation.php:200
+#: includes/plugins/plugins-activation.php:210
 msgid "Qode Real Estate"
 msgstr ""
 
-#: includes/plugins/plugins-activation.php:302
+#: includes/plugins/plugins-activation.php:240
+msgid "Yith WooCommerce Quick View"
+msgstr ""
+
+#: includes/plugins/plugins-activation.php:250
+msgid "Yith WooCommerce Wishlist"
+msgstr ""
+
+#: includes/plugins/plugins-activation.php:260
+msgid "Sellkit"
+msgstr ""
+
+#: includes/plugins/plugins-activation.php:270
+msgid "HubSpot"
+msgstr ""
+
+#: includes/plugins/plugins-activation.php:352
 msgid "Sorry, but you do not have the correct permissions to install the %s plugin. Contact the administrator of this site for help on getting the plugin installed."
 msgid_plural "Sorry, but you do not have the correct permissions to install the %s plugins. Contact the administrator of this site for help on getting the plugins installed."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/plugins/plugins-activation.php:305
+#: includes/plugins/plugins-activation.php:355
 msgid "Sorry, but you do not have the correct permissions to activate the %s plugin. Contact the administrator of this site for help on getting the plugin activated."
 msgid_plural "Sorry, but you do not have the correct permissions to activate the %s plugins. Contact the administrator of this site for help on getting the plugins activated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/plugins/plugins-activation.php:307
+#: includes/plugins/plugins-activation.php:357
 msgid "Sorry, but you do not have the correct permissions to update the %s plugin. Contact the administrator of this site for help on getting the plugin updated."
 msgid_plural "Sorry, but you do not have the correct permissions to update the %s plugins. Contact the administrator of this site for help on getting the plugins updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/plugins/plugins-activation.php:309
+#: includes/plugins/plugins-activation.php:359
 msgid "Activate installed plugin"
 msgid_plural "Activate installed plugins"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/plugins/plugins-activation.php:312
+#: includes/plugins/plugins-activation.php:362
 msgid "All plugins installed and activated successfully. %s"
 msgstr ""
 
@@ -15137,19 +15252,19 @@ msgstr ""
 msgid "Slug"
 msgstr ""
 
-#: includes/qode-dynamic-helper-functions.php:10516
+#: includes/qode-dynamic-helper-functions.php:10517
 #: js/default_dynamic_callback.php:22
 msgid "Comment has been sent!"
 msgstr ""
 
-#: includes/qode-dynamic-helper-functions.php:10597
+#: includes/qode-dynamic-helper-functions.php:10598
 #: js/default_dynamic_callback.php:103
 #: templates/blog-structure.php:231
 #: templates/blog-structure.php:255
 msgid "Loading new posts..."
 msgstr ""
 
-#: includes/qode-dynamic-helper-functions.php:10601
+#: includes/qode-dynamic-helper-functions.php:10602
 #: js/default_dynamic_callback.php:104
 #: templates/blog-structure.php:232
 #: templates/blog-structure.php:256
@@ -15160,11 +15275,11 @@ msgstr ""
 msgid "Custom Widget Area"
 msgstr ""
 
-#: includes/sidebar/qode-custom-sidebar.php:42
+#: includes/sidebar/qode-custom-sidebar.php:45
 msgid "Enter Name of the new Widget Area"
 msgstr ""
 
-#: includes/sidebar/qode-custom-sidebar.php:43
+#: includes/sidebar/qode-custom-sidebar.php:46
 msgid "Add Widget Area"
 msgstr ""
 
@@ -15189,7 +15304,7 @@ msgid "Search Here"
 msgstr ""
 
 #: templates/blog-parts/blog-share-like-below-text.php:7
-#: templates/portfolio-loop.php:1154
+#: templates/portfolio-loop.php:1175
 msgid "Print page"
 msgstr ""
 
@@ -15207,12 +15322,12 @@ msgstr ""
 #: templates/blog_masonry_date_in_image-loop.php:49
 #: templates/blog_single-loop.php:57
 #: templates/blog_small_image-loop.php:44
-#: templates/portfolio-loop.php:183
-#: templates/portfolio-loop.php:353
-#: templates/portfolio-loop.php:525
-#: templates/portfolio-loop.php:743
-#: templates/portfolio-loop.php:959
-#: templates/portfolio-loop.php:1133
+#: templates/portfolio-loop.php:193
+#: templates/portfolio-loop.php:363
+#: templates/portfolio-loop.php:535
+#: templates/portfolio-loop.php:763
+#: templates/portfolio-loop.php:980
+#: templates/portfolio-loop.php:1154
 #: vc_templates/vc_row.php:233
 #: vc_templates/vc_row.php:254
 #: vc_templates/vc_row_inner.php:237
@@ -15230,12 +15345,12 @@ msgstr ""
 #: templates/blog_masonry_date_in_image-loop.php:49
 #: templates/blog_single-loop.php:57
 #: templates/blog_small_image-loop.php:44
-#: templates/portfolio-loop.php:183
-#: templates/portfolio-loop.php:353
-#: templates/portfolio-loop.php:525
-#: templates/portfolio-loop.php:743
-#: templates/portfolio-loop.php:959
-#: templates/portfolio-loop.php:1133
+#: templates/portfolio-loop.php:193
+#: templates/portfolio-loop.php:363
+#: templates/portfolio-loop.php:535
+#: templates/portfolio-loop.php:763
+#: templates/portfolio-loop.php:980
+#: templates/portfolio-loop.php:1154
 #: vc_templates/vc_row.php:233
 #: vc_templates/vc_row.php:254
 #: vc_templates/vc_row_inner.php:237
@@ -15378,12 +15493,12 @@ msgstr ""
 msgid "Tags:"
 msgstr ""
 
-#: templates/blog_vertical-loop.php:123
-#: templates/blog_vertical-loop.php:193
-#: templates/blog_vertical-loop.php:267
-#: templates/blog_vertical-loop.php:336
-#: templates/blog_vertical-loop.php:413
-#: templates/blog_vertical-loop.php:482
+#: templates/blog_vertical-loop.php:124
+#: templates/blog_vertical-loop.php:194
+#: templates/blog_vertical-loop.php:268
+#: templates/blog_vertical-loop.php:337
+#: templates/blog_vertical-loop.php:414
+#: templates/blog_vertical-loop.php:483
 msgid "See More"
 msgstr ""
 
@@ -15391,21 +15506,26 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: templates/portfolio-loop.php:238
-#: templates/portfolio-loop.php:413
-#: templates/portfolio-loop.php:592
-#: templates/portfolio-loop.php:808
-#: templates/portfolio-loop.php:1027
-#: templates/portfolio-loop.php:1212
+#: templates/portfolio-loop.php:162
+#: templates/portfolio-loop.php:732
+msgid "Video Title"
+msgstr ""
+
+#: templates/portfolio-loop.php:248
+#: templates/portfolio-loop.php:423
+#: templates/portfolio-loop.php:602
+#: templates/portfolio-loop.php:828
+#: templates/portfolio-loop.php:1048
+#: templates/portfolio-loop.php:1233
 msgid "Category "
 msgstr ""
 
-#: templates/portfolio-loop.php:270
-#: templates/portfolio-loop.php:446
-#: templates/portfolio-loop.php:546
-#: templates/portfolio-loop.php:762
-#: templates/portfolio-loop.php:981
-#: templates/portfolio-loop.php:1166
+#: templates/portfolio-loop.php:280
+#: templates/portfolio-loop.php:456
+#: templates/portfolio-loop.php:556
+#: templates/portfolio-loop.php:782
+#: templates/portfolio-loop.php:1002
+#: templates/portfolio-loop.php:1187
 msgid "About This Project"
 msgstr ""
 
@@ -15447,7 +15567,6 @@ msgstr ""
 msgid "Shipping to %s."
 msgstr ""
 
-#. Translators: $s shipping destination.
 #: woocommerce/cart/cart-shipping.php:52
 msgid "Change address"
 msgstr ""
@@ -15469,7 +15588,6 @@ msgstr ""
 msgid "No shipping options were found for %s."
 msgstr ""
 
-#. Translators: $s shipping destination.
 #: woocommerce/cart/cart-shipping.php:67
 msgid "Enter a different address"
 msgstr ""
@@ -15500,8 +15618,18 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
+#: woocommerce/cart/cart.php:28
+msgid "Remove item"
+msgstr ""
+
+#: woocommerce/cart/cart.php:29
+msgid "Thumbnail image"
+msgstr ""
+
+#. translators: %s: Quantity.
 #: woocommerce/cart/cart.php:32
 #: woocommerce/cart/cart.php:111
+#: woocommerce/global/quantity-input.php:21
 msgid "Quantity"
 msgstr ""
 
@@ -15514,16 +15642,17 @@ msgid "Available on backorder"
 msgstr ""
 
 #: woocommerce/cart/cart.php:147
+#: woocommerce/checkout/form-coupon.php:33
 msgid "Coupon:"
 msgstr ""
 
 #: woocommerce/cart/cart.php:147
-#: woocommerce/checkout/form-coupon.php:33
+#: woocommerce/checkout/form-coupon.php:34
 msgid "Coupon code"
 msgstr ""
 
 #: woocommerce/cart/cart.php:147
-#: woocommerce/checkout/form-coupon.php:34
+#: woocommerce/checkout/form-coupon.php:35
 msgid "Apply coupon"
 msgstr ""
 
@@ -15535,22 +15664,39 @@ msgstr ""
 msgid "Calculate shipping"
 msgstr ""
 
-#: woocommerce/cart/shipping-calculator.php:33
+#: woocommerce/cart/shipping-calculator.php:32
+msgid "Country / region:"
+msgstr ""
+
+#: woocommerce/cart/shipping-calculator.php:34
 msgid "Select a country / region&hellip;"
 msgstr ""
 
-#: woocommerce/cart/shipping-calculator.php:53
-#: woocommerce/cart/shipping-calculator.php:58
-#: woocommerce/cart/shipping-calculator.php:70
+#: woocommerce/cart/shipping-calculator.php:54
+#: woocommerce/cart/shipping-calculator.php:60
+#: woocommerce/cart/shipping-calculator.php:73
 msgid "State / County"
 msgstr ""
 
 #: woocommerce/cart/shipping-calculator.php:59
+#: woocommerce/cart/shipping-calculator.php:72
+msgid "State / County:"
+msgstr ""
+
+#: woocommerce/cart/shipping-calculator.php:61
 msgid "Select a state&hellip;"
 msgstr ""
 
-#: woocommerce/cart/shipping-calculator.php:81
+#: woocommerce/cart/shipping-calculator.php:84
+msgid "City:"
+msgstr ""
+
+#: woocommerce/cart/shipping-calculator.php:85
 msgid "City"
+msgstr ""
+
+#: woocommerce/cart/shipping-calculator.php:93
+msgid "Postcode / ZIP:"
 msgstr ""
 
 #: woocommerce/checkout/form-coupon.php:26
@@ -15623,13 +15769,15 @@ msgstr ""
 msgid "Lost your password?"
 msgstr ""
 
-#: woocommerce/global/quantity-input.php:30
-msgctxt "Product quantity input tooltip"
-msgid "Qty"
+#. translators: %s: Quantity.
+#: woocommerce/global/quantity-input.php:21
+#: woocommerce/global/quantity-input.php:41
+msgid "%s quantity"
 msgstr ""
 
-#: woocommerce/global/quantity-input.php:30
-msgid "%s quantity"
+#: woocommerce/global/quantity-input.php:41
+msgctxt "Product quantity input tooltip"
+msgid "Qty"
 msgstr ""
 
 #: woocommerce/loop/add-to-cart.php:34
@@ -15732,6 +15880,10 @@ msgstr[1] ""
 
 #: woocommerce/myaccount/my-orders.php:79
 msgid "View"
+msgstr ""
+
+#: woocommerce/single-product/add-to-cart/grouped.php:69
+msgid "Buy one of this item"
 msgstr ""
 
 #: woocommerce/single-product/add-to-cart/variable.php:32

@@ -63,5 +63,6 @@ $date_formatted = date('d.m.Y', strtotime($date_published));
             </div>
         </div>
         <?php qodef_re_get_cpt_single_module_template_part('templates/single/parts/basic-info', 'property', '', $params); ?>
+        <?php qodef_re_get_cpt_single_module_template_part('templates/single/parts/favorites', 'property', '', $params); ?>
     </div>
 </div>

@@ -7,9 +7,13 @@
 	width: 24px;
 	position: absolute;
 	z-index: 100;
-	top: 11px;
-	right: 32px;
+	top: 14px;
+	right: 40px;
 	background: transparent url(images/delete.png) no-repeat top left;
+}
+
+.widget-liquid-right .qode-delete-button {
+	top: 12px;
 }
 
 .qode-delete-button:hover{
@@ -31,6 +35,7 @@
 	padding:10px;
 	text-align: center;
 	margin: 12px 0px;
+	width: 100%;
 }
 
 #wpwrap .qode-add-widget .button{

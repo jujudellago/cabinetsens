@@ -92,7 +92,7 @@ class QodeNewsPostSlider1 extends \Elementor\Widget_Base{
         return $reactions_array;
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -404,4 +404,4 @@ class QodeNewsPostSlider1 extends \Elementor\Widget_Base{
 
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new QodeNewsPostSlider1() );
+\Elementor\Plugin::instance()->widgets_manager->register( new QodeNewsPostSlider1() );

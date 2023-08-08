@@ -171,7 +171,7 @@ class ListingSlider implements ShortcodeInterface {
 			'qode-ls-slider-normal-space'
 		);
 
-		return implode($classes, ' ');
+		return implode(' ', $classes);
 	}
 
 

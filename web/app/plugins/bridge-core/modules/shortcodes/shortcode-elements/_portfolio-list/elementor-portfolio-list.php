@@ -17,7 +17,7 @@ class BridgeCoreElementorPortfolioList extends \Elementor\Widget_Base{
         return [ 'qode' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -600,7 +600,7 @@ class BridgeCoreElementorPortfolioList extends \Elementor\Widget_Base{
         $headings_array = array('h2', 'h3', 'h4', 'h5', 'h6');
 
         //get correct heading value. If provided heading isn't valid get the default one
-        $params['title_tag'] = (in_array($params['title_tag'], $headings_array)) ? $params['title_tag'] : $args['title_tag'];
+        $params['title_tag'] = (in_array($params['title_tag'], $headings_array)) ? $params['title_tag'] : 'h5';
 
         $params['portfolio_holder_classes'] = bridge_core_generate_portfolio_list_holder_classes( $params );
         $params['portfolio_holder_universal_classes'] = bridge_core_generate_portfolio_list_universal_classes( $params );
@@ -629,4 +629,4 @@ class BridgeCoreElementorPortfolioList extends \Elementor\Widget_Base{
 
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorPortfolioList() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorPortfolioList() );

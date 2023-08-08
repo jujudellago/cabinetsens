@@ -176,6 +176,14 @@ if ( ! function_exists( 'qode_listing_category_add_meta_fields' ) ) {
 			<input type="text" name="category_custom_link" value="">
 
 		</div>
+        <div class="form-field" style="margin:0 10px 20px 0">
+
+            <label style="margin-bottom: 10px;display: block" for="listing_category_order">
+                <?php esc_html_e( 'Set Category Order', 'qode-listing' ); ?>
+            </label>
+            <input type="text" name="listing_category_order" value="" style="max-width: 200px;">
+
+        </div>
 
 	<?php }
 	add_action( 'job_listing_category_add_form_fields', 'qode_listing_category_add_meta_fields', 10, 2 );
@@ -263,6 +271,7 @@ if ( ! function_exists( 'qode_listing_category_edit_meta_fields' ) ) {
 		$gallery_type = get_term_meta( $term->term_id, 'gallery_type', true );
 		$gallery_size = get_term_meta( $term->term_id, 'gallery_size', true );
 		$category_custom_link = get_term_meta( $term->term_id, 'category_custom_link', true );
+        $listing_category_order = get_term_meta( $term->term_id, 'listing_category_order', true );
 		$featured_image = get_term_meta( $term->term_id, 'featured_image', true );
 		?>
 
@@ -457,6 +466,14 @@ if ( ! function_exists( 'qode_listing_category_edit_meta_fields' ) ) {
 
 					<input type="text" name="category_custom_link" value="<?php echo esc_attr($category_custom_link);?>">
 				</div>
+                <div class="form-field" style="margin:0 10px 20px 0">
+
+                    <label style="margin-bottom: 10px;display: block" for="listing_category_order">
+                        <?php esc_html_e( 'Set order number', 'qode-listing' ); ?>
+                    </label>
+
+                    <input type="text" name="listing_category_order" value="<?php echo esc_attr($listing_category_order);?>" style="max-width: 200px;">
+                </div>
 			</td>
 		</tr>
 
@@ -521,6 +538,9 @@ if ( ! function_exists( 'qode_listing_category_update_meta_fields' ) ) {
 			if(isset($_POST['category_custom_link'])){
 				update_term_meta($term_id, 'category_custom_link', $_POST['category_custom_link']);
 			}
+            if(isset($_POST['listing_category_order'])){
+                update_term_meta($term_id, 'listing_category_order', $_POST['listing_category_order']);
+            }
 			if ( isset($_POST['featured_image'])) {
 
 				$image = esc_url( $_POST['featured_image'] );

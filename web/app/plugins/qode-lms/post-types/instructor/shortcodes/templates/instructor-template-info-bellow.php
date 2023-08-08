@@ -17,7 +17,7 @@
 					<<?php echo esc_attr($position_title_tag); ?> class="qode-instructor-position"><?php echo esc_html( $position ); ?></<?php echo esc_attr($position_title_tag); ?>>
 				<?php } ?>
 			</div>
-			<?php if ( ! empty( $excerpt ) ) { ?>
+			<?php if ( $enable_excerpt === 'yes' && ! empty( $excerpt ) ) { ?>
 				<div class="qode-instructor-text">
 					<div class="qode-instructor-text-inner">
 						<div class="qode-instructor-description">

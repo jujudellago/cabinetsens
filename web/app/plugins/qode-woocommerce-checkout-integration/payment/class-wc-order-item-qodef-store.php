@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * WC Order Item Stock Photography Data Store
+ * WC Order Item Qodef Data Store
  *
  * @version  3.0.0
  * @category Class

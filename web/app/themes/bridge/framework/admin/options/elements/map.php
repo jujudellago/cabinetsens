@@ -121,7 +121,9 @@ if(!function_exists('bridge_qode_elements_options_map')) {
         $row6 = new BridgeQodeRow(true);
         $group1->addChild("row6", $row6);
         $button_disable_responsive_padding = new BridgeQodeField("yesnosimple", "button_disable_responsive_padding", "no", esc_html__("Disable responsive change of padding", "bridge"), esc_html__("This is some description", "bridge"));
-        $row5->addChild("button_disable_responsive_padding", $button_disable_responsive_padding);
+	    $row6->addChild("button_disable_responsive_padding", $button_disable_responsive_padding);
+		$button_enable_white_space_wrapping = new BridgeQodeField("yesnosimple", "button_enable_white_space_wrapping", "no", esc_html__("Enable text wrapping into multiple lines", "bridge"), esc_html__("This is some description", "bridge"));
+	    $row6->addChild("button_enable_white_space_wrapping", $button_enable_white_space_wrapping);
 
         $group2 = new BridgeQodeGroup(esc_html__("White Button", "bridge"), esc_html__('Define styles for "White" Button', 'bridge'));
         $panel3->addChild("group2", $group2);

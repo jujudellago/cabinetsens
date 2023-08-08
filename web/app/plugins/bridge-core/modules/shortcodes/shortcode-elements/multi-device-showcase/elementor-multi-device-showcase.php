@@ -17,7 +17,7 @@ class BridgeCoreElementorMultiDeviceShowcase extends \Elementor\Widget_Base{
         return [ 'qode' ];
     }
 
-    protected function _register_controls(){
+    protected function register_controls(){
         $this->start_controls_section(
             'general',
             [
@@ -315,15 +315,35 @@ class BridgeCoreElementorMultiDeviceShowcase extends \Elementor\Widget_Base{
 
     protected function render(){
         $params = $this->get_settings_for_display();
-        foreach ($params['laptop_slides'] as $laptop_slide){
-            $params['laptop_slides']['slide_image'] = $laptop_slide['slide_image']['id'];
+
+        $sliders = array( 'laptop_slides', 'tablet_slides', 'phone_slides' );
+
+        foreach( $sliders as $slider ) {
+            if( isset( $params[$slider] ) && is_array( $params[$slider] ) && count( $params[$slider] ) > 0 ) {
+                foreach($params[$slider] as $key => $slide){
+                    $params[$slider][$key]['slide_image'] = $slide['slide_image']['id'];
+                }
+            }
         }
 
-        $params['laptop_slides'] = json_decode(urldecode($params['laptop_slides']), true);
-        $params['tablet_slides'] = json_decode(urldecode($params['tablet_slides']), true);
-        $params['phone_slides'] = json_decode(urldecode($params['phone_slides']), true);
-        $params['additional_tablet_portrait_images'] = json_decode(urldecode($params['additional_tablet_portrait_images']), true);
-        $params['additional_tablet_landscape_images'] = json_decode(urldecode($params['additional_tablet_landscape_images']), true);
+        $additional_sliders = array( 'additional_tablet_portrait_images', 'additional_tablet_landscape_images' );
+
+        foreach( $additional_sliders as $additional_slider ) {
+            if( isset( $params[$additional_slider] ) && is_array( $params[$additional_slider] ) && count( $params[$additional_slider] ) > 0 ) {
+                foreach($params[$additional_slider] as $key => $slide){
+                    $params[$additional_slider][$key]['additional_image'] = $slide['additional_image']['id'];
+                }
+            }
+        }
+
+        if( ! empty( $params['additional_laptop_image'] ) ) {
+            $params['additional_laptop_image'] = $params['additional_laptop_image']['id'];
+        }
+
+        if( ! empty( $params['additional_phone_portrait_image'] ) ) {
+            $params['additional_phone_portrait_image'] = $params['additional_phone_portrait_image']['id'];
+        }
+
         $params['holder_classes'] = $this->getHolderClasses($params);
         $params['global_slider_data'] = $this->getGlobalSliderData($params);
         $params['button_parameters'] = $this->getButtonParameters($params);
@@ -336,10 +356,6 @@ class BridgeCoreElementorMultiDeviceShowcase extends \Elementor\Widget_Base{
      */
     private function getHolderClasses($params) {
         $params_array = array();
-
-        if ($params['animate_on_appear'] == 'yes') {
-            $params_array[] = 'qode-mds-appear-effect';
-        }
 
         if ($params['one_scroll_to_content'] == 'yes') {
             $params_array[] = 'qode-mds-one-scroll-to-content';
@@ -383,4 +399,4 @@ class BridgeCoreElementorMultiDeviceShowcase extends \Elementor\Widget_Base{
     }
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorMultiDeviceShowcase() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorMultiDeviceShowcase() );

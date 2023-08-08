@@ -65,13 +65,7 @@ if(isset($bridge_qode_options['enable_social_share']) && $bridge_qode_options['e
             if($bridge_qode_options['enable_twitter_share'] == "yes") {
                 $html .= '<li class="twitter_share">';
 
-                // if mobile use different link to update status service
-                if($is_mobile) {
-                    $html .= '<a href="#" onclick="popUp=window.open(\'https://twitter.com/share?text=' . urlencode(bridge_qode_excerpt_max_charlength($count_char) . $twitter_via) . get_permalink() . '\', \'popupwindow\', \'scrollbars=yes,width=800,height=400\');popUp.focus();return false;">';
-                }
-                else {
-                    $html .= '<a href="#" onclick="popUp=window.open(\'https://twitter.com/share?status=' . urlencode(bridge_qode_excerpt_max_charlength($count_char) . $twitter_via) . get_permalink() . '\', \'popupwindow\', \'scrollbars=yes,width=800,height=400\');popUp.focus();return false;">';
-                }
+                $html .= '<a href="#" onclick="popUp=window.open(\'https://twitter.com/intent/tweet?text=' . urlencode(bridge_qode_excerpt_max_charlength($count_char) . $twitter_via) . get_permalink() . '\', \'popupwindow\', \'scrollbars=yes,width=800,height=400\');popUp.focus();return false;">';
 
                 if(!empty($bridge_qode_options['twitter_icon'])) {
                     $html .= '<img itemprop="image" src="' . $bridge_qode_options["twitter_icon"] . '" alt="" />';

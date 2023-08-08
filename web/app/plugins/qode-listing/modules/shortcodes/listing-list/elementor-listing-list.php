@@ -88,7 +88,7 @@ class QodeListingElementorListingList extends \Elementor\Widget_Base{
         return [ 'qode-listing' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -219,7 +219,7 @@ class QodeListingElementorListingList extends \Elementor\Widget_Base{
             $classes[] = 'qode-ls-list-'.$column_number.'-columns';
         }
 
-        return implode($classes, ' ');
+	    return implode(' ', $classes);
     }
 
 
@@ -245,4 +245,4 @@ class QodeListingElementorListingList extends \Elementor\Widget_Base{
 
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new QodeListingElementorListingList() );
+\Elementor\Plugin::instance()->widgets_manager->register( new QodeListingElementorListingList() );

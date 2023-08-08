@@ -3,7 +3,7 @@
 Plugin Name: Qode LMS
 Description: Plugin that adds post types for LMS extension
 Author: Qode Themes
-Version: 3.0.2
+Version: 3.0.6
 */
 
 require_once 'load.php';

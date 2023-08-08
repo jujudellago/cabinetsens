@@ -6,16 +6,16 @@ function timetable_weekdays_init()
 		'name' => _x('Timetable columns', 'post type general name', 'timetable'),
 		'singular_name' => _x('Timetable Column', 'post type singular name', 'timetable'),
 		'add_new' => _x('Add New', 'timetable_weekdays', 'timetable'),
-		'add_new_item' => __('Add New Timetable Column', 'timetable'),
-		'edit_item' => __('Edit Timetable Column', 'timetable'),
-		'new_item' => __('New Timetable Column', 'timetable'),
-		'all_items' => __('All Timetable Columns', 'timetable'),
-		'view_item' => __('View Timetable Column', 'timetable'),
-		'search_items' => __('Search Timetable Columns', 'timetable'),
-		'not_found' =>  __('No timetable columns found', 'timetable'),
-		'not_found_in_trash' => __('No timetable columns found in Trash', 'timetable'), 
+		'add_new_item' => esc_html__('Add New Timetable Column', 'timetable'),
+		'edit_item' => esc_html__('Edit Timetable Column', 'timetable'),
+		'new_item' => esc_html__('New Timetable Column', 'timetable'),
+		'all_items' => esc_html__('All Timetable Columns', 'timetable'),
+		'view_item' => esc_html__('View Timetable Column', 'timetable'),
+		'search_items' => esc_html__('Search Timetable Columns', 'timetable'),
+		'not_found' =>  esc_html__('No timetable columns found', 'timetable'),
+		'not_found_in_trash' => esc_html__('No timetable columns found in Trash', 'timetable'), 
 		'parent_item_colon' => '',
-		'menu_name' => __("Timetable columns", 'timetable')
+		'menu_name' => esc_html__("Timetable columns", 'timetable')
 	);
 	$args = array(  
 		"labels" => $labels, 
@@ -36,8 +36,8 @@ function timetable_weekdays_edit_columns($columns)
 {
 	$columns = array(
 		"cb" => "<input type=\"checkbox\" />",
-		"title" => __('Day name', 'timetable'),
-		"date" => __('Date', 'timetable')
+		"title" => esc_html__('Day name', 'timetable'),
+		"date" => esc_html__('Date', 'timetable')
 	);
 
 	return $columns;

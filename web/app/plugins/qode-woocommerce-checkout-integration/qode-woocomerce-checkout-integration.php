@@ -3,7 +3,7 @@
 Plugin Name: Qode Woocommerce Checkout Integration
 Description: Plugin that adds custom post type to woocommerce checkout
 Author: Qode Themes
-Version: 2.0.1
+Version: 2.0.2
 */
 
 include_once 'load.php';

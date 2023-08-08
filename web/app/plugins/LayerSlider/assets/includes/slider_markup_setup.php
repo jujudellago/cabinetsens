@@ -3,7 +3,10 @@
 // Prevent direct file access
 defined( 'LS_ROOT_FILE' ) || exit;
 
-$slider = array();
+$slider = [];
+
+$sliderVersion 	= ! empty( $slides['properties']['sliderVersion'] ) ? $slides['properties']['sliderVersion'] : '1.0.0';
+$preVersion725 	= version_compare( $sliderVersion, '7.2.5', '<' );
 
 // Filter to override the defaults
 if(has_filter('layerslider_override_defaults')) {
@@ -59,19 +62,20 @@ if(isset($slides['properties']['autoPauseSlideshow'])) {
 
 // Get global background image by attachment ID (if any)
 if( ! empty( $slides['properties']['props']['globalBGImageId'] ) ) {
+
+	if( has_filter('wpml_object_id') && get_option('ls_wpml_media_translation', true ) ) {
+		$slides['properties']['props']['globalBGImageId'] = apply_filters('wpml_object_id', $slides['properties']['props']['globalBGImageId'], 'attachment', true );
+	}
+
 	$tempSrc = wp_get_attachment_image_src( $slides['properties']['props']['globalBGImageId'], 'full' );
 	$tempSrc = apply_filters('layerslider_init_props_image', $tempSrc[0]);
 
 	$slides['properties']['attrs']['globalBGImage'] = $tempSrc;
 }
 
-// Get YourLogo image by attachment ID (if any)
-
-if( ! empty( $slides['properties']['props']['yourlogoId'] ) ) {
-	$tempSrc = wp_get_attachment_image_src( $slides['properties']['props']['yourlogoId'], 'full' );
-	$tempSrc = apply_filters('layerslider_init_props_image', $tempSrc[0]);
-
-	$slides['properties']['attrs']['yourLogo'] = $tempSrc;
+// GLobal background image asset
+if( ! empty( $slides['properties']['attrs']['globalBGImage'] ) && ! ls_assets_cond( $slides['properties']['attrs'], 'globalBGImage' ) ) {
+	unset( $slides['properties']['attrs']['globalBGImage'] );
 }
 
 
@@ -100,8 +104,18 @@ if( empty( $slides['properties']['props']['height'] ) ) { $slides['properties'][
 if(isset($slides['layers']) && is_array($slides['layers'])) {
 	foreach($slides['layers'] as $slidekey => $slide) {
 
-		// 6.6.1: Fix PHP undef notice
-		$slide['properties'] = ! empty( $slide['properties'] ) ? $slide['properties'] : array();
+		// v6.6.1: Fix PHP undef notice
+		$slide['properties'] = ! empty( $slide['properties'] ) ? $slide['properties'] : [];
+
+		// v7.2.5: Backward compatibility for parallax transformOrigin changes
+		if( $preVersion725 && ! empty( $slide['properties']['parallaxtransformorigin'] ) ) {
+
+			$toParams = explode(' ', trim( $slide['properties']['parallaxtransformorigin'] ) );
+			if( $toParams[0] === '50%' ) { $toParams[0] = 'slidercenter'; }
+			if( $toParams[1] === '50%' ) { $toParams[1] = 'slidermiddle'; }
+
+			$slide['properties']['parallaxtransformorigin'] = implode(' ', $toParams);
+		}
 
 		$slider['slides'][$slidekey] = apply_filters('ls_parse_defaults', $lsDefaults['slides'], $slide['properties']);
 
@@ -109,16 +123,9 @@ if(isset($slides['layers']) && is_array($slides['layers'])) {
 
 			foreach($slide['sublayers'] as $layerkey => $layer) {
 
-				// Ensure that magic quotes will not mess with JSON data
-				if(function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc()) {
-					$layer['styles'] = stripslashes($layer['styles']);
-					$layer['transition'] = stripslashes($layer['transition']);
-				}
-
 				if( ! empty( $layer['transition'] ) ) {
 					$layer = array_merge($layer, json_decode(stripslashes($layer['transition']), true));
 				}
-
 
 				if( ! empty( $layer['styles'] ) ) {
 					$layerStyles = json_decode($layer['styles'], true);
@@ -127,7 +134,7 @@ if(isset($slides['layers']) && is_array($slides['layers'])) {
 						$layerStyles = json_decode(stripslashes($layer['styles']), true);
 					}
 
-					$layer['styles'] = ! empty( $layerStyles ) ? $layerStyles : array();
+					$layer['styles'] = ! empty( $layerStyles ) ? $layerStyles : [];
 				}
 
 				if( ! empty( $layer['top'] ) ) {
@@ -142,12 +149,48 @@ if(isset($slides['layers']) && is_array($slides['layers'])) {
 					$layer['styles']['white-space'] = 'normal';
 				}
 
+				if( ! empty( $layer['layerBackground'] ) && empty( $layer['styles']['background-repeat'] ) ) {
+					if(
+						empty( $slides['properties']['attrs']['sliderVersion'] ) ||
+						version_compare( $slides['properties']['attrs']['sliderVersion'], '7.0.0', '<' )
+					) {
+						$layer['styles']['background-repeat'] = 'repeat';
+					}
+				}
+
+				// v7.2.5: Backward compatibility for parallax transformOrigin changes
+				if( $preVersion725 && ! empty( $layer['parallaxtransformorigin'] ) ) {
+
+					$toParams = explode(' ', trim( $layer['parallaxtransformorigin'] ) );
+					if( $toParams[0] === '50%' ) { $toParams[0] = 'slidercenter'; }
+					if( $toParams[1] === '50%' ) { $toParams[1] = 'slidermiddle'; }
+
+					$layer['parallaxtransformorigin'] = implode(' ', $toParams);
+				}
 
 
-				// Marker for Font Awesome
-				if( empty( $lsFonts['font-awesome'] ) && ! empty( $layer['html'] ) ) {
-					if( strpos( $layer['html'], 'fa fa-') !== false ) {
-						$lsFonts['font-awesome'] = 'font-awesome';
+				// Marker for Font Awesome 4
+				if( empty( $lsFonts['font-awesome-4'] ) && ( ! empty( $layer['html'] ) || ! empty( $layer['icon'] ) ) ) {
+
+					if( ! empty( $layer['html'] ) && strpos( $layer['html'], 'fa fa-') !== false ) {
+						$lsFonts['font-awesome-4'] = 'font-awesome-4';
+					}
+
+					if( ! empty( $layer['icon'] ) && strpos( $layer['icon'], 'fa fa-') !== false ) {
+						$lsFonts['font-awesome-4'] = 'font-awesome-4';
+					}
+				}
+
+				// Marker for Font Awesome 5
+				if( empty( $lsFonts['font-awesome-5'] ) && ! empty( $layer['html'] ) ) {
+					if( strpos( $layer['html'], 'fas fa-') !== false ||
+						strpos( $layer['html'], 'far fa-') !== false ||
+						strpos( $layer['html'], 'fal fa-') !== false ||
+						strpos( $layer['html'], 'fad fa-') !== false ||
+						strpos( $layer['html'], 'fab fa-') !== false
+
+					 ) {
+						$lsFonts['font-awesome-5'] = 'font-awesome-5';
 					}
 				}
 
@@ -167,7 +210,7 @@ if(isset($slides['layers']) && is_array($slides['layers'])) {
 					unset( $layer['styles'][$key] );
 				}
 
-				if( isset($layer['styles']['opacity']) && $layer['styles']['opacity'] === '1') {
+				if( isset($layer['styles']['opacity']) && $layer['styles']['opacity'] == '1') {
 					unset($layer['styles']['opacity']);
 				}
 

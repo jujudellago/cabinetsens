@@ -12,6 +12,9 @@ class AlbumsRegister implements PostTypeInterface {
      * @var string
      */
     private $base;
+    private $taxGenreBase;
+    private $taxLabelBase;
+    private $taxArtistBase;
 
     public function __construct() {
 

@@ -2,7 +2,7 @@
 /**
  * @author    ThemePunch <info@themepunch.com>
  * @link      https://www.themepunch.com/
- * @copyright 2019 ThemePunch
+ * @copyright 2022 ThemePunch
  */
  
 if(!defined('ABSPATH')) exit();
@@ -14,7 +14,6 @@ class RevSliderSliderImport extends RevSliderSlider {
 	private $download_path;
 	private $import_zip;
 	private $exists;
-	private $unzipped_data;
 	private $slider_raw_data;
 	private $slider_data;
 	private $slides_data;
@@ -23,16 +22,15 @@ class RevSliderSliderImport extends RevSliderSlider {
 	private $is_template;
 	private $navigation_map;
 	public $slider_id;
-	
-	
+
 	public function __construct(){
+		parent::__construct();
 		require_once(ABSPATH . 'wp-admin/includes/file.php');
 		
 		$this->old_slider_id	= '';
 		$this->real_slider_id	= '';
-		$upload_dir				= wp_upload_dir();
-		$this->remove_path		= $upload_dir['basedir'].'/rstemp/';
-		$this->download_path	= $this->remove_path;
+		$this->remove_path		= '';
+		$this->download_path	= $this->get_temp_path('rstemp');
 		$this->slider_id		= $this->get_post_var('sliderid');
 		$this->import_zip		= false;
 		$this->exists			= !empty($this->slider_id);
@@ -44,6 +42,7 @@ class RevSliderSliderImport extends RevSliderSlider {
 	
 	/**
 	 * return the old Slider ID
+	 * @return int
 	 **/
 	public function get_old_slider_id(){
 		return $this->old_slider_id;
@@ -75,7 +74,7 @@ class RevSliderSliderImport extends RevSliderSlider {
 			if(is_array($error)) return $error;
 			
 			$this->set_slider_data_raw();
-			$this->set_animations($update_animation);
+			$this->set_animations();
 			$this->set_dynamic_css_v5(); //used prior 6.0 exports
 			$this->set_dynamic_css_v6(); //used since 6.0 exports
 			
@@ -93,7 +92,8 @@ class RevSliderSliderImport extends RevSliderSlider {
 			$slider = new RevSliderSliderImport();
 			$slider->init_by_id($this->slider_id);
 			$upd = new RevSliderPluginUpdate();
-			
+
+			$upd->set_import(true);
 			$upd->upgrade_slider_to_latest($slider);
 			//RevSliderPluginUpdate::upgrade_slider_to_latest($slider);
 			
@@ -113,12 +113,9 @@ class RevSliderSliderImport extends RevSliderSlider {
 				if(is_array($duplicate)) return $duplicate; //error
 			}
 			
-			$wp_filesystem->delete($this->remove_path, true);
-			
+			$this->clear_files();
 		}catch(Exception $e){
-			if(isset($this->remove_path)){
-				$wp_filesystem->delete($this->remove_path, true);
-			}
+			$this->clear_files();
 			
 			return array('success' => false, 'error' => $e->getMessage(), 'sliderID' => $this->slider_id);
 		}
@@ -141,23 +138,24 @@ class RevSliderSliderImport extends RevSliderSlider {
 	
 	/**
 	 * unzip an uploaded Slider
+	 * @param mixed $exact_filepath
+	 * @throws Exception
+	 * @return mixed
 	 */
 	private function unzip_slider($exact_filepath = false){
-		require_once(ABSPATH . 'wp-admin/includes/file.php');
-		
 		if($exact_filepath !== false){
 			$path = $exact_filepath;
 		}else{
 			$import_file = $this->get_val($_FILES, 'import_file');
 			$error		 = $this->get_val($import_file, 'error');
 			switch($error){
-				case UPLOAD_ERR_OK:
-					break;
 				case UPLOAD_ERR_NO_FILE:
 					$this->throw_error(__('No file sent.', 'revslider'));
+					break;
 				case UPLOAD_ERR_INI_SIZE:
 				case UPLOAD_ERR_FORM_SIZE:
 					$this->throw_error(__('Exceeded filesize limit.', 'revslider'));
+					break;
 				default:
 				break;
 			}
@@ -174,11 +172,11 @@ class RevSliderSliderImport extends RevSliderSlider {
 		WP_Filesystem();
 		global $wp_filesystem;
 		
+		$this->check_bad_files($path);
+
 		$file = unzip_file($path, $this->download_path);
-		
 		if(is_wp_error($file)){
 			@define('FS_METHOD', 'direct'); //lets try direct.
-			
 			WP_Filesystem();  //WP_Filesystem() needs to be called again since now we use direct!
 			
 			$file = unzip_file($path, $this->download_path);
@@ -195,16 +193,14 @@ class RevSliderSliderImport extends RevSliderSlider {
 			}
 		}
 		
-		$this->unzipped_data = $file;
+		$unzipped_data = $file;
 		
-		if(!is_wp_error($this->unzipped_data)){
+		if(!is_wp_error($unzipped_data)){
 			$this->import_zip = true;
-			
 			return true;
 		}else{
-			$wp_filesystem->delete($this->remove_path, true);
-			
-			return array('success' => false, 'error' => $this->unzipped_data->get_error_message());
+			$this->clear_files();
+			return array('success' => false, 'error' => $unzipped_data->get_error_message());
 		}
 	}
 	
@@ -237,38 +233,37 @@ class RevSliderSliderImport extends RevSliderSlider {
 	/**
 	 * set the Slider animations from custom_animations.txt and add/update them if needed in the database
 	 **/
-	public function set_animations($update){
+	public function set_animations(){
 		global $wp_filesystem, $wpdb;
 		
 		$animations		 = ($wp_filesystem->exists($this->download_path.'custom_animations.txt')) ? $wp_filesystem->get_contents($this->download_path.'custom_animations.txt') : '';
 		$json_animations = @json_decode($animations, true);
 		$animations		 = (empty($json_animations)) ? $this->rs_unserialize($animations) : $json_animations;
-		
-		if(!empty($animations)){
-			foreach($animations as $animation){
-				$exist = $wpdb->get_row($wpdb->prepare("SELECT * FROM ".$wpdb->prefix . RevSliderFront::TABLE_LAYER_ANIMATIONS." WHERE handle = %s", $animation['handle']), ARRAY_A);
-				if(!empty($exist)){ //update the animation, get the ID
-					$animation_id = $exist['id'];
-				}else{ //insert the animation, get the ID
-					//check if we are v5 or v6+
-					$an = array(
-						'handle' => $this->get_val($animation, 'handle'),
-						'params' => stripslashes(json_encode(str_replace("'", '"', $this->get_val($animation, 'params'))))
-					);
-					
-					if(in_array($this->get_val($animation, 'settings'), array('in', 'out'))){
-						$an['settings'] = $this->get_val($animation, 'settings');
-					}
-					
-					$wpdb->insert($wpdb->prefix . RevSliderFront::TABLE_LAYER_ANIMATIONS, $an);
-					
-					$animation_id = $wpdb->insert_id;
-					
-					//and set the current customin-oldID and customout-oldID in slider raw data to the new ID from the animation
+		if(empty($animations)) return;
+
+		foreach($animations as $animation){
+			$exist = $wpdb->get_row($wpdb->prepare("SELECT * FROM ".$wpdb->prefix . RevSliderFront::TABLE_LAYER_ANIMATIONS." WHERE handle = %s", $animation['handle']), ARRAY_A);
+			if(!empty($exist)){ //update the animation, get the ID
+				$animation_id = $exist['id'];
+			}else{ //insert the animation, get the ID
+				//check if we are v5 or v6+
+				$an = array(
+					'handle' => $this->get_val($animation, 'handle'),
+					'params' => stripslashes(json_encode(str_replace("'", '"', $this->get_val($animation, 'params'))))
+				);
+
+				if(in_array($this->get_val($animation, 'settings'), array('in', 'out'))){
+					$an['settings'] = $this->get_val($animation, 'settings');
 				}
-				
-				$this->slider_raw_data = str_replace(array('customin-'.$animation['id'].'"', 'customout-'.$animation['id'].'"'), array('customin-'.$animation_id.'"', 'customout-'.$animation_id.'"'), $this->slider_raw_data);	
+
+				$wpdb->insert($wpdb->prefix . RevSliderFront::TABLE_LAYER_ANIMATIONS, $an);
+
+				$animation_id = $wpdb->insert_id;
+
+				//and set the current customin-oldID and customout-oldID in slider raw data to the new ID from the animation
 			}
+
+			$this->slider_raw_data = str_replace(array('customin-'.$animation['id'].'"', 'customout-'.$animation['id'].'"'), array('customin-'.$animation_id.'"', 'customout-'.$animation_id.'"'), $this->slider_raw_data);
 		}
 	}
 
@@ -281,7 +276,7 @@ class RevSliderSliderImport extends RevSliderSlider {
 		global $wp_filesystem, $wpdb;
 		
 		$dynamic	= ($wp_filesystem->exists($this->download_path.'dynamic-captions.css')) ? $wp_filesystem->get_contents($this->download_path.'dynamic-captions.css') : '';
-		$css_class	= new RevSliderCssParser();
+		$css_class	= RevSliderGlobals::instance()->get('RevSliderCssParser');
 		
 		//parse css to classes
 		$css = $css_class->css_to_array($dynamic);
@@ -362,11 +357,12 @@ class RevSliderSliderImport extends RevSliderSlider {
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * set the Slider navigatons from navigation.txt and add/update them if needed in the database
-	 **/
+	 * @param bool $update_navigation
+	 */
 	public function set_navigations($update_navigation){
 		global $wp_filesystem, $wpdb;
 		$upd = new RevSliderPluginUpdate();
@@ -393,43 +389,42 @@ class RevSliderSliderImport extends RevSliderSlider {
 				}
 				
 				if(!empty($_navigations)){
-					foreach($_navigations as $navigation){
-						$exist = $wpdb->get_row($wpdb->prepare("SELECT id FROM ".$wpdb->prefix . RevSliderFront::TABLE_NAVIGATIONS." WHERE handle = %s AND type = %s", array($this->get_val($navigation, 'handle'), $this->get_val($navigation, 'type'))), ARRAY_A);
+					foreach($_navigations as $_navigation){
+						$exist = $wpdb->get_row($wpdb->prepare("SELECT id FROM ".$wpdb->prefix . RevSliderFront::TABLE_NAVIGATIONS." WHERE handle = %s AND type = %s", array($this->get_val($_navigation, 'handle'), $this->get_val($_navigation, 'type'))), ARRAY_A);
 						
-						$old_nav_id = $this->get_val($navigation, 'id', false);
+						$old_nav_id = $this->get_val($_navigation, 'id', false);
 						
 						if($old_nav_id !== false){
-							unset($navigation['id']);
+							unset($_navigation['id']);
 						}
 						
-						foreach($navigation as $v => $s){
+						foreach($_navigation as $v => $s){
 							if(is_array($s) || is_object($s)){
-								$navigation[$v] = json_encode($s);
+								$_navigation[$v] = json_encode($s);
 							}
 						}
 						
-						$rh = $navigation['handle'];
-						$rt = $navigation['type'];
-						$insert_id = '';
+						$rh = $_navigation['handle'];
+						$rt = $_navigation['type'];
 						if(!empty($exist)){ //create new navigation, get the ID
-							if($update_navigation == 'true'){ //overwrite navigation if exists
-								unset($navigation['handle']);
-								$upd = $wpdb->update($wpdb->prefix . RevSliderFront::TABLE_NAVIGATIONS, $navigation, array('handle' => $rh, 'type' => $rt));
+							if($update_navigation){ //overwrite navigation if exists
+								unset($_navigation['handle']);
+								$upd = $wpdb->update($wpdb->prefix . RevSliderFront::TABLE_NAVIGATIONS, $_navigation, array('handle' => $rh, 'type' => $rt));
 								
 								$insert_id = $this->get_val($exist, 'id', $wpdb->insert_id);
 							}else{
 								//insert with new handle
-								$navigation['handle'] = $navigation['handle'].'-'.date('is');
-								$navigation['name'] = $navigation['name'].'-'.date('is');
+								$_navigation['handle'] = $_navigation['handle'].'-'.date('is');
+								$_navigation['name'] = $_navigation['name'].'-'.date('is');
 								//for prior to version 6.0 sliders, the next line needs to stay
-								$this->slider_raw_data	= str_replace($rh.'"', $navigation['handle'].'"', $this->slider_raw_data);
+								$this->slider_raw_data	= str_replace($rh.'"', $_navigation['handle'].'"', $this->slider_raw_data);
 								//for prior to version 6.0 sliders end
-								$navigation['css'] = str_replace('.'.$rh, '.'.$navigation['handle'], $navigation['css']); //change css class to the correct new class
-								$wpdb->insert($wpdb->prefix . RevSliderFront::TABLE_NAVIGATIONS, $navigation);
+								$_navigation['css'] = str_replace('.'.$rh, '.'.$_navigation['handle'], $_navigation['css']); //change css class to the correct new class
+								$wpdb->insert($wpdb->prefix . RevSliderFront::TABLE_NAVIGATIONS, $_navigation);
 								$insert_id = $wpdb->insert_id;
 							}
 						}else{
-							$wpdb->insert($wpdb->prefix . RevSliderFront::TABLE_NAVIGATIONS, $navigation);
+							$wpdb->insert($wpdb->prefix . RevSliderFront::TABLE_NAVIGATIONS, $_navigation);
 							$insert_id = $wpdb->insert_id;
 						}
 						
@@ -447,7 +442,7 @@ class RevSliderSliderImport extends RevSliderSlider {
 	 * check if the slider is a template slider and if so, check further if uid is correct
 	 **/
 	public function check_template(){
-		global $wp_filesystem, $wpdb;
+		global $wp_filesystem;
 		
 		$uid_check = ($wp_filesystem->exists($this->download_path.'info.cfg')) ? $wp_filesystem->get_contents($this->download_path.'info.cfg') : '';
 		
@@ -484,7 +479,6 @@ class RevSliderSliderImport extends RevSliderSlider {
 		if(empty($this->slider_data)){ //pre 6.0 Slider
 			$this->slider_raw_data	= preg_replace_callback('!s:(\d+):"(.*?)";!', array('RevSliderSliderImport', 'clear_error_in_string') , $this->slider_raw_data); //clear errors in string
 			$this->slider_data		= $this->rs_unserialize($this->slider_raw_data);
-			
 			$this->process_slider_raw_data_pre_6();
 		}else{
 			$this->process_slider_raw_data_post_6();
@@ -499,12 +493,13 @@ class RevSliderSliderImport extends RevSliderSlider {
 		global $wpdb, $wp_filesystem;
 		
 		if(empty($this->slider_data)){
-			$wp_filesystem->delete($this->remove_path, true);
+			$this->clear_files();
 			$this->throw_error(__('Wrong export slider file format! Please make sure that the uploaded file is either a zip file with a correct slider_export.txt in the root of it or an valid slider_export.txt file.', 'revslider'));
 		}
 		
 		//update slider params
 		$params = $this->get_val($this->slider_data, 'params');
+		$params['imported'] = true; //set that we are an imported slider
 		if($this->exists){
 			$params['title'] = $this->get_param('title');
 			$params['alias'] = $this->get_param('alias');
@@ -515,9 +510,7 @@ class RevSliderSliderImport extends RevSliderSlider {
 			$params['background_image'] = $this->check_file_in_zip($this->download_path, $params['background_image'], $this->get_param('alias'), $this->imported);
 			$params['background_image'] = $this->get_image_url_from_path($params['background_image']);
 		}
-		
-		//$params['background_image'] = (isset($params['background_image'])) ? $this->get_image_url_from_path($params['background_image']) : '';
-		
+
 		$this->import_statics = true;
 		if(isset($params['enable_static_layers'])){
 			if($params['enable_static_layers'] == 'off') $this->import_statics = false;
@@ -581,17 +574,24 @@ class RevSliderSliderImport extends RevSliderSlider {
 		global $wpdb, $wp_filesystem;
 		
 		if(empty($this->slider_data)){
-			$wp_filesystem->delete($this->remove_path, true);
+			$this->clear_files();
 			$this->throw_error(__('Wrong export slider file format! Please make sure that the uploaded file is either a zip file with a correct slider_export.txt in the root of it or an valid slider_export.txt file.', 'revslider'));
 		}
 		
 		//update slider params
 		$params = $this->get_val($this->slider_data, 'params');
+		$params['imported'] = true; //set that we are an imported slider
 		
+		//check if we are a premium slider
+		if($this->get_val($params, 'pakps', false) === true && $this->_truefalse(get_option('revslider-valid', 'false')) === false){
+			$this->clear_files();
+			$this->throw_error(__('Please register your Slider Revolution plugin to import premium templates', 'revslider'));
+		}
+
 		$this->old_slider_id = $this->get_val($this->slider_data, 'id', '');
 		$title = ($this->exists) ? $this->get_title() : $this->get_val($this->slider_data, 'title', 'Slider1');
 		$alias = ($this->exists) ? $this->get_alias() : $this->get_val($this->slider_data, 'alias', 'slider1');
-		$params['shortcode'] = ($this->exists) ? $this->get_shortcode('alias') : $params['shortcode'];
+		$params['shortcode'] = ($this->exists) ? $this->get_shortcode() : $params['shortcode'];
 		
 		/**
 		 * images/videos in Sliders:
@@ -717,7 +717,6 @@ class RevSliderSliderImport extends RevSliderSlider {
 	 **/
 	public function process_slide_data(){
 		$this->slides_data = $this->get_val($this->slider_data, 'slides');
-		
 		if(empty($this->slides_data)) return false;
 		
 		foreach($this->slides_data as $slide_key => $slide){
@@ -737,11 +736,10 @@ class RevSliderSliderImport extends RevSliderSlider {
 	 **/
 	public function process_slide_data_pre_6(){
 		global $wpdb;
-		
-		$template = new RevSliderTemplate();
-		
+
 		if(empty($this->slides_data)) return false;
-		
+
+		$template = new RevSliderTemplate();
 		foreach($this->slides_data as $slide_key => $slide){
 			
 			$params		= $this->get_val($slide, 'params');
@@ -794,7 +792,7 @@ class RevSliderSliderImport extends RevSliderSlider {
 			
 			//convert layers images:
 			if(!empty($layers)){
-				foreach($layers as $layer_key => $layer){					
+				foreach($layers as $layer_key => $layer){
 					//import if exists in zip folder
 					if($this->import_zip === true){ //we have a zip, check if exists
 						if(isset($layer['image_url'])){
@@ -894,11 +892,9 @@ class RevSliderSliderImport extends RevSliderSlider {
 	 **/
 	public function process_slide_data_post_6(){
 		global $wpdb, $wp_filesystem;
-		
-		$template = new RevSliderTemplate();
-		
 		if(empty($this->slides_data)) return false;
-		
+
+		$template = new RevSliderTemplate();
 		foreach($this->slides_data as $slide_key => $slide){
 			$params		= $this->get_val($slide, 'params');
 			$layers		= $this->get_val($slide, 'layers', array());
@@ -1279,6 +1275,7 @@ class RevSliderSliderImport extends RevSliderSlider {
 							
 							unset($slide['layers'][$key]['link']);
 							unset($slide['layers'][$key]['link_open_in']);
+						break;
 						case 'next':
 							$slide['layers'][$key]['layer_action']->action = array('a' => 'next');
 						break;
@@ -1309,7 +1306,7 @@ class RevSliderSliderImport extends RevSliderSlider {
 			if($did_change === true){
 				$my_layers	= json_encode($slide['layers']);
 				$create		= array();
-				$create['layers'] = (empty($my_layers)) ? stripslashes(json_encode($layers)) : $my_layers;
+				$create['layers'] = (empty($my_layers)) ? stripslashes(json_encode($slide['layers'])) : $my_layers;
 				
 				$wpdb->update($wpdb->prefix . RevSliderFront::TABLE_SLIDES, $create, array('id' => $this->map[$slide['id']]));
 			}
@@ -1416,6 +1413,7 @@ class RevSliderSliderImport extends RevSliderSlider {
 									
 									unset($layer['link']);
 									unset($layer['link_open_in']);
+								break;
 								case 'next':
 									$layer['layer_action']->action = array('a' => 'next');
 								break;
@@ -1424,7 +1422,7 @@ class RevSliderSliderImport extends RevSliderSlider {
 								break;
 								case 'scroll_under':
 									$layer['layer_action']->action = array('a' => 'scroll_under');
-									$layer['layer_action']->scrollunder_offset = array('a' => $this->get_val($value, 'scrollunder_offset'));
+									$layer['layer_action']->scrollunder_offset = array('a' => $this->get_val($layer, 'scrollunder_offset'));
 									
 									unset($layer['scrollunder_offset']);
 								break;
@@ -1483,7 +1481,7 @@ class RevSliderSliderImport extends RevSliderSlider {
 	 * process the static slide plus layers, and update actions for Static Slides pre 6.0
 	 **/
 	public function process_static_slide_data_post_6(){
-		global $wpdb;
+		global $wpdb, $wp_filesystem;
 		//check if static slide exists and import
 		$static_slide = $this->get_val($this->slider_data, 'static_slides');
 		
@@ -1539,9 +1537,15 @@ class RevSliderSliderImport extends RevSliderSlider {
 							$layer['media']['posterUrl'] = ($this->get_val($layer, array('media', 'posterUrl'), '') != '') ? $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $this->get_val($layer, array('media', 'posterUrl'), ''), $this->alias, $this->imported)) : '';
 						}
 						
-						if(isset($layer['type']) && $layer['type'] == 'svg'){
+						if($type == 'svg'){
 							$svg = $this->get_val($layer, array('svg', 'source'), '');
-							if(!empty($svg)) $layer['svg']['source'] = content_url().$svg;
+							
+							//check if we need to import it, if its available in the zip file
+							$zimage	= $wp_filesystem->exists($this->download_path.'images/'.$svg);
+							
+							if(!$zimage) $zimage = $wp_filesystem->exists(str_replace('//', '/', $this->download_path.'images/'.$svg));
+							$svgurl = ($zimage === true) ? $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $svg, $this->alias, $this->imported, true)) : content_url().$svg;
+							if(!empty($svg)) $layer['svg']['source'] = $svgurl;
 						}
 						
 						$actions = $this->get_val($layer, array('actions', 'action'), array());
@@ -1561,7 +1565,7 @@ class RevSliderSliderImport extends RevSliderSlider {
 										$cb = str_replace('slider_'.$this->old_slider_id.'_', 'slider_'.$this->slider_id.'_', $cb);
 										foreach($this->map as $old_slide_id => $new_slide_id){
 											$cb = str_replace('slide-'.$old_slide_id.'-', 'slide-'.$new_slide_id.'-', $cb);
-											$this->set_val($slide['layers'][$lk], array('actions', 'action', $a_k, 'actioncallback'), $cb);
+											$this->set_val($slide['layers'][$layer_key], array('actions', 'action', $a_k, 'actioncallback'), $cb);
 										}
 									}
 								}
@@ -1613,9 +1617,9 @@ class RevSliderSliderImport extends RevSliderSlider {
 	 **/
 	public function duplicate_template_slider($single_slide){
 		if($this->is_template !== false){ //duplicate the slider now, as we just imported the "template"
+			$mslider = new RevSliderSlider();
+			$mslider->template_slider = true;
 			if($single_slide !== false){ //add now one Slide to the current Slider
-				$mslider = new RevSliderSlider();
-				
 				//change slide_id to correct, as it currently is just a number beginning from 0 as we did not have a correct slide ID yet.
 				$i = 0;
 				$changed = false;
@@ -1631,16 +1635,14 @@ class RevSliderSliderImport extends RevSliderSlider {
 				}
 				
 				if($changed){
-					$return = $mslider->copy_slide_to_slider($single_slide);
+					$mslider->copy_slide_to_slider($single_slide);
 				}else{
 					global $wp_filesystem;
 					
-					$wp_filesystem->delete($this->remove_path, true);
+					$this->clear_files();
 					return array('success' => false, 'error' => __('could not find correct Slide to copy, please try again.', 'revslider'), 'sliderID' => $this->slider_id);
 				}
-				
 			}else{
-				$mslider = new RevSliderSlider();
 				$this->real_slider_id = $mslider->duplicate_slider_by_id($this->slider_id, true);
 			}
 		
@@ -1817,6 +1819,8 @@ class RevSliderSliderImport extends RevSliderSlider {
 	
 	/**
 	 * import a media and return the imported path of it
+	 * @param string $image
+	 * @return string
 	 **/
 	public function import_media_from_zip($image){
 		global $wp_filesystem;
@@ -1826,10 +1830,7 @@ class RevSliderSliderImport extends RevSliderSlider {
 		//import if exists in zip folder
 		if($image !== '' && strpos($image, 'http') === false){
 			if($this->import_zip === true){ //we have a zip, check if exists
-				$exists = $wp_filesystem->exists($this->download_path.'images/'.$image);
-				if(!$exists){
-					//echo '<p>'.esc_attr($image).__(' not found!', 'revslider').'</p>';
-				}else{
+				if($wp_filesystem->exists($this->download_path.'images/'.$image)){
 					if(!isset($this->imported['images/'.$image])){
 						$import_image = $this->import_media($this->download_path.'images/'.$image, $this->get_val($this->slider_data, 'alias', 'alias').'/');
 						if($import_image !== false){
@@ -1841,33 +1842,74 @@ class RevSliderSliderImport extends RevSliderSlider {
 					}
 				}
 			}
-			
 			$media = $this->get_image_url_from_path($image);
 		}
 		
 		return $media;
 	}
 	
-	
 	/**
 	 * clear errors of length in string before unserializing it
+	 * @param string $m
+	 * @return string
 	 **/
 	public static function clear_error_in_string($m){
 		return 's:'.strlen($m[2]).':"'.$m[2].'";';
 	}
-	
-	
+
 	/**
 	 * depending on PHP version, use optional parameter of unserialize
 	 * @since: 6.0.0
-	 **/
+	 * @param string $string
+	 * @return mixed
+	 */
 	public function rs_unserialize($string){
-		if(version_compare(phpversion(), '7.0.0', '<')){
-			return @unserialize($string);
-		}
-		
-		//return @unserialize($string, false);
 		return @unserialize($string);
 	}
+
+	/**
+	 * clear given folder if it can be deleted
+	 **/
+	public function clear_files(){
+		if(isset($this->remove_path) && !empty($this->remove_path) && is_writable(dirname($this->remove_path))){
+			$wp_filesystem->delete($this->remove_path, true);
+		}
+	}
+
+	/**
+	 * open and checks a zip file for filetypes
+	 **/
+	public function check_bad_files($zip_file){
+		if(class_exists('ZipArchive')){
+			$zip = new ZipArchive;
+			$success = $zip->open($zip_file);
+			
+			if($success !== true) $this->throw_error(__("Can't open zip file", 'revslider'));
+
+			for($i = 0; $i < $zip->numFiles; $i++){
+				$path_info = pathinfo($zip->getNameIndex($i));
+				if(!isset($path_info['extension'])) continue;
+			
+				$pi = strtolower($path_info['extension']);
+				if(in_array($pi, $this->bad_extensions)) $this->throw_error(__("zip file contains illegal files", 'revslider'));
+			}
+		}else{ //fallback to pclzip
+			require_once(ABSPATH . 'wp-admin/includes/class-pclzip.php');
+			
+			$pclzip = new PclZip($zip_file);
+			
+			$content = $pclzip->listContent();
+			if(is_array($content) && !empty($content)){
+				foreach($content as $file){
+					if(!isset($file['filename'])) continue;
+
+					$path_info = pathinfo($file['filename']);
+					if(!isset($path_info['extension'])) continue;
+
+					$pi = strtolower($path_info['extension']);
+					if(in_array($pi, $this->bad_extensions)) $this->throw_error(__("zip file contains illegal files", 'revslider'));
+				}
+			}
+		}
+	}
 }
-?>

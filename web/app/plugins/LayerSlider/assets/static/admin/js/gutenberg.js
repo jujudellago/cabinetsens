@@ -3,22 +3,25 @@ var __ 					= wp.i18n.__,
 	registerBlockType 	= wp.blocks.registerBlockType,
 
 	// Inspector Layout
-	BlockControls 		= wp.editor.BlockControls,
-	InspectorControls 	= wp.editor.InspectorControls,
+	BlockControls 		= ( wp.blockEditor && wp.blockEditor.BlockControls ) ? wp.blockEditor.BlockControls : wp.editor.BlockControls,
+	InspectorControls 	= ( wp.blockEditor && wp.blockEditor.InspectorControls ) ? wp.blockEditor.InspectorControls : wp.editor.InspectorControls,
 	PanelBody			= wp.components.PanelBody,
 	PanelRow 			= wp.components.PanelRow,
 
 	// Controls
-	Toolbar 			= wp.components.Toolbar,
+	ToolbarGroup 		= wp.components.ToolbarGroup ? wp.components.ToolbarGroup : wp.components.Toolbar,
+	ToolbarButton 		= wp.components.ToolbarButton ? wp.components.ToolbarButton : wp.components.IconButton,
 	Button 				= wp.components.Button,
 	Icon 				= wp.components.Icon,
-	IconButton 			= wp.components.IconButton,
 	TextControl 		= wp.components.TextControl,
 	ToggleControl 		= wp.components.ToggleControl,
 	SelectControl 		= wp.components.SelectControl,
 
 	// Misc
 	Placeholder 		= wp.components.Placeholder;
+
+
+
 
 // In some rare cases the globally loaded LS_GB_l10n
 // variable might not be available due to plugins making
@@ -307,8 +310,8 @@ registerBlockType( 'kreatura/layerslider', {
 				},
 
 				el( Button, {
-					isDefault: true,
 					isLarge: true,
+					variant: 'primary',
 					onClick: function() {
 
 						LS_SliderLibrary.open({
@@ -333,12 +336,11 @@ registerBlockType( 'kreatura/layerslider', {
 		var lsBlockControls =
 
 			el( BlockControls, null,
-				el( Toolbar, null,
+				el( ToolbarGroup, null,
 
-					el( IconButton, {
+					el( ToolbarButton, {
 						label: LS_GB_l10n.BlockEditLabel,
 						icon: 'screenoptions',
-						className: 'components-toolbar__control',
 						onClick: function() {
 							LS_SliderLibrary.open({
 								onChange: function( sliderData ) {
@@ -356,12 +358,11 @@ registerBlockType( 'kreatura/layerslider', {
 				),
 
 
-				el( Toolbar, null,
+				el( ToolbarGroup, null,
 
-					el( IconButton, {
+					el( ToolbarButton, {
 						label: LS_GB_l10n.BlockSliderEditorLabel,
 						icon: 'edit',
-						className: 'components-toolbar__control',
 						onClick: function() {
 							window.open(LS_GB_l10n.edit_url + attrs.id, '_blank');
 						}
@@ -377,7 +378,7 @@ registerBlockType( 'kreatura/layerslider', {
 		var classNames = 'ls-gb-block-content';
 
 		if( ! attrs.previewURL || attrs.previewURL.indexOf('blank.gif') !== -1 ) {
-			classNames += ' no-preview';
+			classNames += ' ls-no-preview';
 		}
 
 		var lsBlockContent = el(
@@ -391,8 +392,8 @@ registerBlockType( 'kreatura/layerslider', {
 					marginLeft: attrs.marginLeft ? parseInt( attrs.marginLeft )+'px' : 0,
 				}
 			},
-				el('div', { className: 'info' },
-					el( 'div', { className: 'name' }, attrs.name )
+				el('div', { className: 'ls-info' },
+					el( 'div', { className: 'ls-name' }, attrs.name )
 				),
 
 				el('span', { className: 'ls-arrow-left dashicons dashicons-arrow-left-alt2' }),

@@ -84,7 +84,7 @@ header("Content-type: text/css; charset=utf-8");
 	<?php } ?>
 
 	<?php if ((isset($bridge_qode_options['h5_fontsize_tablet']) && $bridge_qode_options['h5_fontsize_tablet'] !== '') || (isset($bridge_qode_options['h5_lineheight_tablet']) && $bridge_qode_options['h5_lineheight_tablet'] !== '') || (isset($bridge_qode_options['h5_letterspacing_tablet']) && $bridge_qode_options['h5_letterspacing_tablet'] !== '')) { ?>
-		h5, h5 a, body.qode-overridden-elementors-fonts .elementor-widget-heading h5.elementor-heading-title {
+		h5, h5 a, body.qode-overridden-elementors-fonts .elementor-widget-heading h5.elementor-heading-title, .q_icon_with_title .icon_text_holder h5.icon_title {
 			<?php if (isset($bridge_qode_options['h5_fontsize_tablet']) && $bridge_qode_options['h5_fontsize_tablet'] !== '') { ?>font-size: <?php echo intval($bridge_qode_options['h5_fontsize_tablet']); ?>px; <?php } ?>
 			<?php if (isset($bridge_qode_options['h5_lineheight_tablet']) && $bridge_qode_options['h5_lineheight_tablet'] !== '') { ?>line-height: <?php echo intval($bridge_qode_options['h5_lineheight_tablet']); ?>px; <?php } ?>
 		    <?php if (isset($bridge_qode_options['h5_letterspacing_tablet']) && $bridge_qode_options['h5_letterspacing_tablet'] !== '') { ?>letter-spacing: <?php echo intval($bridge_qode_options['h5_letterspacing_tablet']); ?>px; <?php } ?>
@@ -196,7 +196,7 @@ header("Content-type: text/css; charset=utf-8");
 	<?php } ?>
 
 	<?php if ((isset($bridge_qode_options['h5_fontsize_mobile']) && $bridge_qode_options['h5_fontsize_mobile'] !== '') || (isset($bridge_qode_options['h5_lineheight_mobile']) && $bridge_qode_options['h5_lineheight_mobile'] !== '') || (isset($bridge_qode_options['h5_letterspacing_mobile']) && $bridge_qode_options['h5_letterspacing_mobile'] !== '')) { ?>
-		h5, h5 a, body.qode-overridden-elementors-fonts .elementor-widget-heading h5.elementor-heading-title {
+		h5, h5 a, body.qode-overridden-elementors-fonts .elementor-widget-heading h5.elementor-heading-title, .q_icon_with_title .icon_text_holder h5.icon_title {
 			<?php if (isset($bridge_qode_options['h5_fontsize_mobile']) && $bridge_qode_options['h5_fontsize_mobile'] !== '') { ?>font-size: <?php echo intval($bridge_qode_options['h5_fontsize_mobile']); ?>px; <?php } ?>
 			<?php if (isset($bridge_qode_options['h5_lineheight_mobile']) && $bridge_qode_options['h5_lineheight_mobile'] !== '') { ?>line-height: <?php echo intval($bridge_qode_options['h5_lineheight_mobile']); ?>px; <?php } ?>
 		    <?php if (isset($bridge_qode_options['h5_letterspacing_mobile']) && $bridge_qode_options['h5_letterspacing_mobile'] !== '') { ?>letter-spacing: <?php echo intval($bridge_qode_options['h5_letterspacing_mobile']); ?>px; <?php } ?>

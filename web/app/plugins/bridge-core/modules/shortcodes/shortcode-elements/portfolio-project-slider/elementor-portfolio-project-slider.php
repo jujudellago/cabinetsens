@@ -32,7 +32,7 @@ class BridgeCoreElementorPortfolioProjectSlider extends \Elementor\Widget_Base{
 		return $formatted_array;
 	}
 	
-	protected function _register_controls(){
+	protected function register_controls(){
 		$this->start_controls_section(
 			'general',
 			[
@@ -305,4 +305,4 @@ class BridgeCoreElementorPortfolioProjectSlider extends \Elementor\Widget_Base{
 	}
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorPortfolioProjectSlider() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorPortfolioProjectSlider() );

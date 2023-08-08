@@ -10,12 +10,14 @@ class BridgeQodeFramework {
     public $qodeMetaBoxes;
     public $qodeTaxonomyOptions;
     public $qodefUserOptions;
+    public $qodeDashboardOptions;
 
     private function __construct() {
         $this->qodeOptions = BridgeQodeOptions::get_instance();
         $this->qodeMetaBoxes = BridgeQodeMetaBoxes::get_instance();
         $this->qodeTaxonomyOptions = BridgeQodeTaxonomyOptions::get_instance();
         $this->qodefUserOptions     = BridgeQodeUserOptions::get_instance();
+        $this->qodeDashboardOptions = BridgeQodeDashboardOptions::get_instance();
     }
 
     public static function get_instance() {
@@ -118,6 +120,7 @@ class BridgeQodeAdminPage implements iBridgeQodeLayoutNode {
 		private $factory;
 		public $slug;
 		public $title;
+		public $icon;
 
     function __construct($slug = "", $title = "", $icon = "") {
         $this->layout = array();
@@ -341,16 +344,6 @@ class BridgeQodeTaxonomyOption implements iBridgeQodeLayoutNode{
 	}
 }
 
-if ( ! function_exists( 'bridge_qode_init_framework_variable' ) ) {
-    function bridge_qode_init_framework_variable() {
-        global $bridge_qode_framework;
-
-        $bridge_qode_framework = BridgeQodeFramework::get_instance();
-    }
-
-    add_action( 'bridge_qode_action_before_options_map', 'bridge_qode_init_framework_variable' );
-}
-
 /*
    Class: BridgeQodeUserOptions
    A class that initializes BridgeQode User Options
@@ -417,4 +410,79 @@ class BridgeQodeUserOption implements iBridgeQodeLayoutNode {
     public function renderChild( iBridgeQodeRender $child ) {
         $child->render( $this->factory );
     }
+}
+
+/*
+   Class: BridgeQodeDashboardOptions
+   A class that initializes ThemeNamePhpClass Dashboard Options
+*/
+class BridgeQodeDashboardOptions {
+    private static $instance;
+    public $dashboardOptions;
+
+    private function __construct() {
+        $this->dashboardOptions = array();
+    }
+
+    public static function get_instance() {
+        if ( ! isset( self::$instance ) && ! ( self::$instance instanceof self ) ) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+    public function addDashboardOptions( $key, $options ) {
+        $this->dashboardOptions[ $key ] = $options;
+    }
+
+    public function getDashboardOptions( $key ) {
+        return $this->dashboardOptions[ $key ];
+    }
+}
+
+/*
+   Class: BridgeQodeDashboardOption
+   A class that initializes ThemeNamePhpClass Dashboard Option
+*/
+class BridgeQodeDashboardOption implements iBridgeQodeLayoutNode {
+    public $layout;
+    private $factory;
+
+    function __construct() {
+        $this->layout        = array();
+        $this->factory       = new BridgeQodeDashboardFieldFactory();
+    }
+
+    public function hasChidren() {
+        return ( count( $this->layout ) > 0 ) ? true : false;
+    }
+
+    public function getChild( $key ) {
+        return $this->layout[ $key ];
+    }
+
+    public function addChild( $key, $value ) {
+        $this->layout[ $key ] = $value;
+    }
+
+    function render() {
+        foreach ( $this->layout as $child ) {
+            $this->renderChild( $child );
+        }
+    }
+
+    public function renderChild( iBridgeQodeRender $child ) {
+        $child->render( $this->factory );
+    }
+}
+
+if ( ! function_exists( 'bridge_qode_init_framework_variable' ) ) {
+    function bridge_qode_init_framework_variable() {
+        global $bridge_qode_framework;
+
+        $bridge_qode_framework = BridgeQodeFramework::get_instance();
+    }
+
+    add_action( 'bridge_qode_action_before_options_map', 'bridge_qode_init_framework_variable' );
 }

@@ -206,7 +206,7 @@
 		                        var currencySymbolPosition = $priceRange.data('currency-symbol-position');
 		
 		                        var firstPrice = currencySymbolPosition === 'left' ? currencySymbol + firstValue : firstValue + currencySymbol;
-		                        var secondPrice = currencySymbolPosition === 'left' ? currencySymbol + secondValue : firstValue + secondValue;
+		                        var secondPrice = currencySymbolPosition === 'left' ? currencySymbol + secondValue : secondValue + currencySymbol;
 		
 		                        $priceRange.val(firstPrice + ' - ' + secondPrice);
 		

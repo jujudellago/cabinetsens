@@ -12,7 +12,7 @@
  *
  * @see https://docs.woocommerce.com/document/template-structure/
  * @package WooCommerce/Templates
- * @version 3.4.4
+ * @version 7.0.1
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -30,8 +30,9 @@ if ( ! wc_coupons_enabled() ) { // @codingStandardsIgnoreLine.
 	
 	<?php /*** Our code modification inside Woo template - begin ***/ ?>
 	<div class="coupon">
+		<label for="coupon_code" class="screen-reader-text"><?php esc_html_e( 'Coupon:', 'bridge' ); ?></label>
 		<input type="text" name="coupon_code" class="input-text" placeholder="<?php esc_attr_e( 'Coupon code', 'bridge' ); ?>" id="coupon_code" value="" />
-		<input type="submit" class="button" name="apply_coupon" value="<?php esc_attr_e( 'Apply coupon', 'bridge' ); ?>" />
+		<input type="submit" class="button<?php echo esc_attr( wc_wp_theme_get_element_class_name( 'button' ) ? ' ' . wc_wp_theme_get_element_class_name( 'button' ) : '' ); ?>" name="apply_coupon" value="<?php esc_attr_e( 'Apply coupon', 'bridge' ); ?>" />
 	</div>
 	<?php /*** Our code modification inside Woo template - end ***/ ?>
 	

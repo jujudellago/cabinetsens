@@ -35,7 +35,7 @@ if($use_custom_icon_size == "yes") {
         $icon_stack_style .= 'font-size: '.$custom_icon_size.'px;';
     }
 
-    if($custom_icon_margin != "") {
+    if($custom_icon_margin != "" && $icon_position !== 'left_from_title') {
         //remove px if user has entered it
         $custom_icon_margin = strstr($custom_icon_margin, 'px', true) ? strstr($custom_icon_margin, 'px', true) : $custom_icon_margin;
         $custom_icon_margin = intval($custom_icon_size) + intval($custom_icon_margin);
@@ -46,6 +46,14 @@ if($use_custom_icon_size == "yes") {
             $icon_text_holder_styles .= 'padding-right:'.$custom_icon_margin.'px;';
         }
 
+    }
+
+    if($custom_icon_margin != "" && $icon_position === 'left_from_title') {
+        //remove px if user has entered it
+        $custom_icon_margin = strstr($custom_icon_margin, 'px', true) ? strstr($custom_icon_margin, 'px', true) : $custom_icon_margin;
+        $custom_icon_margin = intval($custom_icon_size) + intval($custom_icon_margin);
+
+        $icon_margin_style .= 'padding-right:'.$custom_icon_margin.'px;';
     }
 
     if($custom_icon_size_inner != '' && in_array($icon_type, array('circle', 'square'))) {
@@ -159,6 +167,20 @@ if($icon_gradient == 'yes'){
     $icon_gradient_class .= 'qode-type1-gradient-left-to-right-text';
 }
 
+$separator_style = 'height: 2px;';
+if( ! empty( $separator_color ) ){
+	$separator_style .= 'background-color: ' . $separator_color . ';';
+}
+if( ! empty( $separator_width ) ){
+	$separator_style .= 'width: ' . bridge_qode_filter_px( $separator_width ) . 'px;';
+}
+if( ! empty( $separator_top_margin ) ){
+	$separator_style .= 'margin-top: ' . bridge_qode_filter_px( $separator_top_margin ) . 'px;';
+}
+if( ! empty( $separator_bottom_margin ) ){
+	$separator_style .= 'margin-bottom: ' . bridge_qode_filter_px( $separator_bottom_margin ) . 'px;';
+}
+
 if($image == "") {
     //genererate icon html
     switch ($icon_type) {
@@ -262,7 +284,8 @@ if($box_type == "normal") {
         $html .= '</div>'; //close icon_title holder for icon from title
     }
     if($separator == "yes") {
-        $html .= do_shortcode('[vc_separator type="small" position="left" color="'.$separator_color.'" thickness="2" width="'.$separator_width.'" up="'.$separator_top_margin.'" down="'.$separator_bottom_margin.'"]');
+	    $html .= '<div class="separator small left" style="' . $separator_style . '"></div>';
+        //$html .= do_shortcode('[vc_separator type="small" position="left" color="'.$separator_color.'" thickness="2" width="'.$separator_width.'" up="'.$separator_top_margin.'" down="'.$separator_bottom_margin.'"]');
     }
     $html .= "<p style='".$text_style."'>".$text."</p>";
     if($link != ""){
@@ -308,7 +331,8 @@ if($box_type == "normal") {
     $html .= '<div class="box_holder_inner '.$box_size.' center">';
     $html .= '<'.$title_tag.' class="icon_title" style="'.$title_style.'">'.$title.'</'.$title_tag.'>';
     if($separator == "yes") {
-        $html .= do_shortcode('[vc_separator type="small" position="left" color="'.$separator_color.'" thickness="2" width="'.$separator_width.'" up="'.$separator_top_margin.'" down="'.$separator_bottom_margin.'"]');
+    	$html .= '<div class="separator small left" style="' . $separator_style . '"></div>';
+        //$html .= do_shortcode('[vc_separator type="small" position="left" color="'.$separator_color.'" thickness="2" width="'.$separator_width.'" up="'.$separator_top_margin.'" down="'.$separator_bottom_margin.'"]');
     }else{
         $html .= '<span class="separator transparent" style="margin: 8px 0;"></span>';
     }

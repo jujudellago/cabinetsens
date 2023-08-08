@@ -21,7 +21,7 @@ class BridgeCoreElementorVerticalSplitSlider extends \Elementor\Widget_Base{
         return Elementor\Plugin::instance()->templates_manager->get_source( 'local' )->get_items();
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'left_panel',
@@ -215,4 +215,4 @@ class BridgeCoreElementorVerticalSplitSlider extends \Elementor\Widget_Base{
 
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BridgeCoreElementorVerticalSplitSlider() );
+\Elementor\Plugin::instance()->widgets_manager->register( new BridgeCoreElementorVerticalSplitSlider() );

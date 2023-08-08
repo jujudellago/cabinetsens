@@ -283,7 +283,11 @@ if (!function_exists('qode_news_get_query')) {
         $list_query = new WP_Query($query_array);
 
         if (!empty($params['offset']) && $params['offset'] > '0' && $params['posts_per_page'] !== 0) {
-            $list_query->max_num_pages = ceil((intval($list_query->found_posts) - intval($params['offset'])) / intval($params['posts_per_page']));
+			if( ! empty( $params['posts_per_page'] ) ) {
+				$list_query->max_num_pages = ceil( ( $list_query->found_posts - intval( $params['offset'])) / intval( $params['posts_per_page']));
+			} else {
+				$list_query->max_num_pages = $list_query->found_posts - intval( $params['offset']);
+			}
         }
 
         $query_array['max_num_pages'] = $list_query->max_num_pages;

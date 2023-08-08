@@ -27,6 +27,7 @@
             @include qodeTableCellLayout();
             width: 70px;
             padding-right: 25px;
+            box-sizing: content-box;
             a{
                 @include qodeBorderRadius(50%);
                 @include qodeBoxShadow(3px 4px 8px 0px rgba($first-main-color, 0.1));

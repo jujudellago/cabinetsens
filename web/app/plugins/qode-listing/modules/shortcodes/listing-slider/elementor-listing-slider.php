@@ -86,7 +86,7 @@ class QodeListingElementorListingSlider extends \Elementor\Widget_Base{
         return [ 'qode-listing' ];
     }
 
-    protected function _register_controls() {
+    protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -157,7 +157,7 @@ class QodeListingElementorListingSlider extends \Elementor\Widget_Base{
             'qode-ls-slider-normal-space'
         );
 
-        return implode($classes, ' ');
+        return implode(' ', $classes);
     }
 
 
@@ -194,4 +194,4 @@ class QodeListingElementorListingSlider extends \Elementor\Widget_Base{
     }
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new QodeListingElementorListingSlider() );
+\Elementor\Plugin::instance()->widgets_manager->register( new QodeListingElementorListingSlider() );

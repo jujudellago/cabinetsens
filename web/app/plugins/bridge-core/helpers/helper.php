@@ -47,6 +47,12 @@ if ( ! function_exists('bridge_core_is_installed') ) {
 			case 'layer-slider';
                 return defined('LS_PLUGIN_VERSION');
                 break;
+			case 'qi-blocks';
+				return defined('QI_BLOCKS_VERSION');
+				break;
+			case 'wpml';
+				return defined('ICL_SITEPRESS_VERSION');
+				break;
 			default:
 				return false;
 		}
@@ -243,7 +249,7 @@ if(!function_exists('bridge_core_get_required_plugins_links')) {
             if (!empty($plugins)) {
                 $required_demo_plugins = array();
 
-                $html .= "<p class='qode-demo-plugins-intall-main-title'>" . esc_html__('Following plugins should be installed and activated before demo import:', 'bridge-core') . "</p>";
+                $html .= "<p class='qode-demo-plugins-install-main-title'>" . esc_html__('Following plugins should be installed and activated before demo import:', 'bridge-core') . "</p>";
                 foreach ($plugins as $key => $value) {
 
                     $tgmpa->register(array('slug' => $key, 'name' => $value));
@@ -257,7 +263,7 @@ if(!function_exists('bridge_core_get_required_plugins_links')) {
 
                         $status = "<a class='qode-demo-plugin-install-link' href='" . $tgmpa->get_tgmpa_status_url($status) . "'>" . $link_text . "</a>";
                     } else {
-                        $status = "<span class='qode-demo-plugin-intalled'>" . esc_html__('Activated', 'bridge-core') . "</span>";
+                        $status = "<span class='qode-demo-plugin-installed'>" . esc_html__('Activated', 'bridge-core') . "</span>";
                     }
 
                     $html .= "<p>" . $value . " - " . $status . "<span class='spinner'></span></p>";
@@ -292,7 +298,7 @@ if(!function_exists('bridge_core_import_theme_options')) {
 	 */
 	function bridge_core_import_theme_options() {
 
-		if(current_user_can('administrator')) {
+		if(current_user_can('edit_theme_options')) {
 			if (empty($_POST) || !isset($_POST)) {
 				bridge_qode_ajax_status('error', esc_html__('Import field is empty', 'bridge-core'));
 			} else {
@@ -387,4 +393,74 @@ if(!function_exists('bridge_core_maintenance_mode')) {
     }
 
     add_action('init', 'bridge_core_maintenance_mode', 1);
+}
+
+if( ! function_exists( 'bridge_core_is_theme_registered' ) ) {
+	function bridge_core_is_theme_registered() {
+		return class_exists('BridgeCoreDashboard') ? BridgeCoreDashboard::get_instance()->is_theme_registered() : true;
+	}
+}
+
+if( ! function_exists('bridge_core_wpml_wpb_encode_urlencoded_json') ) {
+	/**
+	 * function that globally encodes urlencoded shortcodes for wpml plugin
+	 */
+	function bridge_core_wpml_wpb_encode_urlencoded_json( $string, $encoding, $original_string ) {
+		if( bridge_core_is_installed( 'wpml' ) ){
+			if ( 'urlencoded_json' === $encoding ) {
+				$output = array();
+				foreach ( $original_string as $combined_key => $value ) {
+					$parts                = explode( '_', $combined_key );
+					$i                    = array_pop( $parts );
+					$key                  = implode( '_', $parts );
+					$output[ $i ][ $key ] = $value;
+				}
+				$string = urlencode( json_encode( $output ) );
+			}
+		}
+		
+		return $string;
+	}
+	
+	add_filter( 'wpml_pb_shortcode_encode', 'bridge_core_wpml_wpb_encode_urlencoded_json', 10, 3 );
+}
+
+if( ! function_exists('bridge_core_wpml_wpb_decode_urlencoded_json') ) {
+	function bridge_core_wpml_wpb_decode_urlencoded_json( $string, $encoding, $original_string ) {
+		if ( bridge_core_is_installed( 'wpml' ) && 'urlencoded_json' === $encoding ) {
+			$rows = json_decode( urldecode( $original_string ), true );
+			$string = array();
+			foreach ( $rows as $i => $row ) {
+				foreach ( $row as $key => $value ) {
+					if ( in_array( $key, array(
+						'typed_ending',
+						'item_title',
+						'item_price',
+						'item_description',
+						'feature_title',
+						'column_one_text',
+						'column_one_sub_text',
+						'column_two_text',
+						'column_two_sub_text',
+						'column_three_text',
+						'column_three_sub_text',
+						'column_four_text',
+						'column_four_sub_text',
+						'column_five_text',
+						'column_five_sub_text',
+						'label',
+						'value'
+					) ) ) {
+						$string[ $key . '_' . $i ] = array( 'value' => $value, 'translate' => true );
+					} else {
+						$string[ $key . '_' . $i ] = array( 'value' => $value, 'translate' => false );
+					}
+				}
+			}
+		}
+		
+		return $string;
+	}
+	
+	add_filter( 'wpml_pb_shortcode_decode', 'bridge_core_wpml_wpb_decode_urlencoded_json', 10, 3 );
 }

@@ -6,18 +6,6 @@ $output = '
 		<meta charset="utf-8">
 		<title>Timetable</title>
 		<style>
-			@font-face {
-				font-family: "Lato";
-				font-style: normal;
-				font-weight: normal;
-				src: url("' . plugin_dir_url(__FILE__) . 'fonts/Lato-Regular.ttf") format("truetype");
-			  }
-			  @font-face {
-				font-family: "Lato";
-				font-style: normal;
-				font-weight: bold;
-				src: url("' . plugin_dir_url(__FILE__) . 'fonts/Lato-Bold.ttf") format("truetype");
-			  }
 			.timetable_clearfix:after
 			{
 				font-size: 0px;

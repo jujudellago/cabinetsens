@@ -87,9 +87,12 @@
   color: inherit;
 }
 
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev .ui-icon span:before,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next .ui-icon span:before {
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev .ui-icon:before,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next .ui-icon:before {
   line-height: 27px;
+  font-family: "dripicons-v2" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
 }
 
 #ui-datepicker-div .ui-datepicker-prev {
@@ -97,9 +100,17 @@
   left: 0;
 }
 
+#ui-datepicker-div .ui-datepicker-prev .ui-icon:before {
+  content: "\55";
+}
+
 #ui-datepicker-div .ui-datepicker-next {
   position: absolute;
   right: 0;
+}
+
+#ui-datepicker-div .ui-datepicker-next .ui-icon:before {
+  content: "\56";
 }
 
 /* ==========================================================================
@@ -125,7 +136,7 @@
   vertical-align: middle;
 }
 
-.touch .qode-tours-destination-item-holder {
+.touchevents .qode-tours-destination-item-holder {
   cursor: pointer;
 }
 
@@ -664,7 +675,7 @@
   vertical-align: middle;
 }
 
-.touch .qode-tours-gallery-item {
+.touchevents .qode-tours-gallery-item {
   cursor: pointer;
 }
 
@@ -953,7 +964,7 @@
   vertical-align: middle;
 }
 
-.touch .qode-tours-masonry-item {
+.touchevents .qode-tours-masonry-item {
   cursor: pointer;
 }
 

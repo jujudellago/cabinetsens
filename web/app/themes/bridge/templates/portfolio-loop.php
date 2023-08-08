@@ -132,41 +132,51 @@ if(isset($bridge_qode_options['disable_portfolio_single_title_label']) && $bridg
 												<?php if($bridge_qode_lightbox_video_single_project == "yes"){ ?>
 													<?php
 														$bridge_qode_vidID = $bridge_qode_portfolio_image['portfoliovideoid'];
-													    $bridge_qode_url = "http://gdata.youtube.com/feeds/api/videos/".$bridge_qode_vidID."?alt=json";
-													    $bridge_qode_xml = json_decode(bridge_qode_generate_portfolio_xml($bridge_qode_url), true);
-
-													    if(is_array($bridge_qode_xml['entry']['title'])){
-													    	$bridge_qode_video_title = array_shift($bridge_qode_xml['entry']['title']);
-													    } else {
-													    	$bridge_qode_video_title = "";
-													    }
-													    
 													    $bridge_qode_thumbnail = "http://img.youtube.com/vi/".$bridge_qode_vidID."/maxresdefault.jpg";
 													?>
-													<a itemprop="image" class="lightbox_single_portfolio video_in_lightbox" title="<?php echo esc_attr( $bridge_qode_video_title ); ?>" href="<?php echo esc_attr( $bridge_qode_protocol );?>//www.youtube.com/watch?feature=player_embedded&v=<?php echo esc_attr( $bridge_qode_vidID ); ?>" rel="prettyPhoto[single_pretty_photo]">
+													<a itemprop="image" class="lightbox_single_portfolio video_in_lightbox" href="<?php echo esc_attr( $bridge_qode_protocol );?>//www.youtube.com/watch?feature=player_embedded&v=<?php echo esc_attr( $bridge_qode_vidID ); ?>" rel="prettyPhoto[single_pretty_photo]">
 														<i class="fa fa-play"></i>
-														<img itemprop="image" width="100%" src="<?php echo esc_url( $bridge_qode_thumbnail ); ?>"></img>
+														<img itemprop="image" width="100%" src="<?php echo esc_url( $bridge_qode_thumbnail ); ?>"/>
 													</a>
 												<?php } else { ?>
 													<iframe width="100%" src="//www.youtube.com/embed/<?php echo esc_attr( $bridge_qode_portfolio_image['portfoliovideoid'] );  ?>?wmode=transparent" wmode="Opaque" frameborder="0" allowfullscreen></iframe>
 												<?php } ?>
 												<?php	break;
 											case "vimeo": ?>
+                                                <?php
+                                                    $bridge_qode_vidID = $bridge_qode_portfolio_image['portfoliovideoid'];
+                                                    $bridge_qode_url = "http://vimeo.com/api/v2/video/".$bridge_qode_vidID.".php";
+                                                    $bridge_qode_xml = unserialize(bridge_qode_generate_portfolio_xml( $bridge_qode_url ));
+                                                    if( is_array( $bridge_qode_xml ) && isset( $bridge_qode_xml[0] ) && is_array( $bridge_qode_xml[0] ) ) {
+                                                        $bridge_qode_video_title = $bridge_qode_xml[0]['title'];
+                                                        $bridge_qode_thumbnail = $bridge_qode_xml[0]['thumbnail_large'];
+                                                        $bridge_qode_video_width = $bridge_qode_xml[0]['width'];
+                                                        $bridge_qode_video_height = $bridge_qode_xml[0]['height'];
+                                                    }
+                                                ?>
 												<?php if($bridge_qode_lightbox_video_single_project == "yes"){ ?>
-													<?php
-														$bridge_qode_vidID = $bridge_qode_portfolio_image['portfoliovideoid'];
-														$bridge_qode_url = "http://vimeo.com/api/v2/video/".$bridge_qode_vidID.".php";
-													    $bridge_qode_xml = unserialize(bridge_qode_generate_portfolio_xml( $bridge_qode_url ));
-
-												   		$bridge_qode_video_title = $bridge_qode_xml[0]['title'];
-													    $bridge_qode_thumbnail = $bridge_qode_xml[0]['thumbnail_large'];
-													?>
-													<a itemprop="image" class="lightbox_single_portfolio video_in_lightbox" title="<?php echo esc_attr( $bridge_qode_video_title ); ?>" href="<?php echo esc_attr( $bridge_qode_protocol );?>//vimeo.com/<?php echo esc_attr( $bridge_qode_vidID ); ?>" rel="prettyPhoto[single_pretty_photo]">
+													<a itemprop="image"
+                                                       class="lightbox_single_portfolio video_in_lightbox"
+                                                       href="<?php echo esc_attr( $bridge_qode_protocol );?>//vimeo.com/<?php echo esc_attr( $bridge_qode_vidID ); ?>"
+                                                       rel="prettyPhoto[single_pretty_photo]"
+                                                       title="<?php echo ! empty( $bridge_qode_video_title ) ? esc_attr( $bridge_qode_video_title ) : esc_html__( 'Video Title', 'bridge' ); ?>"
+                                                    >
 														<i class="fa fa-play"></i>
-														<img itemprop="image" width="100%" src="<?php echo esc_url( $bridge_qode_thumbnail ); ?>"></img>
+                                                        <?php if( ! empty( $bridge_qode_thumbnail ) ) { ?>
+														    <img itemprop="image" width="100%" src="<?php echo esc_url( $bridge_qode_thumbnail ); ?>"/>
+                                                        <?php } ?>
 													</a>
 												<?php } else { ?>
-													<iframe src="//player.vimeo.com/video/<?php echo esc_attr( $bridge_qode_portfolio_image['portfoliovideoid'] );  ?>?title=0&amp;byline=0&amp;portrait=0" width="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+													<iframe
+                                                        <?php if( ! empty( $bridge_qode_video_width ) ) { ?>
+                                                            width="<?php echo esc_attr( $bridge_qode_video_width ); ?>"
+                                                        <?php } ?>
+                                                        <?php if( ! empty( $bridge_qode_video_height ) ) { ?>
+                                                            height="<?php echo esc_attr( $bridge_qode_video_height ); ?>"
+                                                        <?php } ?>
+                                                        src="https://player.vimeo.com/video/<?php echo esc_attr( $bridge_qode_portfolio_image['portfoliovideoid'] );  ?>?title=0&amp;byline=0&amp;portrait=0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen
+                                                    >
+                                                    </iframe>
 												<?php } ?>
 												<?php break;
 											case "self": ?>
@@ -211,10 +221,10 @@ if(isset($bridge_qode_options['disable_portfolio_single_title_label']) && $bridg
 										<p>
 											<?php if($bridge_qode_portfolio['optionUrl'] != ""): ?>
 												<a itemprop="url" href="<?php echo esc_url( $bridge_qode_portfolio['optionUrl'] ); ?>" target="_blank">
-													<?php echo do_shortcode(stripslashes($bridge_qode_portfolio['optionValue'])); ?>
+													<?php echo do_shortcode(stripslashes(nl2br($bridge_qode_portfolio['optionValue']))); ?>
 												</a>
 											<?php else:?>
-												<?php echo do_shortcode(stripslashes($bridge_qode_portfolio['optionValue'])); ?>
+												<?php echo do_shortcode(stripslashes(nl2br($bridge_qode_portfolio['optionValue']))); ?>
 											<?php endif; ?>
 										</p>
 									</div>
@@ -386,10 +396,10 @@ if(isset($bridge_qode_options['disable_portfolio_single_title_label']) && $bridg
 										<p>
 											<?php if($bridge_qode_portfolio['optionUrl'] != ""): ?>
 												<a itemprop="url" href="<?php echo esc_url( $bridge_qode_portfolio['optionUrl'] ); ?>" target="_blank">
-													<?php echo do_shortcode(stripslashes($bridge_qode_portfolio['optionValue'])); ?>
+													<?php echo do_shortcode(stripslashes(nl2br($bridge_qode_portfolio['optionValue']))); ?>
 												</a>
 											<?php else:?>
-												<?php echo do_shortcode(stripslashes($bridge_qode_portfolio['optionValue'])); ?>
+												<?php echo do_shortcode(stripslashes(nl2br($bridge_qode_portfolio['optionValue']))); ?>
 											<?php endif; ?>
 										</p>
 									</div>
@@ -565,10 +575,10 @@ if(isset($bridge_qode_options['disable_portfolio_single_title_label']) && $bridg
 										<p>
 											<?php if($bridge_qode_portfolio['optionUrl'] != ""): ?>
 												<a itemprop="url" href="<?php echo esc_url( $bridge_qode_portfolio['optionUrl'] ); ?>" target="_blank">
-													<?php echo do_shortcode(stripslashes($bridge_qode_portfolio['optionValue'])); ?>
+													<?php echo do_shortcode(stripslashes(nl2br($bridge_qode_portfolio['optionValue']))); ?>
 												</a>
 											<?php else:?>
-												<?php echo do_shortcode(stripslashes($bridge_qode_portfolio['optionValue'])); ?>
+												<?php echo do_shortcode(stripslashes(nl2br($bridge_qode_portfolio['optionValue']))); ?>
 											<?php endif; ?>
 										</p>
 									</div>
@@ -691,43 +701,53 @@ if(isset($bridge_qode_options['disable_portfolio_single_title_label']) && $bridg
 								case "youtube": ?>
 									<?php if($bridge_qode_lightbox_video_single_project == "yes"){ ?>
 										<?php
-											$bridge_qode_vidID = $bridge_qode_portfolio_image['portfoliovideoid'];  
-										    $bridge_qode_url = "http://gdata.youtube.com/feeds/api/videos/".$bridge_qode_vidID."?alt=json";
-										    $bridge_qode_xml = json_decode(bridge_qode_generate_portfolio_xml( $bridge_qode_url ), true);
-
-										    if(is_array($bridge_qode_xml['entry']['title'])){
-										    	$bridge_qode_video_title = array_shift($bridge_qode_xml['entry']['title']);
-										    } else {
-										    	$bridge_qode_video_title = "";
-										    }
-										    
+											$bridge_qode_vidID = $bridge_qode_portfolio_image['portfoliovideoid'];
 										    $bridge_qode_thumbnail = "http://img.youtube.com/vi/".$bridge_qode_vidID."/maxresdefault.jpg";
 										?>
-										<a itemprop="image" class="lightbox_single_portfolio video_in_lightbox" title="<?php echo esc_attr( $bridge_qode_video_title ); ?>" href="<?php echo esc_attr( $bridge_qode_protocol );?>//www.youtube.com/watch?feature=player_embedded&v=<?php echo esc_attr( $bridge_qode_vidID ); ?>" rel="prettyPhoto[single_pretty_photo]">
+										<a itemprop="image" class="lightbox_single_portfolio video_in_lightbox" href="<?php echo esc_attr( $bridge_qode_protocol );?>//www.youtube.com/watch?feature=player_embedded&v=<?php echo esc_attr( $bridge_qode_vidID ); ?>" rel="prettyPhoto[single_pretty_photo]">
 											<i class="fa fa-play"></i>
-											<img itemprop="image" width="100%" src="<?php echo esc_url( $bridge_qode_thumbnail ); ?>"></img>
+											<img itemprop="image" width="100%" src="<?php echo esc_url( $bridge_qode_thumbnail ); ?>"/>
 										</a>
 									<?php } else { ?>
 										<iframe width="100%" src="//www.youtube.com/embed/<?php echo esc_attr( $bridge_qode_portfolio_image['portfoliovideoid'] );  ?>?wmode=transparent" wmode="Opaque" frameborder="0" allowfullscreen></iframe>
 									<?php } ?>
 									<?php	break;
 								case "vimeo": ?>
-									<?php if($bridge_qode_lightbox_video_single_project == "yes"){ ?>
-										<?php
-											$bridge_qode_vidID = $bridge_qode_portfolio_image['portfoliovideoid'];
-											$bridge_qode_url = "http://vimeo.com/api/v2/video/".$bridge_qode_vidID.".php";
-										    $bridge_qode_xml = unserialize(bridge_qode_generate_portfolio_xml( $bridge_qode_url ));
-
-									   		$bridge_qode_video_title = $bridge_qode_xml[0]['title'];
-										    $bridge_qode_thumbnail = $bridge_qode_xml[0]['thumbnail_large'];
-										?>
-										<a itemprop="image" class="lightbox_single_portfolio video_in_lightbox" title="<?php echo esc_attr( $bridge_qode_video_title ); ?>" href="<?php echo esc_attr( $bridge_qode_protocol );?>//vimeo.com/<?php echo esc_attr( $bridge_qode_vidID ); ?>" rel="prettyPhoto[single_pretty_photo]">
-											<i class="fa fa-play"></i>
-											<img itemprop="image" width="100%" src="<?php echo esc_url( $bridge_qode_thumbnail ); ?>"></img>
-										</a>
-									<?php } else { ?>
-										<iframe src="//player.vimeo.com/video/<?php echo esc_attr( $bridge_qode_portfolio_image['portfoliovideoid'] );  ?>?title=0&amp;byline=0&amp;portrait=0" width="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-									<?php } ?>
+                                    <?php
+                                    $bridge_qode_vidID = $bridge_qode_portfolio_image['portfoliovideoid'];
+                                    $bridge_qode_url = "http://vimeo.com/api/v2/video/".$bridge_qode_vidID.".php";
+                                    $bridge_qode_xml = unserialize(bridge_qode_generate_portfolio_xml( $bridge_qode_url ));
+                                    if( is_array( $bridge_qode_xml ) && isset( $bridge_qode_xml[0] ) && is_array( $bridge_qode_xml[0] ) ) {
+                                        $bridge_qode_video_title = $bridge_qode_xml[0]['title'];
+                                        $bridge_qode_thumbnail = $bridge_qode_xml[0]['thumbnail_large'];
+                                        $bridge_qode_video_width = $bridge_qode_xml[0]['width'];
+                                        $bridge_qode_video_height = $bridge_qode_xml[0]['height'];
+                                    }
+                                    ?>
+                                    <?php if($bridge_qode_lightbox_video_single_project == "yes"){ ?>
+                                        <a itemprop="image"
+                                           class="lightbox_single_portfolio video_in_lightbox"
+                                           href="<?php echo esc_attr( $bridge_qode_protocol );?>//vimeo.com/<?php echo esc_attr( $bridge_qode_vidID ); ?>"
+                                           rel="prettyPhoto[single_pretty_photo]"
+                                           title="<?php echo ! empty( $bridge_qode_video_title ) ? esc_attr( $bridge_qode_video_title ) : esc_html__( 'Video Title', 'bridge' ); ?>"
+                                        >
+                                            <i class="fa fa-play"></i>
+                                            <?php if( ! empty( $bridge_qode_thumbnail ) ) { ?>
+                                                <img itemprop="image" width="100%" src="<?php echo esc_url( $bridge_qode_thumbnail ); ?>"/>
+                                            <?php } ?>
+                                        </a>
+                                    <?php } else { ?>
+                                        <iframe
+                                            <?php if( ! empty( $bridge_qode_video_width ) ) { ?>
+                                                width="<?php echo esc_attr( $bridge_qode_video_width ); ?>"
+                                            <?php } ?>
+                                            <?php if( ! empty( $bridge_qode_video_height ) ) { ?>
+                                                height="<?php echo esc_attr( $bridge_qode_video_height ); ?>"
+                                            <?php } ?>
+                                                src="https://player.vimeo.com/video/<?php echo esc_attr( $bridge_qode_portfolio_image['portfoliovideoid'] );  ?>?title=0&amp;byline=0&amp;portrait=0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen
+                                        >
+                                        </iframe>
+                                    <?php } ?>
 									<?php break;
 								case "self": ?>
 									<div class="video">
@@ -781,10 +801,10 @@ if(isset($bridge_qode_options['disable_portfolio_single_title_label']) && $bridg
 										<p>
 											<?php if($bridge_qode_portfolio['optionUrl'] != ""): ?>
 												<a itemprop="url" href="<?php echo esc_url( $bridge_qode_portfolio['optionUrl'] ); ?>" target="_blank">
-													<?php echo do_shortcode(stripslashes($bridge_qode_portfolio['optionValue'])); ?>
+													<?php echo do_shortcode(stripslashes(nl2br($bridge_qode_portfolio['optionValue']))); ?>
 												</a>
 											<?php else:?>
-												<?php echo do_shortcode(stripslashes($bridge_qode_portfolio['optionValue'])); ?>
+												<?php echo do_shortcode(stripslashes(nl2br($bridge_qode_portfolio['optionValue']))); ?>
 											<?php endif; ?>
 										</p>
 									</div>
@@ -1001,10 +1021,10 @@ if(isset($bridge_qode_options['disable_portfolio_single_title_label']) && $bridg
 										<p>
 											<?php if($bridge_qode_portfolio['optionUrl'] != ""): ?>
 												<a itemprop="url" href="<?php echo esc_url( $bridge_qode_portfolio['optionUrl'] ); ?>" target="_blank">
-													<?php echo do_shortcode(stripslashes($bridge_qode_portfolio['optionValue'])); ?>
+													<?php echo do_shortcode(stripslashes(nl2br($bridge_qode_portfolio['optionValue']))); ?>
 												</a>
 											<?php else:?>
-												<?php echo do_shortcode(stripslashes($bridge_qode_portfolio['optionValue'])); ?>
+												<?php echo do_shortcode(stripslashes(nl2br($bridge_qode_portfolio['optionValue']))); ?>
 											<?php endif; ?>
 										</p>
 									</div>
@@ -1186,10 +1206,10 @@ if(isset($bridge_qode_options['disable_portfolio_single_title_label']) && $bridg
                                         <p>
                                             <?php if($bridge_qode_portfolio['optionUrl'] != ""): ?>
                                                 <a itemprop="url" href="<?php echo esc_url( $bridge_qode_portfolio['optionUrl'] ); ?>" target="_blank">
-                                                    <?php echo do_shortcode(stripslashes($bridge_qode_portfolio['optionValue'])); ?>
+	                                                <?php echo do_shortcode(stripslashes(nl2br($bridge_qode_portfolio['optionValue']))); ?>
                                                 </a>
                                             <?php else:?>
-                                                <?php echo do_shortcode(stripslashes($bridge_qode_portfolio['optionValue'])); ?>
+	                                            <?php echo do_shortcode(stripslashes(nl2br($bridge_qode_portfolio['optionValue']))); ?>
                                             <?php endif; ?>
                                         </p>
                                     </div>

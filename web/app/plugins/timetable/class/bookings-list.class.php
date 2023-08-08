@@ -4,8 +4,8 @@ class TT_Bookings_List extends WP_List_Table
 	public function __construct()
 	{
 		parent::__construct(array(
-			'singular' => __('Booking', 'timetable'),
-			'plural'   => __('Bookings', 'timetable'),
+			'singular' => esc_html__('Booking', 'timetable'),
+			'plural'   => esc_html__('Bookings', 'timetable'),
 			'ajax'     => false,
 		));
 		
@@ -54,7 +54,7 @@ class TT_Bookings_List extends WP_List_Table
 		$output = '';
 		$output .= 
 			'<div class="notice notice-success is-dismissible">
-				<p>' . __('Booking deleted.', 'timetable') . '</p>
+				<p>' . esc_html__('Booking deleted.', 'timetable') . '</p>
 			</div>';
 		echo $output;
 	}
@@ -87,7 +87,7 @@ class TT_Bookings_List extends WP_List_Table
 	function column_booking($item)
 	{
 		$delete_nonce = wp_create_nonce('sp_delete_booking');
-		$title = '<strong>' . sprintf(__('Booking #%d (%s)', 'timetable'), $item['booking_id'], $item['booking_datetime']) . '</strong>';
+		$title = '<strong>' . sprintf(esc_html__('Booking #%d (%s)', 'timetable'), $item['booking_id'], $item['booking_datetime']) . '</strong>';
 		$actions = array(
 			'delete' => sprintf('<a href="?page=%s&action=%s&booking=%s&_wpnonce=%s">Delete</a>', esc_attr($_REQUEST['page']), 'delete', absint($item['booking_id']), $delete_nonce),
 		);
@@ -107,15 +107,15 @@ class TT_Bookings_List extends WP_List_Table
 		switch($column_name)
 		{
 			case 'booking':
-				return sprintf(__('Booking #%d (%s)', 'timetable'), $item['bookign_id'], $item['booking_datetime']);
+				return sprintf(esc_html__('Booking #%d (%s)', 'timetable'), $item['bookign_id'], $item['booking_datetime']);
 			case 'date':
 				return $item['weekday'] . '<br>' . $item['start'] . '-' . $item['end'];
 			case 'event':
-				return '<a href="' . get_edit_post_link($item['event_id']) . '">' . $item['event_title'] . '</a>';
+				return '<a href="' . esc_url(get_edit_post_link($item['event_id'])) . '">' . $item['event_title'] . '</a>';
 			case 'user':
 				if($item['user_id'])
 				{
-					return '<a href="' . get_edit_user_link($item['user_id']) . '">' . $item['user_name'] . '</a>';
+					return '<a href="' . esc_url(get_edit_user_link($item['user_id'])) . '">' . $item['user_name'] . '</a>';
 				}
 				else
 				{
@@ -127,7 +127,7 @@ class TT_Bookings_List extends WP_List_Table
 						$guest_info[] = $item['guest_phone'];
 					$guest_info = implode(', ', $guest_info);
 					
-					return sprintf(__('Guest (%s)', 'timetable'), $guest_info);
+					return sprintf(esc_html__('Guest (%s)', 'timetable'), $guest_info);
 				}
 			case 'message':
 				return nl2br($item['guest_message']);
@@ -159,11 +159,11 @@ class TT_Bookings_List extends WP_List_Table
 	{
 		$columns = array(
 			'cb' => '<input type="checkbox" />',
-			'booking' => __('Booking', 'timetable'),
-			'date' => __('Date', 'timetable'),
-			'event' => __('Event', 'timetable'),
-			'user' => __('User', 'timetable'),
-			'message' => __('Message', 'timetable'),
+			'booking' => esc_html__('Booking', 'timetable'),
+			'date' => esc_html__('Date', 'timetable'),
+			'event' => esc_html__('Event', 'timetable'),
+			'user' => esc_html__('User', 'timetable'),
+			'message' => esc_html__('Message', 'timetable'),
 		);
 		
 		return $columns;
@@ -216,14 +216,14 @@ class TT_Bookings_List extends WP_List_Table
 		$this->items = self::get_bookings($per_page, $current_page);
 	}
 
-	public function  process_bulk_action()
+	public function process_bulk_action()
 	{
 		if('delete'===$this->current_action())
 		{
 			$nonce = esc_attr($_REQUEST['_wpnonce']);
 			if(!wp_verify_nonce($nonce, 'sp_delete_booking'))
 			{
-				die(__('You\'re not allowed to perform this action.','timetable'));
+				die(esc_html__('You\'re not allowed to perform this action.','timetable'));
 			}
 			else
 			{

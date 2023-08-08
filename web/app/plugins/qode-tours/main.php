@@ -3,7 +3,7 @@
 Plugin Name: Qode Tours
 Description: Plugin that adds tours post types needed by theme
 Author: Qode Themes
-Version: 3.0.2
+Version: 3.0.8
 */
 
 require_once 'load.php';

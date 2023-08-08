@@ -68,7 +68,7 @@ if ( ! function_exists( 'qode_lms_override_comments_list_callback' ) ) {
         if ( is_array( $post_types ) && count( $post_types ) > 0 ) {
             foreach ( $post_types as $post_type ) {
                 if ( is_singular( $post_type ) ) {
-                    $args['callback'] = 'qode_list_reviews';
+                    $args['callback'] = 'qode_lms_post_reviews';
                 }
             }
         }
@@ -89,7 +89,7 @@ if ( ! function_exists( 'qode_lms_post_reviews_html' ) ) {
 
         $post = get_post($post_id);
         $html = '';
-
+        
         if(count($reviews)){
 
             foreach ($reviews as $comment){
@@ -123,6 +123,36 @@ if ( ! function_exists( 'qode_lms_post_reviews_html' ) ) {
                 $html .= qode_lms_get_module_template_part('reviews/templates/front-list/item-holder', '', $comment_params);
             }
         }
-        return $html;
+
+        echo $html;
+    }
+}
+
+if ( ! function_exists( 'qode_lms_post_reviews' ) ) {
+    function qode_lms_post_reviews( $comment, $args, $depth ) {
+        $GLOBALS['comment'] = $comment;
+        global $post;
+
+        $is_pingback_comment = $comment->comment_type == 'pingback';
+        $is_author_comment   = $post->post_author == $comment->user_id;
+
+        $comment_class = 'qode-comment clearfix';
+
+        if($is_author_comment) {
+            $comment_class .= ' qode-post-author-comment';
+        }
+
+        if($is_pingback_comment) {
+            $comment_class .= ' qode-pingback-comment';
+        }
+
+        $params                        = array();
+        $params['comment']             = $comment;
+        $params['comment_class']       = $comment_class;
+        $params['is_pingback_comment'] = $is_pingback_comment;
+        $params['review_title']        = get_comment_meta( $comment->comment_ID, 'qode_comment_title', true );
+        $params['rating_criteria']     = bridge_core_rating_criteria(get_post_type());
+
+        echo qode_lms_get_module_template_part('reviews/templates/front-list/item-holder', '', $params);
     }
 }

@@ -3,7 +3,68 @@
 // Prevent direct file access
 defined( 'LS_ROOT_FILE' ) || exit;
 
-function lsGetOptionField( $type, $key, $default, $attrs = array() ) {
+
+function lsGetSwitchControl( $inputAttributes = [], $labelAttributes = [] ) {
+
+	$inputAttrList 	= '';
+	$labelAttrList 	= '';
+	$classList 		= '';
+
+
+	if( empty( $inputAttributes['checked'] ) ) {
+		unset( $inputAttributes['checked'] );
+	}
+
+	if( ! empty( $inputAttributes ) ) {
+		foreach( $inputAttributes as $key => $val ) {
+			$inputAttrList .= ' '.$key.'="'.$val.'"';
+		}
+	}
+
+	if( ! empty( $labelAttributes['class'] ) ) {
+		$classList = $labelAttributes['class'];
+		unset( $labelAttributes['class'] );
+	}
+
+	if( ! empty( $labelAttributes ) ) {
+		foreach( $labelAttributes as $key => $val ) {
+			$labelAttrList .= ' '.$key.'="'.$val.'"';
+		}
+	}
+
+	return '<label class="ls-switch '.$classList.'"'.$labelAttrList.'><input type="checkbox" '.$inputAttrList.'><ls-switch></ls-switch></label>';
+
+}
+
+
+function lsGetSVGIcon( $iconName, $type = 'solid', $attributes = [], $elementName = 'ls-icon' ) {
+
+	if( empty( $type ) ) {
+		$type = 'solid';
+	}
+
+	$iconsPath 	= LS_ROOT_PATH.'/static/admin/svgs';
+	$iconPath 	= $iconsPath.'/'.$type.'/'.$iconName.'.svg';
+	$classList 	= '';
+	$attrList 	= '';
+
+	if( ! empty( $attributes['class'] ) ) {
+		$classList = $attributes['class'];
+		unset( $attributes['class'] );
+	}
+
+	if( ! empty( $attributes ) ) {
+		foreach( $attributes as $key => $val ) {
+			$attrList .= ' '.$key.'="'.$val.'"';
+		}
+	}
+
+	if( file_exists( $iconPath ) ) {
+		return '<'.$elementName.' class="ls-icon-'.$iconName.' '.$classList.'"'.$attrList.'>'.file_get_contents( $iconPath ).'</'.$elementName.'>';
+	}
+}
+
+function lsGetOptionField( $type, $key, $default, $attrs = [] ) {
 
 	$value = get_option( 'ls_'.$key, $default );
 	$input = '<input type="'.$type.'" name="'.$key.'"';
@@ -19,7 +80,7 @@ function lsGetOptionField( $type, $key, $default, $attrs = array() ) {
 	if( isset( LS_Config::$forced[ $key ] ) ) {
 		$help = sprintf(__('This setting is enforced by <b><i>%s</i></b> in order to maximize compatibility on your site.', 'LayerSlider'), LS_Config::$forcedBy[ $key ] );
 
-		$input .= ' class="locked yellow" data-help-delay="100" data-help="'.$help.'" disabled';
+		$input .= ' class="ls-switch-disabled ls-switch-yellow" data-help-delay="100" data-help="'.$help.'"';
 	}
 
 	foreach ($attrs as $key => $value) {
@@ -27,10 +88,40 @@ function lsGetOptionField( $type, $key, $default, $attrs = array() ) {
 	}
 
 	return $input.'>';
+}
+
+function lsGetSwitchOptionField( $key, $default, $attrs = [] ) {
+
+	$value = get_option( 'ls_'.$key, $default );
+	$label = '<label class="ls-switch';
+	$input = '<input type="checkbox" name="'.$key.'"';
+
+	if( is_numeric( $value ) ) {
+		$value = (int) $value;
+	}
+
+	if( $value ) {
+		$attrs['checked'] = 'checked';
+	}
+
+	// Theme forced settings
+	if( isset( LS_Config::$forced[ $key ] ) ) {
+		$help = sprintf(__('This setting is enforced by <b><i>%s</i></b> in order to maximize compatibility on your site.', 'LayerSlider'), LS_Config::$forcedBy[ $key ] );
+
+		$label .= ' ls-switch-disabled ls-switch-yellow data-help-delay="100" data-help="'.$help.'""';
+
+		$attrs['disabled'] = 'disabled';
+	}
+
+	foreach ($attrs as $key => $value) {
+		$input .= $key.'="'.$value.'"';
+	}
+
+	return $label.'">'.$input.'><ls-switch></ls-switch></label>';
 
 }
 
-function lsOptionRow( $type, $default, $current, $attrs = array(), $trClasses = '', $forceOptionVal = false) {
+function lsOptionRow( $type, $default, $current, $attrs = [], $trClasses = '', $forceOptionVal = false) {
 
 	$wrapperStart = '';
 	$wrapperEnd = '';
@@ -40,14 +131,14 @@ function lsOptionRow( $type, $default, $current, $attrs = array(), $trClasses = 
 
 
 	if( ! empty($default['advanced']) ) {
-		$trClasses .= ' ls-advanced ls-hidden';
-		$wrapperStart = '<div><i class="dashicons dashicons-flag" data-help="'.__('Advanced option', 'LayerSlider').'"></i>';
+		$trClasses .= ' lse-advanced';
+		$wrapperStart = '<div>'.lsGetSVGIcon('flag-alt', false, [ 'data-tt' => '.tt-advanced']);
 		$wrapperEnd = '</div>';
 
 	} else if( ! empty($default['premium']) ) {
 		if( ! LS_Config::isActivatedSite() ) {
 			$trClasses .= ' ls-premium';
-			$wrapperStart = '<div><a class="ls-activation-lock dashicons dashicons-lock" target="_blank" href="'.admin_url('admin.php?page=layerslider-addons' ).'" data-help="'.__('This feature requires product activation. Click on the padlock icon to learn more.', 'LayerSlider').'"></a>';
+			$wrapperStart = '<div><a class="lse-premium-lock" target="_blank" href="'.admin_url('admin.php?page=layerslider#open-addons' ).'" data-tt=".tt-premium">'.lsGetSVGIcon('lock').'</a>';
 			$wrapperEnd = '</div>';
 		}
 	}
@@ -63,7 +154,7 @@ function lsOptionRow( $type, $default, $current, $attrs = array(), $trClasses = 
 			break;
 
 		case 'select':
-			$control = lsGetSelect($default, $current, $attrs, $forceOptionVal, true);
+			$control = '<lse-fe-wrapper class="lse-select">'.lsGetSelect($default, $current, $attrs, $forceOptionVal, true).'</lse-fe-wrapper>';
 			break;
 	}
 
@@ -76,42 +167,61 @@ function lsOptionRow( $type, $default, $current, $attrs = array(), $trClasses = 
 </tr>';
 }
 
-function lsGetInput($default, $current, $attrs = array(), $return = false) {
+
+function lsGetOptionValue( $default, $current ) {
+
+	$value = $default['value'];
+
+	// Override the default
+	if( isset( $current[ $name ] ) && $current[ $name ] !== '' ) {
+		$value = htmlspecialchars( stripslashes( $current[ $name ] ) );
+	}
+
+	return $value;
+}
+
+
+function lsGetInput($default, $current = null, $attrs = [], $return = false) {
 
 	// Markup
 	$el 		= LayerSlider\DOM::newDocumentHTML('<input>')->children();
-	$attributes = array();
+	$attributes = [];
 
-	$attributes['value'] = $default['value'];
-	$attributes['type']  = is_string($default['value']) ? 'text' : 'number';
-	$attributes['name']  = $name = is_string($default['keys']) ? $default['keys'] : $default['keys'][0];
+	$name = is_string($default['keys']) ? $default['keys'] : $default['keys'][0];
+
+	$attributes['value'] 		= $default['value'];
+	$attributes['type']  		= is_string($default['value']) ? 'text' : 'number';
+	$attributes['name']  		= $name;
+	$attributes['data-prop'] 	= $name;
+
+
+	if( ! empty( $default['name'] ) ) {
+		$attributes['data-search-name'] = $default['name'];
+	}
 
 	$attrs = isset($default['attrs']) ? array_merge($default['attrs'], $attrs) : $attrs;
 	if( ! empty($attrs) && is_array( $attrs ) ) {
 		$attributes = array_merge($attributes, $attrs);
-	}
-
-	if(isset($default['tooltip'])) {
-		$attributes['data-help'] = $default['tooltip'];
-	}
-
-	// Combo box
-	if( ! empty($attributes['data-options']) ) {
-		if( empty($attributes['class']) ) { $attributes['class'] = ''; }
-
-		$attributes['class'] .= ' km-combo-input';
-		// $attributes['autocomplete'] = 'off';
 	}
 
 	// Override the default
 	if(isset($current[$name]) && $current[$name] !== '') {
-		$attributes['value'] = htmlspecialchars(stripslashes($current[$name]));
+		if( $current[$name] != $default['value'] ) {
+			$attributes['value'] = htmlspecialchars(stripslashes($current[$name]));
+		}
 	}
 
-	$attributes['data-value'] = $attributes['value'];
+	$attributes['data-default'] = $default['value'];
+
+	if( empty( $attributes['placeholder'] ) ) {
+		//if( ! is_string( $default['value'] ) || ! empty( $default['value'] ) ) {
+			$attributes['placeholder'] = $default['value'];
+		//}
+	}
+
 	$el->attr($attributes);
 
-	// Product activation check
+	// License registration check
 	if( ! empty( $default['premium'] ) ) {
 		if( ! LS_Config::isActivatedSite() ) {
 			$el->addClass('locked');
@@ -127,47 +237,67 @@ function lsGetInput($default, $current, $attrs = array(), $return = false) {
 
 
 
-function lsGetCheckbox($default, $current, $attrs = array(), $return = false) {
+function lsGetCheckbox($default, $current = null, $attrs = [], $return = false, $labelAttrs = [] ) {
+
+	$labelClassList = '';
+	if( ! empty( $labelAttrs['class'] ) ) {
+		$labelClassList = $labelAttrs['class'];
+		unset( $labelAttrs['class'] );
+	}
+
+
 
 	// Markup
-	$el 		= LayerSlider\DOM::newDocumentHTML('<input>')->children();
-	$attributes = array();
+	$markup = LayerSlider\DOM::newDocumentHTML('<label class="ls-switch"><input type="checkbox"><ls-switch></ls-switch></label>');
 
-	$attributes['value'] = $default['value'];
-	$attributes['type']  = 'checkbox';
-	$attributes['name']  = $name = is_string($default['keys']) ? $default['keys'] : $default['keys'][0];
+	$input 	= $markup->find('input');
+	$label 	= $markup->find('label');
+
+	$attributes = [];
+
+	$name = is_string($default['keys']) ? $default['keys'] : $default['keys'][0];
+
+	$attributes['value'] 		= $default['value'];
+	$attributes['name']  		= $name;
+	$attributes['data-prop'] 	= $name;
+
+	if( ! empty( $default['name'] ) ) {
+		$attributes['data-search-name'] = $default['name'];
+	}
 
 	$attrs = isset($default['attrs']) ? array_merge($default['attrs'], $attrs) : $attrs;
 	if( ! empty($attrs) && is_array( $attrs ) ) {
 		$attributes = array_merge($attributes, $attrs);
 	}
 
-	if(isset($default['tooltip'])) {
-		$attributes['data-help'] = $default['tooltip'];
-	}
-
 	// Checked?
+	$attributes['data-default'] = $default['value'] ? 'true' : 'false';
 	$attributes['data-value'] = false;
 	if($default['value'] === true && ( ! isset($current[$name]) || count($current) < 3 ) ) {
 		$attributes['checked'] = 'checked';
-		$attributes['data-value'] = 'true';
 	} elseif(isset($current[$name]) && $current[$name] != false && $current[$name] !== 'false') {
 		$attributes['checked'] = 'checked';
-		$attributes['data-value'] = 'true';
 	}
 
 	$attributes['value'] = $attributes['data-value'];
-	$el->attr($attributes);
+	$input->attr($attributes);
 
-	// Product activation check
-	if( ! empty( $default['premium'] ) ) {
+	// Label attributes
+	$label->attr( $labelAttrs );
+	$label->addClass( $labelClassList );
+
+	// Premium exclude list
+	$premiumExclude = ['scroll'];
+
+	// License registration check
+	if( ! empty( $default['premium'] ) && ! in_array( $name, $premiumExclude ) ) {
 		if( ! LS_Config::isActivatedSite() ) {
-			$el->addClass('locked');
-			$el->attr('disabled', 'disabled');
+			$input->addClass('locked');
+			$input->attr('disabled', 'disabled');
 		}
 	}
 
-	$ret = (string) $el;
+	$ret = (string) $input;
 	LayerSlider\DOM::unloadDocuments();
 
 	if( $return ) { return $ret; } else { echo $ret; }
@@ -175,16 +305,23 @@ function lsGetCheckbox($default, $current, $attrs = array(), $return = false) {
 
 
 
-function lsGetSelect($default, $current, $attrs = array(), $forceOptionVal = false, $return = false ) {
+function lsGetSelect($default, $current = null, $attrs = [], $forceOptionVal = false, $return = false ) {
 
 	// Var to hold data to print
 	$el 		= LayerSlider\DOM::newDocumentHTML('<select>')->children();
-	$attributes = array();
-	$options 	= array();
-	$listItems  = array();
+	$attributes = [];
+	$options 	= [];
+	$listItems  = [];
 
-	$attributes['value'] = $value = $default['value'];
-	$attributes['name']  = $name  = is_string($default['keys']) ? $default['keys'] : $default['keys'][0];
+	$name  = is_string($default['keys']) ? $default['keys'] : $default['keys'][0];
+
+	$attributes['value'] 		= $value = $default['value'];
+	$attributes['name']  		= $name;
+	$attributes['data-prop'] 	= $name;
+
+	if( ! empty( $default['name'] ) ) {
+		$attributes['data-search-name'] = $default['name'];
+	}
 
 	// Attributes
 	$attrs = isset($default['attrs']) ? array_merge($default['attrs'], $attrs) : $attrs;
@@ -204,26 +341,25 @@ function lsGetSelect($default, $current, $attrs = array(), $forceOptionVal = fal
 		$attributes['value'] = $value = $current[$name];
 	}
 
-	// Tooltip
-	if(isset($default['tooltip'])) {
-		$attributes['data-help'] = $default['tooltip'];
-	}
-
 	// Add options
 	foreach($options as $name => $val) {
 
+		$disabled = '';
 		$name = (is_string($name) || $forceOptionVal) ? $name : $val;
 		$name = ($name === 'zero') ? 0 : $name;
 
+		if( $name === 'ui-separator' ) {
+			$disabled = 'disabled';
+		}
 
 		$checked = ($name == $value) ? ' selected="selected"' : '';
-		$listItems[] = "<option value=\"$name\" $checked>$val</option>";
+		$listItems[] = "<option value=\"$name\" $checked $disabled>$val</option>";
 	}
 
-	$attributes['data-value'] = $attributes['value'];
+	$attributes['data-default'] = $default['value'];
 	$el->append( implode('', $listItems) )->attr($attributes);
 
-	// Product activation check
+	// License registration check
 	if( ! empty( $default['premium'] ) ) {
 		if( ! LS_Config::isActivatedSite() ) {
 			$el->addClass('locked');

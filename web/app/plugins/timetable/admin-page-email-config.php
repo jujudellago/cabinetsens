@@ -1,28 +1,28 @@
 <div class="wrap timetable_settings_section first">
-	<h2><?php _e("Email configuration", "timetable"); ?></h2>
+	<h2><?php esc_html_e("Email configuration", "timetable"); ?></h2>
 </div>
-<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post" class="email_config ">
+<form action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>" method="post" class="email_config ">
 	<input type="hidden" name="action" value="save" />
 	<div id="timetable_configuration_tabs" class="tt_hide">
 		<ul class="nav-tabs">
 			<li class="nav-tab">
 				<a href="#tab-admin-email">
-					<?php _e('Admin email', 'timetable'); ?>
+					<?php esc_html_e('Admin email', 'timetable'); ?>
 				</a>
 			</li>
 			<li class="nav-tab">
 				<a href="#tab-admin-smtp">
-					<?php _e('Admin SMTP (optional)', 'timetable'); ?>
+					<?php esc_html_e('Admin SMTP (optional)', 'timetable'); ?>
 				</a>
 			</li>
 			<li class="nav-tab">
 				<a href="#tab-email-template-client">
-					<?php _e('Email template for client', 'timetable'); ?>
+					<?php esc_html_e('Email template for client', 'timetable'); ?>
 				</a>
 			</li>
 			<li class="nav-tab">
 				<a href="#tab-email-template-admin">
-					<?php _e('Email template for admin', 'timetable'); ?>
+					<?php esc_html_e('Email template for admin', 'timetable'); ?>
 				</a>
 			</li>
 		</ul>
@@ -32,7 +32,7 @@
 					<tr valign="top">
 						<th scope="row">
 							<label for="admin_name">
-								<?php _e("Name", "timetable"); ?>
+								<?php esc_html_e("Name (Send To)", "timetable"); ?>
 							</label>
 						</th>
 						<td>
@@ -45,7 +45,7 @@
 					<tr valign="top">
 						<th scope="row">
 							<label for="admin_email">
-								<?php _e("Email", "timetable"); ?>
+								<?php esc_html_e("Email (Send To)", "timetable"); ?>
 							</label>
 						</th>
 						<td>
@@ -57,18 +57,44 @@
 					</tr>
 					<tr valign="top">
 						<th scope="row">
+							<label for="admin_name_from">
+								<?php _e("Name (Send From) - Optional", "timetable"); ?>
+							</label>
+						</th>
+						<td>
+							<input type="text" class="regular-text" value="<?php echo esc_attr($timetable_contact_form_options["admin_name_from"]); ?>" id="admin_name_from" name="admin_name_from">
+						</td>
+						<td>
+							<span class="description"><?php esc_html_e("If not set, 'Name (Send To)' will be used", 'timetable'); ?></span>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row">
+							<label for="admin_email_from">
+								<?php _e("Email (Send From) - Optional", "timetable"); ?>
+							</label>
+						</th>
+						<td>
+							<input type="text" class="regular-text" value="<?php echo esc_attr($timetable_contact_form_options["admin_email_from"]); ?>" id="admin_email_from" name="admin_email_from">
+						</td>
+						<td>
+							<span class="description"><?php esc_html_e("If not set, 'Email (Send To)' will be used", 'timetable'); ?></span>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row">
 							<label for="mail_debug">
-								<?php _e("Debug", "timetable"); ?>
+								<?php esc_html_e("Debug", "timetable"); ?>
 							</label>
 						</th>
 						<td>
 							<select name="mail_debug" id="mail_debug">
-								<option value="no" <?php echo ($timetable_contact_form_options["mail_debug"]=="no" ? "selected='selected'" : "") ?>><?php _e("No", "timetable"); ?></option>
-								<option value="yes" <?php echo ($timetable_contact_form_options["mail_debug"]=="yes" ? "selected='selected'" : "") ?>><?php _e("Yes", "timetable"); ?></option>
+								<option value="no" <?php echo ($timetable_contact_form_options["mail_debug"]=="no" ? "selected='selected'" : "") ?>><?php esc_html_e("No", "timetable"); ?></option>
+								<option value="yes" <?php echo ($timetable_contact_form_options["mail_debug"]=="yes" ? "selected='selected'" : "") ?>><?php esc_html_e("Yes", "timetable"); ?></option>
 							</select>
 						</td>
 						<td>
-							<span class="description"><?php _e('If debug is enabled, then additional information will be displayed in the booking pop-up.', 'timetable'); ?></span>
+							<span class="description"><?php esc_html_e('If debug is enabled, then additional information will be displayed in the booking pop-up.', 'timetable'); ?></span>
 						</td>
 					</tr>
 					<tr valign="top" class="no-border">
@@ -85,7 +111,7 @@
 					<tr valign="top">
 						<th scope="row">
 							<label for="smtp_host">
-								<?php _e("Host", "timetable"); ?>
+								<?php esc_html_e("Host", "timetable"); ?>
 							</label>
 						</th>
 						<td>
@@ -98,7 +124,7 @@
 					<tr valign="top">
 						<th scope="row">
 							<label for="smtp_username">
-								<?php _e("Username", "timetable"); ?>
+								<?php esc_html_e("Username", "timetable"); ?>
 							</label>
 						</th>
 						<td>
@@ -111,7 +137,7 @@
 					<tr valign="top">
 						<th scope="row">
 							<label for="smtp_password">
-								<?php _e("Password", "timetable"); ?>
+								<?php esc_html_e("Password", "timetable"); ?>
 							</label>
 						</th>
 						<td>
@@ -124,7 +150,7 @@
 					<tr valign="top">
 						<th scope="row">
 							<label for="smtp_port">
-								<?php _e("Port", "timetable"); ?>
+								<?php esc_html_e("Port", "timetable"); ?>
 							</label>
 						</th>
 						<td>
@@ -137,14 +163,14 @@
 					<tr valign="top">
 						<th scope="row">
 							<label for="smtp_secure">
-								<?php _e("SMTP Secure", "timetable"); ?>
+								<?php esc_html_e("SMTP Secure", "timetable"); ?>
 							</label>
 						</th>
 						<td>
 							<select name="smtp_secure" id="smtp_secure">
 								<option value="">-</option>
-								<option value="ssl" <?php echo ($timetable_contact_form_options["smtp_secure"]=="ssl" ? "selected='selected'" : "") ?>><?php _e("ssl", "timetable"); ?></option>
-								<option value="tls" <?php echo ($timetable_contact_form_options["smtp_secure"]=="tls" ? "selected='selected'" : "") ?>><?php _e("tls", "timetable"); ?></option>
+								<option value="ssl" <?php echo ($timetable_contact_form_options["smtp_secure"]=="ssl" ? "selected='selected'" : "") ?>><?php esc_html_e("ssl", "timetable"); ?></option>
+								<option value="tls" <?php echo ($timetable_contact_form_options["smtp_secure"]=="tls" ? "selected='selected'" : "") ?>><?php esc_html_e("tls", "timetable"); ?></option>
 							</select>
 						</td>
 						<td>
@@ -165,7 +191,7 @@
 					<tr valign="top">
 						<th scope="row">
 							<label for="email_subject_client">
-								<?php _e("Email subject", "timetable"); ?>
+								<?php esc_html_e("Email subject", "timetable"); ?>
 							</label>
 						</th>
 						<td>
@@ -177,7 +203,7 @@
 					</tr>
 					<tr valign="top" class="no-border">
 						<td colspan="3">
-							<?php _e("Available placeholders:", 'timetable'); ?>
+							<?php esc_html_e("Available placeholders:", 'timetable'); ?>
 							<br />
 							<strong>{event_title} {column_title} {event_start} {event_end} {event_description_1} {event_description_2} {slots_number} {booking_datetime} {user_name} {user_email} {user_phone} {user_message} {cancel_booking}</strong>
 						</td>
@@ -201,7 +227,7 @@
 					<tr valign="top">
 						<th scope="row">
 							<label for="email_subject_admin">
-								<?php _e("Email subject", "timetable"); ?>
+								<?php esc_html_e("Email subject", "timetable"); ?>
 							</label>
 						</th>
 						<td>
@@ -213,7 +239,7 @@
 					</tr>
 					<tr valign="top" class="no-border">
 						<td colspan="3">
-							<?php _e("Available placeholders:", 'timetable'); ?>
+							<?php esc_html_e("Available placeholders:", 'timetable'); ?>
 							<br>
 							<strong>{event_title} {column_title} {event_start} {event_end} {event_description_1} {event_description_2} {slots_number} {booking_datetime} {user_name} {user_email} {user_phone} {user_message} {cancel_booking}</strong>
 						</td>
