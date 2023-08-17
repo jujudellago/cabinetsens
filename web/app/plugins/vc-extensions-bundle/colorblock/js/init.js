@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-colorblock').each(function(index, el) {
         var _this = $(this);
         var _image = $(this).data('image');

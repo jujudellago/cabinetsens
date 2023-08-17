@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+	"use strict";
 	$('.cq-imgwitharrow-container').each(function(index) {
 		var _this = $(this);
 		var _textcolor = $(this).data('color');
@@ -35,14 +36,6 @@ jQuery(document).ready(function($) {
 			$(this).find('.cq-arrowborder1, .cq-arrowborder3').css({
 				'background': _textbg
 			});
-			// if(_captionalign=="right"){
-			// 	$(this).find('.cq-arrowborder2').css({
-			// 		'border-top': '10px solid ' + _textbg,
-			// 		'border-left': '10px solid transparent',
-			// 		'border-bottom': '10px solid ' + _textbg,
-			// 		'border-right': '10px solid ' + _textbg
-			// 	});
-			// }
 			if(_captionalign=="right"){
 				$(this).find('.cq-arrowborder1').css('height', _arrowtop);
 				$(this).find('.cq-arrowborder2').css({
@@ -91,33 +84,16 @@ jQuery(document).ready(function($) {
 					'border-right': _bordersizelarge + ' solid ' + _textbg
 				});
 				_box.css({
-					// 'height': 'calc(' + _theight + ' + 10px)',
 					'top': 'calc(' + _iheight + ' - ' + _bordersizelarge + ')'
 				});
 			}
 		}
 
-		// _this.find('a.cq-lightbox').attr('rel', 'gallery');
 		_this.find('a.cq-lightbox').boxer({
 	    	fixed: true
 	    });
 
 
-		function _resizeFont(){
-			if(_this.width()<=480){
-				// _this.find('.cq-imgwitharrow-content p').css('font-size', _fontsize2);
-				// _this.find('.cq-imgwitharrow-content h2, .cq-imgwitharrow-content h3, .cq-imgwitharrow-content h4, .cq-imgwitharrow-content h5').css('font-size', _fontsize2);
-				// if(_captionalign=="left"||_captionalign=="right"){
-					// _this.find('.cq-imgwitharrow-content').css('width', '64%');
-				// }
-			}else{
-				// _this.find('.cq-imgwitharrow-content p').css('font-size', _fontsize1);
-				// _this.find('.cq-imgwitharrow-content h2, .cq-imgwitharrow-content h3, .cq-imgwitharrow-content h4, .cq-imgwitharrow-content h5').css('font-size', '');
-			}
-
-		}
-		// _resizeFont();
-		// $(window).on('resize', _resizeFont);
 		_this.find('.cq-imgwitharrow-content, .cq-imgwitharrow-content p').css('font-size', _fontsize1);
 
 

@@ -6,11 +6,7 @@
 	margin: 0 auto;
 	overflow: hidden;
 }
-/*.cq-parallaximgholder{
-	max-width: 100%;
-	margin: 0 auto;
-}
-*/.cq-parallaxcontainer .img-holder-img{
+.cq-parallaxcontainer .img-holder-img{
 	overflow: hidden;
 	max-width: 100%;
 }
@@ -20,7 +16,6 @@
 }
 section.cq-parallaxsection {
   position: relative;
-	/*width: 100%;*/
   height: auto;
 	margin: 0 auto;
 }

@@ -15,15 +15,12 @@
 .cqlist h3 {
   position: relative;
   text-align: center;
-  /*background: #1abc9c;*/
   background: #663399;
   background-repeat: repeat;
   color: #fff;
   margin: 0;
   padding: 6px 10px;
-  /*font-family: "Roboto";*/
   font-size: 18px;
-  /*text-transform: uppercase;*/
   font-weight: 400;
 }
 .cqlist span.cqlist-label{
@@ -52,12 +49,9 @@
 .cqlist ul li {
   position: relative;
   background: #fff;
-  /*height: 40px;*/
-  /*min-height: 40px;*/
   color: #666;
   line-height: 40px;
   margin: 0;
-  /*padding: 0 10px 0 0;*/
   padding: 4px 0 4px 0;
 }
 .cqlist.border ul li{
@@ -74,7 +68,6 @@
   width: 80%;
 }
 .cqlist ul li span.no-icon{
-  /*width: 90%;*/
   padding: 0 14px;
 }
 
@@ -82,15 +75,10 @@
 .cqlist ul li a.todolist-btn {
   display: inline-block;
   vertical-align: top;
-  /*background: #2ecc71;*/
-  /*background: #333;*/
-  /*opacity: 0;*/
-  /*width: 0px;*/
   width: 40px;
   opacity: 1;
   height: 40px;
   margin-right: 0px;
-  /*color: #fff;*/
   color: #333;
   cursor: default;
   text-align: center;
@@ -111,18 +99,7 @@
 .cqlist ul li a.todolist-btn:focus{
   outline: none;
 }
-/*.cqlist ul li:hover a {
-  width: 40px;
-  opacity: 1;
-}
-*/
 
-/*.cqlist-signup{
-  width: 100%;
-  background: #2980b9;
-  background: #663399;
-}
-*/
 .cqlist-signup a{
   display: block;
   max-width: 120px;
@@ -134,7 +111,6 @@
   padding: 4px 6px;
   color: #fff;
   font-size: 16px;
-  /*font-weight: 700;*/
   text-align: center;
   text-decoration: none;
   -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);

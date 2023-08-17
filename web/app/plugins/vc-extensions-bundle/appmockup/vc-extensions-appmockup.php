@@ -4,157 +4,156 @@ if (!class_exists('VC_Extensions_AppMockup')) {
     class VC_Extensions_AppMockup {
         function __construct() {
           vc_map( array(
-            "name" => __("App Mockup", 'vc_appmockup_cq'),
+            "name" => esc_attr__("App Mockup", 'vc_appmockup_cq'),
             "base" => "cq_vc_appmockup",
             "class" => "wpb_cq_vc_extension_appmockup",
             "controls" => "full",
             "icon" => "cq_allinone_appmockup",
-            "category" => __('Sike Extensions', 'js_composer'),
-            'description' => __( '3D prototype gallery', 'js_composer' ),
-            // 'admin_enqueue_css' => array(plugins_url('css/vc_extensions_cq_admin.css', __FILE__)),
+            "category" => esc_attr__('Sike Extensions', 'js_composer'),
+            'description' => esc_attr__( '3D prototype gallery', 'js_composer' ),
             "params" => array(
               array(
                 "type" => "attach_images",
-                "heading" => __("Image", "vc_appmockup_cq"),
+                "heading" => esc_attr__("Image", "vc_appmockup_cq"),
                 "param_name" => "images",
                 "value" => "",
-                "description" => __("Select images from media library.", "vc_appmockup_cq")
+                "description" => esc_attr__("Select images from media library.", "vc_appmockup_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("width", "vc_appmockup_cq"),
+                "heading" => esc_attr__("width", "vc_appmockup_cq"),
                 "param_name" => "width",
                 "value" => "240",
-                "description" => __("", "vc_appmockup_cq")
+                "description" => esc_attr__("", "vc_appmockup_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("height", "vc_appmockup_cq"),
+                "heading" => esc_attr__("height", "vc_appmockup_cq"),
                 "param_name" => "height",
                 "value" => "360",
-                "description" => __("", "vc_appmockup_cq")
+                "description" => esc_attr__("", "vc_appmockup_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("margin", "vc_appmockup_cq"),
+                "heading" => esc_attr__("margin", "vc_appmockup_cq"),
                 "param_name" => "margin",
                 "value" => "20",
-                "description" => __("", "vc_appmockup_cq")
+                "description" => esc_attr__("", "vc_appmockup_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Container offset x", "vc_appmockup_cq"),
+                "heading" => esc_attr__("Container offset x", "vc_appmockup_cq"),
                 "param_name" => "offsetx",
                 "value" => "320",
-                "description" => __("For example, 200 will move the whole container right for 200(px), -200 will move the whole container left for 200(px).", "vc_appmockup_cq")
+                "description" => esc_attr__("For example, 200 will move the whole container right for 200(px), -200 will move the whole container left for 200(px).", "vc_appmockup_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Container offset y", "vc_appmockup_cq"),
+                "heading" => esc_attr__("Container offset y", "vc_appmockup_cq"),
                 "param_name" => "offsety",
                 "value" => "200",
-                "description" => __("For example, 200 will move the whole container lower for 200(px), -200 will move the whole container upper for 200(px).", "vc_appmockup_cq")
+                "description" => esc_attr__("For example, 200 will move the whole container lower for 200(px), -200 will move the whole container upper for 200(px).", "vc_appmockup_cq")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_appmockup_cq",
-                "heading" => __("rotateZ (deg) for the image 3D transform:", "vc_appmockup_cq"),
+                "heading" => esc_attr__("rotateZ (deg) for the image 3D transform:", "vc_appmockup_cq"),
                 "param_name" => "imagedirection",
-                "value" => array(__("50", "vc_appmockup_cq") => "50", __("-50", "vc_appmockup_cq") => "-50"),
-                "description" => __("Choose how to display the images.", "vc_appmockup_cq")
+                "value" => array(esc_attr__("50", "vc_appmockup_cq") => "50", esc_attr__("-50", "vc_appmockup_cq") => "-50"),
+                "description" => esc_attr__("Choose how to display the images.", "vc_appmockup_cq")
               ),
               array(
                 "type" => "exploded_textarea",
                 "holder" => "",
                 "class" => "vc_appmockup_cq",
-                "heading" => __("Tooltip", 'vc_appmockup_cq'),
+                "heading" => esc_attr__("Tooltip", 'vc_appmockup_cq'),
                 "param_name" => "tooltip",
-                "value" => __("", 'vc_appmockup_cq'),
-                "description" => __("Enter tooltip title for each image here, divide each with linebreaks (Enter).", 'vc_appmockup_cq')
+                "value" => esc_attr__("", 'vc_appmockup_cq'),
+                "description" => esc_attr__("Enter tooltip title for each image here, divide each with linebreaks (Enter).", 'vc_appmockup_cq')
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Tooltip offset x", "vc_appmockup_cq"),
+                "heading" => esc_attr__("Tooltip offset x", "vc_appmockup_cq"),
                 "param_name" => "tooltipoffsetx",
                 "value" => "0",
-                "description" => __("", "vc_appmockup_cq")
+                "description" => esc_attr__("", "vc_appmockup_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Tooltip offset y", "vc_appmockup_cq"),
+                "heading" => esc_attr__("Tooltip offset y", "vc_appmockup_cq"),
                 "param_name" => "tooltipoffsety",
                 "value" => "0",
-                "description" => __("", "vc_appmockup_cq")
+                "description" => esc_attr__("", "vc_appmockup_cq")
               ),
               array(
                 "type" => "dropdown",
-                "heading" => __("On clcik", "vc_appmockup_cq"),
+                "heading" => esc_attr__("On clcik", "vc_appmockup_cq"),
                 "param_name" => "onclick",
-                "description" => __('Select how to open icon links.', 'vc_appmockup_cq'),
-                "value" => array(__("open large image (lightbox)", "vc_appmockup_cq") => "link_image", __("Do nothing", "vc_appmockup_cq") => "link_no", __("Open custom link", "vc_appmockup_cq") => "custom_link")
+                "description" => esc_attr__('Select how to open icon links.', 'vc_appmockup_cq'),
+                "value" => array(esc_attr__("open large image (lightbox)", "vc_appmockup_cq") => "link_image", esc_attr__("Do nothing", "vc_appmockup_cq") => "link_no", esc_attr__("Open custom link", "vc_appmockup_cq") => "custom_link")
               ),
               array(
                 "type" => "exploded_textarea",
                 "holder" => "",
                 "class" => "vc_appmockup_cq",
-                "heading" => __("Custom links", 'vc_appmockup_cq'),
+                "heading" => esc_attr__("Custom links", 'vc_appmockup_cq'),
                 "param_name" => "custom_links",
-                "value" => __("", 'vc_appmockup_cq'),
+                "value" => esc_attr__("", 'vc_appmockup_cq'),
                 "dependency" => Array('element' => "onclick", 'value' => array('custom_link')),
-                "description" => __("Enter links for each slide here. Divide links with linebreaks (Enter).", 'vc_appmockup_cq')
+                "description" => esc_attr__("Enter links for each slide here. Divide links with linebreaks (Enter).", 'vc_appmockup_cq')
               ),
               array(
                 "type" => "dropdown",
-                "heading" => __("Custom link target", "vc_appmockup_cq"),
+                "heading" => esc_attr__("Custom link target", "vc_appmockup_cq"),
                 "param_name" => "custom_links_target",
-                "description" => __('Select how to open icon links.', 'vc_appmockup_cq'),
+                "description" => esc_attr__('Select how to open icon links.', 'vc_appmockup_cq'),
                 "dependency" => Array('element' => "onclick", 'value' => array('custom_link')),
-                'value' => array(__("Same window", "vc_appmockup_cq") => "_self", __("New window", "vc_appmockup_cq") => "_blank")
+                'value' => array(esc_attr__("Same window", "vc_appmockup_cq") => "_self", esc_attr__("New window", "vc_appmockup_cq") => "_blank")
               ),
               array(
                 "type" => "checkbox",
                 "holder" => "",
                 "class" => "vc_appmockup_cq",
-                "heading" => __("Transform each image instead of whole cotainer?", 'vc_appmockup_cq'),
+                "heading" => esc_attr__("Transform each image instead of whole cotainer?", 'vc_appmockup_cq'),
                 "param_name" => "transformimage",
-                "value" => array(__("Yes.", "vc_appmockup_cq") => 'on'),
-                "description" => __("The whole container is transformed to a 3D card view by default, but sometime you want to transform each image instead, which is responsive in small screen view.", 'vc_appmockup_cq')
+                "value" => array(esc_attr__("Yes.", "vc_appmockup_cq") => 'on'),
+                "description" => esc_attr__("The whole container is transformed to a 3D card view by default, but sometime you want to transform each image instead, which is responsive in small screen view.", 'vc_appmockup_cq')
               ),
               array(
                 "type" => "checkbox",
                 "holder" => "",
                 "class" => "vc_appmockup_cq",
-                "heading" => __("Do not display the image in retina?", 'vc_appmockup_cq'),
+                "heading" => esc_attr__("Do not display the image in retina?", 'vc_appmockup_cq'),
                 "param_name" => "retina",
-                "value" => array(__("Display in normal resolution.", "vc_appmockup_cq") => 'off'),
-                "description" => __("For example a 640x480 thumbnail will display as 320x240 in retina mode by default, check this if you don't want this feature.", 'vc_appmockup_cq')
+                "value" => array(esc_attr__("Display in normal resolution.", "vc_appmockup_cq") => 'off'),
+                "description" => esc_attr__("For example a 640x480 thumbnail will display as 320x240 in retina mode by default, check this if you don't want this feature.", 'vc_appmockup_cq')
               ),
               array(
                 "type" => "checkbox",
                 "holder" => "",
                 "class" => "vc_appmockup_cq",
-                "heading" => __("Do not display the images in 3D?", 'vc_appmockup_cq'),
+                "heading" => esc_attr__("Do not display the images in 3D?", 'vc_appmockup_cq'),
                 "param_name" => "is2d",
-                "value" => array(__("Display them in 2D", "vc_appmockup_cq") => 'on'),
-                "description" => __("Check this if you only want to display the images in normal 2D grid.", 'vc_appmockup_cq')
+                "value" => array(esc_attr__("Display them in 2D", "vc_appmockup_cq") => 'on'),
+                "description" => esc_attr__("Check this if you only want to display the images in normal 2D grid.", 'vc_appmockup_cq')
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_appmockup_cq",
-                "heading" => __("Put the images in a gradient background?", 'vc_appmockup_cq'),
+                "heading" => esc_attr__("Put the images in a gradient background?", 'vc_appmockup_cq'),
                 "param_name" => "isbackground",
-                "value" => array(__("Yes", "vc_appmockup_cq") => 'on', __("No", "vc_appmockup_cq") => 'off'),
-                "description" => __("You can check to display the images in a container, and set the height of the container below.", 'vc_appmockup_cq')
+                "value" => array(esc_attr__("Yes", "vc_appmockup_cq") => 'on', esc_attr__("No", "vc_appmockup_cq") => 'off'),
+                "description" => esc_attr__("You can check to display the images in a container, and set the height of the container below.", 'vc_appmockup_cq')
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Gradient background container height:", "vc_appmockup_cq"),
+                "heading" => esc_attr__("Gradient background container height:", "vc_appmockup_cq"),
                 "param_name" => "bgheight",
                 "value" => "500",
                 "dependency" => Array('element' => "isbackground", 'value' => array('on')),
-                "description" => __("This background container will hiden the overflow.", "vc_appmockup_cq")
+                "description" => esc_attr__("This background container will hiden the overflow.", "vc_appmockup_cq")
               )
 
             )
@@ -193,17 +192,11 @@ if (!class_exists('VC_Extensions_AppMockup')) {
           wp_enqueue_style( 'vc_appmockup_cq_style' );
           wp_register_script('vc_appmockup_cq_script', plugins_url('js/jquery.appmockup.min.js', __FILE__), array('jquery', 'tooltipster'));
           wp_enqueue_script('vc_appmockup_cq_script');
-          // wp_register_script('prefixfree', plugins_url('js/prefixfree.min.js', __FILE__), array('jquery'));
-          // wp_enqueue_script('prefixfree');
           wp_register_style('tooltipster', plugins_url('css/tooltipster.css', __FILE__));
           wp_enqueue_style('tooltipster');
           wp_register_style('fs.boxer', plugins_url('css/jquery.fs.boxer.css', __FILE__));
           wp_enqueue_style('fs.boxer');
 
-          // wp_register_script('appmockup_script', plugins_url('js/script.min.js', __FILE__), array('jquery'));
-          // wp_enqueue_script('appmockup_script');
-          // wp_register_style( 'font-awesome', plugins_url('css/font-awesome.min.css', __FILE__) );
-          // wp_enqueue_style( 'font-awesome' );
           wp_register_script('tooltipster', plugins_url('js/jquery.tooltipster.min.js', __FILE__), array('jquery'));
           wp_enqueue_script('tooltipster');
           wp_register_script('fs.boxer', plugins_url('js/jquery.fs.boxer.min.js', __FILE__), array('jquery'));
@@ -236,27 +229,24 @@ if (!class_exists('VC_Extensions_AppMockup')) {
               }else{
                 $tooltip = $tooltiparr[$key];
               }
-              // $tooltip = $tooltip == ""?"":$tooltip;
               $return_img_arr = wp_get_attachment_image_src(trim($image_url), 'full');
-              // $resized_img = aq_resize($return_img_arr[0], $retina=="on"?$width*2:$width, $retina=="on"?$height*2:$height, true, false, true);
               $img = $resized_img = "";
 
-              $fullimage = $return_img_arr[0];
+              $fullimage = $return_img_arr[0] ?? "";
               $resized_img = $fullimage;
               if($width!=""){
                   if(function_exists('wpb_resize')){
                       $img = wpb_resize($image_url, null, $retina=="on"?$width*2:$width, $retina=="on"?$height*2:$height);
-                      $resized_img = $img['url'];
+                      $resized_img = $img['url'] ?? "";
                       if($resized_img=="") $resized_img = $fullimage;
                   }
               }
 
 
               if($onclick=="link_image"){
-                $link_start .= '<a href="'.$return_img_arr[0].'" class="appmockup-lightbox">';
+                $link_start .= '<a href="'.($return_img_arr[0]??"").'" class="appmockup-lightbox">';
                 $link_end .= '</a>';
               }else if($onclick=="custom_link"){
-                // $custom_link = $custom_links[$key] == ""?"#":$custom_links[$key];
                 if(!isset($custom_links[$key])){
                   $custom_link = "";
                 }else{
@@ -276,7 +266,6 @@ if (!class_exists('VC_Extensions_AppMockup')) {
               $output .= '<span class="appmockup-shadow"></span>';
               $output .= '</li>';
               $output .= $link_end;
-              // $output .= '</a>';
           }
           $output .= '</ul>';
           $output .= '</div>';

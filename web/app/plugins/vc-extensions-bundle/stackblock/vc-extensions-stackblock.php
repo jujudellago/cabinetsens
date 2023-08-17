@@ -3,82 +3,72 @@ if (!class_exists('VC_Extensions_StackBlock')) {
     class VC_Extensions_StackBlock{
         function __construct() {
             vc_map(array(
-            "name" => __("Stack Block", 'vc_stackblock_cq'),
+            "name" => esc_attr__("Stack Block", 'vc_stackblock_cq'),
             "base" => "cq_vc_stackblock",
             "class" => "wpb_cq_vc_extension_stackblock",
-            // "as_parent" => array('only' => 'cq_vc_stackblock_item'),
             "icon" => "cq_allinone_stackblock",
-            "category" => __('Sike Extensions', 'js_composer'),
-            // "content_element" => false,
-            // "show_settings_on_create" => false,
-            'description' => __('Place any content inside it', 'js_composer'),
+            "category" => esc_attr__('Sike Extensions', 'js_composer'),
+            'description' => esc_attr__('Place any content inside it', 'js_composer'),
             "params" => array(
               array(
                 "type" => "textarea_html",
                 "holder" => "div",
-                "heading" => __("Stack content", "vc_stackblock_cq"),
+                "heading" => esc_attr__("Stack content", "vc_stackblock_cq"),
                 "param_name" => "content",
-                "value" => __("", "vc_stackblock_cq"), "description" => __("", "vc_stackblock_cq") ),
+                "value" => esc_attr__("", "vc_stackblock_cq"), "description" => esc_attr__("", "vc_stackblock_cq") ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_stackblock_cq",
-                "heading" => __("Stack background", "vc_stackblock_cq"),
+                "heading" => esc_attr__("Stack background", "vc_stackblock_cq"),
                 "param_name" => "panelbackground",
                 "value" => array("White" => "white", "Gray" => "gray", "Orange" => "orange", "Red" => "red", "Green" => "green", "Mint" => "mint", "Aqua" => "aqua", "Blue" => "blue", "Lavender" => "lavender", "Pink" => "pink", "Yellow" => "yellow"),
                 'std' => 'white',
-                "description" => __("", "vc_stackblock_cq")
+                "description" => esc_attr__("", "vc_stackblock_cq")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_stackblock_cq",
-                "heading" => __("Text align", "vc_stackblock_cq"),
+                "heading" => esc_attr__("Text align", "vc_stackblock_cq"),
                 "param_name" => "textalign",
                 "value" => array("left", "center", "right"),
-                "description" => __("", "vc_stackblock_cq")
+                "description" => esc_attr__("", "vc_stackblock_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Tooltip for the whole stack (optional)", "vc_stackblock_cq"),
+                "heading" => esc_attr__("Tooltip for the whole stack (optional)", "vc_stackblock_cq"),
                 "param_name" => "tooltip",
                 "value" => "",
-                "description" => __("", "vc_stackblock_cq")
+                "description" => esc_attr__("", "vc_stackblock_cq")
               ),
               array(
                 "type" => "vc_link",
-                "heading" => __("Link for the whole stack (optional)", "vc_stackblock_cq"),
+                "heading" => esc_attr__("Link for the whole stack (optional)", "vc_stackblock_cq"),
                 "param_name" => "link",
                 "value" => "",
-                "description" => __("", "vc_stackblock_cq")
+                "description" => esc_attr__("", "vc_stackblock_cq")
               ),
-              // array(
-              //   "type" => "textfield",
-              //   "heading" => __("font-size for the content", "vc_stackblock_cq"),
-              //   "param_name" => "fontsize",
-              //   "value" => "",
-              //   "description" => __("Default is <strong>1.1em</strong>.", "vc_stackblock_cq")
-              // ),
               array(
                 "type" => "textfield",
-                "heading" => __("height of whole stack", "vc_stackblock_cq"),
+                "heading" => esc_attr__("height of whole stack", "vc_stackblock_cq"),
                 "param_name" => "elementheight",
                 "value" => "",
-                "description" => __("The height is auto by default, you can specify a value for it here, the content will align center vertically.", "vc_stackblock_cq")
+                "description" => esc_attr__("The height is auto by default, you can specify a value for it here, the content will align center vertically.", "vc_stackblock_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Text content width", "vc_stackblock_cq"),
+                "heading" => esc_attr__("Text content width", "vc_stackblock_cq"),
                 "param_name" => "contentwidth",
                 "value" => "",
-                "description" => __("Default is <strong>100%</strong>. You can specify other value here, like <strong>80%</strong>, and it'll align center automatically.", "vc_stackblock_cq")
+                "description" => esc_attr__("Default is 100%. You can specify other value here, like 80%, and it'll align center automatically.", "vc_stackblock_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Extra class name", "vc_stackblock_cq"),
+                "heading" => esc_attr__("Extra class name", "vc_stackblock_cq"),
                 "param_name" => "extraclass",
                 "value" => "",
-                "description" => __("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "vc_stackblock_cq")
+                "description" => esc_attr__("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "vc_stackblock_cq")
               )
 
            )
@@ -88,13 +78,12 @@ if (!class_exists('VC_Extensions_StackBlock')) {
 
       }
 
-      function cq_vc_stackblock_func($atts, $content=null, $tag) {
+      function cq_vc_stackblock_func($atts, $content=null, $tag=null) {
           extract(shortcode_atts(array(
             "panelbackground" => "gray",
             "textalign" => "left",
             "elementheight" => "",
             "contentwidth" => "",
-            // "fontsize" => "",
             "tooltip" => "",
             "link" => "",
             "extraclass" => ""

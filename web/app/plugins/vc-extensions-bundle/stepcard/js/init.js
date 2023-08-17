@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-
+    "use strict";
     $('.cq-stepcard').each(function(index) {
         var _this = $(this);
         var _cardstyle = $(this).data('cardstyle');
@@ -49,14 +49,12 @@ jQuery(document).ready(function($) {
                 _this.prepend('<div class="cq-stepcard-cardbar"></div>');
             }
 
-            // if(_itemNum>10){
-                $('.cq-stepcard-cardbar', _this).each(function(index) {
-                    $(this).css({
-                        'margin': '0 ' + (_itemNum-index+1)*4 + 'px',
-                        'opacity': 1 - index*0.05
-                    });
+            $('.cq-stepcard-cardbar', _this).each(function(index) {
+                $(this).css({
+                    'margin': '0 ' + (_itemNum-index+1)*4 + 'px',
+                    'opacity': 1 - index*0.05
                 });
-            // }
+            });
 
         }
 

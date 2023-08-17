@@ -4,12 +4,10 @@
 	position: relative;
 	clear: both;
 	background-color: #967ADC;
-	/*text-align: center;	*/
 	color: #fff;
 	margin: 0;
 	padding: 0;
 	font-size: 1.1em;
-	/*min-height: 320px;*/
 	-webkit-transform-style: preserve-3d;
 	-moz-transform-style: preserve-3d;
 	transform-style: preserve-3d;
@@ -39,10 +37,6 @@
 }
 .cq-testimoniallist-contentsub {
 	position: relative;
-	/*background: #000;*/
-	/*-webkit-transform: translateY(50%);
-	-moz-transform: translateY(50%);
-	transform: translateY(50%);*/
 }
 .cq-testimoniallist-contentitem {
 	width: 100%;
@@ -52,7 +46,6 @@
 }
 
 .cq-testimoniallist-content{
-	/*padding: 32px 32px;*/
 	padding: 5%;
 	position: relative;
 	top: 50%;
@@ -61,7 +54,7 @@
 	transform: translateY(-50%);
 }
 .cq-testimoniallist-avatarcontainer {
-	position: relative;	/*height: 80px;*/
+	position: relative;
 	margin: 32px 0 0 0;
 }
 .cq-testimoniallist-label, .cq-testimoniallist-name {
@@ -79,9 +72,6 @@
 	margin-top: 2px;
 }
 .cq-testimoniallist-avataritem {
-	/*background: #000;*/
-	/*width: 80px;*/
-	/*height: 80px;*/
 	text-align: center;
 }
 .cq-testimoniallist-image {
@@ -103,7 +93,6 @@
 	border-radius: 50%;
 }
 .cq-testimoniallist .slick-slide .cq-testimoniallist-image, .cq-testimoniallist .slick-slide .cq-testimoniallist-avatar {
-		/*border: 2px solid #fff;*/
 		border: 2px solid transparent;
 }
 
@@ -199,21 +188,13 @@
 	background: rgba(0, 0, 0, 0);
 }
 .cq-testimoniallist-contentcontainer .slick-slide {
-	/*background: #000;*/
 }
 
 .cq-testimoniallist .slick-slide:focus {
 	outline: none;
 	border: none;
 }
-/*.cq-testimoniallist .slick-slide {
--webkit-transition: all .8s ease-out;
--moz-transition: all .8s ease-out;
--ms-transition: all .8s ease-out;
--o-transition: all .8s ease-out;
-transition: all .8s ease-out;
-}
-*/
+
 .cq-testimoniallist .slick-slide .cq-testimoniallist-image, .cq-testimoniallist .slick-slide .cq-testimoniallist-avatar {
 	border-radius: 50%;
 	-webkit-transition: all .8s ease-out;
@@ -240,19 +221,7 @@ transition: all .8s ease-out;
 	-o-transform: scale(1);
 }
 
-/*.cq-testimoniallist .slick-slide, .cq-testimoniallist .slick-active {
--webkit-transform: scale(0.8);
--moz-transform: scale(0.8);
--ms-transform: scale(0.8);
--o-transform: scale(0.8);
-}
-.cq-testimoniallist .slick-center {
--webkit-transform: scale(1);
--moz-transform: scale(1);
--ms-transform: scale(1);
--o-transform: scale(1);
-}
-*/
+
 .cq-testimoniallist .slick-center .cq-testimoniallist-image, .cq-testimoniallist .slick-center .cq-testimoniallist-avatar {
 	border: 2px solid #b22222;
 }

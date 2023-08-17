@@ -1,14 +1,12 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-videocover-lightbox, .cq-videocover-imglightbox').each(function(index) {
     	var _videowidth = $(this).data('videowidth') == "" ? 800 : parseInt($(this).data('videowidth'))
     	if($(this).attr('href')!=""){
 			$(this).lightbox({
-	        	// "viewportFill": 1
 	        	"fixed": true,
 	        	"margin": 10,
 	        	"videoWidth": _videowidth,
-	        	// "retina": true,
-	        	// "mobile": true,
 	        	"minWidth": 320
 	        });
     	}
@@ -84,11 +82,6 @@ jQuery(document).ready(function($) {
     		});
     	}
 
-    	// $(this).on('mouseover', function(event) {
-    	// 	$(this).find('.cq-videocover-iconcontainer').addClass('animated zoomIn');
-    	// }).on('mouseleave', function(event) {
-    	// 	$(this).find('.cq-videocover-iconcontainer').removeClass('zoomIn');
-    	// });
 
 
     });

@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-accordioncover').each(function(index, el) {
         var _this = $(this);
         var _itemnum = $('.cq-accordioncover-item', _this).length;
@@ -20,13 +21,11 @@ jQuery(document).ready(function($) {
 
         $('a.cq-accordioncover-lightbox', _this).each(function() {
             $(this).attr('rel', 'cq-accordioncover-gallery'+_index).boxer({
-                // mobile: true,
                 fixed : true
             });
         });
 
         $('.cq-accordioncover-item', _this).each(function() {
-                // $(this).css('width', 100/_itemnum + '%');
                 var _image = $(this).data('image');
                 if(_image!=""){
                     $('.cq-accordioncover-background', $(this)).css({

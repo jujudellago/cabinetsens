@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+	"use strict";
 	$('body').addClass('metro');
 	var _carouselindex = 0;
 	jQuery('.carousel').each(function(index) {
@@ -26,7 +27,6 @@ jQuery(document).ready(function($) {
 		    markers: {
 		    	position: _position,
 		        type: _buttontype
-		        // type: "cycle"
 		    }
 		});
 

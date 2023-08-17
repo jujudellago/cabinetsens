@@ -5,283 +5,251 @@ if (!class_exists('VC_Extensions_Accordion')) {
         private $accordionstyle, $arrowcolor, $titlecolor, $accordiontitlesize1, $titlepadding1, $contentbg, $contentcolor, $accordioncontentsize1, $withborder, $titlebg, $backgroundimage_url, $titlepadding2, $accordiontitlesize2, $withbordercolor, $accordioncontentsize2;
         function __construct() {
           vc_map( array(
-            "name" => __("Accordion", 'vc_accordion_cq'),
+            "name" => esc_attr__("Accordion", 'vc_accordion_cq'),
             "base" => "cq_vc_accordion",
             "class" => "wpb_cq_vc_extension_accordion",
             "controls" => "full",
             "icon" => "cq_allinone_accordion",
-            "category" => __('Sike Extensions', 'js_composer'),
+            "category" => esc_attr__('Sike Extensions', 'js_composer'),
             "as_parent" => array('only' => 'cq_vc_accordion_item'),
             "js_view" => 'VcColumnView',
-            'description' => __( 'CSS3 accordion', 'js_composer' ),
+            'description' => esc_attr__( 'CSS3 accordion', 'js_composer' ),
             "params" => array(
-              // array(
-              //   "type" => "textarea_html",
-              //   "holder" => "div",
-              //   "heading" => __("Accordion content, divide(wrap) each one with [accordionitem][/accordionitem], please edit in text mode:", "vc_accordion_cq"),
-              //   "param_name" => "content",
-              //   "value" => __("[accordionitem]
-              //     You have to wrap each accordion block in <strong>accordionitem</strong>.
-              //     So you can put anything in it, like a image, video or other shortcode.
-              //     [/accordionitem]
-              //     [accordionitem]
-              //     Hello accordion 2
-              //     You can customize the title, color, font-size, accordion content etc in the backend.
-              //     Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              //     [/accordionitem]
-              //     [accordionitem]
-              //     Hello accordion 3
-              //     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              //     [/accordionitem]
-              //     [accordionitem]
-              //     Yet another accordion.
-              //     Hi amco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-              //     <a href='http://codecanyon.net/user/sike?ref=sike'>Visit my profile</a> for more works.
-              //     [/accordionitem]", "vc_accordion_cq"), "description" => __("Please try to edit in the <strong>Text</strong> mode.", "vc_accordion_cq") ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_accordion_cq",
-                "heading" => __("Select accordion style", "vc_accordion_cq"),
+                "heading" => esc_attr__("Select accordion style", "vc_accordion_cq"),
                 "param_name" => "accordionstyle",
-                "value" => array(__("style 1", "vc_accordion_cq") => "style1", __("style 2", "vc_accordion_cq") => "style2"),
-                "description" => __("", "vc_accordion_cq")
+                "value" => array(esc_attr__("style 1", "vc_accordion_cq") => "style1", esc_attr__("style 2", "vc_accordion_cq") => "style2"),
+                "description" => esc_attr__("", "vc_accordion_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Accordion content font color", 'vc_accordion_cq'),
+                "heading" => esc_attr__("Accordion content font color", 'vc_accordion_cq'),
                 "param_name" => "contentcolor",
                 "value" => '#333',
-                "description" => __("The color of accordion content.", 'vc_accordion_cq')
+                "description" => esc_attr__("The color of accordion content.", 'vc_accordion_cq')
               ),
               array(
                 "type" => "colorpicker",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Accordion content background color", 'vc_accordion_cq'),
+                "heading" => esc_attr__("Accordion content background color", 'vc_accordion_cq'),
                 "param_name" => "contentbg",
-                // "dependency" => Array('element' => "accordionstyle", 'value' => array('style2')),
                 "value" => '',
-                "description" => __("The background color of accordion content.", 'vc_accordion_cq')
+                "description" => esc_attr__("The background color of accordion content.", 'vc_accordion_cq')
               ),
               array(
                 "type" => "textfield",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
-                "heading" => __("Global title", "vc_accordion_cq"),
+                "heading" => esc_attr__("Global title", "vc_accordion_cq"),
                 "param_name" => "title",
                 "value" => "",
                 "dependency" => Array('element' => "accordionstyle", 'value' => array('style1')),
-                "description" => __("The title of the whole element.", "vc_accordion_cq")
+                "description" => esc_attr__("The title of the whole element.", "vc_accordion_cq")
               ),
               array(
                 "type" => "textfield",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
-                "heading" => __("font size of global title", "vc_accordion_cq"),
+                "heading" => esc_attr__("font size of global title", "vc_accordion_cq"),
                 "param_name" => "titlesize",
                 "value" => "",
                 "dependency" => Array('element' => "accordionstyle", 'value' => array('style1')),
-                "description" => __("The size of the container title. Default is 1.4em.", "vc_accordion_cq")
+                "description" => esc_attr__("The size of the container title. Default is 1.4em.", "vc_accordion_cq")
               ),
               array(
                 "type" => "textfield",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
-                "heading" => __("font size of each accordion item title", "vc_accordion_cq"),
+                "heading" => esc_attr__("font size of each accordion item title", "vc_accordion_cq"),
                 "param_name" => "accordiontitlesize1",
                 "value" => "",
                 "dependency" => Array('element' => "accordionstyle", 'value' => array('style1')),
-                "description" => __("The font size of each accordion title. Default is 1.3em.", "vc_accordion_cq")
+                "description" => esc_attr__("The font size of each accordion title. Default is 1.3em.", "vc_accordion_cq")
               ),
-              // array(
-              //   "type" => "textfield",
-              //   "heading" => __("margin-top of the plus/close icon", "vc_accordion_cq"),
-              //   "param_name" => "iconmargintop",
-              //   "value" => "",
-              //   "dependency" => Array('element' => "accordionstyle", 'value' => array('style1')),
-              //   "description" => __("The margin-top of the plus/close icon, default is -8px, you may have to specify with other value if you change the title size/padding.", "vc_accordion_cq")
-              // ),
               array(
                 "type" => "textfield",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
-                "heading" => __("font size of each accordion item content", "vc_accordion_cq"),
+                "heading" => esc_attr__("font size of each accordion item content", "vc_accordion_cq"),
                 "param_name" => "accordioncontentsize1",
                 "value" => "",
                 "dependency" => Array('element' => "accordionstyle", 'value' => array('style1')),
-                "description" => __("The font size of each accordion content. Default is 1em.", "vc_accordion_cq")
+                "description" => esc_attr__("The font size of each accordion content. Default is 1em.", "vc_accordion_cq")
               ),
               array(
                 "type" => "textfield",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
-                "heading" => __("font size of each accordion item title", "vc_accordion_cq"),
+                "heading" => esc_attr__("font size of each accordion item title", "vc_accordion_cq"),
                 "param_name" => "accordiontitlesize2",
                 "value" => "",
                 "dependency" => Array('element' => "accordionstyle", 'value' => array('style2')),
-                "description" => __("The font size of each accordion title. Default is 20px.", "vc_accordion_cq")
+                "description" => esc_attr__("The font size of each accordion title. Default is 20px.", "vc_accordion_cq")
               ),
               array(
                 "type" => "textfield",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
-                "heading" => __("font size of each accordion item content", "vc_accordion_cq"),
+                "heading" => esc_attr__("font size of each accordion item content", "vc_accordion_cq"),
                 "param_name" => "accordioncontentsize2",
                 "value" => "",
                 "dependency" => Array('element' => "accordionstyle", 'value' => array('style2')),
-                "description" => __("The font size of each accordion content. Default is 1em.", "vc_accordion_cq")
+                "description" => esc_attr__("The font size of each accordion content. Default is 1em.", "vc_accordion_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("CSS padding of the accordion title", "vc_accordion_cq"),
+                "heading" => esc_attr__("CSS padding of the accordion title", "vc_accordion_cq"),
                 "param_name" => "titlepadding1",
                 "value" => "",
                 "dependency" => Array('element' => "accordionstyle", 'value' => array('style1')),
-                "description" => __("The CSS padding of the accordion title. Default is 18px 0, which stand for padding-top and padding-bottom is 18px.", "vc_accordion_cq")
+                "description" => esc_attr__("The CSS padding of the accordion title. Default is 18px 0, which stand for padding-top and padding-bottom is 18px.", "vc_accordion_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("CSS padding of the accordion title", "vc_accordion_cq"),
+                "heading" => esc_attr__("CSS padding of the accordion title", "vc_accordion_cq"),
                 "param_name" => "titlepadding2",
                 "value" => "",
                 "dependency" => Array('element' => "accordionstyle", 'value' => array('style2')),
-                "description" => __("The CSS padding of the accordion title. Default is 1em.", "vc_accordion_cq")
+                "description" => esc_attr__("The CSS padding of the accordion title. Default is 1em.", "vc_accordion_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("CSS padding of the accordion content", "vc_accordion_cq"),
+                "heading" => esc_attr__("CSS padding of the accordion content", "vc_accordion_cq"),
                 "param_name" => "contentpadding",
                 "value" => "",
-                "description" => __("The CSS padding of the accordion content.", "vc_accordion_cq")
+                "description" => esc_attr__("The CSS padding of the accordion content.", "vc_accordion_cq")
               ),
               array(
                 "type" => "attach_image",
-                "heading" => __("Optional repeat pattern for the accordion title", "vc_accordion_cq"),
+                "heading" => esc_attr__("Optional repeat pattern for the accordion title", "vc_accordion_cq"),
                 "param_name" => "pattern",
                 "value" => "",
                 "dependency" => Array('element' => "accordionstyle", 'value' => array('style2')),
-                "description" => __("Select image pattern from media library.", "vc_accordion_cq")
+                "description" => esc_attr__("Select image pattern from media library.", "vc_accordion_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Accordion title color", 'vc_accordion_cq'),
+                "heading" => esc_attr__("Accordion title color", 'vc_accordion_cq'),
                 "param_name" => "titlecolor",
                 "value" => '',
-                "description" => __("The color of each accordion title.", 'vc_accordion_cq')
+                "description" => esc_attr__("The color of each accordion title.", 'vc_accordion_cq')
               ),
               array(
                 "type" => "colorpicker",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Accordion title background color", 'vc_accordion_cq'),
+                "heading" => esc_attr__("Accordion title background color", 'vc_accordion_cq'),
                 "param_name" => "titlebg",
                 "dependency" => Array('element' => "accordionstyle", 'value' => array('style2')),
                 "value" => '',
-                "description" => __("", 'vc_accordion_cq')
+                "description" => esc_attr__("", 'vc_accordion_cq')
               ),
               array(
                 "type" => "colorpicker",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Accordion title hover font color", 'vc_accordion_cq'),
+                "heading" => esc_attr__("Accordion title hover font color", 'vc_accordion_cq'),
                 "param_name" => "titlehovercolor",
                 "dependency" => Array('element' => "accordionstyle", 'value' => array('style2')),
                 "value" => '#fff',
-                "description" => __("", 'vc_accordion_cq')
+                "description" => esc_attr__("", 'vc_accordion_cq')
               ),
               array(
                 "type" => "colorpicker",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Accordion title background hover color", 'vc_accordion_cq'),
+                "heading" => esc_attr__("Accordion title background hover color", 'vc_accordion_cq'),
                 "param_name" => "titlehoverbg",
                 "dependency" => Array('element' => "accordionstyle", 'value' => array('style2')),
                 "value" => '#00ACED',
-                "description" => __("", 'vc_accordion_cq')
+                "description" => esc_attr__("", 'vc_accordion_cq')
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_accordion_cq",
-                "heading" => __("Border under each accordion Accordion?", "vc_accordion_cq"),
+                "heading" => esc_attr__("Border under each accordion Accordion?", "vc_accordion_cq"),
                 "param_name" => "withborder",
-                "value" => array(__("no", "vc_accordion_cq") => "", __("yes", "vc_accordion_cq") => "withBorder"),
+                "value" => array(esc_attr__("no", "vc_accordion_cq") => "", esc_attr__("yes", "vc_accordion_cq") => "withBorder"),
                 "dependency" => Array('element' => "accordionstyle", 'value' => array('style2')),
-                "description" => __("", "vc_accordion_cq")
+                "description" => esc_attr__("", "vc_accordion_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Color of border under each accordion title", 'vc_accordion_cq'),
+                "heading" => esc_attr__("Color of border under each accordion title", 'vc_accordion_cq'),
                 "param_name" => "withbordercolor",
                 "dependency" => Array('element' => "withborder", 'value' => array('withBorder')),
                 "value" => '',
-                "description" => __("", 'vc_accordion_cq')
+                "description" => esc_attr__("", 'vc_accordion_cq')
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_accordion_cq",
-                "heading" => __("Display extra border under whole accordion?", "vc_accordion_cq"),
+                "heading" => esc_attr__("Display extra border under whole accordion?", "vc_accordion_cq"),
                 "param_name" => "extraborder",
-                "value" => array(__("no", "vc_accordion_cq") => "no", __("yes", "vc_accordion_cq") => "yes"),
+                "value" => array(esc_attr__("no", "vc_accordion_cq") => "no", esc_attr__("yes", "vc_accordion_cq") => "yes"),
                 "dependency" => Array('element' => "accordionstyle", 'value' => array('style2')),
-                "description" => __("", "vc_accordion_cq")
+                "description" => esc_attr__("", "vc_accordion_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Extra border color", 'vc_accordion_cq'),
+                "heading" => esc_attr__("Extra border color", 'vc_accordion_cq'),
                 "param_name" => "extrabordercolor",
                 "dependency" => Array('element' => "extraborder", 'value' => array('yes')),
                 "value" => '',
-                "description" => __("", 'vc_accordion_cq')
+                "description" => esc_attr__("", 'vc_accordion_cq')
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_accordion_cq",
-                "heading" => __("Select arrow color", "vc_accordion_cq"),
+                "heading" => esc_attr__("Select arrow color", "vc_accordion_cq"),
                 "param_name" => "arrowcolor",
-                "value" => array(__("Default", "vc_accordion_cq") => "", __("red", "vc_accordion_cq") => "red", __("green", "vc_accordion_cq") => "green", __("yellow", "vc_accordion_cq") => "yellow", __("blue", "vc_accordion_cq") => "blue", __("orange", "vc_accordion_cq") => "orange", __("purple", "vc_accordion_cq") => "purple"),
+                "value" => array(esc_attr__("Default", "vc_accordion_cq") => "", esc_attr__("red", "vc_accordion_cq") => "red", esc_attr__("green", "vc_accordion_cq") => "green", esc_attr__("yellow", "vc_accordion_cq") => "yellow", esc_attr__("blue", "vc_accordion_cq") => "blue", esc_attr__("orange", "vc_accordion_cq") => "orange", esc_attr__("purple", "vc_accordion_cq") => "purple"),
                 "dependency" => Array('element' => "accordionstyle", 'value' => array('style1')),
-                "description" => __("You can select the arrow color here, default is gray.", "vc_accordion_cq")
+                "description" => esc_attr__("You can select the arrow color here, default is gray.", "vc_accordion_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Display how many words form the content if you don't specify the title", "vc_accordion_cq"),
+                "heading" => esc_attr__("Display how many words form the content if you don't specify the title", "vc_accordion_cq"),
                 "param_name" => "titlewords",
                 "value" => "4",
-                "description" => __("We will fetch the words from the content if you don't specify title for the accordion. Default will fetch 4 words.", "vc_accordion_cq")
+                "description" => esc_attr__("We will fetch the words from the content if you don't specify title for the accordion. Default will fetch 4 words.", "vc_accordion_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Element width", "vc_accordion_cq"),
+                "heading" => esc_attr__("Element width", "vc_accordion_cq"),
                 "param_name" => "contaienrwidth",
                 "value" => "",
-                "description" => __("The width of the whole element, default is 100%. You can specify it with a smaller value, like 80%, and it will align center automatically.", "vc_accordion_cq")
+                "description" => esc_attr__("The width of the whole element, default is 100%. You can specify it with a smaller value, like 80%, and it will align center automatically.", "vc_accordion_cq")
               ),
               array(
                 "type" => "checkbox",
                 "holder" => "",
                 "class" => "vc_accordion_cq",
-                "heading" => __("Display first accordion by default?", 'vc_accordion_cq'),
+                "heading" => esc_attr__("Display first accordion by default?", 'vc_accordion_cq'),
                 "param_name" => "displayfirst",
-                "value" => array(__("Yes, display first accordion", "vc_accordion_cq") => 'on'),
-                "description" => __("", 'vc_accordion_cq')
+                "value" => array(esc_attr__("Yes, display first accordion", "vc_accordion_cq") => 'on'),
+                "description" => esc_attr__("", 'vc_accordion_cq')
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Extra class name for the container", "vc_accordion_cq"),
+                "heading" => esc_attr__("Extra class name for the container", "vc_accordion_cq"),
                 "param_name" => "extra_class",
-                "description" => __("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "vc_accordion_cq")
+                "description" => esc_attr__("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "vc_accordion_cq")
               )
 
             )
@@ -290,12 +258,12 @@ if (!class_exists('VC_Extensions_Accordion')) {
 
         vc_map(
           array(
-             "name" => __("Accordion Item","cq_allinone_vc"),
+             "name" => esc_attr__("Accordion Item","cq_allinone_vc"),
              "base" => "cq_vc_accordion_item",
              "class" => "cq_vc_accordion_item",
              "icon" => "cq_vc_accordion_item",
-             "category" => __('Sike Extensions', 'js_composer'),
-             "description" => __("Add the title and content","cq_allinone_vc"),
+             "category" => esc_attr__('Sike Extensions', 'js_composer'),
+             "description" => esc_attr__("Add the title and content","cq_allinone_vc"),
              "as_child" => array('only' => 'cq_vc_accordion'),
              "show_settings_on_create" => true,
              "content_element" => true,
@@ -304,17 +272,17 @@ if (!class_exists('VC_Extensions_Accordion')) {
                   "type" => "textfield",
                   "holder" => "",
                   "class" => "vc_accordion_cq",
-                  "heading" => __("Accordion title", 'vc_accordion_cq'),
+                  "heading" => esc_attr__("Accordion title", 'vc_accordion_cq'),
                   "param_name" => "accordiontitle",
-                  "value" => __("", 'vc_accordion_cq'),
-                  "description" => __("", 'vc_accordion_cq')
+                  "value" => esc_attr__("", 'vc_accordion_cq'),
+                  "description" => esc_attr__("", 'vc_accordion_cq')
                 ),
                 array(
                 "type" => "textarea_html",
                 "holder" => "div",
-                "heading" => __("Accordion content", "vc_accordion_cq"),
+                "heading" => esc_attr__("Accordion content", "vc_accordion_cq"),
                 "param_name" => "content",
-                "value" => __("", "vc_accordion_cq"), "description" => __("", "vc_accordion_cq") )
+                "value" => esc_attr__("", "vc_accordion_cq"), "description" => esc_attr__("", "vc_accordion_cq") )
 
 
               ),
@@ -326,7 +294,7 @@ if (!class_exists('VC_Extensions_Accordion')) {
 
       }
 
-      function cq_vc_accordion_func($atts, $content=null, $tag) {
+      function cq_vc_accordion_func($atts, $content=null, $tag=null) {
             $accordionstyle = "style1";
             $arrowcolor = $titlecolor = $accordiontitlesize1 = $titlepadding1 = $contentbg = $contentcolor = $accordioncontentsize1 = $withborder = $titlebg = $pattern = $titlepadding2 = $accordiontitlesize2 = $accordioncontentsize2 = "";
             extract( shortcode_atts( array(
@@ -379,7 +347,7 @@ if (!class_exists('VC_Extensions_Accordion')) {
           $this -> accordiontitlesize2 = $accordiontitlesize2;
           $this -> withbordercolor = $withbordercolor;
           $this -> accordioncontentsize2 = $accordioncontentsize2;
-          $this -> backgroundimage_url = $pattern[0];
+          $this -> backgroundimage_url = $pattern[0] ?? "";
           $i = -1;
           $content = wpb_js_remove_wpautop($content); // fix unclosed/unwanted paragraph tags in $content
 

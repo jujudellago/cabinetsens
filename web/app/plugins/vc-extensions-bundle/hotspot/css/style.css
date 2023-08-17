@@ -1,7 +1,6 @@
 .cqtooltip-wrapper {
   position: relative;
   margin: 0 auto;
-  /*width: 60%;*/
 }
 
 .cqtooltip-wrapper img {
@@ -36,8 +35,7 @@
   border: 2px solid rgba(255, 255, 255, 0.4);
   color: #fff;
   text-decoration: none;
-  /*background: rgba(0, 0, 0, 0.4);*/
-  /*border-color: rgba(255, 255, 255, 0.4);*/
+  -webkit-print-color-adjust: exact !important;
   position: absolute;
   left: auto;
   top: auto;
@@ -252,18 +250,6 @@
 
 
 
-
-
-
-
-/*@media only screen and (min-width: 960px) {
- .cq-hotspots .hotspot-item a {
-    width: 30px;
-    height: 30px;
-  }
-
-}
-*/
 @media screen and (min-width: 320px) and (max-width: 479px) {
   .cq-hotspots .hotspot-item a {
     width: 16px;

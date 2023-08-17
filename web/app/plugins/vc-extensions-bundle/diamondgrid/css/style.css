@@ -16,10 +16,6 @@
       -ms-flex-align: center;
           align-items: center;
 }
-/*.cq-diamondgrid-item{
-  background: #000;
-}
-*/
 .cq-diamondgrid-link{
   text-decoration: none;
   outline: none;
@@ -40,16 +36,12 @@
   width: 100px;
   height: 100px;
   margin: 10px;
-  /*background-color: #fff;*/
   position: absolute;
   overflow: hidden;
   cursor: pointer;
 }
 .cq-diamondgrid-small .cq-diamondgrid-itemcontainer:hover .cq-diamondgrid-item, .cq-diamondgrid-large .cq-diamondgrid-itemcontainer:hover .cq-diamondgrid-item {
   opacity: 0;
-  /*-webkit-transform: scale(1.2);
-  -moz-transform: scale(1.2);
-  transform: scale(1.2);*/
   -webkit-transition: all 0.3s ease-in;
   transition: all 0.3s ease-in;
 }

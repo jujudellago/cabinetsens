@@ -13,7 +13,6 @@
   border-radius: 8px;
   background: #EFEFEF;
   cursor: pointer;
-  /*border: 1px solid #a7a7a7;*/
 }
 .cq-draggable-slider .cq-draggable-handle {
   position: absolute;
@@ -26,17 +25,10 @@
 	position: relative;
 	background: rgba(0, 0, 0, 0.5);
 	width: 100%;
-	/*position: absolute;*/
-	/*top: 0;*/
-	/*left: 0;*/
-	/*margin: 3px;*/
 	height: 30px;
 	border-radius: 8px;
-	/*z-index: 5;*/
 }
 .cq-barcontainer{
-	/*width: 80%;*/
-	/*margin: 0 auto;*/
 	position: relative;
 	margin-top: -28px;
 	z-index: 2;
@@ -47,13 +39,7 @@
 	padding: 0;
 	width: 25%;
 }
-/*.cq-highlight-container:last-child{
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 30px;
-}
-*/
+
 .cq-highlight{
 	width:80px;
 	height:80px;
@@ -99,28 +85,16 @@
 	-webkit-border-radius: 0;
 	border-radius: 0;
 }
-/*.cq-icon-label{
-	display: inline-block;
-	float: left;
-	width: 100%;
-	text-align: center;
-	line-height: 160%;
-	font-size:12px;
-}
-*/
+
 .cq-highlight-container .cq-highlight-label{
 	display: inline-block;
-	/*float: left;*/
 	width: 100%;
 	text-align: center;
-	/*line-height: 160%;*/
 	font-size:12px;
-	/*background: #000;*/
 	margin-top: 8px;
 }
 .cq-highlight-container.text{
 	margin-top: -2px;
-	/*background: rgba(0,0,244, 0.2);*/
 	height: 30px;
 	line-height: 30px;
 }
@@ -150,7 +124,6 @@
   margin-top: 0px;
   margin-left: -15px;
   cursor: pointer;
-  /*width: 30px;*/
   width: 20px;
   height: 30px;
   background: rgba(0, 0, 0, 0.6);
@@ -159,17 +132,13 @@
   font-size: 14px;
   line-height: 30px;
   text-align: center;
-  /*padding-top: 10px;*/
-  /*padding-bottom: 0px;*/
   padding-left: 6px!important;
   padding-right: 4px!important;
   z-index: 3;
 }
 
-/*.cq-menu-line{width: 50%; margin: 2px auto; height: 2px; background: #FFF; display: block;}*/
 .cq-menu-line{
 	float:left;
-	/*height: 50%;*/
 	height: 14px;
 	margin: 8px 2px;
 	width: 2px;
@@ -185,7 +154,6 @@
     margin-left: -162px;
 	width: 320px;
 	height: 190px;
-	/*height: auto;*/
 	background: #FFF;
 	padding: 0px;
 	-webkit-border-radius: 8px;
@@ -319,7 +287,6 @@
 	height: 140px;
 	overflow: hidden;
 	font-size: 13px;
-	/*overflow-y: scroll;*/
 }
 .cq-carouselcontent h3, .cq-carouselcontent h4, .cq-carouselcontent h5{
 	margin: 0;
@@ -340,9 +307,6 @@
 	font-size: 15px;
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
-	/*-webkit-border-radius: 6px;*/
-	/*-moz-border-radius: 6px;*/
-	/*border-radius: 6px;*/
 	font-weight: bold;
 }
 
@@ -377,7 +341,6 @@
 		margin-top:8px;
 		height: 20px;
 		line-height: 20px;
-		/*background: rgba(0,0,124,0.2);*/
 	}
 	.cq-highlight span.fa{
 		vertical-align: top;

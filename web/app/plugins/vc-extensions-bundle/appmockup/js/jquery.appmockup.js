@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-
+	"use strict";
 	$('.appmockup-grid-container').each(function() {
 		var _this = $(this);
 		var _tooltipposition;
@@ -42,14 +42,10 @@ jQuery(document).ready(function($) {
 			var _image = $(this).data('image');
 			var _title = $(this).data('title');
 			$(this).find('.appmockup-shadow').css({
-				// 'position': 'absolute',
-				// 'top': 15,
-				// 'left': 15,
 				'width': _width - 50,
 				'height': _height - 50
 			});
 			$(this).parent('a.appmockup-lightbox').boxer({
-				// margin: 20,
 				retina: _retina=="on"?true:false,
 		        fixed : true
 		    });
@@ -58,15 +54,9 @@ jQuery(document).ready(function($) {
 				'width': _width,
 				'height': _height,
 				'margin': _margin,
-				// 'margin-right': _width*0.5,
-				// 'margin-bottom': -_height*0.5,
 				'background': '-webkit-linear-gradient(45deg, transparent, rgba(0, 0, 0, 0.2)), url("'+_image+'")',
 				'background': 'linear-gradient(45deg, transparent, rgba(0, 0, 0, 0.2)), url("'+_image+'")',
 				'background-size': _width + 'px ' + _height + 'px'
-				// '-webkit-transform-style': 'preserve-3d',
-				// 'transform-style': 'preserve-3d',
-				// '-webkit-transform': 'rotateX(60deg) rotateZ(' + _imagedirection + 'deg)',
-				// 'transform': 'rotateX(60deg) rotateZ(' + _imagedirection + 'deg)'
 			});
 			if(_transformimage=="on"){
 				$(this).css({
@@ -98,7 +88,6 @@ jQuery(document).ready(function($) {
 				$(this).tooltipster({
 					content: _title,
 					delay: 2600,
-					// positionTracker: true,
 			 		animation: 'grow',
 			 		position: 'top',
 			 		offsetX: _width*0.25 + _tooltipoffsetx,
@@ -108,13 +97,7 @@ jQuery(document).ready(function($) {
 			 	});
 
 			}
-			// $(this).on('click', function(event) {
-			// 	_this.find('.appmockup-grid').css({
-			// 		'-webkit-transform': 'rotateX(0deg) rotateZ(0deg)',
-			// 		'transform': 'rotateX(0deg) rotateZ(0deg)'
-			// 	});
-			// 	event.preventDefault();
-			// });
+
 
 		});
 	});

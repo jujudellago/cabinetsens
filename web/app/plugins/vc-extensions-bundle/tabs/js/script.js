@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-tabs').each(function(index) {
         var _this = $(this);
         var _tabsstyle = $(this).data('tabsstyle');

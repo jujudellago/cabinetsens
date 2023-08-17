@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     function hexToRgb(hex) {
         // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
         var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -67,7 +68,6 @@ jQuery(document).ready(function($) {
             if(_this.hasClass('cq-accordion-large')){
                 _this.find('.cq-imageaccordion-title, .cq-imageaccordion-content').css('width', _elementwidth*(1-0.08*_itemnum)-24);
             }else if(_this.hasClass('cq-accordion-none')){
-                // _this.find('.cq-imageaccordion-title, .cq-imageaccordion-content').css('width', _elementwidth-36);
             }else{
                 _this.find('.cq-imageaccordion-title, .cq-imageaccordion-content').css('width', _elementwidth*(1-0.04*_itemnum)-24);
             }
@@ -78,10 +78,6 @@ jQuery(document).ready(function($) {
             if(_elementheight!="") $(this).css('height', _elementheight);
             var _img = $(this).data('image');
 
-            // $(this).on('mouseover', function(event) {
-            //     var _itemwidth = $(this).width();
-
-            // });
 
             if(_titlesize!=""){
                 $(this).find('.cq-imageaccordion-title').css('font-size', _titlesize);
@@ -90,7 +86,6 @@ jQuery(document).ready(function($) {
                 $(this).find('.cq-imageaccordion-content').css('font-size', _contentsize);
             }
             $(this).css({
-                // 'width': 100/(_itemnum+1) + '%',
                 'background-image': 'url(' + _img + ')'
             });
 

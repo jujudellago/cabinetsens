@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-hovercard').each(function(index, el) {
         var _this = $(this);
         var _linktype = $(this).data('linktype');
@@ -10,9 +11,6 @@ jQuery(document).ready(function($) {
         var _videowidth = $(this).data('videowidth') == "" ? 640 : parseInt($(this).data('videowidth'))
         var _lightboxmargin = $(this).data('lightboxmargin') == "" ? 20 : parseInt($(this).data('lightboxmargin'))
         var _lightLink = $("a.cq-hovercard-lightbox", _this);
-        // if(_bgtype=="solidcolor"&&_bgheight!=240){
-
-        // }
         if(_captionoffset!=""){
             $('.cq-hovercard-textcontainer', _this).css('top', _captionoffset);
         }

@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+	"use strict";
 	$('.cq-ribbon-container').each(function(index) {
 		var _ribbonwidth = $(this).data('ribbonwidth');
 		var _ribbontop = $(this).data('ribbontop') || 15;
@@ -28,7 +29,6 @@ jQuery(document).ready(function($) {
 		});
 		var _cqribbonbg = $(this).find('.cq-ribbon-bg');
 		_cqribbonbg.css({
-			// 'background': '#333',
 			'top': _ribbontop,
 			'left': _ribbonleft,
 			'width': _ribbonwidth
@@ -36,7 +36,6 @@ jQuery(document).ready(function($) {
 		_cqribbonbg.find('a').css('color', _ribboncolor);
 		if(_cqribbon.hasClass('left')){
 			$(this).find('.cq-ribbon-bg').css({
-				// 'top': _ribbontop,
 				'left': _ribbonleft
 			});
 		}else{

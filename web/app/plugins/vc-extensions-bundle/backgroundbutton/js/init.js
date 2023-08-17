@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-bgbutton-container').each(function(index, el) {
         var _this = $(this);
         var _image = $(this).data('buttonimage');
@@ -7,7 +8,6 @@ jQuery(document).ready(function($) {
         var _fontsize = $(this).data('fontsize');
         var _textcolor = $(this).data('textcolor');
         var _iconcolor = $(this).data('iconcolor');
-        // var _padding = $(this).data('padding');
         var _icon2size = $(this).data('icon2size');
         var _linktype = $(this).data('linktype');
         var _tooltip = $(this).data('tooltip');
@@ -15,11 +15,7 @@ jQuery(document).ready(function($) {
         var _autoclose = $(this).data('autoclose') == "yes" ? true : false;
         var _autoloaded = $(this).data('autoloaded') == "yes" ? true : false;
         var _iconanimation = $(this).data('iconanimation');
-        // var _elementheight = $(this).data('elementheight');
 
-        // if(_elementheight!=""){
-        //     $('.cq-bgbutton', _this).css('height', _elementheight);
-        // }
 
         if(_fontsize!=""){
             $('.cq-bgbutton', _this).css({
@@ -29,16 +25,11 @@ jQuery(document).ready(function($) {
             $('.cq-bgbutton-icon1', _this).css({
                 'font-size': _fontsize,
                 'line-height': _fontsize
-                // 'width': _fontsize,
-                // 'height': _fontsize
             });
         }
         if(_icon2size!=""){
             $('.cq-bgbutton-icon2', _this).css('font-size', _icon2size);
         }
-        // if(_padding!=""){
-        //     $('.cq-bgbutton', _this).css('padding', _padding);
-        // }
         if(_textcolor!=""){
             $('.cq-bgbutton', _this).css('color', _textcolor);
         }
@@ -46,31 +37,12 @@ jQuery(document).ready(function($) {
             $('.cq-bgbutton-icon1', _this).css('color', _iconcolor);
             $('.cq-bgbutton-icon2', _this).css('color', _iconcolor);
         }
-        // $(this).on('mouseover', function(event) {
-        //     $(this).css({
-        //         'box-shadow': '0px 0px 0px 2px rgba(255, 255, 255, 0.16) inset, 0px 0px 30px 0px ' + _startcolor+';'
-        //     });
 
-        // });
         $('.cq-bgbutton', _this).css({
-            // 'box-shadow': '0px 0px 0px 2px rgba(255, 255, 255, 0.16) inset, 0px 0px 10px 0px '+ _startcolor +'',
             'background-image': '-webkit-linear-gradient(top, '+ _startcolor +', '+ _endcolor +'), url("' + _image + '")',
             'background-image': 'linear-gradient(to bottom, '+ _startcolor +', '+ _endcolor +'), url("' + _image + '")'
         });
 
-        // the drop in animation
-        // if(_iconanimation=="style4"){
-        //     _this.on('mouseover', function(event) {
-        //         $('.cq-bgbutton-icon1', _this).one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',  function(e){
-        //                 $(this).removeClass('cq-bgbutton-icon1');
-        //                 $(this).addClass('cq-bgbutton-icon3');
-        //         })
-
-        //     }).on('mouseout', function(event) {
-        //        $('.cq-bgbutton-icon3', _this).removeClass('cq-bgbutton-icon3').addClass('cq-bgbutton-icon1');
-        //     });
-
-        // }
 
 
         var _lightboxmargin = $(this).data('lightboxmargin') == "" ? 20 : parseInt($(this).data('lightboxmargin'))
@@ -93,7 +65,6 @@ jQuery(document).ready(function($) {
                     "margin": 10,
                     "videoWidth": _videowidth,
                     "retina": true,
-                    // "mobile": true,
                     "minWidth": 320
                 });
             }else{
@@ -111,14 +82,10 @@ jQuery(document).ready(function($) {
                 offsetY: '-4',
                 delay: 200,
                 minWidth: _minwidth,
-                // maxWidth: 600,
                 autoClose: _autoclose,
                 interactive: true,
-                // onlyOne: true,
-                // timer: 2000,
                 speed: 300,
                 touchDevices: true,
-                // interactive: false,
                 animation: _tooltipanimation,
                 theme: 'tooltipster-shadow',
                 contentAsHTML: true

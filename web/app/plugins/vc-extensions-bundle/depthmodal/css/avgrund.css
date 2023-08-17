@@ -7,9 +7,6 @@
  */
 
 .avgrund-active body {
-	/*background-color: #333;*/
-	/*background-repeat: repeat;*/
-	/*opacity: .6;*/
 	-webkit-transform: scale( 0.9 );
 	   -moz-transform: scale( 0.9 );
 	    -ms-transform: scale( 0.9 );
@@ -47,14 +44,7 @@
 		        filter: none;
 	}
 
-/*.avgrund-contents {
-	position: relative;
-	padding: 20px;
-	max-width: 400px;
-	height: 100%;
-	margin: auto;
-}
-*/
+
 .avgrund-content {
 	line-height: 160%;
 	padding: 20px;
@@ -76,15 +66,11 @@
 	}
 
 .avgrund-popup {
-	/*position: absolute;*/
-	/*display: none;*/
 	position: fixed;
 	width: 640px;
 	height: auto;
 	left: 50%;
 	top: 0;
-	/*line-height: 160%;*/
-	/*margin: -160px 0 0 -320px;*/
 	margin-top: 40px;
 	margin-left: -320px;
 	visibility: hidden;

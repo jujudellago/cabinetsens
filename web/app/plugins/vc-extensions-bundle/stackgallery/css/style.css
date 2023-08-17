@@ -21,7 +21,6 @@ a:hover .stackgallery-prev:after, a:hover .stackgallery-next:after {
   display: inline-block;
   width: 24px;
   height: 24px;
-  /*border: 2px solid #333;*/
   border-radius: 50%;
 }
 

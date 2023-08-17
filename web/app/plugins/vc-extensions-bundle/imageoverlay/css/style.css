@@ -10,11 +10,9 @@
   height: 150px;
   color: #fff;
   background: rgba(0,0,0,0.5);
-  /*position: relative;*/
   position: absolute;
   top: 50%;
   left: 50%;
-  /*margin: 0 auto;*/
   -webkit-transform: translateX(-50%) translateY(-50%);
   -moz-transform: translateX(-50%) translateY(-50%);
   transform: translateX(-50%) translateY(-50%);
@@ -71,8 +69,6 @@
 .cq-imageoverlay-overlay.cq-diamond-rounded{
   margin: 0 auto;
   border-radius: 20px;
-  /*border-top-left-radius: 20px;*/
-  /*border-bottom-right-radius: 20px;*/
   -webkit-transform-origin: 0% 0%;
   transform-origin: 0% 0%;
   overflow: hidden;
@@ -109,7 +105,6 @@
 
 .cq-imageoverlay-overlay.cq-drop-top{
   margin: 0 auto;
-  /*border-top-left-radius: 50% 50%;*/
   border-top-right-radius: 50% 50%;
   border-bottom-left-radius: 50% 50%;
   border-bottom-right-radius: 50% 50%;
@@ -132,7 +127,6 @@
   margin: 0 auto;
   border-top-left-radius: 50% 50%;
   border-top-right-radius: 50% 50%;
-  /*border-bottom-left-radius: 50% 50%;*/
   border-bottom-right-radius: 50% 50%;
   -webkit-transform-origin: 0% 0%;
   transform-origin: 0% 0%;
@@ -152,7 +146,6 @@
 .cq-imageoverlay-overlay.cq-drop-right{
   margin: 0 auto;
   border-top-left-radius: 50% 50%;
-  /*border-top-right-radius: 50% 50%;*/
   border-bottom-left-radius: 50% 50%;
   border-bottom-right-radius: 50% 50%;
   -webkit-transform-origin: 0% 0%;
@@ -174,28 +167,14 @@
 .cq-imageoverlay-overlay.cq-tvshape{
   margin: 0 auto;
   border-radius: 50%/10%;
-  /*border-radius: 20px/50px;*/
-  /*border-top-left-radius: 50%/50%;*/
-  /*border-top-right-radius: 50%/50%;*/
-  /*border-bottom-left-radius: 50%/50%;*/
-  /*border-bottom-right-radius: 50% 50%;*/
-  /*border-bottom-right-radius: 10% 5%;*/
-  /*border-top-right-radius: 10px;*/
   -webkit-transform-origin: 0% 0%;
   transform-origin: 0% 0%;
   overflow: hidden;
 }
 .cq-imageoverlay-overlay.cq-tvshape {
-  /*-webkit-transform: rotate(45deg) translateY(-50%) translateX(-50%);*/
-  /*transform: rotate(45deg) translateY(-50%) translateX(-50%);*/
 }
 .cq-tvshape .cq-imageoverlay-paragraph {
-  /*width: 380px;*/
-  /*height: 380px;*/
-  /*-webkit-transform-origin: 50% 0%;*/
-  /*transform-origin: 50% 0%;*/
-  /*-webkit-transform: rotate(-45deg) translateY(-50%);*/
-  /*transform: rotate(-45deg) translateY(-50%);*/
+
 }
 
 .cq-imageoverlay-overlay.cq-heart {
@@ -241,7 +220,6 @@
 }
 .cq-imageoverlay-overlay.cq-heart .cq-imageoverlay-paragraph{
   z-index: 2;
-  /*background: #000;*/
 }
 .cq-imageoverlay-overlay.cq-heart .cq-imageoverlay-title{
   margin-top: -10px;

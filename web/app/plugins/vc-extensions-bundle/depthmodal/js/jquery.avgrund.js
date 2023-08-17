@@ -1,7 +1,5 @@
-/*
-	Author: http://codecanyon.net/user/sike?ref=sike
-*/
 (function($) {
+    "use strict";
     $.fn.vcModal = function(options) {
         var _this = this;
 
@@ -10,7 +8,6 @@
             'param' : 'value'
         }, options);
 
-        // var _container = $(document).addClass('avgrund-ready');
         var _container = $(document.documentElement).addClass('avgrund-ready');
         var _popup = _this.find('.avgrund-popup');
         var _content = _this.find('.avgrund-content');
@@ -87,11 +84,8 @@
 			setTimeout( function() {
 				_popup.removeClass('no-transition');
 				_container.addClass('avgrund-active');
-				// removeClass( popup, 'no-transition' );
-				// addClass( container, 'avgrund-active' );
 			}, 0 );
 
-			// currentState = state;
 		}
 
 		function onDocumentClick(event){

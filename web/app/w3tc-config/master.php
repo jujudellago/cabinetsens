@@ -1,5 +1,5 @@
 <?php exit; ?>{
-    "version": "2.3.3",
+    "version": "2.4.0",
     "cluster.messagebus.debug": false,
     "cluster.messagebus.enabled": false,
     "cluster.messagebus.sns.region": "",
@@ -952,6 +952,9 @@
         "visibility": "never"
     },
     "imageservice.configuration_overloaded": true,
+    "fragmentcache": {
+        "engine": "file"
+    },
     "cdn.maxcdn.authorization_key": "smkdw0uzfjhvoomn+9ba0722108735690f436025f70302f190588f8723+1c67dcbd987873be85a1d3d2e402cfcc",
     "cdn.maxcdn.domain": [
         "statictls-smkdw0uzfjhvoomn.netdna-ssl.com"
@@ -974,9 +977,6 @@
     "cdn.netdna.ssl": "auto",
     "cdn.netdna.zone_id": 0,
     "common.edge": false,
-    "fragmentcache": {
-        "engine": "file"
-    },
     "pgcache.bad_behavior_path": "",
     "newrelic": {
         "monitoring_type": "apm"

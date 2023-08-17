@@ -9,7 +9,6 @@
   margin: 0;
   padding: 0;
   position: relative;
-  /*overflow: hidden;*/
 }
 
 .cq-beforeafter .cq-beforeafter-caption{
@@ -18,7 +17,6 @@
   width: 100%;
   min-width: 240px;
   display: block;
-  /*position: absolute;*/
   position: relative;
   padding: 8px;
   background: #FFF;
@@ -27,9 +25,7 @@
   bottom: 0;
 }
 .cq-beforeafter-caption.cq-beforeafter-captionright{
-  /*text-align: right;*/
 }
-/*.cq-beforeafter img {*/
 .cq-beforeafter img.cq-beforeafter-img {
   display: block;
   width: 100%;
@@ -43,7 +39,6 @@
   left: 0;
   height: 100%;
   width: 50%;
-  /*background: rgba(0,0,0,0.5);*/
   overflow: hidden;
 }
 .cq-beforeafter .cq-beforeafter-resize .cq-beforeafter-img {

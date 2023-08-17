@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-floatblock').each(function(index) {
         var _this = $(this);
         var _isactived = 1;
@@ -12,6 +13,9 @@ jQuery(document).ready(function($) {
         var _btnwidth = _thisbtn.outerWidth();
         var _elementwidth = parseInt($(this).data('elementwidth'), 10) || 300;
         var _autodelay = parseInt($(this).data('autodelay'), 10);
+        setTimeout(function(){
+            _this.animate({'opacity': 1}, 300);
+        }, 300);
         _thisbtn.on("click", function(){
             if (_isactived) {
                _hideBlock();
@@ -72,12 +76,6 @@ jQuery(document).ready(function($) {
                 $(".cq-floatblock-button", _this).trigger('click');
             }, _autodelay*1000);
         }
-
-        // if(!_isdisplay){
-        //     $(".cq-floatblock-button", _this).trigger('click');
-        // }else{
-
-        // }
 
 
     });

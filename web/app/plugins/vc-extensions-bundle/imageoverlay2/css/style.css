@@ -4,13 +4,9 @@
   padding: 0;
   width: 100%;
   height: 480px;
-  /*cursor: pointer;*/
   overflow: hidden;
 }
 .cq-imageoverlay2{
-  /*height: 100%;*/
-  /*position: relative;*/
-  /*width: 100%;*/
   overflow: hidden;
   background-size: cover;
   background-position: center;
@@ -33,13 +29,7 @@ p.cq-imageoverlay2-content{
   padding: 0;
 }
 .cq-imageoverlay2 img {
-/*  max-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height:auto;*/
   position: relative;
-  /*width: 100%;*/
-  /*overflow: hidden;*/
   -webkit-transform: scale(1);
       -ms-transform: scale(1);
           transform: scale(1);
@@ -55,8 +45,6 @@ p.cq-imageoverlay2-content{
 
 .cq-imageoverlay2-background {
   display: block;
-  /*height: 960px;*/
-  /*width: 540px;*/
   position: relative;
   top: 0;
   left: 0;

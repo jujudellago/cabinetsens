@@ -9,8 +9,6 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
             "icon" => "cq_vc_flipboxv2",
             "category" => __('Sike Extensions', 'js_composer'),
             "as_parent" => array('only' => 'cq_vc_flipboxv2_item'),
-            // "content_element" => false,
-            // "is_container" => true,
             "js_view" => 'VcColumnView',
             "show_settings_on_create" => true,
             'description' => __('Flip Box with list item', 'js_composer'),
@@ -136,7 +134,6 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
                   __( 'Typicons', 'js_composer' ) => 'typicons',
                   __( 'Material', 'js_composer' ) => 'material',
                   __( 'Linecons', 'js_composer' ) => 'linecons',
-                  // __( 'Mono Social', 'js_composer' ) => 'monosocial',
                 ),
                 'admin_label' => true,
                 'param_name' => 'avataricon',
@@ -153,7 +150,7 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
                 'settings' => array(
                   'emptyIcon' => true, // default true, display an "EMPTY" icon?
                   'type' => 'fontawesome',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
                 ),
                 'dependency' => array(
                   'element' => 'avataricon',
@@ -170,7 +167,7 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'openiconic',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'avataricon',
@@ -187,7 +184,7 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'typicons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'avataricon',
@@ -204,7 +201,7 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'entypo',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 "group" => "Avatar",
                 'dependency' => array(
@@ -220,7 +217,7 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'linecons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'avataricon',
@@ -239,7 +236,7 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
                   'emptyIcon' => false,
                   // default true, display an "EMPTY" icon?
                   'type' => 'material',
-                  'iconsPerPage' => 4000,
+                  'iconsPerPage' => 100,
                   // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
@@ -420,14 +417,6 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
                 "value" => "",
                 "description" => __("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "cq_allinone_vc")
               ),
-              // array(
-              //   "type" => "vc_link",
-              //   "heading" => __("URL (Optional link for the whole flip box)", "vc_colorblock_cq"),
-              //   "param_name" => "elementlink",
-              //   "value" => "",
-              //   "group" => "Link",
-              //   "description" => __("You can apply a link for the whole element.", "vc_colorblock_cq")
-              // ),
               array(
                 "type" => "css_editor",
                 "heading" => __( "CSS", "cq_allinone_vc" ),
@@ -484,7 +473,7 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
                 'settings' => array(
                   'emptyIcon' => true, // default true, display an "EMPTY" icon?
                   'type' => 'fontawesome',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
                 ),
                 'dependency' => array(
                   'element' => 'listicon',
@@ -500,7 +489,7 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'openiconic',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'listicon',
@@ -516,7 +505,7 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'typicons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'listicon',
@@ -532,7 +521,7 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'entypo',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'listicon',
@@ -547,7 +536,7 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'linecons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'listicon',
@@ -565,7 +554,7 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
                   'emptyIcon' => false,
                   // default true, display an "EMPTY" icon?
                   'type' => 'material',
-                  'iconsPerPage' => 4000,
+                  'iconsPerPage' => 100,
                   // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
@@ -574,15 +563,6 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
                 ),
                 'description' => __( 'Select icon from library.', 'js_composer' ),
               ),
-              // array(
-              //   "type" => "colorpicker",
-              //   "edit_field_class" => "vc_col-xs-6 vc_column cqadmin-col-offset",
-              //   "class" => "",
-              //   "heading" => __("Icon background color", 'cq_allinone_vc'),
-              //   "param_name" => "iconbgcolor",
-              //   "value" => "",
-              //   "description" => __("", 'cq_allinone_vc')
-              // ),
               array(
                 "type" => "textfield",
                 "heading" => __("Title", "cq_allinone_vc"),
@@ -696,18 +676,17 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
         wp_register_script('vc-extensions-flipboxv2-script', plugins_url('js/init.min.js', __FILE__), array("jquery"));
         wp_enqueue_script('vc-extensions-flipboxv2-script');
 
-        // $content = wpb_js_remove_wpautop($content, true); // fix unclosed/unwanted paragraph tags in $content
 
         $elementlink = vc_build_link($elementlink);
 
         $headerimagearr = wp_get_attachment_image_src(trim($headerimage), 'full');
         $header_image_temp = "";
-        $header_full_image = $headerimagearr[0];
+        $header_full_image = $headerimagearr[0] ?? "";
         $header_attachment = get_post($headerimage);
         if($headerwidth!=""){
             if(function_exists('wpb_resize')){
                 $header_image_temp = wpb_resize($headerimage, null, $headerwidth, null);
-                if($header_image_temp['url']!="") $header_full_image = $header_image_temp['url'];
+                if(($header_image_temp['url']??"")!="") $header_full_image = $header_image_temp['url'];
             }
         }
 
@@ -716,12 +695,12 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
         $attachment = get_post($avatarimage);
         $avatarimagearr = wp_get_attachment_image_src(trim($avatarimage), 'full');
         $avatar_image_temp = $avatarimage_url = "";
-        $avatar_full_image = $avatarimagearr[0];
+        $avatar_full_image = $avatarimagearr[0] ?? "";
         $avatarimage_url = $avatar_full_image;
         if($avatarwidth!=""){
             if(function_exists('wpb_resize')){
                 $avatar_image_temp = wpb_resize($avatarimage, null, $avatarwidth*2, $avatarwidth*2, true);
-                $avatarimage_url = $avatar_image_temp['url'];
+                $avatarimage_url = $avatar_image_temp['url'] ?? "";
                 if($avatarimage_url=="") $avatarimage_url = $avatar_full_image;
             }
         }
@@ -753,7 +732,6 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
             $output .= '<div class="cq-flipboxv2-description">'.$description.'</div>';
         }
         $output .= '</div>'; // end of front
-        // if($elementlink["url"]!=="") $output .= '</a>';
         $output .= '<div class="cq-flipboxv2-back" style="background-color:'.$backboxbg.'">';
 
         $output .= '<ul class="cq-flipboxv2-backcontent">';
@@ -767,7 +745,7 @@ if (!class_exists('VC_Extensions_FlipBoxV2')){
       }
 
 
-      function cq_vc_flipboxv2_item_func($atts, $content=null, $tag) {
+      function cq_vc_flipboxv2_item_func($atts, $content=null, $tag=null) {
           $iconcolor = $iconbgcolor = $icon_fontawesome = $icon_openiconic = $icon_typicons = $icon_entypo = $icon_linecons = $icon_pixelicons = $icon_material = $title = $contentcolor = $itemlink = $iconcolor = $iconsize = $isicon = "";
           extract(shortcode_atts(array(
             "listicon" => "entypo",

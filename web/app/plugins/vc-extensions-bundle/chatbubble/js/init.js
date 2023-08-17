@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-chatbubble').each(function(index, el) {
         var _this = $(this);
         var _items = $(".cq-chatbubble-container", $(this));
@@ -33,7 +34,6 @@ jQuery(document).ready(function($) {
                 $('.cq-chatbubble-arrowleft', $(this)).css('border-right-color', _backgroundcolor);
                 $('.cq-chatbubble-arrowright', $(this)).css('border-left-color', _backgroundcolor);
             }
-            // if(index>=1) $(this).hide();
         });
 
     });

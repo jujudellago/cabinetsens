@@ -1,41 +1,17 @@
 function drags(dragElement, resizeElement, container) {
+    "use strict";
     var _autoslide = container.data('autoslide');
     var _iconcolor = container.data('iconcolor');
-    var _handlestyle = container.data('handlestyle');
-    var _handlecolor = container.data('handlecolor');
-    var _captioncolor = container.data('captioncolor');
-    var _captionbg = container.data('captionbg');
-    var _captionminwidth = parseInt(container.data('captionminwidth'), 10);
     var _width = container.width();
     var _icon = dragElement.find('i');
     var _tooltipTitle = _icon.attr('title');
     var _tooltip;
     var _slideID = 0;
-
-
-    if(_captioncolor!=""){
-      jQuery(".cq-beforeafter-caption", container).css('color', _captioncolor);
-    }
-    if(_captionbg!=""){
-      jQuery(".cq-beforeafter-caption", container).css('background-color', _captionbg);
-    }
-    if(_captionminwidth>0){
-      jQuery(".cq-beforeafter-caption", container).css('min-width', _captionminwidth);
-    }
-
     if(_iconcolor!="") _icon.css('color', _iconcolor);
-    if(_handlestyle=="customized"&&_handlecolor!=""){
-        dragElement.find('i').css({
-          "background-color": _handlecolor,
-          "border": '1px solid ' + _handlecolor,
-          "box-shadow": "none"
-        });
-    }
     if(_tooltipTitle!=""){
       _tooltip = dragElement.find('i').tooltipster({
         content: _tooltipTitle,
         position: 'top',
-        // autoClose: false,
         offsetY: '-4',
         delay: 200,
         speed: 300,
@@ -127,12 +103,12 @@ function drags(dragElement, resizeElement, container) {
         containerWidth = container.outerWidth();
 
     // Set limits
-    minLeft = containerOffset;
-    maxLeft = containerOffset + containerWidth - dragWidth;
+    var minLeft = containerOffset;
+    var maxLeft = containerOffset + containerWidth - dragWidth;
 
     // Calculate the dragging distance on mousemove.
     dragElement.parents().on("mousemove vmousemove", function(e) {
-      leftValue = e.pageX + posX - dragWidth;
+      var leftValue = e.pageX + posX - dragWidth;
       // Prevent going off limits
       if ( leftValue < minLeft) {
         leftValue = minLeft;
@@ -141,7 +117,7 @@ function drags(dragElement, resizeElement, container) {
       }
 
       // Translate the handle's left value to masked divs width.
-      widthValue = (leftValue + dragWidth/2 - containerOffset)*100/containerWidth+'%';
+      var widthValue = (leftValue + dragWidth/2 - containerOffset)*100/containerWidth+'%';
 
       // Set the new values for the slider and the handle.
       // Bind mouseup events to stop dragging.

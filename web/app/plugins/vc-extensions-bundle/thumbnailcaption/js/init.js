@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+	"use strict";
 	function _reiszeImage(){
 		$('.card-image').each(function() {
 			var maxWidth = $(this).data('maxwidth');
@@ -10,19 +11,11 @@ jQuery(document).ready(function($) {
 		        var width = $(this).data('width');
 		        var height = $(this).data('height');
 		        if(ratio<_mratio){
-		        	// _imageContainer.css('width', maxWidth);
-		        	// _imageContainer.css({
-		        	// 	'width': maxWidth
-		        	// });
 		            $(this).css("min-height", maxHeight);
 		        }
 
 		        // Check if current height is larger than max
 		        if(ratio>=_mratio){
-		            // _imageContainer.css({
-		            // 	'width': maxHeight*ratio
-		            // });
-		            // $(this).css("width", maxHeight*ratio);
 		            $(this).css("min-width", maxWidth);
 		        }
 
@@ -83,9 +76,6 @@ jQuery(document).ready(function($) {
 		$(window).on('resize', function(event) {
 			var _w = $(this).width();
 			if(_w<=480){
-				// $('.card-image-container, .card-caption-container', _this).css({
-				// 	'height': _smallheight
-				// });
 			}else{
 				if(_imageposition!="top"&&_imageposition!="bottom"){
 				var _containerheight = $('.card-image-container', _this).height();
@@ -95,36 +85,6 @@ jQuery(document).ready(function($) {
 
 			}
 
-			// var _cwidth = $('.caption-content', _this).outerWidth();
-			// var _cheight = $('.caption-content', _this).outerHeight();
-			// var _w = $(this).width();
-			// if(_w>=768){
-			// 	// $('.card-caption-container', _this).css({
-			// 	// 	'min-height': _cheight
-			// 	// });
-
-			// }else{
-			// 	$('.card-caption-container', _this).css({
-			// 		'height': _cheight
-			// 	});
-			// 	$('.card-image-container', _this).css({
-			// 		'height': _cheight
-			// 	})
-			// }
-			// $('.card-image').data('maxwidth', _cwidth);
-			// $('.card-image').data('maxheight', _cheight);
-			// $('.card-image-container', _this).css({
-			// 	'height': _cheight
-			// });
-			// if(!$('.card-image-container', _this).hasClass('top')){
-				// $('.card-image').css({
-				// 	'width': _cwidth
-				// 	// 'height': _cheight
-				// });;
-				// $('.cq-link-block').css('height', _cheight)
-				// _reiszeImage();
-			// }
-			// _reiszeImage();
 
 		});
 		$(window).trigger('resize');

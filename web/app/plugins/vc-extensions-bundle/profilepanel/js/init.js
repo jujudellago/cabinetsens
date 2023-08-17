@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-profilepanel').each(function(index) {
         var _this = $(this);
         var _headerimage = $(this).data('headerimage');
@@ -38,7 +39,6 @@ jQuery(document).ready(function($) {
                 'height': _avatarsize
             });
             $('.cq-profilepanel-avatarcontainer', _this).css('top', (_headerheight - _avatarsize)*0.5);
-            // $(this).find('.cq-profilepanel-style2title').css('line-height', _avatarsize+'px');
         }
 
         if(_profileavatar.attr('title')!=""){
@@ -140,17 +140,7 @@ jQuery(document).ready(function($) {
                 'height': _avatarsize
             });
 
-            // _this.find('.cq-profilepanel-text').css({
-            //     'margin-top': _avatarsize*0.5
-            // });
-            // _profileicon.css({
-            //     // 'line-height': (_avatarsize - 5) + 'px'
-            //     'line-height': '100%'
-            // });
         }else{
-            // _this.find('.cq-profilepanel-text').css({
-                // 'margin-top': _profileavatar.width()*0.5 - _realcontentpaddding*0.5
-            // });
         }
 
         if(_headerheight!=""){
@@ -158,16 +148,13 @@ jQuery(document).ready(function($) {
             _profileavatar.css('top', _headerheight - _profileavatar.height()*0.5);
         }
 
-        // &&_avatartype=="image"
         if(_avatarimage!=""&&_avatartype=="image"){
             _profileavatar.css({
-                // 'background-color': '#333',
                 'background': 'url("' + _avatarimage + '") no-repeat center center',
                 '-moz-background-size': 'cover',
                 '-o-background-size': 'cover',
                 'background-size': 'cover',
                 '-webkit-background-size': 'cover'
-                // 'background-size': '100px',
             });
             _profileavatar2.css({
                 'background': 'url("' + _avatarimage + '") no-repeat center center',
@@ -175,18 +162,9 @@ jQuery(document).ready(function($) {
                 '-o-background-size': 'cover',
                 'background-size': 'cover',
                 '-webkit-background-size': 'cover'
-                // 'background-size': '100px',
             });
         }
 
-
-        // $(window).on('load resize', function(event) {
-        //     var _width = $('.cq-profilepanel-style2', _this).width();
-        //     console.log('width', _width);
-        //     if(_width<=480){
-        //         $('.cq-profilepanel-style2title', _this).css('font-size', '1.2em');
-        //     }
-        // });
 
     });
 

@@ -3,164 +3,134 @@ if (!class_exists('VC_Extensions_ImageAccordion')) {
     class VC_Extensions_ImageAccordion{
         function __construct() {
             vc_map(array(
-            "name" => __("Image Accordion", 'vc_imageaccordion_cq'),
+            "name" => esc_attr__("Image Accordion", 'vc_imageaccordion_cq'),
             "base" => "cq_vc_imageaccordion",
             "class" => "wpb_cq_vc_extension_imageaccordion",
-            // "as_parent" => array('only' => 'cq_vc_imageaccordion_item'),
             "icon" => "cq_allinone_imageaccordion",
-            "category" => __('Sike Extensions', 'js_composer'),
-            // "content_element" => false,
-            // "show_settings_on_create" => false,
-            'description' => __('Optional caption', 'js_composer'),
+            "category" => esc_attr__('Sike Extensions', 'js_composer'),
+            'description' => esc_attr__('Optional caption', 'js_composer'),
             "params" => array(
               array(
                 "type" => "attach_images",
-                "heading" => __("Images", "vc_imageaccordion_cq"),
+                "heading" => esc_attr__("Images", "vc_imageaccordion_cq"),
                 "param_name" => "images",
                 "value" => "",
-                "description" => __("Select all the images for accordion from media library.", "vc_imageaccordion_cq")
+                "description" => esc_attr__("Select all the images for accordion from media library.", "vc_imageaccordion_cq")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_imageaccordion_cq",
-                "heading" => __("Resize the image?", "vc_imageaccordion_cq"),
+                "heading" => esc_attr__("Resize the image?", "vc_imageaccordion_cq"),
                 "param_name" => "isresize",
                 "value" => array("no", "yes"),
                 "std" => "no",
-                "description" => __("", "vc_imageaccordion_cq")
+                "description" => esc_attr__("", "vc_imageaccordion_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Resize image to this width", "vc_imageaccordion_cq"),
+                "heading" => esc_attr__("Resize image to this width", "vc_imageaccordion_cq"),
                 "param_name" => "imagewidth",
                 "value" => "",
                 "dependency" => Array('element' => "isresize", 'value' => array('yes')),
-                "description" => __("Default we will use the original image, specify a width here. For example, 600 will resize the image to width 600.", "vc_imageaccordion_cq")
+                "description" => esc_attr__("Default we will use the original image, specify a width here. For example, 600 will resize the image to width 600.", "vc_imageaccordion_cq")
               ),
-              // array(
-              //   "type" => "dropdown",
-              //   "holder" => "",
-              //   "class" => "vc_imageaccordion_cq",
-              //   "heading" => __("Auto slide?", "vc_imageaccordion_cq"),
-              //   "param_name" => "autoslide",
-              //   'value' => array(2, 3, 4, 5, 6, 8, 10, __( 'Disable', 'vc_imageaccordion_cq' ) => 0 ),
-              //   'std' => 0,
-              //   "description" => __("Auto slide in each X seconds.", "vc_imageaccordion_cq")
-              // ),
               array(
                 "type" => "exploded_textarea",
                 "holder" => "",
                 "class" => "vc_imageaccordion_cq",
-                "heading" => __("Caption title (optional) for each image", 'vc_imageaccordion_cq'),
+                "heading" => esc_attr__("Caption title (optional) for each image", 'vc_imageaccordion_cq'),
                 "param_name" => "captiontitles",
-                "value" => __("", 'vc_imageaccordion_cq'),
+                "value" => esc_attr__("", 'vc_imageaccordion_cq'),
                 "group" => 'Caption',
-                "description" => __("Optional caption title for each image. Divide each with linebreaks (Enter)", 'vc_imageaccordion_cq')
+                "description" => esc_attr__("Optional caption title for each image. Divide each with linebreaks (Enter)", 'vc_imageaccordion_cq')
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Font size of the caption title", "vc_imageaccordion_cq"),
+                "heading" => esc_attr__("Font size of the caption title", "vc_imageaccordion_cq"),
                 "param_name" => "titlesize",
                 "value" => "",
                 "group" => 'Caption',
-                "description" => __("Default is 1.5em, you can specify other value here.", "vc_imageaccordion_cq")
+                "description" => esc_attr__("Default is 1.5em, you can specify other value here.", "vc_imageaccordion_cq")
               ),
               array(
                 "type" => "textarea_html",
                 "holder" => "div",
-                "heading" => __("Optional caption content under each image, wrap each one inside the [accordiondesc][/accordiondesc].", "vc_imageaccordion_cq"),
+                "heading" => esc_attr__("Optional caption content under each image, wrap each one inside the [accordiondesc][/accordiondesc].", "vc_imageaccordion_cq"),
                 "param_name" => "content",
                 "group" => 'Caption',
-                "value" => __("", "vc_imageaccordion_cq"), "description" => __("Please try to edit in the text mode.", "vc_imageaccordion_cq"),
-                "description" => __("Please try to edit in the text mode.", "vc_imageaccordion_cq")
+                "value" => esc_attr__("", "vc_imageaccordion_cq"), "description" => esc_attr__("Please try to edit in the text mode.", "vc_imageaccordion_cq"),
+                "description" => esc_attr__("Please try to edit in the text mode.", "vc_imageaccordion_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Font size of the caption content", "vc_imageaccordion_cq"),
+                "heading" => esc_attr__("Font size of the caption content", "vc_imageaccordion_cq"),
                 "param_name" => "contentsize",
                 "value" => "",
                 "group" => 'Caption',
-                "description" => __("Default is 1em, you can specify other value here.", "vc_imageaccordion_cq")
+                "description" => esc_attr__("Default is 1em, you can specify other value here.", "vc_imageaccordion_cq")
               ),
               array(
                 "type" => "exploded_textarea",
                 "holder" => "",
                 "class" => "vc_imageaccordion_cq",
-                "heading" => __("Link (optional) for each image", 'vc_imageaccordion_cq'),
+                "heading" => esc_attr__("Link (optional) for each image", 'vc_imageaccordion_cq'),
                 "param_name" => "imagelinks",
-                "value" => __("", 'vc_imageaccordion_cq'),
-                "description" => __("Optional link for each image. Divide each with linebreaks (Enter)", 'vc_imageaccordion_cq')
+                "value" => esc_attr__("", 'vc_imageaccordion_cq'),
+                "description" => esc_attr__("Optional link for each image. Divide each with linebreaks (Enter)", 'vc_imageaccordion_cq')
               ),
               array(
                 "type" => "dropdown",
-                "heading" => __("How to open the link", "vc_imageaccordion_cq"),
+                "heading" => esc_attr__("How to open the link", "vc_imageaccordion_cq"),
                 "param_name" => "imagelinktarget",
-                "description" => __('Select how to open the image link', 'vc_imageaccordion_cq'),
-                'value' => array(__("Same window", "vc_imageaccordion_cq") => "_self", __("New window", "vc_imageaccordion_cq") => "_blank")
+                "description" => esc_attr__('Select how to open the image link', 'vc_imageaccordion_cq'),
+                'value' => array(esc_attr__("Same window", "vc_imageaccordion_cq") => "_self", esc_attr__("New window", "vc_imageaccordion_cq") => "_blank")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_imageaccordion_cq",
-                "heading" => __("Caption background style:", "vc_imageaccordion_cq"),
+                "heading" => esc_attr__("Caption background style:", "vc_imageaccordion_cq"),
                 "param_name" => "captionbgstyle",
                 "value" => array("Grape Fruit" => "grapefruit", "Bitter Sweet" => "bittersweet", "Sunflower" => "sunflower", "Grass" => "grass", "Mint" => "mint", "Aqua" => "aqua", "Blue Jeans" => "bluejeans", "Lavender" => "lavender", "Pink Rose" => "pinkrose", "Light Gray" => "lightgray", "Dark Gray" => "darkgray", "Customized color:" => "customized"),
                 'std' => 'darkgray',
                 "group" => 'Caption',
-                "description" => __("", "vc_imageaccordion_cq")
+                "description" => esc_attr__("", "vc_imageaccordion_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Caption background color", 'vc_imageaccordion_cq'),
+                "heading" => esc_attr__("Caption background color", 'vc_imageaccordion_cq'),
                 "param_name" => "captionbgcolor",
                 "value" => '',
                 "dependency" => Array('element' => "captionbgstyle", 'value' => array('customized')),
                 "group" => 'Caption',
-                "description" => __("", 'vc_imageaccordion_cq')
+                "description" => esc_attr__("", 'vc_imageaccordion_cq')
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Caption text color", 'vc_imageaccordion_cq'),
+                "heading" => esc_attr__("Caption text color", 'vc_imageaccordion_cq'),
                 "param_name" => "captiontextcolor",
                 "value" => '',
                 "group" => 'Caption',
-                "description" => __("Default is white.", 'vc_imageaccordion_cq')
+                "description" => esc_attr__("Default is white.", 'vc_imageaccordion_cq')
               ),
-              // array(
-              //   "type" => "dropdown",
-              //   "heading" => __("When user hover, display other accordion in:", "vc_imageaccordion_cq"),
-              //   "param_name" => "accordionsize",
-              //   'value' => array(__("small", "vc_imageaccordion_cq") => "", __("large", "vc_imageaccordion_cq") => "cq-accordion-large", __("none (display current accordion in full width without other accordion)", "vc_imageaccordion_cq") => "cq-accordion-none"),
-              //   "description" => __('', 'vc_imageaccordion_cq')
-              // ),
-              // array(
-              //   "type" => "checkbox",
-              //   "holder" => "",
-              //   "class" => "vc_imageaccordion_cq",
-              //   "heading" => __("Unfold first accordion?", 'vc_imageaccordion_cq'),
-              //   "param_name" => "unfoldfirst",
-              //   "value" => array(__("Yes, unfold first accordion.", "vc_imageaccordion_cq") => 'cq-imageaccordion-unfoldfirst'),
-              //   "dependency" => Array('element' => "accordionsize", 'value' => array('', 'cq-accordion-large')),
-              //   "description" => __("All accordions are folded by default, you can check this to unfold first accordion by default.", 'vc_imageaccordion_cq')
-              // ),
               array(
                 "type" => "textfield",
-                "heading" => __("Element height", "vc_imageaccordion_cq"),
+                "heading" => esc_attr__("Element height", "vc_imageaccordion_cq"),
                 "param_name" => "elementheight",
                 "value" => "",
-                "description" => __("The height of the whole element(image). Default is 450. You can specify other value here.", "vc_imageaccordion_cq")
+                "description" => esc_attr__("The height of the whole element(image). Default is 450. You can specify other value here.", "vc_imageaccordion_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Extra class name", "vc_imageaccordion_cq"),
+                "heading" => esc_attr__("Extra class name", "vc_imageaccordion_cq"),
                 "param_name" => "extraclass",
                 "value" => "",
-                "description" => __("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "vc_imageaccordion_cq")
+                "description" => esc_attr__("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "vc_imageaccordion_cq")
               )
 
            )
@@ -171,11 +141,10 @@ if (!class_exists('VC_Extensions_ImageAccordion')) {
       }
 
 
-    function cq_vc_imageaccordion_func($atts, $content=null, $tag) {
+    function cq_vc_imageaccordion_func($atts, $content=null, $tag=null) {
           extract(shortcode_atts(array(
             "images" => '',
             "link" => '',
-            // "autoslide" => '',
             "captionbgstyle" => 'darkgray',
             "imagelinks" => '',
             "imagelinktarget" => '',
@@ -206,7 +175,6 @@ if (!class_exists('VC_Extensions_ImageAccordion')) {
 
           $captionstyle_arr = $color_style_arr[$captionbgstyle];
 
-          // $link = vc_build_link($link);
 
           wp_register_style( 'vc-extensions-imageaccordion-style', plugins_url('css/style.css', __FILE__) );
           wp_enqueue_style( 'vc-extensions-imageaccordion-style' );
@@ -224,7 +192,7 @@ if (!class_exists('VC_Extensions_ImageAccordion')) {
               $i++;
               $imageLocation = wp_get_attachment_image_src($theimage, 'full');
               $img = $thumbnail = "";
-              $fullimage = $imageLocation[0];
+              $fullimage = $imageLocation[0] ?? "";
               $thumbnail = $fullimage;
               if($imagewidth!=""&&$isresize=="yes"){
                   if(function_exists('wpb_resize')){
@@ -237,7 +205,7 @@ if (!class_exists('VC_Extensions_ImageAccordion')) {
               if($isresize=="yes"&&$imagewidth!=""){
                   $output .= '<li class="cq-imageaccordion-listitem" data-image="'.$thumbnail.'">';
               }else{
-                  $output .= '<li class="cq-imageaccordion-listitem" data-image="'.$imageLocation[0].'">';
+                  $output .= '<li class="cq-imageaccordion-listitem" data-image="'.($imageLocation[0]??"").'">';
               }
               $output .= '<div class="cq-imageaccordion-itemcontainer">';
               if(isset($imagelinks[$i])&&$imagelinks[$i]!="") $output .= '<a href="'.$imagelinks[$i].'" target="'.$imagelinktarget.'" class="cq-imageaccordion-link">';

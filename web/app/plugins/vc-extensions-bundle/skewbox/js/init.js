@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+  "use strict";
   $(".cq-skewbox").each(function(index) {
       var _currentItem = 1;
       var _this = $(this);
@@ -39,7 +40,6 @@ jQuery(document).ready(function($) {
       function navigateDown() {
         if (_currentItem === _itemNumbs){
           return false;
-          // _currentItem = 0;
         }else{
 
         }

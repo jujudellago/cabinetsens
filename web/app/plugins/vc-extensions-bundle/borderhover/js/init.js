@@ -1,8 +1,8 @@
 jQuery(document).ready(function($) {
+    "use strict";
   $(".cq-borderhover").each(function(index) {
         var _this = $(this);
         var _elementheight = parseInt($(this).data('elementheight'), 10);
-        // var _overlaycolor = $(this).data('overlaycolor');
         var _lightboxmargin = $(this).data('lightboxmargin') == "" ? 20 : parseInt($(this).data('lightboxmargin'))
         var _minwidth = $(this).data('minwidth') == "" ? 0 : parseInt($(this).data('minwidth'));
         var _bordercolor = $(this).data('bordercolor');
@@ -19,7 +19,6 @@ jQuery(document).ready(function($) {
         }
 
         $("a.cq-borderhover-prettyphoto", _this).prettyPhoto({
-            // show_title: true
         });
         $('.cq-borderhover-lightbox', _this).each(function(index, el) {
             var _videowidth = $(this).data('videowidth') == "" ? 640 : parseInt($(this).data('videowidth'));
@@ -29,9 +28,6 @@ jQuery(document).ready(function($) {
 
             if(_linktype=="lightbox"){
                 if(_lightboxmode=="prettyphoto"){
-                    // $(this).prettyPhoto({
-                    //     // show_title: true
-                    // });
                 }else{
                     $(this).boxer({
                         margin: _lightboxmargin,
@@ -47,7 +43,6 @@ jQuery(document).ready(function($) {
                         "margin": 10,
                         "videoWidth": _videowidth,
                         "retina": true,
-                        // "mobile": true,
                         "minWidth": 320
                     });
                 }else{

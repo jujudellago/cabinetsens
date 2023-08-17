@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+	"use strict";
 	$('.cq-medium-gallery').each(function(index) {
 		var _this = $(this);
 		var _width = $(this).data('gallerywidth') || '100%';
@@ -20,11 +21,6 @@ jQuery(document).ready(function($) {
 
 		  onInit: function(){},
 		  onComplete: function(){
-		    // Show the grid after it renders
-		    // _this.attr('style', '');
-			// _this.find('.mediumgallery-item').fluidbox({
-			// 	stackIndex: 3
-			// });
 			_this.find('img.mediumgallery-img').each(function(index) {
 				var _imgurl = $(this).data('highres');
 				var _galleryitem = $(this).wrap('<a href="'+_imgurl+'" class="mediumgallery-item"></a>');
@@ -33,12 +29,7 @@ jQuery(document).ready(function($) {
 				overlayColor: _background,
 				stackIndex: 1000
 			});
-			// _this.find('.mediumgallery-item').each(function(index) {
-			// 	$(this).on('click', function(event) {
-			// 		_this.find('.photoset-row').css('overflow', 'visible');
-			// 	});
-			// });
-			// _this.find('.photoset-row').css('overflow', 'visible');
+
 		  }
 		});
 

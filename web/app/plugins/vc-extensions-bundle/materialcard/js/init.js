@@ -1,11 +1,10 @@
 jQuery(document).ready(function($) {
+  "use strict";
   $('.cq-material-card').each(function(index) {
-
       var _this = $(this);
       var _bordercolor = $(this).data('bordercolor');
       var _colorstyle = $(this).data('colorstyle');
       var _titlecolor = $(this).data('titlecolor');
-      // var _linkcolor = $(this).data('linkcolor');
       var _contentcolor = $(this).data('contentcolor');
       var _isripple = $(this).data('isripple');
       var _cardwidth = $(this).data('cardwidth');
@@ -23,11 +22,6 @@ jQuery(document).ready(function($) {
       $(this).find('.material-card-content p').css({
         'color': _contentcolor
       });
-      // $(this).find('.material-card-content .card-summary a').css({
-        // 'color': _linkcolor
-      // });
-
-      // var _noripplelink = $(this).data('noripplelink') || '';
 
       if($(this).find('.material-card-label')[0]){
         $(this).find('.material-card-content p:last').css({
@@ -42,18 +36,10 @@ jQuery(document).ready(function($) {
         $(this).find('.material-card-label').css({
           'background-color': _bordercolor
         });
-        // $(this).find('.card-author').css({
-        //   'color': _bordercolor
-        // });
       }
       $(this).find('.material-card-label-link').on('click', function(event) {
-        // event.preventDefault();
         if(_isripple!="on"){
-          // if(_noripplelink=="" || !$(this).hasClass(_noripplelink)){
             $(this).css({
-                // 'position': 'relative',
-                // 'display': 'inline-block'
-              //   'overflow': 'hidden'
               });
 
               var _circlediv = $('<div/>'),
@@ -73,7 +59,6 @@ jQuery(document).ready(function($) {
                     $(this).remove();
                 });
 
-          // }
         }
 
      });

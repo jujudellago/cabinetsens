@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+  "use strict";
   $(".cq-materialslider").each(function(index) {
       var _this = $(this);
       var _animateDot = $('.cq-materialslider-bar', _this);
@@ -10,25 +11,10 @@ jQuery(document).ready(function($) {
       var _autohide = $(this).data('autohide')=="yes"?true:false;
       var _minHeight = 360;
       var _maxHeight = 0;
-      // $('.cq-materialslider-image', _this).each(function() {
-      //     var _img = $(this);
-      //     var img = $(this)[0];
-      //     $("<img/>") // Make in memory copy of image to avoid css issues
-      //         .attr("src", $(img).attr("src"))
-      //         .load(function() {
-      //             // pic_real_width = this.width;   // Note: $(this).width() will not
-      //             // pic_real_height = this.height; // work for in memory images.
-      //             _minHeight = Math.min(_img.height(), _minHeight)
-      //             _maxHeight = Math.max(_img.height(), _maxHeight)
-      //             // if(_minHeight>0) _this.css('height', _minHeight);
-      //             // if(_minHeight>0) _this.css('min-height', _minHeight);
-      //     });
-      // });
 
       var _currentDotNum = 0;
       var _dotBtnArr = [];
       var _dotNums = $(".cq-materialslider-dot", _this).length;
-      // var _slideMaxHeight = 240;
       $('.cq-materialslider-slide', _this).each(function(index) {
           _elementheight = Math.max($(this).height(), _elementheight);
           if($(this).height()==0) $(this).css('height', _elementheight);

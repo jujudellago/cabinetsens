@@ -2,122 +2,109 @@
 if (!class_exists('VC_Extensions_SideBySide')) {
     class VC_Extensions_SideBySide{
         function __construct() {
-          if(version_compare(WPB_VC_VERSION,  "4.4")>= 0){
             vc_map(array(
-            "name" => __("Side by Side", 'vc_sidebyside_cq'),
+            "name" => esc_attr__("Side by Side", 'vc_sidebyside_cq'),
             "base" => "cq_vc_sidebyside",
             "class" => "wpb_cq_vc_extension_sidebyside",
-            // "as_parent" => array('only' => 'cq_vc_sidebyside_item'),
             "icon" => "cq_allinone_sidebyside",
-            "category" => __('Sike Extensions', 'js_composer'),
-            // "content_element" => false,
-            // "show_settings_on_create" => false,
-            'description' => __('Card with image, icon and text', 'js_composer'),
+            "category" => esc_attr__('Sike Extensions', 'js_composer'),
+            'description' => esc_attr__('Card with image, icon and text', 'js_composer'),
             "params" => array(
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_sidebyside_cq",
-                "heading" => __("Choose the mode, display the card with:", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Choose the mode, display the card with:", "vc_sidebyside_cq"),
                 "param_name" => "card1avatar",
                 "value" => array("Text Only" => "none", "Image (with tooltip)" => "image", "Icon (Select icon below)" => "icon"),
                 "group" => "Card 1",
-                "description" => __("", "vc_sidebyside_cq")
+                "description" => esc_attr__("", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "attach_image",
-                    "heading" => __("Card image:", "vc_sidebyside_cq"),
+                    "heading" => esc_attr__("Card image:", "vc_sidebyside_cq"),
                     "param_name" => "card1image",
                     "value" => "",
                     "dependency" => Array('element' => "card1avatar", 'value' => array('image')),
                     "group" => "Card 1",
-                    "description" => __("Select image from media library.", "vc_sidebyside_cq")
+                    "description" => esc_attr__("Select image from media library.", "vc_sidebyside_cq")
               ),
-              // array(
-              //   "type" => "textfield",
-              //   "heading" => __("Card icon:", "vc_sidebyside_cq"),
-              //   "param_name" => "card1icon",
-              //   "value" => "",
-              //   "dependency" => Array('element' => "card1avatar", 'value' => array('icon')),
-              //   "group" => "Card 1",
-              //   "description" => __("Support Font Awesome icon, for example <strong>fa-twitter</strong> will insert a Twitter icon. See all the available <a href='http://fortawesome.github.io/Font-Awesome/icons/' target='_blank'>Font Awesome icon</a>", "vc_sidebyside_cq")
-              // ),
               array(
                 'type' => 'dropdown',
-                'heading' => __( 'Icon library', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon library', 'js_composer' ),
                 'value' => array(
-                  __( 'Font Awesome', 'js_composer' ) => 'fontawesome',
-                  __( 'Open Iconic', 'js_composer' ) => 'openiconic',
-                  __( 'Typicons', 'js_composer' ) => 'typicons',
-                  __( 'Entypo', 'js_composer' ) => 'entypo',
-                  __( 'Linecons', 'js_composer' ) => 'linecons',
-                  __( 'Material', 'js_composer' ) => 'material',
+                  esc_attr__( 'Font Awesome', 'js_composer' ) => 'fontawesome',
+                  esc_attr__( 'Open Iconic', 'js_composer' ) => 'openiconic',
+                  esc_attr__( 'Typicons', 'js_composer' ) => 'typicons',
+                  esc_attr__( 'Entypo', 'js_composer' ) => 'entypo',
+                  esc_attr__( 'Linecons', 'js_composer' ) => 'linecons',
+                  esc_attr__( 'Material', 'js_composer' ) => 'material',
                 ),
                 'admin_label' => true,
                 'param_name' => 'new_card1icon',
                 "group" => "Card 1",
                 "dependency" => Array('element' => "card1avatar", 'value' => array('icon')),
-                'description' => __( 'Select icon library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_fontawesome',
                 'value' => 'fa fa-adjust', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
                 ),
                 'dependency' => array(
                   'element' => 'new_card1icon',
                   'value' => 'fontawesome',
                 ),
                 "group" => "Card 1",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_openiconic',
                 'value' => 'vc-oi vc-oi-dial', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'openiconic',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'new_card1icon',
                   'value' => 'openiconic',
                 ),
                 "group" => "Card 1",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_typicons',
                 'value' => 'typcn typcn-adjust-brightness', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'typicons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'new_card1icon',
                   'value' => 'typicons',
                 ),
                 "group" => "Card 1",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_entypo',
                 'value' => 'entypo-icon entypo-icon-note', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'entypo',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 "group" => "Card 1",
                 'dependency' => array(
@@ -127,24 +114,24 @@ if (!class_exists('VC_Extensions_SideBySide')) {
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_linecons',
                 'value' => 'vc_li vc_li-heart', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'linecons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'new_card1icon',
                   'value' => 'linecons',
                 ),
                 "group" => "Card 1",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_material',
                 'value' => 'vc-material vc-material-cake',
                 // default value to backend editor admin_label
@@ -152,7 +139,7 @@ if (!class_exists('VC_Extensions_SideBySide')) {
                   'emptyIcon' => false,
                   // default true, display an "EMPTY" icon?
                   'type' => 'material',
-                  'iconsPerPage' => 4000,
+                  'iconsPerPage' => 100,
                   // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
@@ -160,167 +147,167 @@ if (!class_exists('VC_Extensions_SideBySide')) {
                   'value' => 'material',
                 ),
                 "group" => "Card 1",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Icon color", 'vc_sidebyside_cq'),
+                "heading" => esc_attr__("Icon color", 'vc_sidebyside_cq'),
                 "param_name" => "card1iconcolor",
                 "value" => '',
                 "group" => "Card 1",
-                "description" => __("", 'vc_sidebyside_cq')
+                "description" => esc_attr__("", 'vc_sidebyside_cq')
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Text follow the icon (optional):", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Text follow the icon (optional):", "vc_sidebyside_cq"),
                 "param_name" => "card1icontext",
                 "value" => "",
                 "group" => "Card 1",
                 "dependency" => Array('element' => "card1avatar", 'value' => array('icon')),
-                "description" => __("", "vc_sidebyside_cq")
+                "description" => esc_attr__("", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Size of the icon (and optional follow text):", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Size of the icon (and optional follow text):", "vc_sidebyside_cq"),
                 "param_name" => "card1iconsize",
                 "value" => "",
                 "group" => "Card 1",
                 "dependency" => Array('element' => "card1avatar", 'value' => array('icon')),
-                "description" => __("Default is 1.2em.", "vc_sidebyside_cq")
+                "description" => esc_attr__("Default is 1.2em.", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Card 1 title (optional):", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Card 1 title (optional):", "vc_sidebyside_cq"),
                 "param_name" => "card1title",
                 "value" => "",
                 "group" => "Card 1",
-                "description" => __("Will be displayed as <strong>tooltip</strong> in the image mode.", "vc_sidebyside_cq")
+                "description" => esc_attr__("Will be displayed as tooltip in the image mode.", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Title color", 'vc_sidebyside_cq'),
+                "heading" => esc_attr__("Title color", 'vc_sidebyside_cq'),
                 "param_name" => "card1titlecolor",
                 "value" => '',
                 "group" => "Card 1",
-                "description" => __("", 'vc_sidebyside_cq')
+                "description" => esc_attr__("", 'vc_sidebyside_cq')
               ),
               array(
                 "type" => "textarea",
-                "heading" => __("Card 1 content (optional):", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Card 1 content (optional):", "vc_sidebyside_cq"),
                 "param_name" => "card1content",
                 "value" => "",
                 "group" => "Card 1",
-                "description" => __("", "vc_sidebyside_cq")
+                "description" => esc_attr__("", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Content color", 'vc_sidebyside_cq'),
+                "heading" => esc_attr__("Content color", 'vc_sidebyside_cq'),
                 "param_name" => "card1contentcolor",
                 "value" => '',
                 "group" => "Card 1",
-                "description" => __("", 'vc_sidebyside_cq')
+                "description" => esc_attr__("", 'vc_sidebyside_cq')
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_sidebyside_cq",
-                "heading" => __("Display the divider with:", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Display the divider with:", "vc_sidebyside_cq"),
                 "param_name" => "dividertype",
                 "value" => array("Text" => "text", "Icon only (select icon below)" => "icon"),
                 "group" => "Divider",
-                "description" => __("", "vc_sidebyside_cq")
+                "description" => esc_attr__("", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "textarea_raw_html",
-                "heading" => __("Divider text", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Divider text", "vc_sidebyside_cq"),
                 "param_name" => "divider",
                 "value" => "",
                 "group" => "Divider",
                 "dependency" => Array('element' => "dividertype", 'value' => array('text')),
-                "description" => __("The divider in the center of the 2 cards. Support HTML here, for example &lt;i class=&#039;fa fa-twitter&#039;&gt;&lt;/i&gt; will insert a Twitter <a href='http://fortawesome.github.io/Font-Awesome/icons/' target='_blank'>Font Awesome icon</a>", "vc_sidebyside_cq")
+                "description" => esc_attr__("The divider in the center of the 2 cards. Support HTML here, for example &lt;i class=&#039;fa fa-twitter&#039;&gt;&lt;/i&gt; will insert a Twitter Font Awesome icon", "vc_sidebyside_cq")
               ),
               array(
                 'type' => 'dropdown',
-                'heading' => __( 'Icon library', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon library', 'js_composer' ),
                 'value' => array(
-                  __( 'Font Awesome', 'js_composer' ) => 'fontawesome',
-                  __( 'Open Iconic', 'js_composer' ) => 'openiconic',
-                  __( 'Typicons', 'js_composer' ) => 'typicons',
-                  __( 'Entypo', 'js_composer' ) => 'entypo',
-                  __( 'Linecons', 'js_composer' ) => 'linecons',
-                  __( 'Material', 'js_composer' ) => 'material',
+                  esc_attr__( 'Font Awesome', 'js_composer' ) => 'fontawesome',
+                  esc_attr__( 'Open Iconic', 'js_composer' ) => 'openiconic',
+                  esc_attr__( 'Typicons', 'js_composer' ) => 'typicons',
+                  esc_attr__( 'Entypo', 'js_composer' ) => 'entypo',
+                  esc_attr__( 'Linecons', 'js_composer' ) => 'linecons',
+                  esc_attr__( 'Material', 'js_composer' ) => 'material',
                 ),
                 'admin_label' => true,
                 'param_name' => 'dividericon',
                 "group" => "Divider",
                 "dependency" => Array('element' => "dividertype", 'value' => array('icon')),
-                'description' => __( 'Select icon library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'divider_icon_fontawesome',
                 'value' => 'fa fa-adjust', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
                 ),
                 'dependency' => array(
                   'element' => 'dividericon',
                   'value' => 'fontawesome',
                 ),
                 "group" => "Divider",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'divider_icon_openiconic',
                 'value' => 'vc-oi vc-oi-dial', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'openiconic',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'dividericon',
                   'value' => 'openiconic',
                 ),
                 "group" => "Divider",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'divider_icon_typicons',
                 'value' => 'typcn typcn-adjust-brightness', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'typicons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'dividericon',
                   'value' => 'typicons',
                 ),
                 "group" => "Divider",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'divider_icon_entypo',
                 'value' => 'entypo-icon entypo-icon-note', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'entypo',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 "group" => "Divider",
                 'dependency' => array(
@@ -330,24 +317,24 @@ if (!class_exists('VC_Extensions_SideBySide')) {
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'divider_icon_linecons',
                 'value' => 'vc_li vc_li-heart', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'linecons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'dividericon',
                   'value' => 'linecons',
                 ),
                 "group" => "Divider",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'divider_icon_material',
                 'value' => 'vc-material vc-material-cake',
                 // default value to backend editor admin_label
@@ -355,7 +342,7 @@ if (!class_exists('VC_Extensions_SideBySide')) {
                   'emptyIcon' => false,
                   // default true, display an "EMPTY" icon?
                   'type' => 'material',
-                  'iconsPerPage' => 4000,
+                  'iconsPerPage' => 100,
                   // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
@@ -363,187 +350,179 @@ if (!class_exists('VC_Extensions_SideBySide')) {
                   'value' => 'material',
                 ),
                 "group" => "Divider",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_sidebyside_cq",
-                "heading" => __("Divider background shape:", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Divider background shape:", "vc_sidebyside_cq"),
                 "param_name" => "dividerborder",
                 "value" => array("circle" => "50%", "rounded" => "4px", "square" => "0"),
                 "group" => "Divider",
-                "description" => __("", "vc_sidebyside_cq")
+                "description" => esc_attr__("", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("font-size of the divider:", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("font-size of the divider:", "vc_sidebyside_cq"),
                 "param_name" => "dividerfontsize",
                 "value" => "",
                 "group" => "Divider",
-                "description" => __("Default is 1em.", "vc_sidebyside_cq")
+                "description" => esc_attr__("Default is 1em.", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("width of the divider:", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("width of the divider:", "vc_sidebyside_cq"),
                 "param_name" => "dividerwidth",
                 "value" => "",
                 "group" => "Divider",
-                "description" => __("Default is 36px.", "vc_sidebyside_cq")
+                "description" => esc_attr__("Default is 36px.", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("height of the divider:", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("height of the divider:", "vc_sidebyside_cq"),
                 "param_name" => "dividerheight",
                 "value" => "",
                 "group" => "Divider",
-                "description" => __("Default is 36px.", "vc_sidebyside_cq")
+                "description" => esc_attr__("Default is 36px.", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Divider background", 'vc_sidebyside_cq'),
+                "heading" => esc_attr__("Divider background", 'vc_sidebyside_cq'),
                 "param_name" => "dividerbg",
                 "value" => '#fff',
                 "group" => "Divider",
-                "description" => __("", 'vc_sidebyside_cq')
+                "description" => esc_attr__("", 'vc_sidebyside_cq')
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Divider text color", 'vc_sidebyside_cq'),
+                "heading" => esc_attr__("Divider text color", 'vc_sidebyside_cq'),
                 "param_name" => "dividercolor",
                 "value" => '#333',
                 "group" => "Divider",
-                "description" => __("", 'vc_sidebyside_cq')
+                "description" => esc_attr__("", 'vc_sidebyside_cq')
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_sidebyside_cq",
-                "heading" => __("Apply border in the divider?", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Apply border in the divider?", "vc_sidebyside_cq"),
                 "param_name" => "isgap",
                 "value" => array("No" => "", "Yes" => "cq-isgap"),
                 "group" => "Divider",
-                "description" => __("", "vc_sidebyside_cq")
+                "description" => esc_attr__("", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Color of the divider border:", 'vc_sidebyside_cq'),
+                "heading" => esc_attr__("Color of the divider border:", 'vc_sidebyside_cq'),
                 "param_name" => "gapcolor",
                 "value" => '',
                 "group" => "Divider",
                 "dependency" => Array('element' => "isgap", 'value' => array('cq-isgap')),
-                "description" => __("The color of the gap between 2 cards, default is white.", 'vc_sidebyside_cq')
+                "description" => esc_attr__("The color of the gap between 2 cards, default is white.", 'vc_sidebyside_cq')
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_sidebyside_cq",
-                "heading" => __("Choose the mode, display the card with:", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Choose the mode, display the card with:", "vc_sidebyside_cq"),
                 "param_name" => "card2avatar",
                 "value" => array("Text Only" => "none", "Image (with tooltip)" => "image", "Icon (Select icon below)" => "icon"),
                 "group" => "Card 2",
-                "description" => __("", "vc_sidebyside_cq")
+                "description" => esc_attr__("", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "attach_image",
-                "heading" => __("Card image:", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Card image:", "vc_sidebyside_cq"),
                 "param_name" => "card2image",
                 "value" => "",
                 "dependency" => Array('element' => "card2avatar", 'value' => array('image')),
                 "group" => "Card 2",
-                "description" => __("Select image from media library.", "vc_sidebyside_cq")
+                "description" => esc_attr__("Select image from media library.", "vc_sidebyside_cq")
               ),
-              // array(
-              //   "type" => "textfield",
-              //   "heading" => __("Font Awesome icon:", "vc_sidebyside_cq"),
-              //   "param_name" => "card2icon",
-              //   "value" => "",
-              //   "dependency" => Array('element' => "card2avatar", 'value' => array('icon')),
-              //   "group" => "Card 2",
-              //   "description" => __("For example fa-twitter will insert a Twitter <a href='http://fortawesome.github.io/Font-Awesome/icons/' target='_blank'>Font Awesome icon</a>", "vc_sidebyside_cq")
-              // ),
+
               array(
                 'type' => 'dropdown',
-                'heading' => __( 'Icon library', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon library', 'js_composer' ),
                 'value' => array(
-                  __( 'Font Awesome', 'js_composer' ) => 'fontawesome',
-                  __( 'Open Iconic', 'js_composer' ) => 'openiconic',
-                  __( 'Typicons', 'js_composer' ) => 'typicons',
-                  __( 'Entypo', 'js_composer' ) => 'entypo',
-                  __( 'Linecons', 'js_composer' ) => 'linecons',
-                  __( 'Material', 'js_composer' ) => 'material',
+                  esc_attr__( 'Font Awesome', 'js_composer' ) => 'fontawesome',
+                  esc_attr__( 'Open Iconic', 'js_composer' ) => 'openiconic',
+                  esc_attr__( 'Typicons', 'js_composer' ) => 'typicons',
+                  esc_attr__( 'Entypo', 'js_composer' ) => 'entypo',
+                  esc_attr__( 'Linecons', 'js_composer' ) => 'linecons',
+                  esc_attr__( 'Material', 'js_composer' ) => 'material',
                 ),
                 'admin_label' => true,
                 'param_name' => 'new_card2icon',
                 "group" => "Card 2",
                 "dependency" => Array('element' => "card2avatar", 'value' => array('icon')),
-                'description' => __( 'Select icon library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'card2_icon_fontawesome',
                 'value' => 'fa fa-adjust', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
                 ),
                 'dependency' => array(
                   'element' => 'new_card2icon',
                   'value' => 'fontawesome',
                 ),
                 "group" => "Card 2",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'card2_icon_openiconic',
                 'value' => 'vc-oi vc-oi-dial', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'openiconic',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'new_card2icon',
                   'value' => 'openiconic',
                 ),
                 "group" => "Card 2",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'card2_icon_typicons',
                 'value' => 'typcn typcn-adjust-brightness', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'typicons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'new_card2icon',
                   'value' => 'typicons',
                 ),
                 "group" => "Card 2",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'card2_icon_entypo',
                 'value' => 'entypo-icon entypo-icon-note', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'entypo',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 "group" => "Card 2",
                 'dependency' => array(
@@ -553,24 +532,24 @@ if (!class_exists('VC_Extensions_SideBySide')) {
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'card2_icon_linecons',
                 'value' => 'vc_li vc_li-heart', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'linecons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'new_card2icon',
                   'value' => 'linecons',
                 ),
                 "group" => "Card 2",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'card2_icon_material',
                 'value' => 'vc-material vc-material-cake',
                 // default value to backend editor admin_label
@@ -578,7 +557,7 @@ if (!class_exists('VC_Extensions_SideBySide')) {
                   'emptyIcon' => false,
                   // default true, display an "EMPTY" icon?
                   'type' => 'material',
-                  'iconsPerPage' => 4000,
+                  'iconsPerPage' => 100,
                   // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
@@ -586,616 +565,209 @@ if (!class_exists('VC_Extensions_SideBySide')) {
                   'value' => 'material',
                 ),
                 "group" => "Card 2",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Icon color", 'vc_sidebyside_cq'),
+                "heading" => esc_attr__("Icon color", 'vc_sidebyside_cq'),
                 "param_name" => "card2iconcolor",
                 "value" => '',
                 "group" => "Card 2",
-                "description" => __("", 'vc_sidebyside_cq')
+                "description" => esc_attr__("", 'vc_sidebyside_cq')
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Text follow the icon (optional):", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Text follow the icon (optional):", "vc_sidebyside_cq"),
                 "param_name" => "card2icontext",
                 "value" => "",
                 "group" => "Card 2",
                 "dependency" => Array('element' => "card2avatar", 'value' => array('icon')),
-                "description" => __("", "vc_sidebyside_cq")
+                "description" => esc_attr__("", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Size of the icon (and optional follow text):", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Size of the icon (and optional follow text):", "vc_sidebyside_cq"),
                 "param_name" => "card2iconsize",
                 "value" => "",
                 "group" => "Card 2",
                 "dependency" => Array('element' => "card2avatar", 'value' => array('icon')),
-                "description" => __("Default is 1.2em.", "vc_sidebyside_cq")
+                "description" => esc_attr__("Default is 1.2em.", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Card 2 title (optional):", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Card 2 title (optional):", "vc_sidebyside_cq"),
                 "param_name" => "card2title",
                 "value" => "",
                 "group" => "Card 2",
-                "description" => __("Will be displayed as <strong>tooltip</strong> in the image mode.", "vc_sidebyside_cq")
+                "description" => esc_attr__("Will be displayed as tooltip in the image mode.", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Title color", 'vc_sidebyside_cq'),
+                "heading" => esc_attr__("Title color", 'vc_sidebyside_cq'),
                 "param_name" => "card2titlecolor",
                 "value" => '',
                 "group" => "Card 2",
-                "description" => __("", 'vc_sidebyside_cq')
+                "description" => esc_attr__("", 'vc_sidebyside_cq')
               ),
               array(
                 "type" => "textarea",
-                "heading" => __("Card 2 content (optional):", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Card 2 content (optional):", "vc_sidebyside_cq"),
                 "param_name" => "card2content",
                 "value" => "",
                 "group" => "Card 2",
-                "description" => __("", "vc_sidebyside_cq")
+                "description" => esc_attr__("", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Content color", 'vc_sidebyside_cq'),
+                "heading" => esc_attr__("Content color", 'vc_sidebyside_cq'),
                 "param_name" => "card2contentcolor",
                 "value" => '',
                 "group" => "Card 2",
-                "description" => __("", 'vc_sidebyside_cq')
+                "description" => esc_attr__("", 'vc_sidebyside_cq')
               ),
               array(
                 'type' => 'vc_link',
-                'heading' => __( 'URL (Optional link for this Card)', 'vc_sidebyside_cq' ),
+                'heading' => esc_attr__( 'URL (Optional link for this Card)', 'vc_sidebyside_cq' ),
                 'param_name' => 'card1link',
                 'group' => 'Card 1',
-                'description' => __( '', 'vc_sidebyside_cq' )
+                'description' => esc_attr__( '', 'vc_sidebyside_cq' )
               ),
               array(
                 'type' => 'vc_link',
-                'heading' => __( 'URL (Optional link for this Card)', 'vc_sidebyside_cq' ),
+                'heading' => esc_attr__( 'URL (Optional link for this Card)', 'vc_sidebyside_cq' ),
                 'param_name' => 'card2link',
                 'group' => 'Card 2',
-                'description' => __( '', 'vc_sidebyside_cq' )
+                'description' => esc_attr__( '', 'vc_sidebyside_cq' )
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_sidebyside_cq",
-                "heading" => __("Display the card, side by side from:", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Display the card, side by side from:", "vc_sidebyside_cq"),
                 "param_name" => "carddirection",
                 "value" => array("left to right" => "leftright", "top to bottom" => "topbottom"),
-                "description" => __("", "vc_sidebyside_cq")
+                "description" => esc_attr__("", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_sidebyside_cq",
-                "heading" => __("Display the card in shape:", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Display the card in shape:", "vc_sidebyside_cq"),
                 "param_name" => "cardshape",
                 "value" => array("Square" => "", "Rounded" => "cq-rounded"),
-                "description" => __("", "vc_sidebyside_cq")
+                "description" => esc_attr__("", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_sidebyside_cq",
-                "heading" => __("Card color style:", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Card color style:", "vc_sidebyside_cq"),
                 "param_name" => "cardstyle",
                 "value" => array("Grape Fruit" => "grapefruit", "Bitter Sweet" => "bittersweet", "Sunflower" => "sunflower", "Grass" => "grass", "Mint" => "mint", "Aqua" => "aqua", "Blue Jeans" => "bluejeans", "Lavender" => "lavender", "Pink Rose" => "pinkrose", "Light Gray" => "lightgray", "Medium Gray" => "mediumgray", "Dark Gray" => "darkgray", "Customized color:" => "customized"),
                 'std' => 'mediumgray',
-                "description" => __("", "vc_sidebyside_cq")
+                "description" => esc_attr__("", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_sidebyside_cq",
-                "heading" => __("Tooltip position:", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Tooltip position:", "vc_sidebyside_cq"),
                 "param_name" => "tooltipposition",
                 "value" => array("top" => "top", "bottom" => "bottom", "left" => "left", "right" => "right"),
-                "description" => __("Tooltip only available with the image mode.", "vc_sidebyside_cq")
+                "description" => esc_attr__("Tooltip only available with the image mode.", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Card 1 background", 'vc_sidebyside_cq'),
+                "heading" => esc_attr__("Card 1 background", 'vc_sidebyside_cq'),
                 "param_name" => "card1bg",
                 "value" => '',
                 "dependency" => Array('element' => "cardstyle", 'value' => array('customized')),
-                "description" => __("", 'vc_sidebyside_cq')
+                "description" => esc_attr__("", 'vc_sidebyside_cq')
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Card 2 background", 'vc_sidebyside_cq'),
+                "heading" => esc_attr__("Card 2 background", 'vc_sidebyside_cq'),
                 "param_name" => "card2bg",
                 "value" => '',
                 "dependency" => Array('element' => "cardstyle", 'value' => array('customized')),
-                "description" => __("", 'vc_sidebyside_cq')
+                "description" => esc_attr__("", 'vc_sidebyside_cq')
               ),
 
               array(
                 "type" => "textfield",
-                "heading" => __("height of the whole element:", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("height of the whole element:", "vc_sidebyside_cq"),
                 "param_name" => "cardheight",
                 "value" => "",
-                "description" => __("Default is 200px. You can specify other value here.", "vc_sidebyside_cq")
+                "description" => esc_attr__("Default is 200px. You can specify other value here.", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("width of the whole element:", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("width of the whole element:", "vc_sidebyside_cq"),
                 "param_name" => "elementwidth",
                 "value" => "",
-                "description" => __("Default is 100%. You can specify other value here.", "vc_sidebyside_cq")
+                "description" => esc_attr__("Default is 100%. You can specify other value here.", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Resize the images to this width:", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("Resize the images to this width:", "vc_sidebyside_cq"),
                 "param_name" => "imagewidth",
                 "value" => "",
-                "description" => __("Specify a width here (for example 480), otherwise we will use the original image.", "vc_sidebyside_cq")
+                "description" => esc_attr__("Specify a width here (for example 480), otherwise we will use the original image.", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("font-size of the title (in card 1 and card 2):", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("font-size of the title (in card 1 and card 2):", "vc_sidebyside_cq"),
                 "param_name" => "titlesize",
                 "value" => "",
-                "description" => __("Default is 1.2em. You can specify other value here.", "vc_sidebyside_cq")
+                "description" => esc_attr__("Default is 1.2em. You can specify other value here.", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("font-size of the content: (in card 1 and card 2)", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("font-size of the content: (in card 1 and card 2)", "vc_sidebyside_cq"),
                 "param_name" => "contentsize",
                 "value" => "",
-                "description" => __("Default is 1em. You can specify other value here.", "vc_sidebyside_cq")
+                "description" => esc_attr__("Default is 1em. You can specify other value here.", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("width of the title and content (in card 1 and card 2):", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("width of the title and content (in card 1 and card 2):", "vc_sidebyside_cq"),
                 "param_name" => "contentwidth",
                 "value" => "",
-                "description" => __("Default is 90%. You can specify other value here.", "vc_sidebyside_cq")
+                "description" => esc_attr__("Default is 90%. You can specify other value here.", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("y offset for the Text follow the icon:", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("y offset for the Text follow the icon:", "vc_sidebyside_cq"),
                 "param_name" => "followyoffset",
                 "value" => "",
-                "description" => __("You may want to move the <strong>Text follow the icon</strong> above with some pixels to align the text with the icon. For example -5 will move it 5px above. Default is 0. You can specify a value here (without the px).", "vc_sidebyside_cq")
+                "description" => esc_attr__("You may want to move the Text follow the icon above with some pixels to align the text with the icon. For example -5 will move it 5px above. Default is 0. You can specify a value here (without the px).", "vc_sidebyside_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("CSS margin of the whole element:", "vc_sidebyside_cq"),
+                "heading" => esc_attr__("CSS margin of the whole element:", "vc_sidebyside_cq"),
                 "param_name" => "cardmargin",
                 "value" => "",
-                "description" => __("Default is margin: 12px auto 0 auto. You can specify other value here.", "vc_sidebyside_cq")
+                "description" => esc_attr__("Default is margin: 12px auto 0 auto. You can specify other value here.", "vc_sidebyside_cq")
               )
 
              )
           ));
-
-        }else{
-          // mapping for old version
-          vc_map(array(
-            "name" => __("Side by Side", 'vc_sidebyside_cq'),
-            "base" => "cq_vc_sidebyside",
-            "class" => "wpb_cq_vc_extension_sidebyside",
-            // "as_parent" => array('only' => 'cq_vc_sidebyside_item'),
-            "icon" => "cq_allinone_sidebyside",
-            "category" => __('Sike Extensions', 'js_composer'),
-            // "content_element" => false,
-            // "show_settings_on_create" => false,
-            'description' => __('Card with image, icon and text', 'js_composer'),
-            "params" => array(
-              array(
-                "type" => "dropdown",
-                "holder" => "",
-                "class" => "vc_sidebyside_cq",
-                "heading" => __("Choose the mode, display the card with:", "vc_sidebyside_cq"),
-                "param_name" => "card1avatar",
-                "value" => array("Text Only" => "none", "Image (with tooltip)" => "image", "Icon (Font Awesome icon)" => "icon"),
-                "group" => "Card 1",
-                "description" => __("", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "attach_image",
-                    "heading" => __("Card image:", "vc_sidebyside_cq"),
-                    "param_name" => "card1image",
-                    "value" => "",
-                    "dependency" => Array('element' => "card1avatar", 'value' => array('image')),
-                    "group" => "Card 1",
-                    "description" => __("Select image from media library.", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "textfield",
-                "heading" => __("Card icon:", "vc_sidebyside_cq"),
-                "param_name" => "card1icon",
-                "value" => "",
-                "dependency" => Array('element' => "card1avatar", 'value' => array('icon')),
-                "group" => "Card 1",
-                "description" => __("Support Font Awesome icon, for example <strong>fa-twitter</strong> will insert a Twitter icon. See all the available <a href='http://fortawesome.github.io/Font-Awesome/icons/' target='_blank'>Font Awesome icon</a>", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "colorpicker",
-                "holder" => "div",
-                "class" => "",
-                "heading" => __("Icon color", 'vc_sidebyside_cq'),
-                "param_name" => "card1iconcolor",
-                "value" => '',
-                "group" => "Card 1",
-                "description" => __("", 'vc_sidebyside_cq')
-              ),
-              array(
-                "type" => "textfield",
-                "heading" => __("Text follow the icon (optional):", "vc_sidebyside_cq"),
-                "param_name" => "card1icontext",
-                "value" => "",
-                "group" => "Card 1",
-                "dependency" => Array('element' => "card1avatar", 'value' => array('icon')),
-                "description" => __("", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "textfield",
-                "heading" => __("Size of the Font Awesome icon (and optional follow text):", "vc_sidebyside_cq"),
-                "param_name" => "card1iconsize",
-                "value" => "",
-                "group" => "Card 1",
-                "dependency" => Array('element' => "card1avatar", 'value' => array('icon')),
-                "description" => __("Default is 1.2em.", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "textfield",
-                "heading" => __("Card 1 title (optional):", "vc_sidebyside_cq"),
-                "param_name" => "card1title",
-                "value" => "",
-                "group" => "Card 1",
-                "description" => __("Will be displayed as <strong>tooltip</strong> in the image mode.", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "colorpicker",
-                "holder" => "div",
-                "class" => "",
-                "heading" => __("Title color", 'vc_sidebyside_cq'),
-                "param_name" => "card1titlecolor",
-                "value" => '',
-                "group" => "Card 1",
-                "description" => __("", 'vc_sidebyside_cq')
-              ),
-              array(
-                "type" => "textarea",
-                "heading" => __("Card 1 content (optional):", "vc_sidebyside_cq"),
-                "param_name" => "card1content",
-                "value" => "",
-                "group" => "Card 1",
-                "description" => __("", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "colorpicker",
-                "holder" => "div",
-                "class" => "",
-                "heading" => __("Content color", 'vc_sidebyside_cq'),
-                "param_name" => "card1contentcolor",
-                "value" => '',
-                "group" => "Card 1",
-                "description" => __("", 'vc_sidebyside_cq')
-              ),
-              array(
-                "type" => "textarea_raw_html",
-                "heading" => __("Divider text", "vc_sidebyside_cq"),
-                "param_name" => "divider",
-                "value" => "",
-                "group" => "Divider",
-                "description" => __("The divider in the center of the 2 cards. Support HTML here, for example &lt;i class=&#039;fa fa-twitter&#039;&gt;&lt;/i&gt; will insert a Twitter <a href='http://fortawesome.github.io/Font-Awesome/icons/' target='_blank'>Font Awesome icon</a>", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "dropdown",
-                "holder" => "",
-                "class" => "vc_sidebyside_cq",
-                "heading" => __("Divider background shape:", "vc_sidebyside_cq"),
-                "param_name" => "dividerborder",
-                "value" => array("circle" => "50%", "rounded" => "4px", "square" => "0"),
-                "group" => "Divider",
-                "description" => __("", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "textfield",
-                "heading" => __("font-size of the divider:", "vc_sidebyside_cq"),
-                "param_name" => "dividerfontsize",
-                "value" => "",
-                "group" => "Divider",
-                "description" => __("Default is 1em.", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "textfield",
-                "heading" => __("width of the divider:", "vc_sidebyside_cq"),
-                "param_name" => "dividerwidth",
-                "value" => "",
-                "group" => "Divider",
-                "description" => __("Default is 36px.", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "textfield",
-                "heading" => __("height of the divider:", "vc_sidebyside_cq"),
-                "param_name" => "dividerheight",
-                "value" => "",
-                "group" => "Divider",
-                "description" => __("Default is 36px.", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "colorpicker",
-                "holder" => "div",
-                "class" => "",
-                "heading" => __("Divider background", 'vc_sidebyside_cq'),
-                "param_name" => "dividerbg",
-                "value" => '#fff',
-                "group" => "Divider",
-                "description" => __("", 'vc_sidebyside_cq')
-              ),
-              array(
-                "type" => "colorpicker",
-                "holder" => "div",
-                "class" => "",
-                "heading" => __("Divider text color", 'vc_sidebyside_cq'),
-                "param_name" => "dividercolor",
-                "value" => '#333',
-                "group" => "Divider",
-                "description" => __("", 'vc_sidebyside_cq')
-              ),
-              array(
-                "type" => "dropdown",
-                "holder" => "",
-                "class" => "vc_sidebyside_cq",
-                "heading" => __("Apply border in the divider?", "vc_sidebyside_cq"),
-                "param_name" => "isgap",
-                "value" => array("No" => "", "Yes" => "cq-isgap"),
-                "group" => "Divider",
-                "description" => __("", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "colorpicker",
-                "holder" => "div",
-                "class" => "",
-                "heading" => __("Color of the divider border:", 'vc_sidebyside_cq'),
-                "param_name" => "gapcolor",
-                "value" => '',
-                "group" => "Divider",
-                "dependency" => Array('element' => "isgap", 'value' => array('cq-isgap')),
-                "description" => __("The color of the gap between 2 cards, default is white.", 'vc_sidebyside_cq')
-              ),
-              array(
-                "type" => "dropdown",
-                "holder" => "",
-                "class" => "vc_sidebyside_cq",
-                "heading" => __("Choose the mode, display the card with:", "vc_sidebyside_cq"),
-                "param_name" => "card2avatar",
-                "value" => array("Text Only" => "none", "Image (with tooltip)" => "image", "Icon (Font Awesome icon)" => "icon"),
-                "group" => "Card 2",
-                "description" => __("", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "attach_image",
-                "heading" => __("Card image:", "vc_sidebyside_cq"),
-                "param_name" => "card2image",
-                "value" => "",
-                "dependency" => Array('element' => "card2avatar", 'value' => array('image')),
-                "group" => "Card 2",
-                "description" => __("Select image from media library.", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "textfield",
-                "heading" => __("Font Awesome icon:", "vc_sidebyside_cq"),
-                "param_name" => "card2icon",
-                "value" => "",
-                "dependency" => Array('element' => "card2avatar", 'value' => array('icon')),
-                "group" => "Card 2",
-                "description" => __("For example fa-twitter will insert a Twitter <a href='http://fortawesome.github.io/Font-Awesome/icons/' target='_blank'>Font Awesome icon</a>", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "colorpicker",
-                "holder" => "div",
-                "class" => "",
-                "heading" => __("Icon color", 'vc_sidebyside_cq'),
-                "param_name" => "card2iconcolor",
-                "value" => '',
-                "group" => "Card 2",
-                "description" => __("", 'vc_sidebyside_cq')
-              ),
-              array(
-                "type" => "textfield",
-                "heading" => __("Text follow the icon (optional):", "vc_sidebyside_cq"),
-                "param_name" => "card2icontext",
-                "value" => "",
-                "group" => "Card 2",
-                "dependency" => Array('element' => "card2avatar", 'value' => array('icon')),
-                "description" => __("", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "textfield",
-                "heading" => __("Size of the Font Awesome icon (and optional follow text):", "vc_sidebyside_cq"),
-                "param_name" => "card2iconsize",
-                "value" => "",
-                "group" => "Card 2",
-                "dependency" => Array('element' => "card2avatar", 'value' => array('icon')),
-                "description" => __("Default is 1.2em.", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "textfield",
-                "heading" => __("Card 2 title (optional):", "vc_sidebyside_cq"),
-                "param_name" => "card2title",
-                "value" => "",
-                "group" => "Card 2",
-                "description" => __("Will be displayed as <strong>tooltip</strong> in the image mode.", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "colorpicker",
-                "holder" => "div",
-                "class" => "",
-                "heading" => __("Title color", 'vc_sidebyside_cq'),
-                "param_name" => "card2titlecolor",
-                "value" => '',
-                "group" => "Card 2",
-                "description" => __("", 'vc_sidebyside_cq')
-              ),
-              array(
-                "type" => "textarea",
-                "heading" => __("Card 2 content (optional):", "vc_sidebyside_cq"),
-                "param_name" => "card2content",
-                "value" => "",
-                "group" => "Card 2",
-                "description" => __("", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "colorpicker",
-                "holder" => "div",
-                "class" => "",
-                "heading" => __("Content color", 'vc_sidebyside_cq'),
-                "param_name" => "card2contentcolor",
-                "value" => '',
-                "group" => "Card 2",
-                "description" => __("", 'vc_sidebyside_cq')
-              ),
-              array(
-                'type' => 'vc_link',
-                'heading' => __( 'URL (Optional link for this Card)', 'vc_sidebyside_cq' ),
-                'param_name' => 'card1link',
-                'group' => 'Card 1',
-                'description' => __( '', 'vc_sidebyside_cq' )
-              ),
-              array(
-                'type' => 'vc_link',
-                'heading' => __( 'URL (Optional link for this Card)', 'vc_sidebyside_cq' ),
-                'param_name' => 'card2link',
-                'group' => 'Card 2',
-                'description' => __( '', 'vc_sidebyside_cq' )
-              ),
-              array(
-                "type" => "dropdown",
-                "holder" => "",
-                "class" => "vc_sidebyside_cq",
-                "heading" => __("Display the card, side by side from:", "vc_sidebyside_cq"),
-                "param_name" => "carddirection",
-                "value" => array("left to right" => "leftright", "top to bottom" => "topbottom"),
-                "description" => __("", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "dropdown",
-                "holder" => "",
-                "class" => "vc_sidebyside_cq",
-                "heading" => __("Display the card in shape:", "vc_sidebyside_cq"),
-                "param_name" => "cardshape",
-                "value" => array("Square" => "", "Rounded" => "cq-rounded"),
-                "description" => __("", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "dropdown",
-                "holder" => "",
-                "class" => "vc_sidebyside_cq",
-                "heading" => __("Card color style:", "vc_sidebyside_cq"),
-                "param_name" => "cardstyle",
-                "value" => array("Grape Fruit" => "grapefruit", "Bitter Sweet" => "bittersweet", "Sunflower" => "sunflower", "Grass" => "grass", "Mint" => "mint", "Aqua" => "aqua", "Blue Jeans" => "bluejeans", "Lavender" => "lavender", "Pink Rose" => "pinkrose", "Light Gray" => "lightgray", "Medium Gray" => "mediumgray", "Dark Gray" => "darkgray", "Customized color:" => "customized"),
-                'std' => 'mediumgray',
-                "description" => __("", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "dropdown",
-                "holder" => "",
-                "class" => "vc_sidebyside_cq",
-                "heading" => __("Tooltip position:", "vc_sidebyside_cq"),
-                "param_name" => "tooltipposition",
-                "value" => array("top" => "top", "bottom" => "bottom", "left" => "left", "right" => "right"),
-                "description" => __("Tooltip only available with the image mode.", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "colorpicker",
-                "holder" => "div",
-                "class" => "",
-                "heading" => __("Card 1 background", 'vc_sidebyside_cq'),
-                "param_name" => "card1bg",
-                "value" => '',
-                "dependency" => Array('element' => "cardstyle", 'value' => array('customized')),
-                "description" => __("", 'vc_sidebyside_cq')
-              ),
-              array(
-                "type" => "colorpicker",
-                "holder" => "div",
-                "class" => "",
-                "heading" => __("Card 2 background", 'vc_sidebyside_cq'),
-                "param_name" => "card2bg",
-                "value" => '',
-                "dependency" => Array('element' => "cardstyle", 'value' => array('customized')),
-                "description" => __("", 'vc_sidebyside_cq')
-              ),
-
-              array(
-                "type" => "textfield",
-                "heading" => __("height of the whole element:", "vc_sidebyside_cq"),
-                "param_name" => "cardheight",
-                "value" => "",
-                "description" => __("Default is 200px. You can specify other value here.", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "textfield",
-                "heading" => __("width of the whole element:", "vc_sidebyside_cq"),
-                "param_name" => "elementwidth",
-                "value" => "",
-                "description" => __("Default is 100%. You can specify other value here.", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "textfield",
-                "heading" => __("Resize the images to this width:", "vc_sidebyside_cq"),
-                "param_name" => "imagewidth",
-                "value" => "",
-                "description" => __("Specify a width here (for example 480), otherwise we will use the original image.", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "textfield",
-                "heading" => __("font-size of the title (in card 1 and card 2):", "vc_sidebyside_cq"),
-                "param_name" => "titlesize",
-                "value" => "",
-                "description" => __("Default is 1.2em. You can specify other value here.", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "textfield",
-                "heading" => __("font-size of the content: (in card 1 and card 2)", "vc_sidebyside_cq"),
-                "param_name" => "contentsize",
-                "value" => "",
-                "description" => __("Default is 1em. You can specify other value here.", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "textfield",
-                "heading" => __("width of the title and content (in card 1 and card 2):", "vc_sidebyside_cq"),
-                "param_name" => "contentwidth",
-                "value" => "",
-                "description" => __("Default is 90%. You can specify other value here.", "vc_sidebyside_cq")
-              ),
-              array(
-                "type" => "textfield",
-                "heading" => __("CSS margin of the whole element:", "vc_sidebyside_cq"),
-                "param_name" => "cardmargin",
-                "value" => "",
-                "description" => __("Default is margin: 12px auto 0 auto. You can specify other value here.", "vc_sidebyside_cq")
-              )
-
-             )
-          ));
-
-        }
 
         add_shortcode('cq_vc_sidebyside', array($this,'cq_vc_sidebyside_func'));
 
       }
 
-      function cq_vc_sidebyside_func($atts, $content=null, $tag) {
+      function cq_vc_sidebyside_func($atts, $content=null, $tag=null) {
           $icon = $dividericon = $new_card1icon = $new_card2icon = $card1icon = $icon_fontawesome = $icon_openiconic = $icon_typicons = $icon_entypoicons = $icon_linecons = $icon_material = $divider_icon_fontawesome = $divider_icon_openiconic = $divider_icon_typicons = $divider_icon_entypoicons = $divider_icon_linecons = $divider_icon_material = $card2_icon_fontawesome = $card2_icon_openiconic = $card2_icon_typicons = $card2_icon_entypoicons = $card2_icon_linecons = $card2_icon_material = '';
           extract(shortcode_atts(array(
             'new_card1icon' => 'fontawesome',
@@ -1264,7 +836,6 @@ if (!class_exists('VC_Extensions_SideBySide')) {
             "cardmargin" => '',
             "tooltipposition" => 'top',
             "imagewidth" => '',
-            // "followtextcolor" => '',
             "cardshape" => '',
             "isgap" => '',
             "gapcolor" => '',
@@ -1308,7 +879,7 @@ if (!class_exists('VC_Extensions_SideBySide')) {
           $output .= '<div class="cq-sidebyside-content '.$isgap.' cq-sidecontent-1" data-cardtitle="'.$card1title.'" data-cardavatar="'.$card1avatar.'" data-iconcolor="'.$card1iconcolor.'">';
 
           $card_image_temp1 = "";
-          $card1image_url = $card1image_full[0];
+          $card1image_url = $card1image_full[0]??"";
           if($imagewidth!=""){
               if(function_exists('wpb_resize')){
                   $card_image_temp1 = wpb_resize($card1image, null, $imagewidth, null);
@@ -1317,16 +888,11 @@ if (!class_exists('VC_Extensions_SideBySide')) {
               }
           }
 
-          // if($imagewidth!=""){
-              $output .= '<div class="cq-sidebyside-paragraphy"  data-image="'.$card1image_url.'">';
-          // }else{
-              // $output .= '<div class="cq-sidebyside-paragraphy"  data-image="'.$card1image_full[0].'">';
-          // }
+          $output .= '<div class="cq-sidebyside-paragraphy"  data-image="'.$card1image_url.'">';
           if($card1link["url"]!=="") $output .= '<a href="'.$card1link["url"].'" title="'.$card1link["title"].'" target="'.$card1link["target"].'" class="cq-sidebyside-link">';
           if($card1avatar=="image"){
                 if($card1image_full[0]!=""){
                       $output .= '<div class="cq-sidebyside-imgcontainer">';
-                      // $output .= '<img src="'.aq_resize($card1image_full[0], 500*2, 320*2, true, true, true).'" class="cq-sidebyside-image" width="500" height="320" />';
                       $output .= '</div>';
                 }
           }else if($card1avatar=="icon"){
@@ -1365,11 +931,11 @@ if (!class_exists('VC_Extensions_SideBySide')) {
           }
           $output .= '<div class="cq-sidebyside-content '.$isgap.' cq-sidecontent-2" data-cardtitle="'.$card2title.'" data-cardavatar="'.$card2avatar.'" data-iconcolor="'.$card2iconcolor.'">';
           $card_image_temp2 = "";
-          $card2image_url = $card2image_full[0];
+          $card2image_url = $card2image_full[0] ?? "";
           if($imagewidth!=""){
               if(function_exists('wpb_resize')){
                   $card_image_temp2 = wpb_resize($card2image, null, $imagewidth, null);
-                  $card2image_url = $card_image_temp2['url'];
+                  $card2image_url = $card_image_temp2['url'] ?? "";
                   if($card2image_url=="") $card2image_url = $card1image_full[0];
               }
           }
@@ -1377,13 +943,12 @@ if (!class_exists('VC_Extensions_SideBySide')) {
           if($imagewidth!=""){
               $output .= '<div class="cq-sidebyside-paragraphy" data-image="'.$card2image_url.'">';
           }else{
-              $output .= '<div class="cq-sidebyside-paragraphy" data-image="'.$card2image_full[0].'">';
+              $output .= '<div class="cq-sidebyside-paragraphy" data-image="'.($card2image_full[0]??"").'">';
           }
           if($card2link["url"]!=="") $output .= '<a href="'.$card2link["url"].'" title="'.$card2link["title"].'" target="'.$card2link["target"].'" class="cq-sidebyside-link">';
           if($card2avatar=="image"){
                 if($card2image_full[0]!=""){
                       $output .= '<div class="cq-sidebyside-imgcontainer">';
-                      // $output .= '<img src="'.aq_resize($card2image_full[0], 500*2, 320*2, true, true, true).'" class="cq-sidebyside-image" width="500" height="320" />';
                       $output .= '</div>';
                 }
           }else if($card2avatar=="icon"){
@@ -1394,7 +959,6 @@ if (!class_exists('VC_Extensions_SideBySide')) {
                 $output .= '<i class="fa '.$card2icon.' cq-sidebyside-cardicon"></i>';
               }
 
-              // $output .= '<i class="fa '.$card2icon.' cq-sidebyside-cardicon"></i>';
               $output .= ' <span class="cq-sidebyside-icontext">';
               $output .= $card2icontext;
               $output .= '</span>';

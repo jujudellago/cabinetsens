@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+  "use strict";
   $(".cq-shadowcard").each(function(index) {
         var _card = $( '.cq-shadowcard-item', $(this) );
         var _tolerance = parseInt($(this).data('tolerance'), 10);

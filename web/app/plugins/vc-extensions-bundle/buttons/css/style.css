@@ -28,7 +28,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   background-color: rgba(255,255,255,0.2);
 }
 .cqbtn-4 {
-  /*background-color: #E14782;*/
   background: #E14782;
 }
 .cqbtn-4 .round {
@@ -54,9 +53,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   border-radius: 30px;
   padding: 12px 53px 12px 23px;
   color: #fff;
-  /*text-transform: uppercase;*/
-  /*font-family: sans-serif;*/
-  /*font-weight: bold;*/
   position: relative;
   -moz-transition: all 0.3s;
   -o-transition: all 0.3s;
@@ -65,17 +61,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   display: inline-block;
 }
 
-/*@-moz-document url-prefix() {
-  .cq-buttoncontainer a {
-    padding: 7px 53px 7px 23px;
-    color: #fff;
-  }
-  .cq-buttoncontainer.left div a {
-    padding: 7px 23px 7px 53px;
-    color: #fff;
-  }
-
- }*/
 
 .cq-buttoncontainer a:visited{
   color: #FFF;
@@ -126,8 +111,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   margin: 0;
   padding: 0;
   font-size: 14px;
-  /*line-height: 1.45;*/
-  /*line-height: 1.5rem;*/
   line-height: 14px;
 }
 
@@ -169,15 +152,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   overflow: hidden;
 }
 .animatetype-3 a.cqbtn-1:after {
-  /*background-color: #f59965;*/
   background-color: rgba(255,255,255,0.2);
 }
 .animatetype-3 a.cqbtn-2:after {
-  /*background-color: #00c4eb;*/
   background-color: rgba(255,255,255,0.2);
 }
 .animatetype-3 a.cqbtn-3:after {
-  /*background-color: #737478;*/
   background-color: rgba(255,255,255,0.2);
 }
 .animatetype-3 a:after {

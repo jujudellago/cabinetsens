@@ -3,7 +3,6 @@
 	position: relative;
 	padding: 0;
 	margin: 0;
-	/*height: 100vh;*/
 	height: 320px;
 }
 .cq-accordioncover-item {
@@ -11,7 +10,6 @@
 	float: left;
 	width: 25%;
 	height: 100%;
-	/*height: 240px;*/
 	background: #efefef;
 	overflow: hidden;
 }

@@ -1,16 +1,13 @@
 jQuery(document).ready(function($) {
+  "use strict";
   $('.cq-magnify-image').each(function(index) {
     var _radius = $(this).data('radius');
     var _borderSize = $(this).data('bordersize');
     var _borderColor = $(this).data('bordercolor');
-    // var _width = $(this).data('width');
     var _filter = $(this).data('filter');
     var _glassFilter = $(this).data('glassfilter');
     var _imageFilter = $(this).data('imagefilter');
-    // var _imageFilter = $(this).data('imagefilter');
     var _pluginURL = $(this).data('pluginurl');
-    // $(this).parent('.cq-magnify').css('width', _width);
-    /*css({'width': _width }).*/
     $(this).animate({opacity: 1}, 300).cq_magnify({
       radius: _radius,
       x: $(this).data('x'),
@@ -22,7 +19,6 @@ jQuery(document).ready(function($) {
         '-moz-filter': 'blur(2px)',
         '-ms-filter': 'blur(2px)',
         '-o-filter': 'blur(2px)',
-        // 'filter':'progid:DXImageTransform.Microsoft.Blur(PixelRadius="2")',
         'filter': 'url('+_pluginURL + '/css/blur.svg#blur)'
       });
     }else if(_filter=="gray"){

@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-
+    "use strict";
     $('.cq-flipboxv2').each(function(index) {
         var _this = $(this);
         var _avatarwidth = parseInt($(this).data('avatarwidth'), 10);

@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-sidebyside-container').each(function(index) {
         var _this = $(this);
         var _divider = $(this).find('.cq-sidebyside-divider');
@@ -29,7 +30,6 @@ jQuery(document).ready(function($) {
         var _isgap = $(this).data('isgap');
         var _gapcolor = $(this).data('gapcolor');
         var _followyoffset = parseInt($(this).data('followyoffset'));
-        // var _followtextcolor = $(this).data('followtextcolor');
 
 
         var _dividerbg = $(this).data('dividerbg')
@@ -58,9 +58,6 @@ jQuery(document).ready(function($) {
             var _avatar = $(this).data('cardavatar');
             var _iconcolor = $(this).data('iconcolor');
 
-            // if(_followtextcolor!=""){
-                // $(this).find('.cq-sidebyside-icontext').css('color', _followtextcolor);
-            // }
             if(_iconcolor!=""){
                 $(this).find('.cq-sidebyside-cardicon, .cq-sidebyside-icontext').css('color', _iconcolor);
             }
@@ -77,10 +74,6 @@ jQuery(document).ready(function($) {
                 $(this).tooltipster({
                   content: _title,
                   position: _tooltipposition,
-                  // autoClose: false,
-                  // offsetX: _offsetx,
-                  // offsetY: _offsety,
-                  // maxWidth: _maxwidth,
                   delay: 100,
                   speed: 300,
                   touchDevices: false,
@@ -88,7 +81,6 @@ jQuery(document).ready(function($) {
                   animation: 'grow',
                   theme: 'tooltipster-shadow',
                   contentAsHTML: true
-                  // theme   : 'tooltipster-' + _tooltipstyle,
                 });
 
             }
@@ -130,7 +122,6 @@ jQuery(document).ready(function($) {
         });
         $(this).find('.cq-sidecontent-2 .cq-sidebyside-cardicon').css({
             'font-size': _card2iconsize
-            // 'line-height': _card2iconsize
         });
 
         $(this).find('.cq-sidebyside-divider').css({

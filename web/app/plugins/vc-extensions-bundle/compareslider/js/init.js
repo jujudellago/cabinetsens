@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-compareslider').each(function(index) {
         var _this = $(this);
         var _autoslide = parseInt($(this).data('autoslide'))*1000;
@@ -111,16 +112,12 @@ jQuery(document).ready(function($) {
                 if(_currentMenu) _currentMenu.removeClass('active');
                 _carousel.trigger('owl.goTo', [_index]);
                 _currentMenu = $(this).addClass('active');
-                // window.setTimeout(function() {
-                //     _isMoving = false;
-                // }, 600);
             }
             event.preventDefault();
         }
 
         $(window).on('resize', function(event) {
             $('.cq-compareslider-menu li', _this).each(function(index) {
-                // if(_this.width()<=480){
                 if($(window).width()<=480){
                     $(this).addClass('smallscreen');
                     if(_menupadding!=""){

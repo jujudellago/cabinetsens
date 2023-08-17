@@ -22,8 +22,6 @@ ul.cq-dagallery li {
   border-radius: 4px;
   list-style: none;
   float: left;
-  /*width: 300px;*/
-  /*height: 180px;*/
   margin: 5px;
   padding: 0;
   -webkit-perspective: 800px;
@@ -48,9 +46,7 @@ ul.cq-dagallery li p {
 ul.cq-dagallery li .normal {
   width: 100%;
   height: 100%;
-  /*background-color: #ecf0f1;*/
   color: rgba(52, 73, 94, 0.6);
-  /*box-shadow: inset 0 2px 20px #e6ebed;*/
   text-align: center;
   font-size: 50px;
   line-height: 160px;

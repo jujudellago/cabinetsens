@@ -12,7 +12,6 @@ a.cq-twoface-link{
 
 .cq-twoface-box {
     position: relative;
-    /*margin: 100px auto 0;*/
     height: 200px;
     width: 90%;
     margin: 0 auto;
@@ -23,9 +22,6 @@ a.cq-twoface-link{
     -moz-transition: -moz-transform .4s ease-in-out;
     -ms-transition: -webkit-transform .4s ease-in-out;
     transition: transform .4s ease-in-out;
-    /*-webkit-backface-visibility: hidden;*/
-    /*-moz-backface-visibility: hidden;*/
-    /*backface-visibility: hidden;*/
 }
 
 .cq-face-item {
@@ -67,8 +63,6 @@ a.cq-twoface-link{
     -ms-transform: translateZ(100px);
     transform: translateZ(100px);
     background-color: #AAB2BD;
-    /*opacity: 0;*/
-    /*border: 1px dashed #333;*/
 }
 .cq-face-content a{
   color: #fff;
@@ -108,11 +102,7 @@ a.cq-twoface-link{
     -moz-transform:rotateX(0deg);
     transform:rotateX(0deg);
 }
-/*
-.cq-twoface-box:hover{
-    -webkit-transform:rotateX(90deg);
-}
-*/
+
 
 .cq-twoface-box .cq-face-left {
     -webkit-transform: translateZ(110px);
@@ -120,7 +110,6 @@ a.cq-twoface-link{
     -ms-transform: translateZ(110px);
     transform: translateZ(110px);
     background-color: #AAB2BD;
-    /*opacity: 0deg;*/
 }
 
 .cq-twoface-box .cq-face-right {

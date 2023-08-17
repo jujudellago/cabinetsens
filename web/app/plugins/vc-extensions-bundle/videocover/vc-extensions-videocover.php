@@ -6,11 +6,8 @@ if (!class_exists('VC_Extensions_VideoCover')) {
             "name" => __("Video Cover", 'vc_videocover_cq'),
             "base" => "cq_vc_videocover",
             "class" => "wpb_cq_vc_extension_videocover",
-            // "as_parent" => array('only' => 'cq_vc_videocover_item'),
             "icon" => "cq_allinone_videocover",
             "category" => __('Sike Extensions', 'js_composer'),
-            // "content_element" => false,
-            // "show_settings_on_create" => false,
             'description' => __('Lightbox video', 'js_composer'),
             "params" => array(
               array(
@@ -99,7 +96,7 @@ if (!class_exists('VC_Extensions_VideoCover')) {
                 'value' => 'fa fa-youtube-play', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
                 ),
                 'dependency' => array(
                   'element' => 'covericon',
@@ -116,7 +113,7 @@ if (!class_exists('VC_Extensions_VideoCover')) {
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'openiconic',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'covericon',
@@ -133,7 +130,7 @@ if (!class_exists('VC_Extensions_VideoCover')) {
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'typicons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'covericon',
@@ -150,7 +147,7 @@ if (!class_exists('VC_Extensions_VideoCover')) {
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'entypo',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 "group" => "Icon",
                 'dependency' => array(
@@ -166,7 +163,7 @@ if (!class_exists('VC_Extensions_VideoCover')) {
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'linecons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'covericon',
@@ -185,7 +182,7 @@ if (!class_exists('VC_Extensions_VideoCover')) {
                   'emptyIcon' => false,
                   // default true, display an "EMPTY" icon?
                   'type' => 'material',
-                  'iconsPerPage' => 4000,
+                  'iconsPerPage' => 100,
                   // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
@@ -222,7 +219,7 @@ if (!class_exists('VC_Extensions_VideoCover')) {
                 "param_name" => "iconsize",
                 "value" => "",
                 "group" => "Icon",
-                "description" => __("The icon default is <strong>2em</strong>, the button text default is <strong>1em</strong>. Specify other value as you like here.", "vc_videocover_cq")
+                "description" => __("The icon default is 2em, the button text default is 1em. Specify other value as you like here.", "vc_videocover_cq")
               ),
               array(
                 "type" => "textfield",
@@ -231,7 +228,7 @@ if (!class_exists('VC_Extensions_VideoCover')) {
                 "param_name" => "iconbgsize",
                 "value" => "",
                 "group" => "Icon",
-                "description" => __("The icon default is <strong>64</strong> (in pixel). Specify other value as you like here, like <strong>80</strong>.", "vc_videocover_cq")
+                "description" => __("The icon default is 64 (in pixel). Specify other value as you like here, like 80.", "vc_videocover_cq")
               ),
               array(
                 "type" => "colorpicker",
@@ -282,7 +279,7 @@ if (!class_exists('VC_Extensions_VideoCover')) {
                 "value" => "",
                 'dependency' => array('element' => 'linktype', 'value' => 'video', ),
                 'group' => 'Link',
-                "description" => __("Just copy and paste the page URL of the <strong>YouTube</strong> or <strong>Vimeo</strong> video, something like <strong>https://www.youtube.com/watch?v=pNSKQ9Qp36M&autoplay=1</strong> or <strong>https://vimeo.com/127081676?autoplay=1</strong>. Add the <strong>autoplay=1</strong> in the URL to auto play the video.", "vc_videocover_cq")
+                "description" => __("Just copy and paste the page URL of the YouTube or Vimeo video, something like https://www.youtube.com/watch?v=pNSKQ9Qp36M&autoplay=1 or https://vimeo.com/127081676?autoplay=1. Add the autoplay=1 in the URL to auto play the video.", "vc_videocover_cq")
               ),
               array(
                 "type" => "textfield",
@@ -291,7 +288,7 @@ if (!class_exists('VC_Extensions_VideoCover')) {
                 "value" => "",
                 'dependency' => array('element' => 'linktype', 'value' => 'video', ),
                 'group' => 'Link',
-                "description" => __("The width of lightbox video. Default is <strong>800</strong>. You can specify other value here.", "vc_videocover_cq")
+                "description" => __("The width of lightbox video. Default is 800. You can specify other value here.", "vc_videocover_cq")
               ),
               array(
                 "type" => "textarea",
@@ -309,7 +306,7 @@ if (!class_exists('VC_Extensions_VideoCover')) {
                 "value" => "",
                 'group' => 'Link',
                 'dependency' => array('element' => 'linktype', 'value' => 'video', ),
-                "description" => __("If you wish to open the video lightbox as a gallery, you can specify a unique gallery string for each one here. For example, <strong>video_gallery_1</strong>.", "vc_videocover_cq")
+                "description" => __("If you wish to open the video lightbox as a gallery, you can specify a unique gallery string for each one here. For example, video_gallery_1.", "vc_videocover_cq")
               ),
               array(
                 "type" => "textfield",
@@ -333,7 +330,7 @@ if (!class_exists('VC_Extensions_VideoCover')) {
 
       }
 
-      function cq_vc_videocover_func($atts, $content=null, $tag) {
+      function cq_vc_videocover_func($atts, $content=null, $tag=null) {
           $covericon = $icon_fontawesome = $icon_openiconic = $icon_typicons = $icon_entypo = $icon_linecons = $icon_material = '';
           extract(shortcode_atts(array(
             "icon_fontawesome" => 'fa fa-youtube-play',
@@ -370,8 +367,6 @@ if (!class_exists('VC_Extensions_VideoCover')) {
           if(version_compare(WPB_VC_VERSION,  "4.4")>= 0){
             vc_icon_element_fonts_enqueue($covericon);
           }else{
-            // wp_register_style( 'font-awesome', plugins_url('../faanimation/css/font-awesome.min.css', __FILE__) );
-            // wp_enqueue_style( 'font-awesome' );
           }
 
 
@@ -413,7 +408,7 @@ if (!class_exists('VC_Extensions_VideoCover')) {
           $image_start_str .= '<div class="cq-videocover '.$extraclass.'" data-iconsize="'.$iconsize.'" data-iconbgsize="'.$iconbgsize.'" data-iconcolor="'.$iconcolor.'" data-iconbgcolor="'.$iconbgcolor.'" data-tooltip="'.$imagetooltip.'" data-iconposition="'.$iconposition.'">';
 
 
-          if($videoimage_full[0]!="") {
+          if(($videoimage_full[0]??"")!="") {
               $image_temp = $thumbnail = "";
               $thumbnail = $videoimage_full[0];
               $attachment = get_post($videoimage);
@@ -425,11 +420,7 @@ if (!class_exists('VC_Extensions_VideoCover')) {
                   }
               }
 
-              // if($resizecoverimage=="yes"&&$coverimagewidth!=""){
-                  $image_start_str .= '<img src="'.$thumbnail.'" alt="'.get_post_meta($attachment->ID, '_wp_attachment_image_alt', true ).'" class="cq-videocover-img '.$imageshape.'"  />';
-              // }else{
-                // $output .= '<img src="'.$videoimage_full[0].'" class="cq-videocover-img '.$imageshape.'"  />';
-              // }
+              $image_start_str .= '<img src="'.$thumbnail.'" alt="'.get_post_meta($attachment->ID, '_wp_attachment_image_alt', true ).'" class="cq-videocover-img '.$imageshape.'"  />';
           }
           if(version_compare(WPB_VC_VERSION,  "4.4")>=0){
             if($overlaytype=="icon"){

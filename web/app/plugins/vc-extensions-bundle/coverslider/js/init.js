@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-coverslider').each(function(index, el) {
         var _this = $(this);
         var _imageMaxHeight = $(this).data('imagemaxheight');
@@ -18,14 +19,6 @@ jQuery(document).ready(function($) {
         if(_contentbackground!=""){
             $('.cq-coverslider-area', _this).css('background', _contentbackground);
         }
-
-        // if(_imageMaxHeight&&_imageMaxHeight!=""){
-        //     _cover.css({
-        //         'overflow': 'hidden',
-        //         'max-height': _imageMaxHeight
-        //     });
-        // }
-
 
 
         var _autoplay = false;
@@ -47,13 +40,6 @@ jQuery(document).ready(function($) {
             draggable: false,
             swipe: false,
             asNavFor: $('.cq-coverslider-content', _this),
-            // onBeforeChange: function(event){
-            //     var _index = _imagecarousel.slickCurrentSlide();
-            //     console.log('index', _index);
-            //     _textcarousel.slick('slickGoTo', _index);
-            // },
-            // easing: 'easeInOutExpo',
-            // cssEase: 'cubic-bezier(1.000, 0.000, 0.000, 1.000)',
             cssEase: 'cubic-bezier(0.645, 0.045, 0.355, 1.000)',
             prevArrow: $('.coverslider-navigation-prev', _this),
             nextArrow: $('.coverslider-navigation-next', _this),
@@ -61,9 +47,6 @@ jQuery(document).ready(function($) {
             slidesToScroll: 1
         });
         var _textcarousel = $('.cq-coverslider-content', _this).slick({
-            // arrow: true,
-            // dots: true,
-            // rtl: true,
             infinite: true,
             adaptiveHeight: true,
             slidesToShow: 1,
@@ -73,26 +56,11 @@ jQuery(document).ready(function($) {
             swipe: false,
             speed: 800,
             asNavFor: $('.cq-coverslider-itemcontainer', _this),
-
             prevArrow: $('.coverslider-navigation-prev', _this),
             nextArrow: $('.coverslider-navigation-next', _this),
-
-            // cssEase: 'cubic-bezier(1.000, 0.000, 0.000, 1.000)',
-            // autoplaySpeed: _autoplayspeed,
-            // autoplaySpeed: 3000,
             slidesToScroll: 1
         });
 
-
-        // $('.cq-coverslider-coveritem', _this).each(function(index) {
-        //     $(this).css({
-        //        // 'left' : index * _itemWidth,
-        //        'height': '300px',
-        //        'background-size': 'cover',
-        //        'background': 'url(' + $(this).data('image') + ') no-repeat',
-        //     });
-        //     _itemNum++;
-        // });
 
 
         $('a.cq-coverslider-lightbox', _this).each(function() {
@@ -101,27 +69,10 @@ jQuery(document).ready(function($) {
             });
         });
 
-        // $('a.cq-coverslider-lightbox', _this).on('click', function(event) {
-        //     $(this).attr('rel', 'cq-coverslider-gallery'+_index).boxer({
-        //         fixed : true
-        //     });
-        // });
 
         _itemNum = $('.cq-coverslider-image', _this).length;
 
         var _currentItem = 0;
-
-        // _imagecarousel.on('beforeChange', function(event, slick, currentSlide, nextSlide){
-        //     // _textcarousel.slick('slickGoTo', nextSlide);
-        //     _textcarousel.slickGoTo(nextSlide)
-        // });
-
-
-        // _imagecarousel.on('afterChange', function(event, slick, currentSlide, nextSlide){
-        //     $('.coverslider-navigation-next', _this).on('click', function(event) {
-        //         _imagecarousel.slick("slickNext");
-        //     });
-        // })
 
         $('.cq-coverslider-contentitem', _this).each(function() {
             if($(this).is(':empty')){
@@ -130,9 +81,6 @@ jQuery(document).ready(function($) {
                     'padding-bottom': '0'
                 });
             }else{
-                // $(this).css({
-                    // 'padding': '20px 16px 0px 16px'
-                // });
             }
         });
 
@@ -143,22 +91,7 @@ jQuery(document).ready(function($) {
         var _prevBtn = $('.coverslider-navigation-prev', _this);
         var _nextBtn = $('.coverslider-navigation-next', _this);
 
-        // if(!$('.cq-coverslider-image', _this)[0]){
-        //     _prevBtn.on('click', function(event) {
-        //         _textcarousel.slick("slickPrev");
-        //     })
-        //     _nextBtn.on('click', function(event) {
-        //         _textcarousel.slick("slickNext");
-        //     })
-        // }else{
-        //     _nextBtn.on('click', function(event) {
-        //         _imagecarousel.slick("slickNext");
-        //     });
-        //     _prevBtn.on('click', function(event) {
-        //         _imagecarousel.slick("slickPrev");
-        //     });
 
-        // }
         if(_buttonbackground!=""){
             _nextBtn.css('background', _buttonbackground);
             _prevBtn.css('background', _buttonbackground);

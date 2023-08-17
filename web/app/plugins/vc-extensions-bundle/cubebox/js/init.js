@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+  "use strict";
    function _is_msie() {
       var ua = window.navigator.userAgent;
       var msie = ua.indexOf("MSIE ");
@@ -16,7 +17,6 @@ jQuery(document).ready(function($) {
     var _frontbg = $(this).data('frontbg');
     var _frontavatar = $(this).data('frontavatar');
     var _frontfullimage = $(this).data('frontfullimage');
-    // var _frontfullimagerepeat = $(this).data('frontfullimagerepeat');
     var _backavatar = $(this).data('backavatar');
     var _backfullimage = $(this).data('backfullimage');
     var _backbg = $(this).data('backbg');
@@ -34,7 +34,6 @@ jQuery(document).ready(function($) {
     _this.css({
       'margin': _cubemargin
     });
-    // var _contentcolor = _fontcolor || $(this).data('contentcolor');
     var _face1 = '.' + $(this).data('face1');
     var _face2 = '.' + $(this).data('face2');
     $(this).find(_face1).css('background-color', _frontbg);
@@ -58,7 +57,6 @@ jQuery(document).ready(function($) {
             if(index==0){
                 $(this).css({
                     'background': 'url(' + _frontfullimage + ') no-repeat center center',
-                    // 'background-repeat': _frontfullimagerepeat,
                     'background-size': 'cover'
                 });
             }
@@ -76,12 +74,7 @@ jQuery(document).ready(function($) {
     }
 
 
-    // _this.find('.cq-twoface-link').on('click', function(event) {
-    //   if($(this).attr('href')=="#"){
-    //       return false;
-    //       event.preventDefault();
-    //   }
-    // });
+
 
     function _resettranslatez(){
 

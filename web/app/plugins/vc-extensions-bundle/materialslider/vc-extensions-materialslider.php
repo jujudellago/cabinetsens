@@ -6,207 +6,176 @@ if (!class_exists('VC_Extensions_MaterialSlider')){
         private $slide_num = 0;
         function __construct() {
             vc_map(array(
-            "name" => __("Material Slider", 'cq_allinone_vc'),
+            "name" => esc_attr__("Material Slider", 'cq_allinone_vc'),
             "base" => "cq_vc_materialslider",
             "class" => "cq_vc_materialslider",
             "icon" => "cq_vc_materialslider",
-            "category" => __('Sike Extensions', 'js_composer'),
+            "category" => esc_attr__('Sike Extensions', 'js_composer'),
             "as_parent" => array('only' => 'cq_vc_materialslider_item'),
-            // "content_element" => false,
-            // "is_container" => true,
             "js_view" => 'VcColumnView',
             "show_settings_on_create" => true,
-            'description' => __('auto delay slider', 'js_composer'),
+            'description' => esc_attr__('auto delay slider', 'js_composer'),
             "params" => array(
               array(
                   "type" => "dropdown",
                   "holder" => "",
                   "class" => "",
-                  "heading" => __("color of the dot navigation", "cq_allinone_vc"),
+                  "heading" => esc_attr__("color of the dot navigation", "cq_allinone_vc"),
                   "param_name" => "dotstyle",
                   "value" => array("Grape Fruit" => "grapefruit", "Bitter Sweet" => "bittersweet", "Sunflower" => "sunflower", "Grass" => "grass", "Mint" => "mint", "Aqua" => "aqua", "Blue Jeans" => "bluejeans", "Lavender" => "lavender", "Pink Rose" => "pinkrose", "White" => "white", "Medium Gray" => "mediumgray", "Dark Gray" => "darkgray"),
                   'std' => 'white',
-                  "description" => __("", "cq_allinone_vc")
+                  "description" => esc_attr__("", "cq_allinone_vc")
                 ),
               array(
                   "type" => "dropdown",
                   "holder" => "",
                   "class" => "",
-                  "heading" => __("auto hide the dot navigation?", "cq_allinone_vc"),
+                  "heading" => esc_attr__("auto hide the dot navigation?", "cq_allinone_vc"),
                   "param_name" => "autohide",
                   "value" => array("yes", "no"),
                   'std' => 'no',
-                  "description" => __("", "cq_allinone_vc")
+                  "description" => esc_attr__("", "cq_allinone_vc")
                 ),
               array(
                 "type" => "textfield",
-                "heading" => __("Element height", "cq_allinone_vc"),
+                "heading" => esc_attr__("Element height", "cq_allinone_vc"),
                 "param_name" => "elementheight",
                 "value" => "",
-                "description" => __("The height of the whole element (in pixel), is equal to the image's max height by default. You can customize the value if there is no image in the slider, default is <strong>320</strong>. ", "cq_allinone_vc")
+                "description" => esc_attr__("The height of the whole element (in pixel), is equal to the image's max height by default. You can customize the value if there is no image in the slider, default is 320. ", "cq_allinone_vc")
               ),
               array(
                 "type" => "textfield",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
-                "heading" => __("font size of the title", "cq_allinone_vc"),
+                "heading" => esc_attr__("font size of the title", "cq_allinone_vc"),
                 "param_name" => "titlesize",
                 "value" => "",
-                "description" => __("Default is 1.5em.", "cq_allinone_vc")
+                "description" => esc_attr__("Default is 1.5em.", "cq_allinone_vc")
               ),
               array(
                 "type" => "textfield",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
-                "heading" => __("font size of the label (under the title)", "cq_allinone_vc"),
+                "heading" => esc_attr__("font size of the label (under the title)", "cq_allinone_vc"),
                 "param_name" => "labelsize",
                 "value" => "",
-                "description" => __("Default is 1em.", "cq_allinone_vc")
+                "description" => esc_attr__("Default is 1em.", "cq_allinone_vc")
               ),
               array(
                  "type" => "dropdown",
                  "holder" => "",
-                 "heading" => __("Auto delay slideshow", "cq_allinone_vc"),
+                 "heading" => esc_attr__("Auto delay slideshow", "cq_allinone_vc"),
                  "param_name" => "autoslide",
                  "value" => array("no", "2", "3", "4", "5", "6", "7", "8"),
                  "std" => "no",
-                 "description" => __("In seconds, default is no, which is disabled.", "cq_allinone_vc")
+                 "description" => esc_attr__("In seconds, default is no, which is disabled.", "cq_allinone_vc")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Extra class name", "cq_allinone_vc"),
+                "heading" => esc_attr__("Extra class name", "cq_allinone_vc"),
                 "param_name" => "extraclass",
                 "value" => "",
-                "description" => __("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "cq_allinone_vc")
+                "description" => esc_attr__("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "cq_allinone_vc")
               ),
               array(
                 "type" => "css_editor",
-                "heading" => __( "CSS", "cq_allinone_vc" ),
+                "heading" => esc_attr__( "CSS", "cq_allinone_vc" ),
                 "param_name" => "css",
-                "description" => __("It's recommended to use this to customize the margin only.", "cq_allinone_vc"),
-                "group" => __( "Design options", "cq_allinone_vc" ),
+                "description" => esc_attr__("It's recommended to use this to customize the margin only.", "cq_allinone_vc"),
+                "group" => esc_attr__( "Design options", "cq_allinone_vc" ),
              )
            )
         ));
 
         vc_map(
           array(
-             "name" => __("Slide Content","cq_allinone_vc"),
+             "name" => esc_attr__("Slide Content","cq_allinone_vc"),
              "base" => "cq_vc_materialslider_item",
              "class" => "cq_vc_materialslider_item",
              "icon" => "cq_vc_materialslider_item",
-             "category" => __('Sike Extensions', 'js_composer'),
-             "description" => __("Add image and text, support up to 10 slide","cq_allinone_vc"),
+             "category" => esc_attr__('Sike Extensions', 'js_composer'),
+             "description" => esc_attr__("Add image and text, support up to 10 slide","cq_allinone_vc"),
              "as_child" => array('only' => 'cq_vc_materialslider'),
              "show_settings_on_create" => true,
              "content_element" => true,
              "params" => array(
-                // array(
-                //   "type" => "dropdown",
-                //   "holder" => "",
-                //   "class" => "",
-                //   "heading" => __("Background color of the slide:", "cq_allinone_vc"),
-                //   "param_name" => "bgstyle",
-                //   "value" => array("Grape Fruit (light)" => "light-grapefruit", "Grape Fruit (dark)" => "dark-grapefruit", "Bitter Sweet (light)" => "light-bittersweet", "Bitter Sweet (dark)" => "dark-bittersweet", "Sunflower (light)" => "light-sunflower", "Sunflower (dark)" => "dark-sunflower", "Grass (light)" => "light-grass", "Grass (dark)" => "dark-grass", "Mint (light)" => "light-mint", "Mint (dark)" => "dark-mint", "Aqua (light)" => "light-aqua", "Aqua (dark)" => "dark-aqua", "Blue Jeans (light)" => "light-bluejeans", "Blue Jeans (dark)" => "dark-bluejeans", "Lavender (light)" => "light-lavender", "Lavender (dark)" => "dark-lavender", "Pink Rose (light)" => "light-pinkrose", "Pink Rose (dark)" => "dark-pinkrose", "White" => "white", "Gray (light)" => "light-gray", "Gray (medium)" => "medium-gray", "Gray (dark)" => "dark-gray", "Transparent" => "transparent", "Customized color:" => "customized"),
-                //   'std' => 'transparent',
-                //   "description" => __("", "cq_allinone_vc")
-                // ),
                 array(
                   "type" => "colorpicker",
                   "class" => "",
-                  "heading" => __("Slide background color", 'cq_allinone_vc'),
+                  "heading" => esc_attr__("Slide background color", 'cq_allinone_vc'),
                   "param_name" => "bgcolor",
                   "value" => "",
                   "group" => "Image",
-                  "description" => __("Default is light gray.", 'cq_allinone_vc')
+                  "description" => esc_attr__("Default is light gray.", 'cq_allinone_vc')
                 ),
                 array(
                   "type" => "attach_image",
-                  "heading" => __("Slide image", "cq_allinone_vc"),
+                  "heading" => esc_attr__("Slide image", "cq_allinone_vc"),
                   "param_name" => "slideimage",
                   "value" => "",
                   "group" => "Image",
-                  "description" => __("Select from media library.", "cq_allinone_vc")
+                  "description" => esc_attr__("Select from media library.", "cq_allinone_vc")
                 ),
                 array(
                   "type" => "textfield",
-                  "heading" => __("Title (optional)", "cq_allinone_vc"),
+                  "heading" => esc_attr__("Title (optional)", "cq_allinone_vc"),
                   "param_name" => "title",
                   "value" => "",
                   "group" => "Text",
-                  "description" => __("", "cq_allinone_vc")
+                  "description" => esc_attr__("", "cq_allinone_vc")
                 ),
                 array(
                   "type" => "colorpicker",
                   "class" => "",
                   "edit_field_class" => "vc_col-xs-6",
-                  "heading" => __("Title color", 'cq_allinone_vc'),
+                  "heading" => esc_attr__("Title color", 'cq_allinone_vc'),
                   "param_name" => "titlecolor",
                   "value" => "",
                   "group" => "Text",
-                  "description" => __("Default is white.", 'cq_allinone_vc')
+                  "description" => esc_attr__("Default is white.", 'cq_allinone_vc')
                 ),
-                // array(
-                //   "type" => "colorpicker",
-                //   "class" => "",
-                //   "edit_field_class" => "vc_col-xs-6",
-                //   "heading" => __("Title background color", 'cq_allinone_vc'),
-                //   "param_name" => "titlebg",
-                //   "value" => "",
-                //   "std" => "rgba(0, 0, 0, 0.6)",
-                //   "description" => __("Default is transparent.", 'cq_allinone_vc')
-                // ),
                 array(
                   "type" => "textfield",
-                  "heading" => __("Label under the title (optional)", "cq_allinone_vc"),
+                  "heading" => esc_attr__("Label under the title (optional)", "cq_allinone_vc"),
                   "param_name" => "label",
                   "value" => "",
                   "group" => "Text",
-                  "description" => __("", "cq_allinone_vc")
+                  "description" => esc_attr__("", "cq_allinone_vc")
                 ),
                 array(
                   "type" => "colorpicker",
                   "class" => "",
                   "edit_field_class" => "vc_col-xs-6",
-                  "heading" => __("Label color", 'cq_allinone_vc'),
+                  "heading" => esc_attr__("Label color", 'cq_allinone_vc'),
                   "param_name" => "labelcolor",
                   "value" => "",
                   "group" => "Text",
-                  "description" => __("Default is white.", 'cq_allinone_vc')
+                  "description" => esc_attr__("Default is white.", 'cq_allinone_vc')
                 ),
-                // array(
-                //   "type" => "colorpicker",
-                //   "class" => "",
-                //   "edit_field_class" => "vc_col-xs-6",
-                //   "heading" => __("Label background color", 'cq_allinone_vc'),
-                //   "param_name" => "labelbg",
-                //   "value" => "",
-                //   "description" => __("Default is transparent.", 'cq_allinone_vc')
-                // ),
                 array(
                  "type" => "dropdown",
                  "holder" => "",
-                 "heading" => __("Resize the slide image?", "cq_allinone_vc"),
+                 "heading" => esc_attr__("Resize the slide image?", "cq_allinone_vc"),
                  "param_name" => "isresize",
                  "value" => array("no", "yes"),
                  "std" => "no",
                  "group" => "Image",
-                 "description" => __("We will use the original image by default, you can resize the image if the original image is too large.", "cq_allinone_vc")
+                 "description" => esc_attr__("We will use the original image by default, you can resize the image if the original image is too large.", "cq_allinone_vc")
                 ),
                 array(
                   "type" => "textfield",
-                  "heading" => __("Resize image to this width.", "cq_allinone_vc"),
+                  "heading" => esc_attr__("Resize image to this width.", "cq_allinone_vc"),
                   "param_name" => "slideimagesize",
                   "value" => "",
                   "std" => "400",
                   "group" => "Image",
                   "dependency" => Array('element' => "isresize", 'value' => array('yes')),
-                  "description" => __('The image then will be resized to 400 (in pixels) by default. Change it to other value as you need.', "cq_allinone_vc")
+                  "description" => esc_attr__('The image then will be resized to 400 (in pixels) by default. Change it to other value as you need.', "cq_allinone_vc")
                 ),
                 array(
                   'type' => 'vc_link',
-                  'heading' => __( 'URL (link for the current whole slide)', 'cq_allinone_vc' ),
+                  'heading' => esc_attr__( 'URL (link for the current whole slide)', 'cq_allinone_vc' ),
                   'param_name' => 'slidelink',
                   "group" => "Link",
-                  'description' => __( '', 'cq_allinone_vc' )
+                  'description' => esc_attr__( '', 'cq_allinone_vc' )
                 )
 
 
@@ -265,7 +234,7 @@ if (!class_exists('VC_Extensions_MaterialSlider')){
       }
 
 
-      function cq_vc_materialslider_item_func($atts, $content=null, $tag) {
+      function cq_vc_materialslider_item_func($atts, $content=null, $tag=null) {
           $output =  $videowidth = $isresize =  $css =  $namelabel = $contentcolor = $labelcolor = $slidelink = "";
           $title = $label = $titlecolor = $bgcolor  = $slideimage = "";
           extract(shortcode_atts(array(
@@ -292,7 +261,7 @@ if (!class_exists('VC_Extensions_MaterialSlider')){
           $slidelink = vc_build_link($slidelink);
           $attachment = get_post($slideimage);
           $full_slideimage = wp_get_attachment_image_src($slideimage, 'full');
-          $thumb_slideimage = $full_slideimage[0];
+          $thumb_slideimage = $full_slideimage[0] ?? "";
           if($isresize=="yes"&&$slideimagesize!=""){
               if(function_exists('wpb_resize')){
                   $img = wpb_resize($slideimage, null, $slideimagesize, null);
@@ -339,7 +308,6 @@ if (!class_exists('VC_Extensions_MaterialSlider')){
 
           $slide_num++;
           $this -> slide_num = $slide_num;
-          // var_dump('slide_num', $this -> slide_num, $slide_num);
 
           return $slide_content;
 

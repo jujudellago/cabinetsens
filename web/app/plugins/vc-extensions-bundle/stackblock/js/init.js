@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-stackblock').each(function(index) {
         var _elementheight = $(this).data('elementheight');
         var _contentwidth = $(this).data('contentwidth');
@@ -40,12 +41,6 @@ jQuery(document).ready(function($) {
                 contentAsHTML: true
             });
         }
-
-        // if(_fontsize!=""){
-        //     $('.cq-stackblock-content', $(this)).css({
-        //         'font-size': _fontsize
-        //     });
-        // }
 
     });
 });

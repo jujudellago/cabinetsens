@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+  "use strict";
   $('.cq-ihover').each(function(index) {
   	var _this = $(this);
   	var _effect = _this.data('effect');
@@ -62,16 +63,6 @@ jQuery(document).ready(function($) {
           $('.cq-ihover-info', $(this)).css('background', 'none');
       }
 
-  		// $(this).find('.mask1').css({
-  		// 	left: 'auto',
-  		// 	right: 0,
-  		// 	top: 0
-  		// });
-  		// $(this).find('.mask2').css({
-  		// 	top: 'auto',
-  		// 	bottom: 0,
-  		// 	left: 0
-  		// });
 
       $("a.cq-ihover-lightbox", $(this)).each(function() {
         var _lightboxURL = $(this).attr('href');
@@ -82,12 +73,10 @@ jQuery(document).ready(function($) {
                 "margin": 10,
                 "videoWidth": _videowidth,
                 "retina": true,
-                // "mobile": true,
                 "minWidth": 320
             });
         }else{
             $(this).boxer({
-                // margin: _lightboxmargin,
                 fixed : true
             });
         }
@@ -98,11 +87,7 @@ jQuery(document).ready(function($) {
 
 
 
-  		// $(this).find('a.cq-ihover-lightbox').boxer({
-  		//     // minWidth: _minWidth,
-  		//     fixed : true
-  		//     // fixed: _container.data('fixed')=='on'?true:false
-  		// });
+
   		$(this).find('a.ihover-nothing').on('click', function(event) {
   			event.preventDefault();
   		});

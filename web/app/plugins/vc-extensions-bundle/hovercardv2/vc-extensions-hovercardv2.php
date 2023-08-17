@@ -3,245 +3,242 @@ if (!class_exists('VC_Extensions_HoverCardV2')){
     class VC_Extensions_HoverCardV2{
         function __construct() {
             vc_map(array(
-            "name" => __("Hover Card V2", 'cq_allinone_vc'),
+            "name" => esc_attr__("Hover Card V2", 'cq_allinone_vc'),
             "base" => "cq_vc_hovercardv2",
             "class" => "cq_vc_hovercardv2",
             "icon" => "cq_vc_hovercardv2",
-            "category" => __('Sike Extensions', 'js_composer'),
+            "category" => esc_attr__('Sike Extensions', 'js_composer'),
             "as_parent" => array('only' => 'cq_vc_hovercardv2_item'),
-            // "content_element" => false,
-            // "is_container" => true,
             "js_view" => 'VcColumnView',
             "show_settings_on_create" => true,
-            'description' => __('hover card with social icon', 'js_composer'),
+            'description' => esc_attr__('hover card with social icon', 'js_composer'),
             "params" => array(
               array(
                 "type" => "attach_image",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
-                "heading" => __("Cover Image", "cq_allinone_vc"),
+                "heading" => esc_attr__("Cover Image", "cq_allinone_vc"),
                 "param_name" => "coverimage",
                 "value" => "",
                 "group" => "Image",
-                "description" => __("Select image from media library.", "cq_allinone_vc")
+                "description" => esc_attr__("Select image from media library.", "cq_allinone_vc")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
-                "heading" => __("Resize the image?", "cq_allinone_vc"),
+                "heading" => esc_attr__("Resize the image?", "cq_allinone_vc"),
                 "param_name" => "isresize",
                 "value" => array("no", "yes (specify the image width below)"=>"yes"),
                 "std" => "no",
                 "group" => "Image",
-                "description" => __("Choose to resize the image or not, useful if your original image is too large.", "cq_allinone_vc"),
-                "description" => __("", "cq_allinone_vc")
+                "description" => esc_attr__("Choose to resize the image or not, useful if your original image is too large.", "cq_allinone_vc"),
+                "description" => esc_attr__("", "cq_allinone_vc")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Resize image to this width", "cq_allinone_vc"),
+                "heading" => esc_attr__("Resize image to this width", "cq_allinone_vc"),
                 "param_name" => "imagewidth",
                 "value" => "",
                 "dependency" => Array('element' => "isresize", 'value' => array('yes')),
                 "group" => "Image",
-                "description" => __("Default we will use the original image, specify a width. For example, 200 will resize the image to width 200. ", "cq_allinone_vc")
+                "description" => esc_attr__("Default we will use the original image, specify a width. For example, 200 will resize the image to width 200. ", "cq_allinone_vc")
               ),
               array(
                 "type" => "vc_link",
-                "heading" => __("URL (Optional link for the image)", "vc_colorblock_cq"),
+                "heading" => esc_attr__("URL (Optional link for the image)", "vc_colorblock_cq"),
                 "param_name" => "imagelink",
                 "value" => "",
                 "group" => "Image",
-                "description" => __("You can apply a link for the image.", "vc_colorblock_cq")
+                "description" => esc_attr__("You can apply a link for the image.", "vc_colorblock_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Title", "cq_allinone_vc"),
+                "heading" => esc_attr__("Title", "cq_allinone_vc"),
                 "param_name" => "title",
                 "value" => "",
                 "group" => "Text",
-                "description" => __('', "cq_allinone_vc")
+                "description" => esc_attr__('', "cq_allinone_vc")
               ),
               array(
                 "type" => "textfield",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
-                "heading" => __("title font-size", "cq_allinone_vc"),
+                "heading" => esc_attr__("title font-size", "cq_allinone_vc"),
                 "param_name" => "titlefontsize",
                 "value" => "",
                 "group" => "Text",
-                "description" => __("Default (leave to blank) is 1.5em, support a value like <strong>12px</strong> or <strong>1.2em</strong>", "cq_allinone_vc")
+                "description" => esc_attr__("Default (leave to blank) is 1.5em, support a value like 12px or 1.2em", "cq_allinone_vc")
               ),
               array(
                 "type" => "colorpicker",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "class" => "",
-                "heading" => __("title color", 'cq_allinone_vc'),
+                "heading" => esc_attr__("title color", 'cq_allinone_vc'),
                 "param_name" => "titlecolor",
                 "value" => "",
                 "group" => "Text",
-                "description" => __("Default is gray.", 'cq_allinone_vc')
+                "description" => esc_attr__("Default is gray.", 'cq_allinone_vc')
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Label under the name", "cq_allinone_vc"),
+                "heading" => esc_attr__("Label under the name", "cq_allinone_vc"),
                 "param_name" => "label",
                 "value" => "",
                 "group" => "Text",
-                "description" => __('Label under the name, can be a role, like Web Developer or any other thing as you like.', "cq_allinone_vc")
+                "description" => esc_attr__('Label under the name, can be a role, like Web Developer or any other thing as you like.', "cq_allinone_vc")
               ),
               array(
                 "type" => "textfield",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
-                "heading" => __("Label font-size", "cq_allinone_vc"),
+                "heading" => esc_attr__("Label font-size", "cq_allinone_vc"),
                 "param_name" => "labelfontsize",
                 "value" => "",
                 "group" => "Text",
-                "description" => __("Default (leave to blank) is 1em, support a value like <strong>12px</strong> or <strong>1.2em</strong>", "cq_allinone_vc")
+                "description" => esc_attr__("Default (leave to blank) is 1em, support a value like 12px or 1.2em", "cq_allinone_vc")
               ),
               array(
                 "type" => "colorpicker",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "class" => "",
-                "heading" => __("Label color", 'cq_allinone_vc'),
+                "heading" => esc_attr__("Label color", 'cq_allinone_vc'),
                 "param_name" => "labelcolor",
                 "value" => "",
                 "group" => "Text",
-                "description" => __("Default is gray.", 'cq_allinone_vc')
+                "description" => esc_attr__("Default is gray.", 'cq_allinone_vc')
               ),
               array(
                 "type" => "textarea",
-                "heading" => __("More information under the title", "cq_allinone_vc"),
+                "heading" => esc_attr__("More information under the title", "cq_allinone_vc"),
                 "param_name" => "description",
                 "value" => "",
                 "group" => "Text",
-                "description" => __("It's under the label, you can put more details about the card.", "cq_allinone_vc")
+                "description" => esc_attr__("It's under the label, you can put more details about the card.", "cq_allinone_vc")
               ),
               array(
                 "type" => "textfield",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
-                "heading" => __("Description font-size", "cq_allinone_vc"),
+                "heading" => esc_attr__("Description font-size", "cq_allinone_vc"),
                 "param_name" => "desfontsize",
                 "value" => "",
                 "group" => "Text",
-                "description" => __("Default (leave to blank) is 1em, support a value like <strong>12px</strong> or <strong>1.2em</strong>", "cq_allinone_vc")
+                "description" => esc_attr__("Default (leave to blank) is 1em, support a value like 12px or 1.2em", "cq_allinone_vc")
               ),
               array(
                 "type" => "colorpicker",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "class" => "",
-                "heading" => __("Description color", 'cq_allinone_vc'),
+                "heading" => esc_attr__("Description color", 'cq_allinone_vc'),
                 "param_name" => "descolor",
                 "value" => "",
                 "group" => "Text",
-                "description" => __("Default is gray.", 'cq_allinone_vc')
+                "description" => esc_attr__("Default is gray.", 'cq_allinone_vc')
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
-                "heading" => __("Avatar type", "cq_allinone_vc"),
+                "heading" => esc_attr__("Avatar type", "cq_allinone_vc"),
                 "param_name" => "avatartype",
                 "value" => array("image", "icon", "none"),
                 "std" => "icon",
                 "group" => "Avatar",
-                "description" => __("Select avatar type.", "cq_allinone_vc")
+                "description" => esc_attr__("Select avatar type.", "cq_allinone_vc")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Size of the whole avatar", "cq_allinone_vc"),
+                "heading" => esc_attr__("Size of the whole avatar", "cq_allinone_vc"),
                 "param_name" => "avatarwidth",
                 "value" => "",
                 "group" => "Avatar",
                 'dependency' => array('element' => 'avatartype', 'value' => array("image", "icon"),
                 ),
-                "description" => __('The avatar will be displayed in circle. Default is 80 (in pixel).', "cq_allinone_vc")
+                "description" => esc_attr__('The avatar will be displayed in circle. Default is 80 (in pixel).', "cq_allinone_vc")
               ),
               array(
                 "type" => "attach_image",
-                "heading" => __("Avatar image", "cq_allinone_vc"),
+                "heading" => esc_attr__("Avatar image", "cq_allinone_vc"),
                 "param_name" => "avatarimage",
                 "value" => "",
                 'dependency' => array('element' => 'avatartype', 'value' => 'image',
                  ),
                 "group" => "Avatar",
-                "description" => __("Select image from media library.", "cq_allinone_vc")
+                "description" => esc_attr__("Select image from media library.", "cq_allinone_vc")
               ),
               array(
                 'type' => 'dropdown',
-                'heading' => __( 'Icon library', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon library', 'js_composer' ),
                 'value' => array(
-                  __( 'Entypo', 'js_composer' ) => 'entypo',
-                  __( 'Font Awesome', 'js_composer' ) => 'fontawesome',
-                  __( 'Open Iconic', 'js_composer' ) => 'openiconic',
-                  __( 'Typicons', 'js_composer' ) => 'typicons',
-                  __( 'Material', 'js_composer' ) => 'material',
-                  __( 'Linecons', 'js_composer' ) => 'linecons',
-                  // __( 'Mono Social', 'js_composer' ) => 'monosocial',
+                  esc_attr__( 'Entypo', 'js_composer' ) => 'entypo',
+                  esc_attr__( 'Font Awesome', 'js_composer' ) => 'fontawesome',
+                  esc_attr__( 'Open Iconic', 'js_composer' ) => 'openiconic',
+                  esc_attr__( 'Typicons', 'js_composer' ) => 'typicons',
+                  esc_attr__( 'Material', 'js_composer' ) => 'material',
+                  esc_attr__( 'Linecons', 'js_composer' ) => 'linecons',
                 ),
                 'admin_label' => true,
                 'param_name' => 'avataricon',
                 'dependency' => array('element' => 'avatartype', 'value' => 'icon',
                  ),
                 "group" => "Avatar",
-                'description' => __( 'Select icon library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_fontawesome',
                 'value' => 'fa fa-user', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => true, // default true, display an "EMPTY" icon?
                   'type' => 'fontawesome',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
                 ),
                 'dependency' => array(
                   'element' => 'avataricon',
                   'value' => 'fontawesome',
                 ),
                 "group" => "Avatar",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_openiconic',
                 'value' => 'vc-oi vc-oi-dial', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'openiconic',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'avataricon',
                   'value' => 'openiconic',
                 ),
                 "group" => "Avatar",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_typicons',
                 'value' => 'typcn typcn-adjust-brightness', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'typicons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'avataricon',
                   'value' => 'typicons',
                 ),
                 "group" => "Avatar",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_entypo',
                 'value' => 'entypo-icon entypo-icon-user', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'entypo',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 "group" => "Avatar",
                 'dependency' => array(
@@ -251,24 +248,24 @@ if (!class_exists('VC_Extensions_HoverCardV2')){
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_linecons',
                 'value' => 'vc_li vc_li-heart', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'linecons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'avataricon',
                   'value' => 'linecons',
                 ),
                 "group" => "Avatar",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_material',
                 'value' => 'vc-material vc-material-arrow_forward',
                 // default value to backend editor admin_label
@@ -276,7 +273,7 @@ if (!class_exists('VC_Extensions_HoverCardV2')){
                   'emptyIcon' => false,
                   // default true, display an "EMPTY" icon?
                   'type' => 'material',
-                  'iconsPerPage' => 4000,
+                  'iconsPerPage' => 100,
                   // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
@@ -284,221 +281,202 @@ if (!class_exists('VC_Extensions_HoverCardV2')){
                   'value' => 'material',
                 ),
                 "group" => "Avatar",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 "type" => "dropdown",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "holder" => "",
-                "heading" => __("icon size of the Avatar", "cq_allinone_vc"),
+                "heading" => esc_attr__("icon size of the Avatar", "cq_allinone_vc"),
                 "param_name" => "iconsize",
                 "value" => array("small (24px)" => "small", "medium (36px)" => "medium", "large (48px)" => "large"),
                 'std' => 'small',
                 "group" => "Avatar",
                 'dependency' => array('element' => 'avatartype', 'value' => array("icon"),
                 ),
-                "description" => __("Select the icon size of the Avatar.", "cq_allinone_vc")
+                "description" => esc_attr__("Select the icon size of the Avatar.", "cq_allinone_vc")
               ),
               array(
                 "type" => "colorpicker",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "class" => "",
-                "heading" => __("icon color", 'cq_allinone_vc'),
+                "heading" => esc_attr__("icon color", 'cq_allinone_vc'),
                 "param_name" => "iconcolor",
                 "value" => "",
                 "group" => "Avatar",
                 'dependency' => array('element' => 'avatartype', 'value' => array("icon"),
                 ),
-                "description" => __("Color of the avatar icon, default is white.", 'cq_allinone_vc')
+                "description" => esc_attr__("Color of the avatar icon, default is white.", 'cq_allinone_vc')
               ),
               array(
                 "type" => "colorpicker",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "class" => "",
-                "heading" => __("icon background color", 'cq_allinone_vc'),
+                "heading" => esc_attr__("icon background color", 'cq_allinone_vc'),
                 "param_name" => "iconbgcolor",
                 "value" => "",
                 "group" => "Avatar",
                 'dependency' => array('element' => 'avatartype', 'value' => array("icon"),
                 ),
-                "description" => __("Background color of the avatar icon, default is gray.", 'cq_allinone_vc')
+                "description" => esc_attr__("Background color of the avatar icon, default is gray.", 'cq_allinone_vc')
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
-                "heading" => __("size of the hover panel", "cq_allinone_vc"),
+                "heading" => esc_attr__("size of the hover panel", "cq_allinone_vc"),
                 "param_name" => "panelsize",
                 "value" => array("100%" => "ps1", "90%" => "ps2", "80%" => "ps3", "70%" => "ps4", "60%" => "ps5", "50%" => "ps6", "40%" => "ps7", "30%" => "ps8"),
                 'std' => 'ps4',
-                "description" => __("Select the panel size, default is 70%.", "cq_allinone_vc")
+                "description" => esc_attr__("Select the panel size, default is 70%.", "cq_allinone_vc")
               ),
               array(
                  "type" => "dropdown",
                  "holder" => "",
-                 "heading" => __("Hover panel background color", "cq_allinone_vc"),
+                 "heading" => esc_attr__("Hover panel background color", "cq_allinone_vc"),
                  "param_name" => "bgstyle",
                  "value" => array("White" => "white", "Aqua" => "aqua", "Grape Fruit" => "grapefruit", "Bitter Sweet" => "bittersweet", "Sunflower" => "sunflower", "Grass" => "grass", "Mint" => "mint", "Blue Jeans" => "bluejeans", "Lavender" => "lavender", "Pink Rose" => "pinkrose", "Light Gray" => "lightgray", "Medium Gray" => "mediumgray", "Dark Gray" => "darkgray", "Transparent" => "transparent", "or customize :" => "customized"),
                 'std' => 'white',
-                "description" => __("Select the built in background color for the hover panel.", "cq_allinone_vc")
+                "description" => esc_attr__("Select the built in background color for the hover panel.", "cq_allinone_vc")
               ),
               array(
                 "type" => "colorpicker",
                 "class" => "",
-                "heading" => __("customize background color for the hover panel", 'cq_allinone_vc'),
+                "heading" => esc_attr__("customize background color for the hover panel", 'cq_allinone_vc'),
                 "param_name" => "bgcustomcolor",
                 "value" => "",
                 'dependency' => array('element' => 'bgstyle', 'value' => 'customized',
                 ),
-                "description" => __("", 'cq_allinone_vc')
+                "description" => esc_attr__("", 'cq_allinone_vc')
               ),
-              // array(
-              //   "type" => "colorpicker",
-              //   "class" => "",
-              //   "heading" => __("Social media icon color", 'cq_allinone_vc'),
-              //   "param_name" => "socialiconcolor",
-              //   "value" => "",
-              //   "description" => __("Default is white", 'cq_allinone_vc')
-              // ),
               array(
                 "type" => "dropdown",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "holder" => "",
                 "class" => "cq_allinone_vc",
-                "heading" => __("Auto delay hover", "cq_allinone_vc"),
+                "heading" => esc_attr__("Auto delay hover", "cq_allinone_vc"),
                 "param_name" => "autodelay",
-                'value' => array(2, 3, 4, 5, 7, 10, __( 'Disable', 'cq_allinone_vc' ) => 0 ),
+                'value' => array(2, 3, 4, 5, 7, 10, esc_attr__( 'Disable', 'cq_allinone_vc' ) => 0 ),
                 'std' => 0,
-                "description" => __("Auto hover the panel in each X seconds.", "cq_allinone_vc")
+                "description" => esc_attr__("Auto hover the panel in each X seconds.", "cq_allinone_vc")
               ),
               array(
                 "type" => "dropdown",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "holder" => "",
-                "heading" => __("transition direction when hover", "cq_allinone_vc"),
+                "heading" => esc_attr__("transition direction when hover", "cq_allinone_vc"),
                 "param_name" => "direction",
                 "value" => array("horizontal 1" => "horizontal1", "horizontal 2" => "horizontal2", "vertical 1" => "vertical1", "vertical 2" => "vertical2"),
                 'std' => 'horizontal1',
-                "description" => __("", "cq_allinone_vc")
+                "description" => esc_attr__("", "cq_allinone_vc")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Element height", "cq_allinone_vc"),
+                "heading" => esc_attr__("Element height", "cq_allinone_vc"),
                 "param_name" => "elementheight",
                 "value" => "",
-                "description" => __("The height of the whole element. Default is auto, same as the image, and the minimal height is 200px.", "cq_allinone_vc")
+                "description" => esc_attr__("The height of the whole element. Default is auto, same as the image, and the minimal height is 200px.", "cq_allinone_vc")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Extra class name", "cq_allinone_vc"),
+                "heading" => esc_attr__("Extra class name", "cq_allinone_vc"),
                 "param_name" => "extraclass",
                 "value" => "",
-                "description" => __("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "cq_allinone_vc")
+                "description" => esc_attr__("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "cq_allinone_vc")
               ),
               array(
                 "type" => "css_editor",
-                "heading" => __( "CSS", "cq_allinone_vc" ),
+                "heading" => esc_attr__( "CSS", "cq_allinone_vc" ),
                 "param_name" => "css",
-                "description" => __("It's recommended to use this to customize the padding/margin only.", "cq_allinone_vc"),
-                "group" => __( "Design options", "cq_allinone_vc" ),
+                "description" => esc_attr__("It's recommended to use this to customize the padding/margin only.", "cq_allinone_vc"),
+                "group" => esc_attr__( "Design options", "cq_allinone_vc" ),
              )
            )
         ));
 
         vc_map(
           array(
-             "name" => __("Social Media Icon","cq_allinone_vc"),
+             "name" => esc_attr__("Social Media Icon","cq_allinone_vc"),
              "base" => "cq_vc_hovercardv2_item",
              "class" => "cq_vc_hovercardv2_item",
              "icon" => "cq_vc_hovercardv2_item",
-             "category" => __('Sike Extensions', 'js_composer'),
-             "description" => __("Add icon","cq_allinone_vc"),
+             "category" => esc_attr__('Sike Extensions', 'js_composer'),
+             "description" => esc_attr__("Add icon","cq_allinone_vc"),
              "as_child" => array('only' => 'cq_vc_hovercardv2'),
              "show_settings_on_create" => true,
              "content_element" => true,
              "params" => array(
-              // array(
-              //   "type" => "dropdown",
-              //   "holder" => "",
-              //   "heading" => __("Display Icon for this item?", "cq_allinone_vc"),
-              //   "param_name" => "isicon",
-              //   "value" => array("Yes" => "yes", "No" => "no"),
-              //   'std' => 'yes',
-              //   "description" => __("", "cq_allinone_vc")
-              // ),
               array(
                 'type' => 'dropdown',
-                'heading' => __( 'Icon library', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon library', 'js_composer' ),
                 'value' => array(
-                  __( 'Entypo', 'js_composer' ) => 'entypo',
-                  __( 'Font Awesome', 'js_composer' ) => 'fontawesome',
-                  __( 'Open Iconic', 'js_composer' ) => 'openiconic',
-                  __( 'Typicons', 'js_composer' ) => 'typicons',
-                  __( 'Material', 'js_composer' ) => 'material',
-                  __( 'Linecons', 'js_composer' ) => 'linecons',
-                  // __( 'Mono Social', 'js_composer' ) => 'monosocial',
+                  esc_attr__( 'Entypo', 'js_composer' ) => 'entypo',
+                  esc_attr__( 'Font Awesome', 'js_composer' ) => 'fontawesome',
+                  esc_attr__( 'Open Iconic', 'js_composer' ) => 'openiconic',
+                  esc_attr__( 'Typicons', 'js_composer' ) => 'typicons',
+                  esc_attr__( 'Material', 'js_composer' ) => 'material',
+                  esc_attr__( 'Linecons', 'js_composer' ) => 'linecons',
                 ),
                 'admin_label' => true,
                 'param_name' => 'listicon',
-                // 'dependency' => array('element' => 'isicon', 'value' => 'yes'),
-                'description' => __( 'Select icon library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_fontawesome',
                 'value' => 'fa fa-user', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => true, // default true, display an "EMPTY" icon?
                   'type' => 'fontawesome',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
                 ),
                 'dependency' => array(
                   'element' => 'listicon',
                   'value' => 'fontawesome',
                 ),
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_openiconic',
                 'value' => 'vc-oi vc-oi-dial', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'openiconic',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'listicon',
                   'value' => 'openiconic',
                 ),
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_typicons',
                 'value' => 'typcn typcn-adjust-brightness', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'typicons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'listicon',
                   'value' => 'typicons',
                 ),
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_entypo',
                 'value' => 'entypo-icon entypo-icon-twitter', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'entypo',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'listicon',
@@ -507,23 +485,23 @@ if (!class_exists('VC_Extensions_HoverCardV2')){
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_linecons',
                 'value' => 'vc_li vc_li-heart', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'linecons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'listicon',
                   'value' => 'linecons',
                 ),
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_material',
                 'value' => 'vc-material vc-material-arrow_forward',
                 // default value to backend editor admin_label
@@ -531,102 +509,70 @@ if (!class_exists('VC_Extensions_HoverCardV2')){
                   'emptyIcon' => false,
                   // default true, display an "EMPTY" icon?
                   'type' => 'material',
-                  'iconsPerPage' => 4000,
+                  'iconsPerPage' => 100,
                   // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'listicon',
                   'value' => 'material',
                 ),
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
-              // array(
-              //   "type" => "colorpicker",
-              //   "edit_field_class" => "vc_col-xs-6 vc_column cqadmin-col-offset",
-              //   "class" => "",
-              //   "heading" => __("Icon background color", 'cq_allinone_vc'),
-              //   "param_name" => "iconbgcolor",
-              //   "value" => "",
-              //   "description" => __("", 'cq_allinone_vc')
-              // ),
-              // array(
-              //   "type" => "textfield",
-              //   "heading" => __("Title", "cq_allinone_vc"),
-              //   "param_name" => "title",
-              //   "value" => "",
-              //   "description" => __("Title for the item, append to the icon.", "cq_allinone_vc")
-              // ),
               array(
                  "type" => "dropdown",
                  "holder" => "",
                  "edit_field_class" => "vc_col-xs-6 vc_column",
-                 "heading" => __("Icon background color", "cq_allinone_vc"),
+                 "heading" => esc_attr__("Icon background color", "cq_allinone_vc"),
                  "param_name" => "socialiconbg",
                  "value" => array("White" => "white", "Aqua" => "aqua", "Grape Fruit" => "grapefruit", "Bitter Sweet" => "bittersweet", "Sunflower" => "sunflower", "Grass" => "grass", "Mint" => "mint", "Blue Jeans" => "bluejeans", "Lavender" => "lavender", "Pink Rose" => "pinkrose", "Light Gray" => "lightgray", "Medium Gray" => "mediumgray", "Dark Gray" => "darkgray", "Transparent" => "transparent", "or customize :" => "customized"),
                 'std' => 'darkgray',
-                "description" => __("Select the built in background color for the icon.", "cq_allinone_vc")
+                "description" => esc_attr__("Select the built in background color for the icon.", "cq_allinone_vc")
               ),
               array(
                 "type" => "colorpicker",
                 "class" => "",
-                "heading" => __("customize background color for icon", 'cq_allinone_vc'),
+                "heading" => esc_attr__("customize background color for icon", 'cq_allinone_vc'),
                 "param_name" => "socialiconbgcolor",
                 "value" => "",
                 'dependency' => array('element' => 'socialiconbg', 'value' => 'customized',
                 ),
-                "description" => __("", 'cq_allinone_vc')
+                "description" => esc_attr__("", 'cq_allinone_vc')
               ),
               array(
                 "type" => "colorpicker",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "class" => "",
-                "heading" => __("Icon color", 'cq_allinone_vc'),
+                "heading" => esc_attr__("Icon color", 'cq_allinone_vc'),
                 "param_name" => "iconcolor",
                 "value" => "",
-                "description" => __("Default is white.", 'cq_allinone_vc')
+                "description" => esc_attr__("Default is white.", 'cq_allinone_vc')
               ),
               array(
                 "type" => "colorpicker",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "class" => "",
-                "heading" => __("Icon background color when user hover", 'cq_allinone_vc'),
+                "heading" => esc_attr__("Icon background color when user hover", 'cq_allinone_vc'),
                 "param_name" => "iconhoverbg",
                 "value" => "",
-                // 'dependency' => array('element' => 'isicon', 'value' => 'yes'),
-                "description" => __("Default is white.", 'cq_allinone_vc')
+                "description" => esc_attr__("Default is white.", 'cq_allinone_vc')
               ),
               array(
                 "type" => "colorpicker",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "class" => "",
-                "heading" => __("Icon color when user hover", 'cq_allinone_vc'),
+                "heading" => esc_attr__("Icon color when user hover", 'cq_allinone_vc'),
                 "param_name" => "iconhovercolor",
                 "value" => "",
-                // 'dependency' => array('element' => 'isicon', 'value' => 'yes'),
-                "description" => __("Default is white.", 'cq_allinone_vc')
+                "description" => esc_attr__("Default is white.", 'cq_allinone_vc')
               ),
-              // array(
-              //   "type" => "textfield",
-              //   "edit_field_class" => "vc_col-xs-6 vc_column",
-              //   "heading" => __("font-size of the icon", "cq_allinone_vc"),
-              //   "param_name" => "iconsize",
-              //   "value" => "",
-              //   "description" => __("Default is 1.1em. You can specify it with other value like <strong>24px</strong> or <strong>1.5em</strong> etc.", "cq_allinone_vc")
-              // ),
               array(
                 "type" => "vc_link",
-                "heading" => __("URL (Optional link for the current icon)", "vc_colorblock_cq"),
+                "heading" => esc_attr__("URL (Optional link for the current icon)", "vc_colorblock_cq"),
                 "param_name" => "itemlink",
                 "value" => "",
-                "description" => __("", "vc_colorblock_cq")
+                "description" => esc_attr__("", "vc_colorblock_cq")
               )
-              // array(
-              //   "type" => "textarea_html",
-              //   "heading" => __("Description under the icon and title", "cq_allinone_vc"),
-              //   "param_name" => "content",
-              //   "value" => "",
-              //   "description" => __("You can put more details about the title.", "cq_allinone_vc")
-              // ),
+
               ),
             )
         );
@@ -695,12 +641,12 @@ if (!class_exists('VC_Extensions_HoverCardV2')){
         $cover_attachment = get_post($coverimage);
         $coverimagearr = wp_get_attachment_image_src(trim($coverimage), 'full');
         $cover_image_temp = $cover_image_url = "";
-        $cover_full_image = $coverimagearr[0];
+        $cover_full_image = $coverimagearr[0] ?? "";
         $cover_image_url = $cover_full_image;
         if( $isresize=="yes" && $imagewidth!="" ){
             if(function_exists('wpb_resize')){
                 $cover_image_temp = wpb_resize($coverimage, null, $imagewidth, null);
-                $cover_image_url = $cover_image_temp['url'];
+                $cover_image_url = $cover_image_temp['url'] ?? "";
                 if($cover_image_url=="") $cover_image_url = $cover_full_image;
             }
         }
@@ -710,12 +656,12 @@ if (!class_exists('VC_Extensions_HoverCardV2')){
         $attachment = get_post($avatarimage);
         $avatarimagearr = wp_get_attachment_image_src(trim($avatarimage), 'full');
         $avatar_image_temp = $avatarimage_url = "";
-        $avatar_full_image = $avatarimagearr[0];
+        $avatar_full_image = $avatarimagearr[0] ?? "";
         $avatarimage_url = $avatar_full_image;
         if($avatarwidth!=""){
             if(function_exists('wpb_resize')){
                 $avatar_image_temp = wpb_resize($avatarimage, null, $avatarwidth*2, $avatarwidth*2, true);
-                $avatarimage_url = $avatar_image_temp['url'];
+                $avatarimage_url = $avatar_image_temp['url'] ?? "";
                 if($avatarimage_url=="") $avatarimage_url = $avatar_full_image;
             }
         }
@@ -769,7 +715,7 @@ if (!class_exists('VC_Extensions_HoverCardV2')){
       }
 
 
-      function cq_vc_hovercardv2_item_func($atts, $content=null, $tag) {
+      function cq_vc_hovercardv2_item_func($atts, $content=null, $tag=null) {
           $iconcolor = $iconbgcolor = $icon_fontawesome = $icon_openiconic = $icon_typicons = $icon_entypo = $icon_linecons = $icon_pixelicons = $icon_material = $title = $contentcolor = $itemlink = $iconcolor = $iconhoverbg = $iconhovercolor = $socialiconbg = $socialiconbgcolor = $iconsize = $isicon = "";
           extract(shortcode_atts(array(
             "listicon" => "entypo",
@@ -805,14 +751,8 @@ if (!class_exists('VC_Extensions_HoverCardV2')){
           if($isicon=="yes"){
             $output .= '<i class="cq-hovercardv2-icon '.esc_attr(${'icon_' . $listicon}).'" style="color:'.$iconcolor.';font-size:'.$iconsize.';line-height:'.$iconsize.'"></i> ';
           }
-          // $output .= '<span class="cq-hovercardv2-itemtitle" style="color:'.$iconcolor.';font-size:'.$iconsize.';line-height:'.$iconsize.'">'.$title.'</span>';
           $output .= "</div>";
           if($itemlink["url"]!=="") $output .= '</a>';
-          // if($content!=""){
-          //   $output .= '<div class="cq-hovercardv2-itemdesc" style="color:'.$contentcolor.'">';
-          //   $output .= $content;
-          //   $output .= '</div>';
-          // }
           $output .= '</li>';
           return $output;
 

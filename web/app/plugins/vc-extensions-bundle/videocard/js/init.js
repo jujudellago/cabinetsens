@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-
+    "use strict";
     $('.cq-videocard').each(function(index) {
         var _this = $(this);
         var _elementheight = parseInt($(this).data('elementheight'), 10);
@@ -8,7 +8,6 @@ jQuery(document).ready(function($) {
         var _showbar = $(this).data('showbar');
         var _ismute = $(this).data('mute');
         var _isloop = $(this).data('isloop');
-        // var _islogo = $(this).data('islogo');
         var _startat = $(this).data('startat') || 0;
         var _stopat = $(this).data('stopat');
         var _videoquality = $(this).data('videoquality');
@@ -47,7 +46,6 @@ jQuery(document).ready(function($) {
         if(_namesize!=""){
             $('.cq-videocard-avatarname', _this).css('font-size', _namesize);
         }
-        // var _ratio = $(this).data('ratio');
         if(_elementheight!=""&&_elementheight>0){
             _this.css('height', _elementheight);
         }
@@ -66,7 +64,6 @@ jQuery(document).ready(function($) {
         }
         var _player = jQuery(".cq-videocard-video", _this).YTPlayer({
             videoURL: _videoURL,
-            // ratio: _ratio,
             vol: _videovolume,
             containment: 'self',
             showControls: _showbar,
@@ -77,49 +74,9 @@ jQuery(document).ready(function($) {
             stopAt: _stopat,
             quality: _videoquality,
             opacity: _opacity,
-            // showYTLogo: _islogo,
             stopMovieOnBlur: false
 
-            // videoURL: 'https://youtu.be/kFXxrOy6qc0',
-            // containment: 'self',
-            // autoPlay: true,
-            // mute: false,
-            // startAt: 0,
-            // opacity: .5,
-            // showYTLogo: false,
-            // stopMovieOnBlur: false
         });
-        // var filters = {
-        //       grayscale: 100,
-        //       sepia: 50,
-        //       hue_rotate : 220
-        // }
-        // _player.YTPApplyFilters(filters)
-
-        // setTimeout(function () {
-        //     $('#card').addClass('hover');
-        // }, 2000);
-
-        // setTimeout(function () {
-        //     $('#card').removeClass('hover');
-        // }, 5000);
-        // var _isPaused = false;
-        // jQuery('.cq-videocard-video', _this).on('click', function(event) {
-        //     // $.fn.YTPPause();
-        //     if($(event.target).is('.buttonBar')) {
-        //         return;
-        //     }
-
-        //     if(!_isPaused){
-        //         _isPaused = true;
-        //         _player.YTPPause();
-        //     }else{
-        //         _isPaused = false;
-        //         _player.YTPPlay();
-        //     }
-        //     // jQuery("#bgndVideo").YTPPause();
-        //     // event.preventDefault();
-        // });
 
     });
 

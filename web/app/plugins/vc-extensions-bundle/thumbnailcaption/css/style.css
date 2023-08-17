@@ -27,7 +27,6 @@
 	width: 50%;
 	float: left;
 	position: relative;
-	/*max-height: 240px;*/
 	overflow: hidden;
 }
 
@@ -52,23 +51,10 @@
 }
 
 
-/*.cq-cards-container.top > a, .cq-cards-container.bottom > a{
-	position: relative;
-	display: block;
-	width: 100%;
-	overflow: visible;
-	-webkit-box-shadow: none;
-	-moz-box-shadow: none;
-	-ms-box-shadow: none;
-	-o-box-shadow: none;
-	box-shadow: none;
-}
-*/
 .cq-cards-container.top .card-image-container, .cq-cards-container.bottom .card-image-container{
 	position: relative;
 	float: left;
 	width: 100%;
-	/*min-height: 200px;*/
 	overflow: hidden;
 }
 .cq-cards-container.top .card-image-container img{
@@ -78,7 +64,6 @@
 .cq-cards-container.top .card-caption-container, .cq-cards-container.bottom .card-caption-container{
 	position: relative;
 	width: 100%;
-	/*height: 140px;*/
 }
 
 
@@ -99,10 +84,7 @@
   transition: all 0.3s ease 0s;
   -moz-transition: all 0.3s ease 0s;
   -webkit-transition: all 0.3s ease 0s;
-  /*width: 16.795%;*/
-  /* auto */
   text-align: center;
-  /* DELETE WHEN WIDTH AUTO */
 }
 .card-caption-container .caption-content .cq-button:hover{
 	background-color: #4A89DC;

@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+  "use strict";
   $('.cq-hr').each(function(index) {
       var _this = $(this);
 
@@ -7,7 +8,6 @@ jQuery(document).ready(function($) {
       var _borderstyle = $(this).data('borderstyle');
       var _bgcolor = $(this).data('bgcolor') || 'transparent';
       var _fontcolor = $(this).data('fontcolor');
-      // var _shape = '.cq-hr-' + $(this).data('shape');
       var _shape = $(this).data('shape');
       var _leftcolor = $(this).data('leftcolor');
       var _centercolor = $(this).data('centercolor');
@@ -32,8 +32,6 @@ jQuery(document).ready(function($) {
           'background-image': 'linear-gradient(to right, ' + _leftcolor +', ' + _centercolor + ', ' + _rightcolor + ')',
           'height': _bordersize,
           'border-bottom': 'none'
-          // 'border-bottom-color': _bordercolor,
-          // 'border-bottom-style': _borderstyle
         });
       }else{
         $(this).css({
@@ -50,15 +48,13 @@ jQuery(document).ready(function($) {
         'font-family': _fontfamily,
         'width': _titlewidth,
         'padding': _padding,
-        // 'left': _titleposition,
         'font-size': _fontsize,
         'color': _fontcolor,
         'border-radius': _borderradius,
         'background-color': _bgcolor,
         'border-style': _borderstyle,
-        // 'border-radius': _borderradius,
         'border-color': _centerbordercolor
-      })//.addClass('fadeinup');
+      });
   });
 });
 

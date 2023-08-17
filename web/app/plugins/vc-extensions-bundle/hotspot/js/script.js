@@ -14,6 +14,7 @@ function hexToRgb(hex) {
 }
 
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cqtooltip-wrapper').each(function() {
       var _this = $(this);
       var _tooltipstyle = $(this).data('tooltipstyle');
@@ -44,6 +45,7 @@ jQuery(document).ready(function($) {
 
       $('.cq-tooltip', $(this)).each(function(index) {
         var _tooltip = $(this);
+        var _iconbg = $(this).data('iconbg');
         var _bg = $(this).css('background-color');
         var _arrowposition = $(this).data('arrowposition') || 'top';
         if(_bg.indexOf('a') == -1){
@@ -52,35 +54,25 @@ jQuery(document).ready(function($) {
           _newbg = _bg;
         }
         $(this).css('background-color', _newbg);
+        if(_iconbg!=""){
+          $(this).attr('style', 'background-color: ' + _iconbg + ' !important');
+        }
         $(this).on('click', function(event) {
           if($(this).attr('href')==""||$(this).attr('href')=="#") event.preventDefault();
         });
         var _content = $(this).data('tooltip');
         var _offsetx = $(window).width()<=480?0:2;
         var _offsety = 0;
-        // if(_arrowposition=="top"){
-        //     _offsety = -3;
-        // }
-        // if(_arrowposition=="bottom"){
-        //     _offsety = 3;
-        // }
-        // if(_arrowposition=="right"){
-        //     _offsetx = 3;
-        // }
-        // if(_arrowposition=="left"){
-        //     _offsetx = -3;
-        // }
+
 
         $(this).tooltipster({
           content: _content,
-          // autoClose: false,
           position: _arrowposition,
           offsetX: _offsetx,
           offsetY: _offsety,
           maxWidth: _maxwidth,
           delay: 100,
           speed: 300,
-          // timer: 5000,
           interactive: true,
           animation: _tooltipanimation,
           trigger: _trigger,

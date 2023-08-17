@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+	"use strict";
 	var touch = Modernizr.touch;
 	$('.cq-parallaxcontainer').each(function(index) {
 		var _this = $(this);
@@ -13,11 +14,7 @@ jQuery(document).ready(function($) {
 			_linkArr[linkIndex] = $(this).data('link');
 			var _link = $(this).data('link');
 			if(_link!="") $(this).css('cursor', 'pointer');
-			// $(this).data('index', _imageLength - holderIndex - 1);
-			// console.log('this', $(this), _imageLength);
 			$(this).on('click', function(event) {
-					// var _target = $(this).data('target');
-					// var _link = $(this).data('link');
 					var _link = $(this).data('link');
 					if(_link&&_link!=""){
 						if(_target=="_blank"){
@@ -40,16 +37,9 @@ jQuery(document).ready(function($) {
           extraHeight: _extraheight,
 		  coverRatio: _coverratio,
 		  holderClass: 'cq-parallaximgholder',
-		  // imageAttribute: (touch === true) ? 'image-mobile' : 'image',
 		  touch: touch
 		});
 
-		// $(window).on('resize', function(event) {
-		// 	_this.find('.cq-parallaximgholder').css({
-		// 		'width': _this.width()
-		// 	});
-		// });
-		// $(window).trigger('resize');
 		var _imageLength = $('.cq-parallaximage', _this).length;
 		$('.cq-parallaximgholder', _this).each(function(holderIndex) {
 			if(_linkArr[holderIndex]!="") $(this).css('cursor', 'pointer');

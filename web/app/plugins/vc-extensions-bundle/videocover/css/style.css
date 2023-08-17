@@ -1,5 +1,4 @@
 .cq-videocover{
-  /*cursor: pointer;*/
   position: relative;
 }
 .cq-videocover-img.square{
@@ -27,8 +26,6 @@
   margin: 0;
   width: 64px;
   height: 64px;
-  /*border-radius: 50%;*/
-  /*border-radius: 16px;*/
   background: rgba(0, 0, 0, .7);
   box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
 }
@@ -163,15 +160,12 @@
 }
 .cq-videocover-iconcontainer.circle{
   border-radius: 50%;
-  /*line-height: 64px;*/
 }
 .cq-videocover-iconcontainer.roundsmall{
   border-radius: 8px;
-  /*line-height: 64px;*/
 }
 .cq-videocover-iconcontainer.roundlarge{
   border-radius: 16px;
-  /*line-height: 64px;*/
 }
 
 .animated {

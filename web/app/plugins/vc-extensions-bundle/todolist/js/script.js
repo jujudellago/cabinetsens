@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+	"use strict";
 	jQuery('.cqlist-container').each(function(index) {
 		var _this = $(this);
 		var _isclickable = $(this).data('isclickable');

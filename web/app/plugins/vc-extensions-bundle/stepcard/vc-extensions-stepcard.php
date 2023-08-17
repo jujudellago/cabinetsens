@@ -4,154 +4,151 @@ if (!class_exists('VC_Extensions_StepCard')){
         private $nextstep_str = "";
         function __construct() {
             vc_map(array(
-            "name" => __("Step Card", 'cq_allinone_vc'),
+            "name" => esc_attr__("Step Card", 'cq_allinone_vc'),
             "base" => "cq_vc_stepcard",
             "class" => "cq_vc_stepcard",
             "icon" => "cq_vc_stepcard",
-            "category" => __('Sike Extensions', 'js_composer'),
+            "category" => esc_attr__('Sike Extensions', 'js_composer'),
             "as_parent" => array('only' => 'cq_vc_stepcard_item'),
-            // "content_element" => false,
-            // "is_container" => true,
             "js_view" => 'VcColumnView',
             "show_settings_on_create" => true,
-            'description' => __('auto delay step instruction', 'js_composer'),
+            'description' => esc_attr__('auto delay step instruction', 'js_composer'),
             "params" => array(
               array(
                 "type" => "textfield",
-                "heading" => __("Customize item height", "cq_allinone_vc"),
+                "heading" => esc_attr__("Customize item height", "cq_allinone_vc"),
                 "param_name" => "itemheight",
                 "value" => "",
-                "description" => __('Enter item height in pixels, for example: 400. Leave empty to use default 300 (pixels).', "cq_allinone_vc")
+                "description" => esc_attr__('Enter item height in pixels, for example: 400. Leave empty to use default 300 (pixels).', "cq_allinone_vc")
               ),
               array(
                  "type" => "dropdown",
                  "holder" => "",
                  "edit_field_class" => "vc_col-xs-6 vc_column",
-                 "heading" => __("Auto delay slideshow", "cq_allinone_vc"),
+                 "heading" => esc_attr__("Auto delay slideshow", "cq_allinone_vc"),
                  "param_name" => "autoslide",
                  "value" => array("no", "2", "3", "4", "5", "6", "7", "8"),
                  "std" => "no",
-                 "description" => __("In seconds, default is no, which is disabled.", "cq_allinone_vc")
+                 "description" => esc_attr__("In seconds, default is no, which is disabled.", "cq_allinone_vc")
               ),
               array(
                  "type" => "dropdown",
                  "edit_field_class" => "vc_col-xs-6 vc_column",
                  "holder" => "",
-                 "heading" => __("Card style (color of the card in the background)", "cq_allinone_vc"),
+                 "heading" => esc_attr__("Card style (color of the card in the background)", "cq_allinone_vc"),
                  "param_name" => "cardstyle",
                  "value" => array("Grape Fruit" => "grapefruit", "Bitter Sweet" => "bittersweet", "Sunflower" => "sunflower", "Grass" => "grass", "Mint" => "mint", "Aqua" => "aqua", "Blue Jeans" => "bluejeans", "Lavender" => "lavender", "Pink Rose" => "pinkrose", "Light Gray" => "lightgray", "Medium Gray" => "mediumgray", "Dark Gray" => "darkgray", "Transparent (no colored background and the step bar below)" => "transparent"),
                 'std' => 'aqua',
                  "std" => "60",
-                 "description" => __("Select the built in background card color style.", "cq_allinone_vc")
+                 "description" => esc_attr__("Select the built in background card color style.", "cq_allinone_vc")
               ),
               array(
                 "type" => "textfield",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
-                "heading" => __("Next step button", "cq_allinone_vc"),
+                "heading" => esc_attr__("Next step button", "cq_allinone_vc"),
                 "param_name" => "steplabel",
                 "value" => "Next Step",
-                "description" => __("The next step button.", "cq_allinone_vc")
+                "description" => esc_attr__("The next step button.", "cq_allinone_vc")
               ),
               array(
                  "type" => "dropdown",
                  "holder" => "",
                  "edit_field_class" => "vc_col-xs-6 cqadmin-firstcol-offset",
-                 "heading" => __("Display the next step button on the:", "cq_allinone_vc"),
+                 "heading" => esc_attr__("Display the next step button on the:", "cq_allinone_vc"),
                  "param_name" => "stepbtnposition",
                  "value" => array("left", "right"),
                  "std" => "left",
-                 "description" => __("", "cq_allinone_vc")
+                 "description" => esc_attr__("", "cq_allinone_vc")
               ),
               array(
                 "type" => "colorpicker",
                  "edit_field_class" => "vc_col-xs-6 cqadmin-firstcol-offset",
                 "class" => "",
-                "heading" => __("Color of the next step button", 'cq_allinone_vc'),
+                "heading" => esc_attr__("Color of the next step button", 'cq_allinone_vc'),
                 "param_name" => "nextbtncolor",
                 "value" => "",
-                "description" => __("Default is same as the link color of the theme.", 'cq_allinone_vc')
+                "description" => esc_attr__("Default is same as the link color of the theme.", 'cq_allinone_vc')
               ),
               array(
                 "type" => "textfield",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
-                "heading" => __("Label font-size", "cq_allinone_vc"),
+                "heading" => esc_attr__("Label font-size", "cq_allinone_vc"),
                 "param_name" => "labelfontsize",
                 "value" => "",
-                "description" => __("Default (leave to blank) is 1em, support a value like <strong>12px</strong> or <strong>1.2em</strong>", "cq_allinone_vc")
+                "description" => esc_attr__("Default (leave to blank) is 1em, support a value like 12px or 1.2em", "cq_allinone_vc")
               ),
               array(
                 'type' => 'dropdown',
-                'heading' => __( 'Icon library (append to the next step button)', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon library (append to the next step button)', 'js_composer' ),
                 'value' => array(
-                  __( 'Entypo', 'js_composer' ) => 'entypo',
-                  __( 'Font Awesome', 'js_composer' ) => 'fontawesome',
-                  __( 'Open Iconic', 'js_composer' ) => 'openiconic',
-                  __( 'Typicons', 'js_composer' ) => 'typicons',
-                  __( 'Material', 'js_composer' ) => 'material',
-                  __( 'Linecons', 'js_composer' ) => 'linecons',
-                  // __( 'Mono Social', 'js_composer' ) => 'monosocial',
+                  esc_attr__( 'Entypo', 'js_composer' ) => 'entypo',
+                  esc_attr__( 'Font Awesome', 'js_composer' ) => 'fontawesome',
+                  esc_attr__( 'Open Iconic', 'js_composer' ) => 'openiconic',
+                  esc_attr__( 'Typicons', 'js_composer' ) => 'typicons',
+                  esc_attr__( 'Material', 'js_composer' ) => 'material',
+                  esc_attr__( 'Linecons', 'js_composer' ) => 'linecons',
                 ),
                 'admin_label' => true,
                 'param_name' => 'stepicon',
-                'description' => __( 'Select icon library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_fontawesome',
                 'value' => 'fa fa-user', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => true, // default true, display an "EMPTY" icon?
                   'type' => 'fontawesome',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
                 ),
                 'dependency' => array(
                   'element' => 'stepicon',
                   'value' => 'fontawesome',
                 ),
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_openiconic',
                 'value' => 'vc-oi vc-oi-dial', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'openiconic',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'stepicon',
                   'value' => 'openiconic',
                 ),
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_typicons',
                 'value' => 'typcn typcn-adjust-brightness', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'typicons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'stepicon',
                   'value' => 'typicons',
                 ),
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_entypo',
                 'value' => 'entypo-icon entypo-icon-right-open-big', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'entypo',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'stepicon',
@@ -160,23 +157,23 @@ if (!class_exists('VC_Extensions_StepCard')){
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_linecons',
                 'value' => 'vc_li vc_li-heart', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'linecons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'stepicon',
                   'value' => 'linecons',
                 ),
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_material',
                 'value' => 'vc-material vc-material-arrow_forward',
                 // default value to backend editor admin_label
@@ -184,95 +181,95 @@ if (!class_exists('VC_Extensions_StepCard')){
                   'emptyIcon' => false,
                   // default true, display an "EMPTY" icon?
                   'type' => 'material',
-                  'iconsPerPage' => 4000,
+                  'iconsPerPage' => 100,
                   // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'stepicon',
                   'value' => 'material',
                 ),
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 "type" => "textfield",
                 "edit_field_class" => "vc_col-xs-6 vc_column cqadmin-col-offset",
                 "class" => "",
-                "heading" => __("Icon size", "cq_allinone_vc"),
+                "heading" => esc_attr__("Icon size", "cq_allinone_vc"),
                 "param_name" => "iconsize",
                 "value" => "",
-                "description" => __('Default is 28px (leave to blank). Support a value like <strong>2em</strong> or <strong>32px</strong>', "cq_allinone_vc")
+                "description" => esc_attr__('Default is 28px (leave to blank). Support a value like 2em or 32px', "cq_allinone_vc")
               ),
               array(
                 "type" => "colorpicker",
                 "edit_field_class" => "vc_col-xs-6 vc_column cqadmin-col-offset",
                 "class" => "",
-                "heading" => __("Icon color", 'cq_allinone_vc'),
+                "heading" => esc_attr__("Icon color", 'cq_allinone_vc'),
                 "param_name" => "iconcolor",
                 "value" => "",
-                "description" => __("Default is gray.", 'cq_allinone_vc')
+                "description" => esc_attr__("Default is gray.", 'cq_allinone_vc')
               ),
               array(
                 'type' => 'checkbox',
-                'heading' => __('Display the item background color same as the bar?', 'cq_allinone_vc' ),
+                'heading' => esc_attr__('Display the item background color same as the bar?', 'cq_allinone_vc' ),
                 'param_name' => 'bgstyle',
                 'std' => 'no',
-                'description' => __("Check this if you want to display the item background color same as the bar. Default is white. Or you can customize the background color below.", 'cq_allinone_vc' ),
-                'value' => array( __( 'Yes, display the colored background', 'cq_allinone_vc' ) => 'yes' ),
+                'description' => esc_attr__("Check this if you want to display the item background color same as the bar. Default is white. Or you can customize the background color below.", 'cq_allinone_vc' ),
+                'value' => array( esc_attr__( 'Yes, display the colored background', 'cq_allinone_vc' ) => 'yes' ),
               ),
               array(
                 "type" => "colorpicker",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "class" => "",
-                "heading" => __("Background color of the card item", 'cq_allinone_vc'),
+                "heading" => esc_attr__("Background color of the card item", 'cq_allinone_vc'),
                 "param_name" => "backgroundcolor",
                 "value" => "",
-                "description" => __("Default is white.", 'cq_allinone_vc')
+                "description" => esc_attr__("Default is white.", 'cq_allinone_vc')
               ),
               array(
                 "type" => "colorpicker",
                 "edit_field_class" => "vc_col-xs-6 vc_column",
                 "class" => "",
-                "heading" => __("Text color of the card", 'cq_allinone_vc'),
+                "heading" => esc_attr__("Text color of the card", 'cq_allinone_vc'),
                 "param_name" => "textcolor",
                 "value" => "",
-                "description" => __("Default is gray.", 'cq_allinone_vc')
+                "description" => esc_attr__("Default is gray.", 'cq_allinone_vc')
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Extra class name", "cq_allinone_vc"),
+                "heading" => esc_attr__("Extra class name", "cq_allinone_vc"),
                 "param_name" => "extraclass",
                 "value" => "",
-                "description" => __("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "cq_allinone_vc")
+                "description" => esc_attr__("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "cq_allinone_vc")
               ),
               array(
                 "type" => "css_editor",
-                "heading" => __( "CSS", "cq_allinone_vc" ),
+                "heading" => esc_attr__( "CSS", "cq_allinone_vc" ),
                 "param_name" => "css",
-                "description" => __("It's recommended to use this to customize the padding/margin only.", "cq_allinone_vc"),
-                "group" => __( "Design options", "cq_allinone_vc" ),
+                "description" => esc_attr__("It's recommended to use this to customize the padding/margin only.", "cq_allinone_vc"),
+                "group" => esc_attr__( "Design options", "cq_allinone_vc" ),
              )
            )
         ));
 
         vc_map(
           array(
-             "name" => __("Step Item","cq_allinone_vc"),
+             "name" => esc_attr__("Step Item","cq_allinone_vc"),
              "base" => "cq_vc_stepcard_item",
              "class" => "cq_vc_stepcard_item",
              "icon" => "cq_vc_stepcard_item",
-             "category" => __('Sike Extensions', 'js_composer'),
-             "description" => __("Add image, icon and text","cq_allinone_vc"),
+             "category" => esc_attr__('Sike Extensions', 'js_composer'),
+             "description" => esc_attr__("Add image, icon and text","cq_allinone_vc"),
              "as_child" => array('only' => 'cq_vc_stepcard'),
              "show_settings_on_create" => true,
              "content_element" => true,
              "params" => array(
               array(
                 "type" => "textarea_html",
-                "heading" => __("Content", "cq_allinone_vc"),
+                "heading" => esc_attr__("Content", "cq_allinone_vc"),
                 "param_name" => "content",
                 "value" => "",
                 "group" => "Text",
-                "description" => __("The slide in content.", "cq_allinone_vc")
+                "description" => esc_attr__("The slide in content.", "cq_allinone_vc")
               )
               ),
             )
@@ -347,7 +344,7 @@ if (!class_exists('VC_Extensions_StepCard')){
       }
 
 
-      function cq_vc_stepcard_item_func($atts, $content=null, $tag) {
+      function cq_vc_stepcard_item_func($atts, $content=null, $tag=null) {
           extract(shortcode_atts(array(
             "css" => ""
           ), $atts));

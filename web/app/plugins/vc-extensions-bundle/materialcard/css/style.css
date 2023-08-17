@@ -21,7 +21,6 @@
   padding: 0.5rem 1.2rem 0.5rem 1.2rem;
   list-style-type: none;
   border-top: 15px solid #AAB2BD;
-  /*margin-bottom: 1.75rem;*/
   border-radius: 5px;
   -webkit-transition: all .5s ease;
           transition: all .5s ease;
@@ -37,7 +36,6 @@ h3.material-card-title{
   font-size: 1.6em;
 }
 .material-card-content p{
-/*.card-summary{*/
   color: #868686;
   line-height: 1.5;
   font-size: 1em;
@@ -59,8 +57,6 @@ h3.material-card-title{
   font-weight: 300;
   letter-spacing: 2px;
   font-size: .9em;
-  /*font-size: 1em;*/
-  /*text-transform: uppercase;*/
   padding: .3rem .5rem .3rem .7rem;
   position: absolute;
   right: 0;
@@ -71,15 +67,7 @@ h3.material-card-title{
   text-decoration: none;
 }
 i.cq-material-icon{
-  /*margin-right: 8px;*/
 }
-/*.material-card-label .fa {
-  width: 15px;
-  margin-right: 8px;
-  position: relative;
-  top: 2px;
-}
-*/
 
 
 .ripple-circle {

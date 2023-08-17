@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-testimoniallist').each(function(index, el) {
         var _this = $(this);
         var _avatarbg = $(this).data('avatarbg');
@@ -9,7 +10,6 @@ jQuery(document).ready(function($) {
         var _delaytime = parseInt($(this).data('delaytime'));
         var _namecolor = $(this).data('namecolor');
         var _textalign = $(this).data('textalign');
-        // var _minheight = $(this).data('minheight');
         var _contentpadding = $(this).data('contentpadding');
         var _autoplay = false;
         var _autoplaytime;
@@ -24,9 +24,6 @@ jQuery(document).ready(function($) {
         if(_textalign=="center"||_textalign=="right"){
             $('.cq-testimoniallist-content, .cq-testimoniallist-content h4', _this).css('text-align', _textalign);
         }
-        // if(_minheight!=""){
-        //     $('.cq-testimoniallist-content', _this).css('min-height', _minheight);
-        // }
         if(_contentpadding!=""){
             $('.cq-testimoniallist-content', _this).css('padding', _contentpadding);
         }
@@ -54,8 +51,6 @@ jQuery(document).ready(function($) {
             speed: 800,
             cssEase: 'cubic-bezier(0.645, 0.045, 0.355, 1.000)',
             centerPadding: '0px',
-            // fade: true,
-            // easing: 'easeInOutExpo',
             asNavFor: $('.cq-testimoniallist-avatarcontainer', _this)
         });
         $('.cq-testimoniallist-avatarcontainer', _this).slick({
@@ -66,17 +61,13 @@ jQuery(document).ready(function($) {
             arrows: true,
             infinite: false,
             centerMode: true,
-            // centerPadding: '0px',
             focusOnSelect: true,
             speed: 800,
             cssEase: 'cubic-bezier(0.645, 0.045, 0.355, 1.000)',
-            // easing: 'easeInOutExpo',
-            // cssEase: 'cubic-bezier(0.950, 0.050, 0.795, 0.035)',
             prevArrow: null,
             nextArrow: null,
             autoplay: _autoplay,
             autoplaySpeed: _autoplaytime*1000,
-            // variableWidth: true,
             responsive: [
                 {
                     breakpoint: 1280,
@@ -100,18 +91,6 @@ jQuery(document).ready(function($) {
         });
 
 
-
-        $('.cq-testimoniallist-avataritem', _this).each(function(imageIndex) {
-            // $(this).data('index', imageIndex);
-            $(this).on('click', function(event) {
-                // var _currentImage = $(this).data('index');
-                // console.log('_currentImage', $(this));
-                // _avatarCarousel.slickGoTo(_currentImage);
-                // _contentCarousel.slickGoTo(_currentImage);
-
-            });
-
-        });
 
         var _maxContentHeight = 0;
         var _contentContainerHeight = $('.cq-testimoniallist-contentcontainer', _this).outerHeight();

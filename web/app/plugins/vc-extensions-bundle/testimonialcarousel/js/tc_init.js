@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-
+  "use strict";
   $('.cq-testimonialcarousel').each(function() {
       var _this = $(this);
       var _italic = $(this).data('italic') == 'on' ? 'italic' : 'normal';
@@ -22,11 +22,6 @@ jQuery(document).ready(function($) {
       var _namesize = $(this).data('namesize');
       var _subtitlesize = $(this).data('subtitlesize');
       var _notooltip = $(this).data('notooltip') == "on" ? true:false;
-
-      // $(this).find('.testimonial-wrap').each(function(index) {
-        // $(this).delay(100*index).animate({opacity: 1}, 300);
-        // $(this).delay(100*index).css('visibility', 'visible');;
-      // });
 
       $(this).find('.headshot').each(function(index) {
         $(this).css({
@@ -115,7 +110,6 @@ jQuery(document).ready(function($) {
         $('.testimonial-info', _this).find('i').each(function(index) {
           var _title = $(this).attr('title');
           $(this).tooltipster({
-            // content: _title,
             delay: 2600,
             animation: 'grow',
             position: 'top',
@@ -125,17 +119,14 @@ jQuery(document).ready(function($) {
           });
         });
       }
-      // _updateTooltip();
 
 
       _this.slick({
-          // centerMode: true,
           dots: true,
           arrows: false,
           autoplay: _autoplay,
           autoplaySpeed: _autoplayspeed,
           infinite: _noloop,
-          // infinite: false,
           speed: 300,
           slidesToShow: _tnumber,
           slidesToScroll: 1,
@@ -146,8 +137,6 @@ jQuery(document).ready(function($) {
                 breakpoint: 1024,
                 settings: {
                     slidesToShow: _tnumber,
-                    // slidesToScroll: 1,
-                    // infinite: true
                     arrows: false,
                     dots: true
                 }

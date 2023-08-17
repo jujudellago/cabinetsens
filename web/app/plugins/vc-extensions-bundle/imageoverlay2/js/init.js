@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     function hexToRgb(hex) {
         // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
         var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -24,7 +25,6 @@ jQuery(document).ready(function($) {
         var _contentsize = $(this).data('contentsize');
         var _contentcolor = $(this).data('contentcolor');
         var _elementmargin = $(this).data('elementmargin');
-        // var _imagesize = $(this).data('imagesize');
         var _titlesize = $(this).data('titlesize');
         var _contentsize = $(this).data('contentsize');
         var _image= $(this).data('image');
@@ -52,7 +52,6 @@ jQuery(document).ready(function($) {
             $(this).css({
                 height: _elementheight
             });
-            // $(this).find('img').css('min-height', _elementheight);
         }
 
         if(_titlesize!=""){
@@ -75,7 +74,6 @@ jQuery(document).ready(function($) {
 
         $(this).find('.cq-imageoverlay2').css({
             'height': _this.height(),
-            // 'width': 'auto'
         });
 
 

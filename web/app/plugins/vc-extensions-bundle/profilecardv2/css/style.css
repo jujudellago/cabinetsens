@@ -8,10 +8,6 @@
   position: relative;
   padding: 0;
   margin: 0;
-  /*
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);*/
 }
 
 
@@ -54,7 +50,6 @@
   position: absolute;
   z-index: -1;
   top: 50%;
-  /*left: calc(50% + 20px);*/
   transition: 0.24s all;
 }
 .cq-profilecardv2-transition1 .cq-profilecardv2-panel{
@@ -66,7 +61,6 @@
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
   left: 0;
-  /*margin-left: -20px;*/
 }
 
 .cq-profilecardv2-transition1 .cq-profilecardv2-panel-toggled {

@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-homeslider').each(function(index, el) {
         var _this = $(this);
         var _maxheight = $(this).data('maxheight');
@@ -55,7 +56,6 @@ jQuery(document).ready(function($) {
                     'top': 0,
                     'min-height': 0,
                     'left': offset,
-                    // 'box-sizing': 'border-box',
                     'width': $( window ).width()
                 });
             }
@@ -133,13 +133,6 @@ jQuery(document).ready(function($) {
             speed: 800,
             draggable: false,
             swipe: false,
-            // onBeforeChange: function(event){
-            //     var _index = _imagecarousel.slickCurrentSlide();
-            //     console.log('index', _index);
-            //     _textcarousel.slick('slickGoTo', _index);
-            // },
-            // easing: 'easeInOutExpo',
-            // cssEase: 'cubic-bezier(1.000, 0.000, 0.000, 1.000)',
             cssEase: 'cubic-bezier(0.645, 0.045, 0.355, 1.000)',
             prevArrow: $('.homeslider-navigation-prev', _this),
             nextArrow: $('.homeslider-navigation-next', _this),
@@ -148,15 +141,11 @@ jQuery(document).ready(function($) {
         });
         var _textcarousel = $('.cq-homeslider-content', _this).slick({
             asNavFor: $('.cq-homeslider-itemcontainer', _this),
-            // arrow: true,
-            // rtl: true,
             infinite: true,
             adaptiveHeight: true,
             slidesToShow: 1,
             arrow: false,
-            // dots: false,
             dots: true,
-            // appendDots: $('.cq-homeslider-navigation', _this),
             appendDots: _contentContainer,
             draggable: false,
             swipe: false,
@@ -165,22 +154,8 @@ jQuery(document).ready(function($) {
             prevArrow: $('.homeslider-navigation-prev', _this),
             nextArrow: $('.homeslider-navigation-next', _this),
 
-            // cssEase: 'cubic-bezier(1.000, 0.000, 0.000, 1.000)',
-            // autoplaySpeed: _autoplayspeed,
-            // autoplaySpeed: 3000,
             slidesToScroll: 1
         });
-
-
-        // $('.cq-homeslider-coveritem', _this).each(function(index) {
-        //     $(this).css({
-        //        // 'left' : index * _itemWidth,
-        //        'height': '300px',
-        //        'background-size': 'cover',
-        //        'background': 'url(' + $(this).data('image') + ') no-repeat',
-        //     });
-        //     _itemNum++;
-        // });
 
 
         $('a.cq-homeslider-lightbox', _this).each(function() {
@@ -189,27 +164,10 @@ jQuery(document).ready(function($) {
             });
         });
 
-        // $('a.cq-homeslider-lightbox', _this).on('click', function(event) {
-        //     $(this).attr('rel', 'cq-homeslider-gallery'+_index).boxer({
-        //         fixed : true
-        //     });
-        // });
-
         _itemNum = $('.cq-homeslider-image', _this).length;
 
         var _currentItem = 0;
 
-        // _imagecarousel.on('beforeChange', function(event, slick, currentSlide, nextSlide){
-        //     // _textcarousel.slick('slickGoTo', nextSlide);
-        //     _textcarousel.slickGoTo(nextSlide)
-        // });
-
-
-        // _imagecarousel.on('afterChange', function(event, slick, currentSlide, nextSlide){
-        //     $('.homeslider-navigation-next', _this).on('click', function(event) {
-        //         _imagecarousel.slick("slickNext");
-        //     });
-        // })
 
         $('.cq-homeslider-contentitem', _this).each(function() {
             if($(this).is(':empty')){
@@ -218,9 +176,6 @@ jQuery(document).ready(function($) {
                     'padding-bottom': '0'
                 });
             }else{
-                // $(this).css({
-                    // 'padding': '20px 16px 0px 16px'
-                // });
             }
         });
 

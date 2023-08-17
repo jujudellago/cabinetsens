@@ -10,6 +10,7 @@ function _is_msie() {
   }
 
 jQuery(document).ready(function($) {
+  "use strict";
   $('.cq-flipbox-container').each(function(index) {
     var _this = $(this);
     var _timeid;
@@ -17,7 +18,6 @@ jQuery(document).ready(function($) {
     var _backbg = $(this).data('backbg');
     var _iconcolor = $(this).data('iconcolor');
     var _iconbg = $(this).data('iconbg');
-    // var _fontcolor = $(this).data('contentcolor') || $(this).data('fontcolor');
     var _frontcontentcolor = $(this).data('frontcontentcolor');
     var _backcontentcolor = $(this).data('backcontentcolor');
     var _cubedirection = $(this).data('cubedirection');

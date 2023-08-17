@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+  "use strict";
   var $root = $('html, body');
   $('.cq-bannerblock').each(function(index) {
       var _this = $(this);
@@ -20,7 +21,6 @@ jQuery(document).ready(function($) {
       var _elementheight = $(this).data('elementheight');
       var _elementmargin = $(this).data('elementmargin');
       var _issmoothscroll = $(this).data('issmoothscroll');
-      // var _scrolltime = $(this).data('scrolltime') || 800;
       var _isarrow = $(this).data('isarrow');
       var _arrowsize = $(this).data('arrowsize');
       var _arrowcolor = $(this).data('arrowcolor');
@@ -155,13 +155,11 @@ jQuery(document).ready(function($) {
       if(_backbuttonhoverbg!=""||_backbuttonhovercolor!=""){
           _button.on('mouseover', function(event) {
             $(this).css({
-              // 'background-position': '100% 0',
               'color': _backbuttonhovercolor,
               'background-color': _backbuttonhoverbg
             });
           }).on('mouseleave', function(event) {
             $(this).css({
-              // 'background-position': '2px 0',
               'color': _backbuttoncolor,
               'background-color': _backbuttonbg
             });
@@ -175,14 +173,7 @@ jQuery(document).ready(function($) {
             'border-color': _buttonbordercolor
           });
 
-          // _button.on('mouseover', function(event) {
-          //   _button.css({
-          //     'border-style': _buttonborder,
-          //     'border-top-width': _buttonbordersize,
-          //     'border-top-color': _buttonbordercolor
-          //   });
-          //   event.preventDefault();
-          // });
+
       }
 
 

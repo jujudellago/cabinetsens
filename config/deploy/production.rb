@@ -27,7 +27,8 @@ set :deploy_to, -> { "/var/www/cabinetsens" }
 
 #SSHKit.config.command_map[:composer] = "php /Users/juju/utils/php/composer/composer.phar"
 #SSHKit.config.command_map[:composer] = "php /home/gsprojet/utils/php/composer/composer.phar"
-set :linked_files, fetch(:linked_files, []).push(".env", "web/app/db.php", "web/app/object-cache.php", "web/app/advanced-cache.php")
+#set :linked_files, fetch(:linked_files, []).push(".env", "web/app/db.php", "web/app/object-cache.php", "web/app/advanced-cache.php")
+set :linked_files, fetch(:linked_files, []).push(".env")
 
 # you can set custom ssh options
 # it's possible to pass any option but you need to keep in mind that net/ssh understand limited list of options

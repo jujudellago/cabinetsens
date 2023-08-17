@@ -1,26 +1,17 @@
 .cq-coverslider{
-	/*width: 100%;*/
 	position: relative;
 	padding: 0;
 	clear: both;
-	/*margin: 20px 0 120px 0;*/
-	/*clear: both;*/
 }
 .cq-coverslider .slick-slider{
 	margin: 0;
 }
-/*.cq-coverslider-container{
-	position: relative;
-	margin: 20px 0 20px 0;
-}
-*/
+
 .cq-coverslider .cq-coverslider-link, .cq-coverslider .cq-coverslider-link:focus{
 	outline: none;
 	border: none;
 }
 .cq-coverslider-navigation{
-	/*position: relative;*/
-	/*float: left;*/
 	display: inline-block;
 	position: absolute;
 	top: 0;
@@ -37,13 +28,10 @@
 	right: 0;
 }
 .cq-coverslider-area{
-	/*background: #AC92EC;*/
-	/*color: #fff;*/
 	width: 100%;
 	position: relative;
 	display: inline-block;
 	z-index: 1;
-	/*float: left;*/
 	clear: both;
 }
 .cq-coverslider.navigation-float-left .cq-coverslider-area.btn-large{
@@ -141,11 +129,8 @@
 .cq-coverslider-navigation .coverslider-navigation-prev, .cq-coverslider-navigation .coverslider-navigation-next{
 	cursor: pointer;
 	margin: 0;
-	/*margin: 0;*/
 	padding: 0;
 	display: block;
-	/*font-size: 32px;*/
-	/*line-height: 40px;*/
 	text-align: center;
 	color: #fff;
 	-webkit-touch-callout: none;
@@ -270,16 +255,9 @@
 	padding: 0;
 	margin: 0;
 	background: #fff;
-	/*-webkit-box-shadow: 0px 5px 11px 0px rgba(50, 50, 50, 0.4);
-	-moz-box-shadow: 0px 5px 11px 0px rgba(50, 50, 50, 0.4);
-	box-shadow: 0px 5px 11px 0px rgba(50, 50, 50, 0.4);*/
-	/*overflow: hidden;*/
-	/*height: 300px;*/
 }
 .cq-coverslider-itemcontainer{
 	display: block;
-	/*height: 300px;*/
-	/*position: absolute;*/
 }
 .cq-coverslider-area.roundsmall{
 	border-bottom-left-radius: 8px;
@@ -292,11 +270,7 @@
 	overflow: hidden;
 }
 .cq-coverslider-content{
-	/*padding: 12px;*/
-	/*padding: 20px 12px 20px 12px;*/
-	/*-webkit-box-shadow: 0px 5px 11px 0px rgba(50, 50, 50, 0.4);
-	-moz-box-shadow: 0px 5px 11px 0px rgba(50, 50, 50, 0.4);
-	box-shadow: 0px 5px 11px 0px rgba(50, 50, 50, 0.4);*/
+
 }
 .cq-coverslider.grapefruit .cq-coverslider-content{
 	background: #DA4453;
@@ -342,23 +316,15 @@
 }
 
 .cq-coverslider-coveritem{
-	/*position: absolute;*/
-	/*height: 300px;*/
 	width: 100%;
 	padding: 0;
 	margin: 0;
-	/*background-color: #8833ff;*/
 }
 .cq-coverslider-contentitem{
 	padding: 12px;
 	width: 100%;
-	/*float: left;*/
 }
 
-/*.cq-coverslider-contentitem.slick-current, .cq-coverslider-contentitem.slick-active{
-	padding: 12px;
-}
-*/
 .slick-dots li{
 	list-style: none;
 }

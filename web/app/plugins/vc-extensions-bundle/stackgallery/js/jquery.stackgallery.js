@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+  "use strict";
   var _numArr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
   var _numArrLen = _numArr.length;
   $('.cq-stackgallery').each(function(index) {
@@ -7,7 +8,6 @@ jQuery(document).ready(function($) {
     var _height = $(this).data('height');
     var _easein = $(this).data('easein');
     var _easeout = $(this).data('easeout');
-    // var _slideshow = $(this).data('slideshow');
     var _slideshow = $(this).data('slideshow') == 'yes' ? true : false;
     var _slideshowdelay = $(this).data('slideshowdelay') || 5000;
     var _notooltip = $(this).data('notooltip') || 'off';
@@ -17,7 +17,6 @@ jQuery(document).ready(function($) {
     });
 
     $(this).find('.stackgallery-next').parent('a').on('click', function(event) {
-      // _this.trigger('clcik');
       _nextItem();
       event.stopPropagation();
       event.preventDefault();
@@ -74,7 +73,6 @@ jQuery(document).ready(function($) {
             position: 'top',
             offsetY: -(_this.height()-_height)*.5,
             delay: 50,
-            // positionTracker: true,
             theme: 'tooltipster-shadow'
           });
           _this.tooltipster('show');
@@ -84,7 +82,6 @@ jQuery(document).ready(function($) {
 
 
     var _lastitem = $(this).find('img.stackgallery-item').last();
-    // _resetTooltip(_lastitem);
     _lastitem.transition({
         rotate: 0,
         x: 0
@@ -99,8 +96,6 @@ jQuery(document).ready(function($) {
         _resetTooltip(_currentshowitem);
         var _flagSide = 1;
         if(event)  _flagSide = (event.pageX - _this.offset().left) > _this.width()*.5 ? 1 : -1;
-        // var _flagNum = Math.floor(Math.random() * 2) * 2 - 1;
-        // var _deg = (_flagNum * _numArr[Math.floor(Math.random()*_numArrLen)]).toString();
         var _orideg = _lastitem.data('deg');
         var _deg = -290;
         if(_isqueue) return;
@@ -137,10 +132,7 @@ jQuery(document).ready(function($) {
         var _lastitem = _this.find('img.stackgallery-item').last();
         var _firstitem = _this.find('img.stackgallery-item').first();
         var _currentshowitem = _lastitem.prev('img.stackgallery-item');
-        // var _flagSide = (event.pageX - _this.offset().left) > _this.width()*.5 ? 1 : -1;
         var _flagSide = -1;
-        // var _flagNum = Math.floor(Math.random() * 2) * 2 - 1;
-        // var _deg = (_flagNum * _numArr[Math.floor(Math.random()*_numArrLen)]).toString();
         var _orideg = _lastitem.data('deg');
         var _deg = -290;
         if(_isqueue) return;
@@ -181,41 +173,8 @@ jQuery(document).ready(function($) {
         if(_slideshow) clearInterval(_this.data('slideshowint'));
         _isplaying = false;
 
-        // var _lastitem = $(this).find('img.stackgallery-item').last();
-        // $(this).find('img.stackgallery-item').each(function(index) {
-        //   if(!$(this).is(_lastitem)){
-        //     var _flagNum = Math.floor(Math.random() * 2) * 2 - 1;
-        //     // var _deg = (_flagNum * _numArr[Math.floor(Math.random()*_numArrLen)]).toString();
-        //     var _deg = $(this).data('deg');
-        //     var _dis = $(this).data('dis') || (_flagNum * _numArr[Math.floor(Math.random()*_numArrLen)]*20).toString();
-        //     $(this).transition({
-        //       rotate: _deg,
-        //       x: _dis
-        //       // '-moz-transform': 'rotate(' + _deg + 'deg) translateX(' + _dis + 'px)' ,
-        //       // '-ms-transform': 'rotate(' + _deg + 'deg) translateX(' + _dis + 'px)' ,
-        //       // '-webkit-transform': 'rotate(' + _deg + 'deg) translateX(' + _dis + 'px)' ,
-        //       // 'transform': 'rotate(' + _deg + 'deg) translateX(' + _dis + 'px)'
-        //     }, 300, 'linear').data('dis', _dis);
-        //   }
-        // });
     }).on('mouseleave', function(event) {
           _startslideshow();
-          // var _lastitem = $(this).find('img.stackgallery-item').last();
-          // $(this).find('img.stackgallery-item').each(function(index) {
-          //   // if(!$(this).is(_lastitem)){
-          //     var _flagNum = Math.floor(Math.random() * 2) * 2 - 1;
-          //     var _deg = $(this).data('deg');
-          //     var _dis = 0;
-          //     $(this).transition({
-          //       rotate: _deg,
-          //       x: _dis
-          //       // '-moz-transform': 'rotate(' + _deg + 'deg) translateX(' + _dis + 'px)' ,
-          //       // '-ms-transform': 'rotate(' + _deg + 'deg) translateX(' + _dis + 'px)' ,
-          //       // '-webkit-transform': 'rotate(' + _deg + 'deg) translateX(' + _dis + 'px)' ,
-          //       // 'transform': 'rotate(' + _deg + 'deg) translateX(' + _dis + 'px)'
-          //     }, 300, 'linear');
-          //   // }
-          // });
     });
 
 
@@ -225,7 +184,6 @@ jQuery(document).ready(function($) {
               _this.find('.stackgallery-next').parent('a').parent('div').hide();
               _this.find('.stackgallery-prev').parent('a').parent('div').hide();
           }else{
-              // _this.off('click');
               _this.find('.stackgallery-next').parent('a').parent('div').show();
               _this.find('.stackgallery-prev').parent('a').parent('div').show();
           }
@@ -234,10 +192,7 @@ jQuery(document).ready(function($) {
               var _h = _w*_ratio;
               $(this).css({
                 'height': _h,
-                // 'margin-top': -_h*.5,
-                // 'left': '50%',
                 'margin-left': -_w*.5,
-                // 'margin-left': (_this.width())*.5
                 'margin-top': -_h*.5
               });
           });

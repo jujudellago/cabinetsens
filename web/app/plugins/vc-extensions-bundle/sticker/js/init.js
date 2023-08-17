@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $(this).find('.cq-sticker').each(function(index) {
         var _size = parseInt($(this).data('size'));
         var _elementmargin = $(this).data('elementmargin');
@@ -11,7 +12,6 @@ jQuery(document).ready(function($) {
     var _sticker = Sticker.init('.cq-sticker');
     $(this).find('.cq-sticker').each(function(index) {
         var _icon = $(this).data('icon');
-        // var _size = parseInt($(this).data('size'));
         var _fontsize = $(this).data('fontsize');
         var _fontcolor = $(this).data('fontcolor');
         var _backgroundtype = $(this).data('backgroundtype');

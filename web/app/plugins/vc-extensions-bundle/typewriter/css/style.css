@@ -1,14 +1,10 @@
 .cq-typewriter-container{
   position: relative;
-  /*background-size: cover;*/
   padding: 0;
   height: 200px;
   color: #fff;
   overflow: hidden;
   margin: 12px auto 0 auto;
-  /*-webkit-transform-style: preserve-3d;*/
-  /*-moz-transform-style: preserve-3d;*/
-  /*transform-style: preserve-3d;*/
   background: #AAB2BD;
 
 
@@ -37,7 +33,6 @@ img.cq-typewriter-image{
   margin: 0;
   padding: 0;
   top: 50%;
-  /*width: 100%;*/
   text-align: center;
   font-size: 1.8em;
   line-height: 150%;
@@ -49,13 +44,7 @@ img.cq-typewriter-image{
 
 
 @media screen and (min-width: 320px) and (max-width: 479px) {
-  /*.cq-typewriter-container{
-    background-size: cover;
-  }
-  img.cq-typewriter-image{
-    display: none;
-  }
-  */
+
   .cq-typewriter {
     width: 90%;
     margin: 0 auto;
@@ -64,14 +53,7 @@ img.cq-typewriter-image{
 
 }
 @media only screen and (min-width: 160px) and (max-width: 319px) {
-  /*
-  .cq-typewriter-container{
-    background-size: cover;
-  }
-  img.cq-typewriter-image{
-    display: none;
-  }
-  */
+
   .cq-typewriter {
     margin: 0 auto;
     width: 90%;

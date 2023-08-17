@@ -4,76 +4,76 @@ if (!class_exists('VC_Extensions_DraggableTimeline')) {
     class VC_Extensions_Draggabletimeline {
         function __construct() {
           vc_map(array(
-            "name" => __("Draggable Timeline", 'vc_draggabletimeline_cq'),
+            "name" => esc_attr__("Draggable Timeline", 'vc_draggabletimeline_cq'),
             "base" => "cq_vc_draggabletimeline",
             "class" => "wpb_cq_vc_extension_timeline",
             "controls" => "full",
             "icon" => "cq_allinone_timeline",
-            "category" => __('Sike Extensions', 'js_composer'),
-            'description' => __('with autoplay', 'js_composer'),
+            "category" => esc_attr__('Sike Extensions', 'js_composer'),
+            'description' => esc_attr__('with autoplay', 'js_composer'),
             "params" => array(
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_draggabletimeline_cq",
-                "heading" => __("Separate each timeline with:", "vc_draggabletimeline_cq"),
+                "heading" => esc_attr__("Separate each timeline with:", "vc_draggabletimeline_cq"),
                 "param_name" => "avatarstyle",
-                "value" => array(__("image (will be resized to 80x80 in retina)", "vc_draggabletimeline_cq") => "image", __("icon (Font Awesome icon)", "vc_draggabletimeline_cq") => "icon", __("text (label) only", "vc_draggabletimeline_cq") => "text"),
-                "description" => __("", "vc_draggabletimeline_cq")
+                "value" => array(esc_attr__("image (will be resized to 80x80 in retina)", "vc_draggabletimeline_cq") => "image", esc_attr__("icon (Font Awesome icon)", "vc_draggabletimeline_cq") => "icon", esc_attr__("text (label) only", "vc_draggabletimeline_cq") => "text"),
+                "description" => esc_attr__("", "vc_draggabletimeline_cq")
               ),
               array(
                 "type" => "attach_images",
-                "heading" => __("Image for each timeline block:", "vc_draggabletimeline_cq"),
+                "heading" => esc_attr__("Image for each timeline block:", "vc_draggabletimeline_cq"),
                 "param_name" => "images",
                 "value" => "",
                 "dependency" => Array('element' => "avatarstyle", 'value' => array('image')),
-                "description" => __("Select images from media library, will be resized to 80x80 (in retina) automatically.", "vc_draggabletimeline_cq")
+                "description" => esc_attr__("Select images from media library, will be resized to 80x80 (in retina) automatically.", "vc_draggabletimeline_cq")
               ),
               array(
                 "type" => "exploded_textarea",
                 "holder" => "",
                 "class" => "vc_draggabletimeline_cq",
-                "heading" => __("Icon for each timeline block:", 'vc_draggabletimeline_cq'),
+                "heading" => esc_attr__("Icon for each timeline block:", 'vc_draggabletimeline_cq'),
                 "param_name" => "avataricons",
-                "value" => __("fa-twitter,fa-bank,fa-heart,fa-comment", 'vc_draggabletimeline_cq'),
+                "value" => esc_attr__("fa-twitter,fa-bank,fa-heart,fa-comment", 'vc_draggabletimeline_cq'),
                 "dependency" => Array('element' => "avatarstyle", 'value' => array('icon')),
-                "description" => __("<a href='http://fortawesome.github.io/Font-Awesome/icons/' target='_blank'>Font Awesome icon</a> for each timeline, divide with linebreak (Enter).", 'vc_draggabletimeline_cq')
+                "description" => esc_attr__("<a href='http://fortawesome.github.io/Font-Awesome/icons/' target='_blank'>Font Awesome icon</a> for each timeline, divide with linebreak (Enter).", 'vc_draggabletimeline_cq')
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_draggabletimeline_cq",
-                "heading" => __("Display the image (or icon) in this shape:", "vc_draggabletimeline_cq"),
+                "heading" => esc_attr__("Display the image (or icon) in this shape:", "vc_draggabletimeline_cq"),
                 "param_name" => "avatarshape",
-                "value" => array(__("round", "vc_draggabletimeline_cq") => "round", __("circle", "vc_draggabletimeline_cq") => "circle", __("square", "vc_draggabletimeline_cq") => "square"),
+                "value" => array(esc_attr__("round", "vc_draggabletimeline_cq") => "round", esc_attr__("circle", "vc_draggabletimeline_cq") => "circle", esc_attr__("square", "vc_draggabletimeline_cq") => "square"),
                 "dependency" => Array('element' => "avatarstyle", 'value' => array('image', 'icon')),
-                "description" => __("Choose the image (or icon) shape here.", "vc_draggabletimeline_cq")
+                "description" => esc_attr__("Choose the image (or icon) shape here.", "vc_draggabletimeline_cq")
               ),
               array(
                 "type" => "exploded_textarea",
                 "holder" => "",
                 "class" => "vc_draggabletimeline_cq",
-                "heading" => __("Label for each timeline block:", 'vc_draggabletimeline_cq'),
+                "heading" => esc_attr__("Label for each timeline block:", 'vc_draggabletimeline_cq'),
                 "param_name" => "avatarlabels",
-                "value" => __("Debra Riley,Default label,Designer,2014", 'vc_draggabletimeline_cq'),
-                "description" => __("Divide with linebreak (Enter). Will work as the timeline label (is required) in the text mode.", 'vc_draggabletimeline_cq')
+                "value" => esc_attr__("Debra Riley,Default label,Designer,2014", 'vc_draggabletimeline_cq'),
+                "description" => esc_attr__("Divide with linebreak (Enter). Will work as the timeline label (is required) in the text mode.", 'vc_draggabletimeline_cq')
               ),
               array(
                 "type" => "exploded_textarea",
                 "holder" => "",
                 "class" => "vc_draggabletimeline_cq",
-                "heading" => __("Optional title for each timeline block content:", 'vc_draggabletimeline_cq'),
+                "heading" => esc_attr__("Optional title for each timeline block content:", 'vc_draggabletimeline_cq'),
                 "param_name" => "contenttitles",
-                "value" => __("Hello title 1,Hi title 2,Designer,2014", 'vc_draggabletimeline_cq'),
+                "value" => esc_attr__("Hello title 1,Hi title 2,Designer,2014", 'vc_draggabletimeline_cq'),
                 "group" => "Timeline content",
-                "description" => __("Divide with linebreak (Enter).", 'vc_draggabletimeline_cq')
+                "description" => esc_attr__("Divide with linebreak (Enter).", 'vc_draggabletimeline_cq')
               ),
               array(
                 "type" => "textarea_html",
                 "holder" => "div",
-                "heading" => __("Timeline block content, divide each one with &lt;div class=&#039;timeline-content&#039;&gt;&lt;/div&gt;, please edit in text mode:", "vc_draggabletimeline_cq"),
+                "heading" => esc_attr__("Timeline block content, divide each one with &lt;div class=&#039;timeline-content&#039;&gt;&lt;/div&gt;, please edit in text mode:", "vc_draggabletimeline_cq"),
                 "param_name" => "content",
-                "value" => __("
+                "value" => "
                   <div class='timeline-content'>
 
                   Hello timeline content 1.
@@ -94,117 +94,117 @@ if (!class_exists('VC_Extensions_DraggableTimeline')) {
 
                 <div class='timeline-content'>
                 You can choose to display the timeline label with Font Awesome icon, image or text only.
-                <a href='http://codecanyon.net/user/sike?ref=sike'>Visit my profile</a> for more works. </div>", "vc_draggabletimeline_cq"),
+                <a href='http://codecanyon.net/user/sike?ref=sike'>Visit my profile</a> for more works. </div>",
                 "group" => "Timeline content",
-                "description" => __("Enter content for each block here.", "vc_draggabletimeline_cq")
+                "description" => esc_attr__("Enter content for each block here.", "vc_draggabletimeline_cq")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_draggabletimeline_cq",
-                "heading" => __("Choose the popup content window color:", "vc_draggabletimeline_cq"),
+                "heading" => esc_attr__("Choose the popup content window color:", "vc_draggabletimeline_cq"),
                 "param_name" => "windowcolor",
-                "value" => array(__("gray", "vc_draggabletimeline_cq") => "gray", __("red", "vc_draggabletimeline_cq") => "red", __("green", "vc_draggabletimeline_cq") => "green", __("blue", "vc_draggabletimeline_cq") => "blue", __("yellow", "vc_draggabletimeline_cq") => "yellow", __("aqua", "vc_draggabletimeline_cq") => "aqua", __("mint", "vc_draggabletimeline_cq") => "mint", __("lavender", "vc_draggabletimeline_cq") => "lavender", __("pink", "vc_draggabletimeline_cq") => "pink"),
+                "value" => array(esc_attr__("gray", "vc_draggabletimeline_cq") => "gray", esc_attr__("red", "vc_draggabletimeline_cq") => "red", esc_attr__("green", "vc_draggabletimeline_cq") => "green", esc_attr__("blue", "vc_draggabletimeline_cq") => "blue", esc_attr__("yellow", "vc_draggabletimeline_cq") => "yellow", esc_attr__("aqua", "vc_draggabletimeline_cq") => "aqua", esc_attr__("mint", "vc_draggabletimeline_cq") => "mint", esc_attr__("lavender", "vc_draggabletimeline_cq") => "lavender", esc_attr__("pink", "vc_draggabletimeline_cq") => "pink"),
                 "group" => "Color Settings",
-                "description" => __("", "vc_draggabletimeline_cq")
+                "description" => esc_attr__("", "vc_draggabletimeline_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Optional font color for the label:", 'vc_draggabletimeline_cq'),
+                "heading" => esc_attr__("Optional font color for the label:", 'vc_draggabletimeline_cq'),
                 "param_name" => "labelcolor",
                 "value" => '',
                 "group" => "Color Settings",
-                "description" => __("Default is gray #333.", 'vc_draggabletimeline_cq')
+                "description" => esc_attr__("Default is gray #333.", 'vc_draggabletimeline_cq')
               ),
               array(
                 "type" => "exploded_textarea",
                 "holder" => "",
                 "class" => "vc_draggabletimeline_cq",
-                "heading" => __("Optional background color for each icon:", 'vc_draggabletimeline_cq'),
+                "heading" => esc_attr__("Optional background color for each icon:", 'vc_draggabletimeline_cq'),
                 "param_name" => "iconbgcolors",
-                "value" => __("#00ACED,#E14782,#3B5998,#E14107,#333333", 'vc_draggabletimeline_cq'),
+                "value" => esc_attr__("#00ACED,#E14782,#3B5998,#E14107,#333333", 'vc_draggabletimeline_cq'),
                 "dependency" => Array('element' => "avatarstyle", 'value' => array('icon')),
                 "group" => "Color Settings",
-                "description" => __("Divide with linebreak (Enter).", 'vc_draggabletimeline_cq')
+                "description" => esc_attr__("Divide with linebreak (Enter).", 'vc_draggabletimeline_cq')
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Optional default bar background color:", 'vc_draggabletimeline_cq'),
+                "heading" => esc_attr__("Optional default bar background color:", 'vc_draggabletimeline_cq'),
                 "param_name" => "defaultbarbgcolor",
                 "value" => '',
                 "group" => "Color Settings",
-                "description" => __("Default is light gray #EFEFEF, customize it with other color or change it to transparent if you don't want it.", 'vc_draggabletimeline_cq')
+                "description" => esc_attr__("Default is light gray #EFEFEF, customize it with other color or change it to transparent if you don't want it.", 'vc_draggabletimeline_cq')
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Optional dragging bar background color:", 'vc_draggabletimeline_cq'),
+                "heading" => esc_attr__("Optional dragging bar background color:", 'vc_draggabletimeline_cq'),
                 "param_name" => "draggingbarbgcolor",
                 "value" => '',
                 "group" => "Color Settings",
-                "description" => __("Default is light black, customize it with other color as you like.", 'vc_draggabletimeline_cq')
+                "description" => esc_attr__("Default is light black, customize it with other color as you like.", 'vc_draggabletimeline_cq')
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_draggabletimeline_cq",
-                "heading" => __("Auto delay move the timeline as slideshow?", "vc_draggabletimeline_cq"),
+                "heading" => esc_attr__("Auto delay move the timeline as slideshow?", "vc_draggabletimeline_cq"),
                 "param_name" => "autoplay",
-                "value" => array(__("no", "vc_draggabletimeline_cq") => "no", __("yes", "vc_draggabletimeline_cq") => "yes"),
+                "value" => array(esc_attr__("no", "vc_draggabletimeline_cq") => "no", esc_attr__("yes", "vc_draggabletimeline_cq") => "yes"),
                 "group" => "Slideshow?",
-                "description" => __("", "vc_draggabletimeline_cq")
+                "description" => esc_attr__("", "vc_draggabletimeline_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Autoplay speed in milliseconds", "vc_draggabletimeline_cq"),
+                "heading" => esc_attr__("Autoplay speed in milliseconds", "vc_draggabletimeline_cq"),
                 "param_name" => "autoplayspeed",
                 "value" => "5000",
                 "dependency" => Array('element' => "autoplay", 'value' => array('yes')),
                 "group" => "Slideshow?",
-                "description" => __("The speed of the auto delay slideshow, default is 5000, which stand for 5 seconds.", "vc_draggabletimeline_cq")
+                "description" => esc_attr__("The speed of the auto delay slideshow, default is 5000, which stand for 5 seconds.", "vc_draggabletimeline_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Optional active background color for the icons:", 'vc_draggabletimeline_cq'),
+                "heading" => esc_attr__("Optional active background color for the icons:", 'vc_draggabletimeline_cq'),
                 "param_name" => "activeiconcolor",
                 "value" => '',
                 "dependency" => Array('element' => "avatarstyle", 'value' => array('icon')),
                 "group" => "Color Settings",
-                "description" => __("Leave it to be blank if you don't want it.", 'vc_draggabletimeline_cq')
+                "description" => esc_attr__("Leave it to be blank if you don't want it.", 'vc_draggabletimeline_cq')
               ),
               array(
                 "type" => "checkbox",
                 "holder" => "",
                 "class" => "vc_draggabletimeline_cq",
-                "heading" => __("Hide the drag button by default?", 'vc_draggabletimeline_cq'),
+                "heading" => esc_attr__("Hide the drag button by default?", 'vc_draggabletimeline_cq'),
                 "param_name" => "isdragbutton",
-                "value" => array(__("Yes, hide it", "vc_draggabletimeline_cq") => 'no'),
-                "description" => __("The drag button is visible in desktop view by default, you can check this to hide it.", 'vc_draggabletimeline_cq')
+                "value" => array(esc_attr__("Yes, hide it", "vc_draggabletimeline_cq") => 'no'),
+                "description" => esc_attr__("The drag button is visible in desktop view by default, you can check this to hide it.", 'vc_draggabletimeline_cq')
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Width of the drag button:", "vc_draggabletimeline_cq"),
+                "heading" => esc_attr__("Width of the drag button:", "vc_draggabletimeline_cq"),
                 "param_name" => "dragbuttonwidth",
-                "description" => __("The drag button is 20px be default, but you have to change it to larger value like 30px in some theme.", "vc_draggabletimeline_cq")
+                "description" => esc_attr__("The drag button is 20px be default, but you have to change it to larger value like 30px in some theme.", "vc_draggabletimeline_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Width of the whole container:", "vc_draggabletimeline_cq"),
+                "heading" => esc_attr__("Width of the whole container:", "vc_draggabletimeline_cq"),
                 "param_name" => "contaienrwidth",
-                "description" => __("Default is 80% and align cetenr automatically. You can customize it to other value like 100%.", "vc_draggabletimeline_cq")
+                "description" => esc_attr__("Default is 80% and align cetenr automatically. You can customize it to other value like 100%.", "vc_draggabletimeline_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Extra class name for the container", "vc_draggabletimeline_cq"),
+                "heading" => esc_attr__("Extra class name for the container", "vc_draggabletimeline_cq"),
                 "param_name" => "extra_class",
-                "description" => __("If you wish to style particular content element differently, then use this field to add a class name and then refer to it is in your css file.", "vc_draggabletimeline_cq")
+                "description" => esc_attr__("If you wish to style particular content element differently, then use this field to add a class name and then refer to it is in your css file.", "vc_draggabletimeline_cq")
               )
 
            )
@@ -213,18 +213,18 @@ if (!class_exists('VC_Extensions_DraggableTimeline')) {
         add_shortcode('cq_vc_draggabletimeline', array($this,'cq_vc_draggabletimeline_func'));
       }
 
-    function cq_vc_draggabletimeline_func($atts, $content=null, $tag) {
+    function cq_vc_draggabletimeline_func($atts, $content=null, $tag=null) {
             extract(shortcode_atts(array(
               'images' => '',
-              'avatarlabels' => '',
+              'avatarlabels' => 'Debra Riley,Default label,Designer,2014',
               'avatarstyle' => 'image',
               'avatarshape' => 'round',
               'windowcolor' => 'gray',
-              'avataricons' => '',
+              'avataricons' => 'fa-twitter,fa-bank,fa-heart,fa-comment',
               'draggingbarbgcolor' => 'rgba(0, 0, 0, 0.5)',
               'defaultbarbgcolor' => '',
               'iconbgcolors' => '',
-              'contenttitles' => '',
+              'contenttitles' => 'Hello title 1,Hi title 2,Designer,2014',
               'labelcolor' => '',
               'activeiconcolor' => '',
               'autoplay' => 'no',
@@ -245,8 +245,10 @@ if (!class_exists('VC_Extensions_DraggableTimeline')) {
           wp_enqueue_style('slick');
           wp_register_style('perfect-scrollbar', plugins_url('css/perfect-scrollbar.min.css', __FILE__));
           wp_enqueue_style('perfect-scrollbar');
+          wp_register_style('dragdealer', plugins_url('css/dragdealer.css', __FILE__));
+          wp_enqueue_style('dragdealer');
 
-          wp_register_script('slick', plugins_url('../testimonialcarousel/slick/slick.min.js', __FILE__), array("jquery"));
+          wp_register_script('slick', plugins_url('../testimonialcarousel/slick/slick.js', __FILE__), array("jquery"));
           wp_enqueue_script('slick');
           wp_register_script('perfect-scrollbar', plugins_url('js/perfect-scrollbar.jquery.min.js', __FILE__), array("jquery"));
           wp_enqueue_script('perfect-scrollbar');
@@ -311,29 +313,29 @@ if (!class_exists('VC_Extensions_DraggableTimeline')) {
           $output .= '</div>';
           $output .= '</div>';
           $output .= '<div class="cq-barcontainer">';
-
           if($avatarstyle=="image"){
             foreach ($imagesarr as $key => $image) {
                 $i++;
                 if(!isset($avatarlabels[$i])) $avatarlabels[$i] = '';
+                $attachment = get_post($image);
                 $return_img_arr = wp_get_attachment_image_src(trim($image), 'full');
 
                 $img = $thumbnail = "";
-                $fullimage = $return_img_arr[0];
+                $fullimage = $return_img_arr[0] ?? "";
                 $thumbnail = $fullimage;
                 if($imagewidth!=""){
                     if(function_exists('wpb_resize')){
                         $img = wpb_resize($image, null, $retina=="on"?$imagewidth*2:$imagewidth, $retina=="on"?$imagewidth*2:$imagewidth, true);
-                        $thumbnail = $img['url'];
+                        $thumbnail = $img['url'] ?? "";
                         if($thumbnail=="") $thumbnail = $fullimage;
                     }
                 }
 
 
                 $output .= '<div class="cq-highlight-container">';
-                if($return_img_arr[0]){
+                if(($return_img_arr[0]??"")!=""){
                     $output .= '<div class="cq-highlight '.$avatarshape.'">';
-                      $output .= '<img src="'.$thumbnail.'" width="'.$imagewidth.'" />';
+                      $output .= '<img src="'.$thumbnail.'" width="'.$imagewidth.'" alt="'.get_post_meta($attachment->ID, '_wp_attachment_image_alt', true ).'" />';
                     $output .= '</div>';
                     if($avatarlabels[$i]!="") $output .= '<span class="cq-highlight-label">'.$avatarlabels[$i].'</span>';
                 }
@@ -358,10 +360,7 @@ if (!class_exists('VC_Extensions_DraggableTimeline')) {
           }else{
             foreach ($avatarlabels as $key => $label) {
                 $i++;
-                // if(!isset($avatarlabels[$i])) $avatarlabels[$i] = '';
                 $output .= '<div class="cq-highlight-container '.$avatarstyle.'">';
-                // $output .= '<div class="cq-highlight text-only '.$avatarshape.'">';
-                // $output .= '</div>';
                 if($label!="") {
                     $output .= '<span class="cq-highlight-label">';
                     $output .= $label;

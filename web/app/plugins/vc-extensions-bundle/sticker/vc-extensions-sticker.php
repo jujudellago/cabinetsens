@@ -7,11 +7,8 @@ if (!class_exists('VC_Extensions_Sticker')) {
             "name" => __("Sticker", 'vc_sticker_cq'),
             "base" => "cq_vc_sticker",
             "class" => "wpb_cq_vc_extension_sticker",
-            // "as_parent" => array('only' => 'cq_vc_sticker_item'),
             "icon" => "cq_allinone_sticker",
             "category" => __('Sike Extensions', 'js_composer'),
-            // "content_element" => false,
-            // "show_settings_on_create" => false,
             'description' => __('With icon or image', 'js_composer'),
             "params" => array(
               array(
@@ -70,22 +67,11 @@ if (!class_exists('VC_Extensions_Sticker')) {
                 "dependency" => Array('element' => "backgroundtype", 'value' => array('image')),
                 "description" => __("Default we'll use the original image, you can specify a smaller width (like 240) here, then image will be resized to this width.", "vc_sticker_cq")
               ),
-              // array(
-              //   "type" => "textfield",
-              //   "heading" => __("Optional icon (Font Awesome) for the sticker:", "vc_sticker_cq"),
-              //   "param_name" => "icon",
-              //   "value" => "",
-              //   "description" => __("Support Font Awesome icon, for example <strong>fa-twitter</strong> will insert a Twitter icon. See all the available <a href='http://fortawesome.github.io/Font-Awesome/icons/' target='_blank'>Font Awesome icon</a>", "vc_sticker_cq")
-              // ),
               array(
                 'type' => 'dropdown',
                 'heading' => __( 'Icon library', 'js_composer' ),
                 'value' => array(
                   __( 'Font Awesome', 'js_composer' ) => 'fontawesome'
-                  // __( 'Open Iconic', 'js_composer' ) => 'openiconic',
-                  // __( 'Typicons', 'js_composer' ) => 'typicons',
-                  // __( 'Entypo', 'js_composer' ) => 'entypo',
-                  // __( 'Linecons', 'js_composer' ) => 'linecons',
                 ),
                 'admin_label' => true,
                 'param_name' => 'icon',
@@ -98,77 +84,10 @@ if (!class_exists('VC_Extensions_Sticker')) {
                 'value' => 'fa', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => true, // default true, display an "EMPTY" icon?
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
                 ),
-                // 'dependency' => array(
-                //   'element' => 'icon',
-                //   'value' => 'fontawesome',
-                // ),
                 'description' => __( 'Select icon from library. Default is blank.', 'js_composer' ),
               ),
-              // array(
-              //   'type' => 'iconpicker',
-              //   'heading' => __( 'Icon', 'js_composer' ),
-              //   'param_name' => 'icon_openiconic',
-              //   'value' => 'vc-oi vc-oi-dial', // default value to backend editor admin_label
-              //   'settings' => array(
-              //     'emptyIcon' => false, // default true, display an "EMPTY" icon?
-              //     'type' => 'openiconic',
-              //     'iconsPerPage' => 4000, // default 100, how many icons per/page to display
-              //   ),
-              //   'dependency' => array(
-              //     'element' => 'icon',
-              //     'value' => 'openiconic',
-              //   ),
-              //   'description' => __( 'Select icon from library.', 'js_composer' ),
-              // ),
-              // array(
-              //   'type' => 'iconpicker',
-              //   'heading' => __( 'Icon', 'js_composer' ),
-              //   'param_name' => 'icon_typicons',
-              //   'value' => 'typcn typcn-adjust-brightness', // default value to backend editor admin_label
-              //   'settings' => array(
-              //     'emptyIcon' => false, // default true, display an "EMPTY" icon?
-              //     'type' => 'typicons',
-              //     'iconsPerPage' => 4000, // default 100, how many icons per/page to display
-              //   ),
-              //   'dependency' => array(
-              //     'element' => 'icon',
-              //     'value' => 'typicons',
-              //   ),
-              //   'description' => __( 'Select icon from library.', 'js_composer' ),
-              // ),
-              // array(
-              //   'type' => 'iconpicker',
-              //   'heading' => __( 'Icon', 'js_composer' ),
-              //   'param_name' => 'icon_entypo',
-              //   'value' => 'entypo-icon entypo-icon-note', // default value to backend editor admin_label
-              //   'settings' => array(
-              //     'emptyIcon' => false, // default true, display an "EMPTY" icon?
-              //     'type' => 'entypo',
-              //     'iconsPerPage' => 4000, // default 100, how many icons per/page to display
-              //   ),
-              //   'dependency' => array(
-              //     'element' => 'icon',
-              //     'value' => 'entypo',
-              //   ),
-              // ),
-              // array(
-              //   'type' => 'iconpicker',
-              //   'heading' => __( 'Icon', 'js_composer' ),
-              //   'param_name' => 'icon_linecons',
-              //   'value' => 'vc_li vc_li-heart', // default value to backend editor admin_label
-              //   'settings' => array(
-              //     'emptyIcon' => false, // default true, display an "EMPTY" icon?
-              //     'type' => 'linecons',
-              //     'iconsPerPage' => 4000, // default 100, how many icons per/page to display
-              //   ),
-              //   'dependency' => array(
-              //     'element' => 'icon',
-              //     'value' => 'linecons',
-              //   ),
-              //   'description' => __( 'Select icon from library.', 'js_composer' ),
-              // ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
@@ -213,7 +132,7 @@ if (!class_exists('VC_Extensions_Sticker')) {
                 "heading" => __("CSS margin of the whole element:", "vc_sticker_cq"),
                 "param_name" => "elementmargin",
                 "value" => "",
-                "description" => __("Default is margin: <strong>12px auto 0 auto</strong>, stand for margin top for 12px and align center. You can specify other value here.", "vc_sticker_cq")
+                "description" => __("Default is margin: 12px auto 0 auto, stand for margin top for 12px and align center. You can specify other value here.", "vc_sticker_cq")
               )
 
            )
@@ -224,11 +143,8 @@ if (!class_exists('VC_Extensions_Sticker')) {
             "name" => __("Sticker", 'vc_sticker_cq'),
             "base" => "cq_vc_sticker",
             "class" => "wpb_cq_vc_extension_sticker",
-            // "as_parent" => array('only' => 'cq_vc_sticker_item'),
             "icon" => "cq_allinone_sticker",
             "category" => __('Sike Extensions', 'js_composer'),
-            // "content_element" => false,
-            // "show_settings_on_create" => false,
             'description' => __('With icon or image', 'js_composer'),
             "params" => array(
               array(
@@ -292,7 +208,7 @@ if (!class_exists('VC_Extensions_Sticker')) {
                 "heading" => __("Optional icon (Font Awesome) for the sticker:", "vc_sticker_cq"),
                 "param_name" => "icon",
                 "value" => "",
-                "description" => __("Support Font Awesome icon, for example <strong>fa-twitter</strong> will insert a Twitter icon. See all the available <a href='http://fortawesome.github.io/Font-Awesome/icons/' target='_blank'>Font Awesome icon</a>", "vc_sticker_cq")
+                "description" => __("Support Font Awesome icon, for example fa-twitter will insert a Twitter icon. See all the available Font Awesome icon", "vc_sticker_cq")
               ),
               array(
                 "type" => "colorpicker",
@@ -338,7 +254,7 @@ if (!class_exists('VC_Extensions_Sticker')) {
                 "heading" => __("CSS margin of the whole element:", "vc_sticker_cq"),
                 "param_name" => "elementmargin",
                 "value" => "",
-                "description" => __("Default is margin: <strong>12px auto 0 auto</strong>, stand for margin top for 12px and align center. You can specify other value here.", "vc_sticker_cq")
+                "description" => __("Default is margin: 12px auto 0 auto, stand for margin top for 12px and align center. You can specify other value here.", "vc_sticker_cq")
               )
 
            )
@@ -365,7 +281,6 @@ if (!class_exists('VC_Extensions_Sticker')) {
             "fontsize" => "",
             "imagewidth" => "",
             "textlink" => "",
-            // "differentbg" => "",
             "stickersize" => "",
             "shadowopacity" => "0.8",
             "elementmargin" => "",
@@ -374,8 +289,6 @@ if (!class_exists('VC_Extensions_Sticker')) {
 
           $content = wpb_js_remove_wpautop($content); // fix unclosed/unwanted paragraph tags in $content
           $output = '';
-          // wp_register_style( 'font-awesome', plugins_url('../faanimation/css/font-awesome.min.css', __FILE__) );
-          // wp_enqueue_style( 'font-awesome' );
 
           wp_register_style( 'vc-extensions-sticker-style', plugins_url('css/style.css', __FILE__) );
           wp_enqueue_style( 'vc-extensions-sticker-style' );
@@ -398,7 +311,7 @@ if (!class_exists('VC_Extensions_Sticker')) {
           }
 
           if(isset(${'icon_' . $icon})){
-              $output .= '<div class="cq-sticker" data-backgroundtype="'.$backgroundtype.'" data-backgroundcolor="'.$solidcolor_arr[1].'" data-gradientcolor="'.$gradientcolor.'" data-image="'.$backgroundimage[0].'" data-icon="'.esc_attr(${'icon_' . $icon}).'" data-size="'.$stickersize.'" data-fontsize="'.$fontsize.'" data-fontcolor="'.$fontcolor.'" data-elementmargin="'.$elementmargin.'" data-shadowopacity="'.$shadowopacity.'">';
+              $output .= '<div class="cq-sticker" data-backgroundtype="'.$backgroundtype.'" data-backgroundcolor="'.$solidcolor_arr[1].'" data-gradientcolor="'.$gradientcolor.'" data-image="'.($backgroundimage[0]??"").'" data-icon="'.esc_attr(${'icon_' . $icon}).'" data-size="'.$stickersize.'" data-fontsize="'.$fontsize.'" data-fontcolor="'.$fontcolor.'" data-elementmargin="'.$elementmargin.'" data-shadowopacity="'.$shadowopacity.'">';
           }else{
               $output .= '<div class="cq-sticker" data-backgroundtype="'.$backgroundtype.'" data-backgroundcolor="'.$solidcolor_arr[1].'" data-gradientcolor="'.$gradientcolor.'" data-image="'.$backgroundimage[0].'" data-icon="'.$icon.'" data-size="'.$stickersize.'" data-fontsize="'.$fontsize.'" data-fontcolor="'.$fontcolor.'" data-elementmargin="'.$elementmargin.'" data-shadowopacity="'.$shadowopacity.'">';
           }

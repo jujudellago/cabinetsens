@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+	"use strict";
 	$('.productcover-content').each(function(index) {
 		var _index = index;
 		var _this = $(this);
@@ -43,14 +44,9 @@ jQuery(document).ready(function($) {
 	        		'left': index/_catNum*100+'%'
 	        	});
 
-	        	// $(this).find('a').fluidbox({
-					// stackIndex: 1000
-				// });
-
                 if(_onclick=="link_image"){
 	                $(this).find('a.productcover-link').attr('rel', 'gallery' + _index);
 		        	$(this).find('a.productcover-link').boxer({
-	                  // minWidth: _minWidth,
 	                  fixed : true
 	                });
                 }else if(_onclick=="link_image_current"){

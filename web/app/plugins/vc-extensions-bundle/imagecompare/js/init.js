@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-
+    "use strict";
     $('.cq-imagecompare').each(function(index) {
         var _this = $(this);
         var _imagecontainer = $('.cq-imagecompare-imagecontainer', _this);

@@ -1,8 +1,5 @@
-// jQuery(document).ready(function(jQuery) {
 	jQuery('.cq-dagallery').each(function() {
-		// jQuery(this).parent('.cq-dagallery-container').css({
-		// 	'width': _gallerywidth
-		// });
+		"use strict";
 		var _width = jQuery(this).data('width');
 		var _gallerywidth = jQuery(this).data('gallerywidth');
 		var _height = jQuery(this).data('height');
@@ -11,7 +8,6 @@
 		jQuery(this).find('a.normal').boxer({
 	        fixed : true
 	    });
-		// var _background = jQuery(this).data('background');
 		jQuery(this).find('li').each(function(index) {
 			var _background = jQuery(this).find('.dagallery-info').css('backgroundColor');
 			var _color = jQuery(this).find('.dagallery-info').css('color');
@@ -25,14 +21,9 @@
 		    });
 			var _imgHeight = jQuery(this).data('height');
 			jQuery(this).css({
-				// margin: _margin,
 				width: _width,
 				height: _height
 			}).on('mouseover', function(event) {
-				// jQuery(this).find('.dagallery-info').css({
-					// width: _width,
-					// height: _imgHeight
-				// });
 				var w = jQuery(this).width(),
 		        h = jQuery(this).height(),
 		        x = (event.pageX - jQuery(this).offset().left - (w / 2) * (w > h ? (h / w) : 1)),
@@ -70,7 +61,3 @@
 		});
 
 	});
-
-
-
-// });

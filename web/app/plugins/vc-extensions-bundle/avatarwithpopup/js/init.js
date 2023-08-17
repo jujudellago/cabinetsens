@@ -23,6 +23,7 @@ function detectIE() {
     return false;
 }
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-avatarwithpopup').each(function(index, el) {
         var _this = $(this);
         var _avatartype = $(this).data('avatartype');
@@ -68,13 +69,6 @@ jQuery(document).ready(function($) {
                 $('.cq-avatarwithpopup-avatarlabelcontainer', _this).css('margin-top', '12px');
         }
 
-        // if(_backgroundimage!=""){
-        //     $('.cq-avatarwithpopup-popup', _this).css({
-        //         'background': 'url('+ _backgroundimage +') no-repeat center center',
-        //         'background-size': 'cover'
-        //     });
-        // }
-
 
         if(_popupcolor!=""){
             $('.cq-avatarwithpopup-title, .cq-avatarwithpopup-title h4, .cq-avatarwithpopup-content', _this).css('color', _popupcolor);
@@ -87,12 +81,10 @@ jQuery(document).ready(function($) {
                 'line-height': _avatarsize + 'px'
             });
         }
-        // $('.cq-avatarwithpopup-icon', _this).css('line-height', $('.cq-avatarwithpopup-avatar', _this).height() + 'px');
 
         if(_iconsize!=""&&_iconsize){
             $('.cq-avatarwithpopup-icon', _this).css({
                 'font-size': _iconsize
-                // 'line-height': _iconsize
             });
         }
 
@@ -106,8 +98,6 @@ jQuery(document).ready(function($) {
             $('.cq-avatarwithpopup-avatar, .cq-avatarwithpopup-icon, .cq-avatarwithpopup-avatarimage', _this).css('border-radius', '50%');
         }
 
-        // $('.cq-avatarwithpopup-icon', _this).css('line-height', $('.cq-avatarwithpopup-avatar', _this).height() + 'px');
-
         $('.cq-avatarwithpopup-insidecontainer', _this).perfectScrollbar();
         if(_avatartype=="image"&&_avatarimage!=""){
             $('.cq-avatarwithpopup-avatar', _this).css({
@@ -115,13 +105,11 @@ jQuery(document).ready(function($) {
                 'background-size': 'cover'
             });
         }
-        // $('.cq-avatarwithpopup-popup', _this).css('opacity', 0);
         var _isclicked = -1;
         var _slideshowID = 0;
         var _isopend = -1;
         var _leaveID;
         if(_triggerby=="bydefault"){
-            // $('.cq-avatarwithpopup-popup', _this).css('opacity', 1);
             if(!$('.cq-avatarwithpopup-avatar', _this).parent().is('a'))$('.cq-avatarwithpopup-avatar', _this).css('cursor', 'default');
             setTimeout(function() {
                 $('.cq-avatarwithpopup-popup', _this).removeClass('cardOuttop').addClass('hotspotanimate cardIntop');

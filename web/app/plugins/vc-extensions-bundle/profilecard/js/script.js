@@ -16,6 +16,7 @@
  */
 
  jQuery(document).ready(function($) {
+ 	"use strict";
  	$('.profilecard-container').each(function(index) {
 	 	var _image = $(this).data('image');
 	 	var _width = $(this).data('width');
@@ -50,8 +51,6 @@
 	 			$(this).tooltipster({
 			 		animation: 'grow',
 			 		position: _tooltipposition || 'top',
-			 		// offsetX: -1,
-			 		// offsetY: -2,
 			 		delay: 50,
 			 		theme: 'tooltipster-shadow'
 			 	});
@@ -156,7 +155,6 @@
 			'height': _height*.5,
 			'top': _height*.5,
 			'left': _width*0.5,
-			// 'margin-top': -_height*0.5,
 			'margin-left': -_width*0.5
 	 	})
 	 	$(this).find('.profilecard-cover.top1').css({
@@ -177,7 +175,6 @@
 			'height': _height*.5,
 			'top': _height*.5,
 			'left': _width*0.5,
-			// 'margin-top': -_height*0.5,
 			'margin-left': -_width*0.5
 	 	})
 

@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-gradientbox').each(function(index) {
         var _startcolor = $(this).data('startcolor');
         var _endcolor = $(this).data('endcolor');
@@ -86,13 +87,6 @@ jQuery(document).ready(function($) {
             $(this).find('.cq-gradientbox-title').css('font-size', _titlesize);
         }
         if(_startcolor!=""&&_gradientbackground=="customized"){
-            // $(this).css({
-            //       'background': '-moz-linear-gradient(top, #6df199 0%, #4bded4 100%)',
-            //       'background': '-webkit-gradient(left top, left bottom, color-stop(0%, #6df199), color-stop(100%, #4bded4))',
-            //       'background': '-o-linear-gradient(top, #6df199 0%, #4bded4 100%)',
-            //       'background': '-ms-linear-gradient(top, #6df199 0%, #4bded4 100%)',
-            //       'background': 'linear, to bottom, #6df199 0%, #4bded4 100%'
-            // });
             $(this).css('background', '-moz-linear-gradient(top, ' + _startcolor + ' 0%, ' + _endcolor + ' 100%)');
             $(this).css('background', '-webkit-gradient(linear,left top,left bottom,from(' + _startcolor + '),to(' + _endcolor + '))');
             $(this).css('background', '-o-linear-gradient(top, ' + _startcolor + ' 0%, ' + _endcolor + ' 100%)');

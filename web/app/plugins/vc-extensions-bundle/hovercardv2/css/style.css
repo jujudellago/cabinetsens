@@ -1,6 +1,6 @@
 .cq-hovercardv2 {
     position: relative;
-    width: 100%;    /*height: 360px;*/
+    width: 100%;
     min-height: 200px;
 }
 
@@ -36,10 +36,6 @@
     position: absolute;
     top: 0;
     left: 0;
-    /*width: 70%;*/
-    /*height: 100%;*/
-    /*background-color: #FFF;*/
-    /*background-color: rgba(255, 255, 255, 0.9);*/
     transition: .5s;
     transform-origin: left;
     transform: perspective(2000px) rotateY(-90deg);
@@ -178,9 +174,9 @@
 }
 
 .cq-hovercardv2.cq-hovercardv2-horizontal2 .cq-hovercardv2-content {
-    position: absolute;    /*width: 70%;*/
+    position: absolute;
     height: 100%;
-    top: 0;    /*left: 30%;*/
+    top: 0;
     transform-origin: right;
     transform: perspective(2000px) rotateY(90deg);
 }
@@ -203,7 +199,7 @@
 
 .cq-hovercardv2.cq-hovercardv2-vertical1 .cq-hovercardv2-content {
     position: absolute;
-    width: 100%;    /*height: 70%;*/
+    width: 100%;
     top: 0;
     left: 0;
     transform-origin: top;
@@ -216,9 +212,8 @@
 
 .cq-hovercardv2.cq-hovercardv2-vertical2 .cq-hovercardv2-content {
     position: absolute;
-    width: 100%;    /*height: 70%;*/
+    width: 100%;
 
-    /*top: 30%;*/
     left: 0;
     transform-origin: bottom;
     transform: perspective(2000px) rotateX(-90deg);
@@ -233,8 +228,6 @@
 }
 
 .cq-hovercardv2.cq-hovercardv2-vertical1.cq-hovercardv2-ps2 .cq-hovercardv2-content {
-
-    /*top: 0;*/
     height: 90%;
 }
 

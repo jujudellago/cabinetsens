@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-
+    "use strict";
     $('.cq-datatable').each(function(index) {
         var _this = $(this);
         var _headerArr = [];

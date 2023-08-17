@@ -1,11 +1,11 @@
 jQuery(document).ready(function($) {
+	"use strict";
 	$('.cqcarousel-container').each(function(index) {
 		var _this = $(this);
 		var _slidestoshow = $(this).data('slidestoshow');
 		var _thumbstoshow = $(this).data('thumbstoshow');
 		var _imgnum = $(this).data('imgnum');
 		var _containerwidth = $(this).data('containerwidth') || '100%';
-		// var _centerpadding = $(this).data('centerpadding') || '50px';
 		var _dots = $(this).data('dots')=="yes"?true:false;
 		var _arrows = $(this).data('arrows')=="yes"?true:false;
 		var _isgallery = $(this).data('isgallery');
@@ -35,7 +35,6 @@ jQuery(document).ready(function($) {
 		if(!(_isgallery=="is-gallery")){
 				if(_lightboxmode=="prettyphoto"){
 					$("a[rel^='prettyPhoto']", _this).prettyPhoto({
-						// show_title: true
 					});
 				}else{
 					_this.find('a.cqcarousel-item').each(function(index) {
@@ -53,29 +52,23 @@ jQuery(document).ready(function($) {
 		_gallery = $('.carousel-gallery', _this).slick({
 		    slidesToShow: 1,
 		    slidesToScroll: 1,
-		    // adaptiveHeight: true,
-		    // arrows: false,
-		    // autoplay: _autoplay,
-		    // autoplaySpeed: _autoplayspeed,
 		    arrows: _largeimagearrows,
 		    fade: true,
 		    onBeforeChange: function(){
 
-		    },
-		    onAfterChange: function(event){
-		    	var _index = _gallery.slickCurrentSlide();
+		    }
+
+		});
+
+		_gallery.on('afterChange', function(event, slick, currentSlide, nextSlide){
 		    	if(_prevthumb) {
 		    		_prevthumb.removeClass('slick-current')
 		    	}
-				_prevthumb = $('.slick-slide:eq(' + _index + ')', _thumbs).addClass('slick-current');
-				if(!_prevthumb.hasClass('slick-active')) _thumbs.slickGoTo(_index);
-		    	_currentIndex = _index;
+				_prevthumb = $('.slick-slide:eq(' + currentSlide + ')', _thumbs).addClass('slick-current');
+				if(!_prevthumb.hasClass('slick-active')) _thumbs.slick('slickGoTo', currentSlide);
+		    	_currentIndex = currentSlide;
 		    	if(_autoplay) _slideshow();
-		    }
-
-		    // speed: 300,
-		    // asNavFor: $('.carousel-thumb', _this)
-		});
+        });
 
 
 		if(_isgallery=="is-gallery"&&_autoplay) {
@@ -84,12 +77,12 @@ jQuery(document).ready(function($) {
 	            _slideID = setTimeout(function() {
 	            	_currentIndex++;
 		            if(_currentIndex>_imgnum-1) _currentIndex = 0;
-		            _gallery.slickGoTo(_currentIndex);
+		            _gallery.slick('slickGoTo', _currentIndex);
 			    	if(_prevthumb) {
 			    		_prevthumb.removeClass('slick-current')
 			    	}
 					_prevthumb = $('.slick-slide:eq(' + _currentIndex + ')', _thumbs).addClass('slick-current');
-					if(!_prevthumb.hasClass('slick-active')) _thumbs.slickGoTo(_currentIndex);
+					if(!_prevthumb.hasClass('slick-active')) _thumbs.slick('slickGoTo', _currentIndex);
 
 	            }, _autoplayspeed);
 	        }
@@ -106,7 +99,7 @@ jQuery(document).ready(function($) {
 	            _thumbSlideID = setTimeout(function() {
 	            	_currentIndex++;
 		            if(_currentIndex>_imgnum-_displaynum) _currentIndex = 0;
-					_thumbs.slickGoTo(_currentIndex);
+					_thumbs.slick('slickGoTo', _currentIndex);
 
 	            }, _autoplayspeed);
 	        }
@@ -147,12 +140,8 @@ jQuery(document).ready(function($) {
 			    slidesToScroll: 1,
 			    autoplay: _thumbautoplay,
 			    autoplaySpeed: _autoplayspeed,
-			    // draggable: false,
 			    arrows: _arrows,
 			    dots: _dots
-			    // asNavFor: $('.carousel-gallery', _this)
-			    // centerPadding: '100px',
-			    // focusOnSelect: _focusonselect
 			});
 
 		}else{
@@ -160,17 +149,19 @@ jQuery(document).ready(function($) {
 				infinite: false,
 			    slidesToShow: _displaynum,
 			    slidesToScroll: 1,
-			    // autoplay: _thumbautoplay,
-			    // autoplaySpeed: _autoplayspeed,
-			    onAfterChange: function(event){
-		    		var _index = _thumbs.slickCurrentSlide();
-					_thumbs.slickGoTo(_index);
-			    	_currentIndex = _index;
-			    	if(_thumbautoplay) _thumbSlideshow();
-			    },
 			    arrows: _arrows,
 			    dots: _dots
 			});
+
+			_thumbs.on('afterChange', function(event, slick, currentSlide, nextSlide){
+				var _index = currentSlide;
+				_thumbs.slick('slickGoTo', _index);
+		    	_currentIndex = _index;
+		    	if(_thumbautoplay) _thumbSlideshow();
+	        });
+
+
+
 		}
 
 
@@ -207,8 +198,6 @@ jQuery(document).ready(function($) {
 				$(this).tooltipster({
 			 		animation: 'grow',
 			 		position: 'top',
-			 		// offsetX: -1,
-			 		// offsetY: -2,
 			 		delay: 50,
 			 		theme: 'tooltipster-shadow'
 			 	});
@@ -219,8 +208,8 @@ jQuery(document).ready(function($) {
 			}
 			$(this).on('click', function(event) {
 				if(_prevthumb) _prevthumb.removeClass('slick-current')
-				_gallery.slickGoTo($(this).attr('index'));
-				_currentIndex = $(this).attr('index');
+				_gallery.slick('slickGoTo', $(this).data('slickIndex'));
+				_currentIndex = $(this).data('slickIndex');
 				_prevthumb = $(this).addClass('slick-current');
 			});
 		});
@@ -228,25 +217,5 @@ jQuery(document).ready(function($) {
 
 	});
 
-    // $('.cq-carousel').slick({
-    // 	dots: true,
-    // 	// centerMode: true,
-    // 	// centerPadding: '60px',
-    // 	slidesToShow: 1
-    // });
 
-  //   $('.owlcarousel-item').on('click', function(event) {
-		// // var _wrap = $('.owl-stage-outer');
-		// var _wrap = $('.slick-list');
-		// if(_wrap.css('overflow')=="hidden"){
-		// 	_wrap.css('overflow', 'visible');
-		// }else{
-		// 	_wrap.css('overflow', 'hidden');
-		// 	// setTimeout(function() {
-		// 	// 	_wrap.css('overflow', 'hidden');
-		// 	// }, 500);
-		// }
-
-  //   });
-  //   $('.owlcarousel-item').fluidbox();
 });

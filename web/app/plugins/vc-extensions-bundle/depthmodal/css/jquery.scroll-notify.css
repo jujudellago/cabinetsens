@@ -19,21 +19,16 @@
 
 .cq-notify-closebutton{
   display: inline-block;
-  /*background: url(../img/delete.png) no-repeat;*/
   background: url(../img/notification_close.png) no-repeat;
   width: 20px;
   height: 20px;
   position: absolute;
-  /*top: -8px;*/
-  /*right: -8px;*/
   top: -8px;
   right: -8px;
   cursor: pointer;
 }
 
 .cq-scroll-notification {
-  /*display: none;*/
-  /*opacity: 0;*/
   position: fixed;
   z-index: 100001;
   color: #333;
@@ -43,32 +38,11 @@
   line-height: 160%;
   font-size: 12px;
   text-align: left;
-  /*box-shadow: 0 2px 3px rgba(0,0,0,0.5);
-  -moz-box-shadow: 0 2px 3px rgba(0,0,0,0.5);
-  -webkit-box-shadow: 0 2px 3px rgba(0,0,0,0.5);*/
   -webkit-box-shadow: 0 0 16px #666;
   -moz-box-shadow: 0 0 16px #666;
   box-shadow: 0 0 16px #666;
 }
 
-/* option to hide the notification in small screen */
-/*@media screen and (min-width: 480px) and (max-width: 767px) {
-  .cq-scroll-notification{
-    display: none!important;
-  }
-}
-@media only screen and (min-width: 160px) and (max-width: 479px) {
-  .cq-scroll-notification{
-    display: none!important;
-  }
-}
-
-@media screen and (min-width: 768px) and (max-width: 959px) {
-  .cq-scroll-notification{
-    display: none;
-  }
-}
-*/
 
 .cq-scroll-notification.topAll{
   top: 0px;
@@ -96,26 +70,6 @@
   bottom: 20px;
   right: 20px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

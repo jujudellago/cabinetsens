@@ -3,142 +3,141 @@ if (!class_exists('VC_Extensions_TestimonialList')) {
     class VC_Extensions_TestimonialList{
         function __construct() {
             vc_map(array(
-            "name" => __("Testimonial List", 'vc_testimoniallist_cq'),
+            "name" => esc_attr__("Testimonial List", 'vc_testimoniallist_cq'),
             "base" => "cq_vc_testimoniallist",
             "class" => "wpb_cq_vc_extension_testimoniallist",
             "icon" => "cq_allinone_testimoniallist",
-            "category" => __('Sike Extensions', 'js_composer'),
-            // "show_settings_on_create" => false,
-            'description' => __('With scroll to view slideshow', 'js_composer'),
+            "category" => esc_attr__('Sike Extensions', 'js_composer'),
+            'description' => esc_attr__('With scroll to view slideshow', 'js_composer'),
             "params" => array(
               array(
                 "type" => "attach_images",
-                "heading" => __("Avatar images:", "vc_testimoniallist_cq"),
+                "heading" => esc_attr__("Avatar images:", "vc_testimoniallist_cq"),
                 "param_name" => "images",
                 "value" => "",
                 "group" => "Avatar",
-                "description" => __("Select images from media library.", "vc_testimoniallist_cq")
+                "description" => esc_attr__("Select images from media library.", "vc_testimoniallist_cq")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
-                "heading" => __("Resize the avatar image?", "vc_testimoniallist_cq"),
+                "heading" => esc_attr__("Resize the avatar image?", "vc_testimoniallist_cq"),
                 "param_name" => "isresize",
                 "value" => array("no", "yes (specify the image width below)"=>"yes"),
                 "std" => "yes",
                 "group" => "Avatar",
-                "description" => __("", "vc_testimoniallist_cq")
+                "description" => esc_attr__("", "vc_testimoniallist_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Resize image to this width", "vc_testimoniallist_cq"),
+                "heading" => esc_attr__("Resize image to this width", "vc_testimoniallist_cq"),
                 "param_name" => "imagewidth",
                 "value" => "160",
                 "dependency" => Array('element' => "isresize", 'value' => array('yes')),
                 "group" => "Avatar",
-                "description" => __("Default is 160, the avatar is in 80x80, so the avatar image will be displayed in retina. Please note the image resize function may not work with some server setup, then you have to disable it.", "vc_testimoniallist_cq")
+                "description" => esc_attr__("Default is 160, the avatar is in 80x80, so the avatar image will be displayed in retina. Please note the image resize function may not work with some server setup, then you have to disable it.", "vc_testimoniallist_cq")
               ),
               array(
                 "type" => "exploded_textarea",
-                "heading" => __("User name under the avatar", "vc_testimoniallist_cq"),
+                "heading" => esc_attr__("User name under the avatar", "vc_testimoniallist_cq"),
                 "param_name" => "username",
                 "value" => "",
                 "group" => "Avatar",
-                "description" => __("Optional user name under each avatar, divide with linebreak (Enter)", "vc_testimoniallist_cq")
+                "description" => esc_attr__("Optional user name under each avatar, divide with linebreak (Enter)", "vc_testimoniallist_cq")
               ),
               array(
                 "type" => "exploded_textarea",
-                "heading" => __("User role label (optional)", "vc_testimoniallist_cq"),
+                "heading" => esc_attr__("User role label (optional)", "vc_testimoniallist_cq"),
                 "param_name" => "userrole",
                 "value" => "",
                 "group" => "Avatar",
-                "description" => __("Optional user role under each avatar, divide with linebreak (Enter)", "vc_testimoniallist_cq")
+                "description" => esc_attr__("Optional user role under each avatar, divide with linebreak (Enter)", "vc_testimoniallist_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Font color the optional user name and role", 'vc_testimoniallist_cq'),
+                "heading" => esc_attr__("Font color the optional user name and role", 'vc_testimoniallist_cq'),
                 "param_name" => "namecolor",
                 "value" => "",
                 "group" => "Avatar",
-                "description" => __("Default is dark gray.", 'vc_testimoniallist_cq')
+                "description" => esc_attr__("Default is dark gray.", 'vc_testimoniallist_cq')
               ),
               array(
                 'type' => 'dropdown',
-                'heading' => __( 'Icon library (select a global default icon for the avatar without image)', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon library (select a global default icon for the avatar without image)', 'js_composer' ),
                 'value' => array(
-                  __( 'Font Awesome', 'js_composer' ) => 'fontawesome',
-                  __( 'Open Iconic', 'js_composer' ) => 'openiconic',
-                  __( 'Typicons', 'js_composer' ) => 'typicons',
-                  __( 'Entypo', 'js_composer' ) => 'entypo',
-                  __( 'Linecons', 'js_composer' ) => 'linecons',
-                  __( 'Material', 'js_composer' ) => 'material',
+                  esc_attr__( 'Font Awesome', 'js_composer' ) => 'fontawesome',
+                  esc_attr__( 'Open Iconic', 'js_composer' ) => 'openiconic',
+                  esc_attr__( 'Typicons', 'js_composer' ) => 'typicons',
+                  esc_attr__( 'Entypo', 'js_composer' ) => 'entypo',
+                  esc_attr__( 'Linecons', 'js_composer' ) => 'linecons',
+                  esc_attr__( 'Material', 'js_composer' ) => 'material',
                 ),
                 'admin_label' => true,
                 'param_name' => 'avataricon',
                 "group" => "Avatar",
-                'description' => __( 'Select icon library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_fontawesome',
                 'value' => 'fa fa-bullhorn', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => true, // default true, display an "EMPTY" icon?
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
                 ),
                 'dependency' => array(
                   'element' => 'avataricon',
                   'value' => 'fontawesome',
                 ),
                 "group" => "Avatar",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_openiconic',
                 'value' => 'vc-oi vc-oi-dial', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'openiconic',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'avataricon',
                   'value' => 'openiconic',
                 ),
                 "group" => "Avatar",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_typicons',
                 'value' => 'typcn typcn-adjust-brightness', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'typicons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'avataricon',
                   'value' => 'typicons',
                 ),
                 "group" => "Avatar",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_entypo',
                 'value' => 'entypo-icon entypo-icon-note', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'entypo',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 "group" => "Avatar",
                 'dependency' => array(
@@ -148,24 +147,24 @@ if (!class_exists('VC_Extensions_TestimonialList')) {
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_linecons',
                 'value' => 'vc_li vc_li-heart', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'linecons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'avataricon',
                   'value' => 'linecons',
                 ),
                 "group" => "Avatar",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_material',
                 'value' => 'vc-material vc-material-cake',
                 // default value to backend editor admin_label
@@ -173,7 +172,7 @@ if (!class_exists('VC_Extensions_TestimonialList')) {
                   'emptyIcon' => false,
                   // default true, display an "EMPTY" icon?
                   'type' => 'material',
-                  'iconsPerPage' => 4000,
+                  'iconsPerPage' => 100,
                   // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
@@ -181,156 +180,138 @@ if (!class_exists('VC_Extensions_TestimonialList')) {
                   'value' => 'material',
                 ),
                 "group" => "Avatar",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Background color of the avatar", 'vc_testimoniallist_cq'),
+                "heading" => esc_attr__("Background color of the avatar", 'vc_testimoniallist_cq'),
                 "param_name" => "avatarbg",
                 "value" => "",
                 "group" => "Avatar",
-                "description" => __("Default is light gray.", 'vc_testimoniallist_cq')
+                "description" => esc_attr__("Default is light gray.", 'vc_testimoniallist_cq')
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Color of the avatar icon", 'vc_testimoniallist_cq'),
+                "heading" => esc_attr__("Color of the avatar icon", 'vc_testimoniallist_cq'),
                 "param_name" => "avatarcolor",
                 "value" => "",
                 "group" => "Avatar",
-                "description" => __("Default is dark gray.", 'vc_testimoniallist_cq')
+                "description" => esc_attr__("Default is dark gray.", 'vc_testimoniallist_cq')
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_testimoniallist_cq",
-                "heading" => __("Display how many avatar by default (in large screen)", "vc_testimoniallist_cq"),
+                "heading" => esc_attr__("Display how many avatar by default (in large screen)", "vc_testimoniallist_cq"),
                 "param_name" => "avatarnum1",
                 "value" => array(3, 5, 7, 9),
                 "std" => "3",
                 "group" => "Avatar",
-                "description" => __("This is the default number, and display in screen large than or equal 1280. Note, this number must be <strong>less than</strong> the whole avatar number.", "vc_testimoniallist_cq")
+                "description" => esc_attr__("This is the default number, and display in screen large than or equal 1280. Note, this number must be less than the whole avatar number.", "vc_testimoniallist_cq")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_testimoniallist_cq",
-                "heading" => __("Display how many avatar (in tablet screen, like iPad)", "vc_testimoniallist_cq"),
+                "heading" => esc_attr__("Display how many avatar (in tablet screen, like iPad)", "vc_testimoniallist_cq"),
                 "param_name" => "avatarnum2",
                 "value" => array(3, 5, 7, 9),
                 "std" => "3",
                 "group" => "Avatar",
-                "description" => __("Display how many avatars in screen smaller than 800. Default is 3. Note this number must less than the whole avatar number.", "vc_testimoniallist_cq")
+                "description" => esc_attr__("Display how many avatars in screen smaller than 800. Default is 3. Note this number must less than the whole avatar number.", "vc_testimoniallist_cq")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_testimoniallist_cq",
-                "heading" => __("Display how many avatar (in mobile screen, like iPhone)", "vc_testimoniallist_cq"),
+                "heading" => esc_attr__("Display how many avatar (in mobile screen, like iPhone)", "vc_testimoniallist_cq"),
                 "param_name" => "avatarnum3",
                 "value" => array(3, 5, 7, 9),
                 "std" => "3",
                 "group" => "Avatar",
-                "description" => __("Display how many avatars in screen smaller than 640. Default is 3.", "vc_testimoniallist_cq")
+                "description" => esc_attr__("Display how many avatars in screen smaller than 640. Default is 3.", "vc_testimoniallist_cq")
               ),
               array(
                 "type" => "exploded_textarea",
-                "heading" => __("Optional title for each testimonial", "vc_testimoniallist_cq"),
+                "heading" => esc_attr__("Optional title for each testimonial", "vc_testimoniallist_cq"),
                 "param_name" => "titles",
                 "value" => "",
                 "group" => "Text",
-                "description" => __("Divide with linebreak (Enter)", "vc_testimoniallist_cq")
+                "description" => esc_attr__("Divide with linebreak (Enter)", "vc_testimoniallist_cq")
               ),
               array(
                 "type" => "textarea_html",
                 "holder" => "div",
-                "heading" => __("Testimonial content, divide each one with [testimonialitem][/testimonialitem], please try to edit in Text mode:", "vc_testimoniallist_cq"),
+                "heading" => esc_attr__("Testimonial content, divide each one with [testimonialitem][/testimonialitem], please try to edit in Text mode:", "vc_testimoniallist_cq"),
                 "param_name" => "content",
                 "group" => "Text",
-                "value" => __("", "vc_testimoniallist_cq"),
+                "value" => esc_attr__("", "vc_testimoniallist_cq"),
                 "std" => '[testimonialitem]Testimonial 1[/testimonialitem]
                 	[testimonialitem]Testimonial 2[/testimonialitem]
                 	[testimonialitem]Testimonial 3[/testimonialitem]
                 	[testimonialitem]Yet another testimonial[/testimonialitem]',
-                "description" => __("", "vc_testimoniallist_cq")
+                "description" => esc_attr__("", "vc_testimoniallist_cq")
               ),
 
-              // array(
-              //   "type" => "colorpicker",
-              //   "holder" => "div",
-              //   "class" => "",
-              //   "heading" => __("Font color the content", 'vc_testimoniallist_cq'),
-              //   "param_name" => "contentcolor",
-              //   "value" => "",
-              //   "group" => "Text",
-              //   "description" => __("Default is white.", 'vc_testimoniallist_cq')
-              // ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_testimoniallist_cq",
-                "heading" => __("Text align", "vc_testimoniallist_cq"),
+                "heading" => esc_attr__("Text align", "vc_testimoniallist_cq"),
                 "param_name" => "textalign",
                 "value" => array("left", "center", "right"),
                 'std' => 'left',
                 "group" => "Text",
-                "description" => __("", "vc_testimoniallist_cq")
+                "description" => esc_attr__("", "vc_testimoniallist_cq")
               ),
-              // array(
-              //   "type" => "textfield",
-              //   "heading" => __("min height of the content", "vc_testimoniallist_cq"),
-              //   "param_name" => "minheight",
-              //   "value" => "",
-              //   "group" => "Text",
-              //   "description" => __("The height for the content is the largest one by default. Thought you can specify a value here to keep all content in a fixed same height.", "vc_testimoniallist_cq")
-              // ),
               array(
                 "type" => "textfield",
-                "heading" => __("CSS padding of the content", "vc_testimoniallist_cq"),
+                "heading" => esc_attr__("CSS padding of the content", "vc_testimoniallist_cq"),
                 "param_name" => "contentpadding",
                 "value" => "",
                 "group" => "Text",
-                "description" => __("The padding of the content is 32px by default. You can specify other value here.", "vc_testimoniallist_cq")
+                "description" => esc_attr__("The padding of the content is 32px by default. You can specify other value here.", "vc_testimoniallist_cq")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_testimoniallist_cq",
-                "heading" => __("The text block background", "vc_testimoniallist_cq"),
+                "heading" => esc_attr__("The text block background", "vc_testimoniallist_cq"),
                 "param_name" => "textblockbg",
                 "value" => array("Grape Fruit" => "grapefruit", "Bitter Sweet" => "bittersweet", "Sunflower" => "sunflower", "Grass" => "grass", "Mint" => "mint", "Aqua" => "aqua", "Blue Jeans" => "bluejeans", "Lavender" => "lavender", "Pink Rose" => "pinkrose", "Light Gray" => "lightgray", "Medium Gray" => "mediumgray", "Dark Gray" => "darkgray"),
                 'std' => 'lavender',
-                "description" => __("", "vc_testimoniallist_cq")
+                "description" => esc_attr__("", "vc_testimoniallist_cq")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_testimoniallist_cq",
-                "heading" => __("Auto display the testimonial in slideshow? Select the auto delay time in second below.", "vc_testimoniallist_cq"),
+                "heading" => esc_attr__("Auto display the testimonial in slideshow? Select the auto delay time in second below.", "vc_testimoniallist_cq"),
                 "param_name" => "delaytime",
                 "value" => array("no slideshow" => "no", "2", "3", "4", "5", "6", "7", "8", "9", "10"),
                 'std' => 'no',
-                "description" => __("The auto slideshow is disabled by default. You can select a auto delay time if you want to enable it.", "vc_testimoniallist_cq")
+                "description" => esc_attr__("The auto slideshow is disabled by default. You can select a auto delay time if you want to enable it.", "vc_testimoniallist_cq")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_testimoniallist_cq",
-                "heading" => __("Element shape", "vc_testimoniallist_cq"),
+                "heading" => esc_attr__("Element shape", "vc_testimoniallist_cq"),
                 "param_name" => "elementshape",
                 "value" => array("rounded (small)" => "roundsmall", "rounded (large)" => "roundlarge", "square" => "square"),
                 "std" => "square",
-                "description" => __("", "vc_testimoniallist_cq")
+                "description" => esc_attr__("", "vc_testimoniallist_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Extra class name", "vc_testimoniallist_cq"),
+                "heading" => esc_attr__("Extra class name", "vc_testimoniallist_cq"),
                 "param_name" => "extraclass",
                 "value" => "",
-                "description" => __("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "vc_testimoniallist_cq")
+                "description" => esc_attr__("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "vc_testimoniallist_cq")
               )
 
            )
@@ -339,7 +320,7 @@ if (!class_exists('VC_Extensions_TestimonialList')) {
         add_shortcode('cq_vc_testimoniallist', array($this,'cq_vc_testimoniallist_func'));
       }
 
-      function cq_vc_testimoniallist_func($atts, $content=null, $tag) {
+      function cq_vc_testimoniallist_func($atts, $content=null, $tag=null) {
           $avataricon = $icon_fontawesome = $icon_openiconic = $icon_typicons = $icon_entypo = $icon_linecons = $icon_material = '';
           extract(shortcode_atts(array(
             "icon_fontawesome" => 'fa fa-bullhorn',
@@ -374,8 +355,6 @@ if (!class_exists('VC_Extensions_TestimonialList')) {
           if(version_compare(WPB_VC_VERSION,  "4.4")>= 0){
             vc_icon_element_fonts_enqueue($avataricon);
           }else{
-            // wp_register_style( 'font-awesome', plugins_url('../faanimation/css/font-awesome.min.css', __FILE__) );
-            // wp_enqueue_style( 'font-awesome' );
           }
 
 
@@ -423,9 +402,6 @@ if (!class_exists('VC_Extensions_TestimonialList')) {
               $thecontent = preg_replace("/(^)?(<br\s*\/?>\s*)+$/", "", $thecontent);
               $thecontent = preg_replace('/^(<br \/>)*/', "", $thecontent);
               $thecontent = preg_replace('/^(<\/p>)*/', "", $thecontent);
-              // if(!isset($username[$i])) $username[$i] = '';
-              // if(!isset($userrole[$i])) $userrole[$i] = '';
-              // if(!isset($titles[$i])) $titles[$i] = '';
 
               if($thecontent!=""){
                   $text_output .= '<div class="cq-testimoniallist-contentitem">';
@@ -439,7 +415,6 @@ if (!class_exists('VC_Extensions_TestimonialList')) {
                   $text_output .= '</div>';
                   $text_output .= '</div>';
 
-                  // $image_output .= '<div class="cq-testimoniallist-avataritem" data-index="'.($i).'">';
                   $image_output .= '<div class="cq-testimoniallist-avataritem">';
                   if(isset($imagesarr[$i])&&$imagesarr[$i]!=""){
                     $attachment = get_post($imagesarr[$i]);

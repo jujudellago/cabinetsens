@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-
+    "use strict";
     $('.cq-timelinecard').each(function(index) {
         var _this = $(this);
         var _elementheight = parseInt($(this).data('elementheight'), 10);

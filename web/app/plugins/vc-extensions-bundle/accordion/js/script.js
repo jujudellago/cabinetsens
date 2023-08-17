@@ -1,19 +1,9 @@
 jQuery(document).ready(function($) {
-    // $('.ui-corner-top a').on('click', function(event) {
-    //     console.log('click');
-    //     $('.cq-accordion').each(function() {
-    //         var _this = $(this);
-    //         $(this).find('li').each(function(index) {
-    //           $(this).find('i').css('margin-top', ($(this).outerHeight()-9)*.5);
-    //         });
-    //     })
-    // });
+    "use strict";
     $('.cq-accordion').each(function() {
         var _this = $(this);
         var _displayfirst = $(this).data('displayfirst') == "on" ? true : false;
         $(this).find('.accordion-content').each(function(index) {
-          // $(this).children().first('p:empty').remove();
-          // $(this).wrapInner('<p></p>');
         });
         $(this).find('li').each(function(index) {
           if(index==0&&_displayfirst) $(this).find('input').trigger('click');
@@ -33,13 +23,11 @@ jQuery(document).ready(function($) {
 
         $(this).find('.accordionTitle').each(function(index) {
             $(this).css('background-color', _titlebg).on('mouseover', function(event) {
-                // $(this).css('background-color', _titlehoverbg);
                 $(this).css({
                   'background-color': _titlehoverbg,
                   'color': _titlehovercolor
                 });
             }).on('mouseleave', function(event) {
-                // $(this).css('background-color', _titlebg);
                 if(!$(this).hasClass('accordionTitleActive')){
                     $(this).css({
                       'background-color': _titlebg,

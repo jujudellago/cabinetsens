@@ -57,17 +57,12 @@
     display: inline-block;
     width: 100%;
     text-align: center;
-    /*height: 100%;*/
     font-size: 2.4em;
     line-height: 100px;
-    /*border-radius: 50%;*/
     padding: 0;
 }
 .cq-avatarblock-contentcontainer{
     z-index: 1;
-    /*width: calc(100% - 68px);*/
-    /*border-top-right-radius: 8px;*/
-    /*border-bottom-right-radius: 8px;*/
 }
 .cq-avatarblock-avatarcontainer{
     line-height: 100%;
@@ -115,10 +110,7 @@
     width: calc(100% - 60px);
 }
 
-./*cq-avatarblock-right .cq-avatarblock-contentcontainer{
-    margin-right: -32px;
-}
-*/
+
 .cq-avatarblock-80.cq-avatarblock-right .cq-avatarblock-contentcontainer{
     margin-right: -40px;
     padding-right: 40px;
@@ -141,11 +133,9 @@
 }
 
 .cq-avatarblock-left .cq-avatarblock-contentcontainer .cq-avatarblock-content{
-    /*margin-left: 28px;*/
     padding: 12px 24px 12px 12px;
 }
 .cq-avatarblock-right .cq-avatarblock-contentcontainer .cq-avatarblock-content{
-    /*margin-right: 28px;*/
     padding: 12px 12px 12px 24px;
 }
 
@@ -261,10 +251,6 @@
   color: #333;
 }
 
-/*.cq-avatarblock.lightgray h2, .cq-avatarblock.lightgray h3, .cq-avatarblock.lightgray h4, .cq-avatarblock.lightgray h5, .cq-avatarblock.lightgray h6{
-  color: #333;
-}
-*/
 .cq-avatarblock.white .cq-avatarblock-contentcontainer, .cq-avatarblock.white .cq-avatarblock-avatar {
   background-color: #FFF;
   color: #666;

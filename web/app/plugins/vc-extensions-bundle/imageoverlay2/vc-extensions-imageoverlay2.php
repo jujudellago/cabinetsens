@@ -4,150 +4,130 @@ if (!class_exists('VC_Extensions_ImageOverlay2')) {
         function __construct() {
           if(version_compare(WPB_VC_VERSION,  "4.4")>= 0){
             vc_map(array(
-            "name" => __("Image Overlay 2", 'vc_imageoverlay2_cq'),
+            "name" => esc_attr__("Image Overlay 2", 'vc_imageoverlay2_cq'),
             "base" => "cq_vc_imageoverlay2",
             "class" => "wpb_cq_vc_extension_imageoverlay2",
-            // "as_parent" => array('only' => 'cq_vc_imageoverlay2_item'),
             "icon" => "cq_allinone_imageoverlay2",
-            "category" => __('Sike Extensions', 'js_composer'),
-            // "content_element" => false,
-            // "show_settings_on_create" => false,
-            'description' => __('Caption with transition', 'js_composer'),
+            "category" => esc_attr__('Sike Extensions', 'js_composer'),
+            'description' => esc_attr__('Caption with transition', 'js_composer'),
             "params" => array(
               array(
                 "type" => "attach_image",
-                "heading" => __("Image", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Image", "vc_imageoverlay2_cq"),
                 "param_name" => "image",
                 "value" => "",
-                "description" => __("Select image from media library.", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("Select image from media library.", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_imageoverlay2_cq",
-                "heading" => __("Select the transition direction:", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Select the transition direction:", "vc_imageoverlay2_cq"),
                 "param_name" => "transitiondirection",
                 "value" => array("default (45 degree, top left to bottom right)" => "", "45 degree, top right to bottom left" => "topright_bottomleft", "45 degree, bottom left to top right" => "bottomleft_topright", "45 degree, bottom right to top left" => "bottomright_topleft"),
                 "std" => "",
-                "description" => __("", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("", "vc_imageoverlay2_cq")
               ),
-              // array(
-              //   "type" => "dropdown",
-              //   "holder" => "",
-              //   "class" => "vc_imageoverlay2_cq",
-              //   "heading" => __("Display the image in:", "vc_imageoverlay2_cq"),
-              //   "param_name" => "imagesize",
-              //   "value" => array("100% height (suit for landscape image)" => "fullheight", "100% width (suit for portrait image)" => "fullwidth"),
-              //   "std" => "no",
-              //   "description" => __("", "vc_imageoverlay2_cq")
-              // ),
               array(
                 "type" => "textfield",
-                "heading" => __("Element height", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Element height", "vc_imageoverlay2_cq"),
                 "param_name" => "elementheight",
                 "value" => "",
-                "description" => __("Default is 480, you may have to make it smaller if your image is landscape, or make it larger if your image is portrait. The height depends on the container width too.", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("Default is 480, you may have to make it smaller if your image is landscape, or make it larger if your image is portrait. The height depends on the container width too.", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_imageoverlay2_cq",
-                "heading" => __("Resize the image?", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Resize the image?", "vc_imageoverlay2_cq"),
                 "param_name" => "isresize",
                 "value" => array("no (we will use the original image)", "yes (customize resized width below)" => "yes"),
                 "std" => "no",
-                "description" => __("", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Resize image to this width", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Resize image to this width", "vc_imageoverlay2_cq"),
                 "param_name" => "imagewidth",
                 "value" => "",
                 "dependency" => Array('element' => "isresize", 'value' => array('yes')),
-                "description" => __("Specify a width here. For example, 600 will resize the image to width 600.", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("Specify a width here. For example, 600 will resize the image to width 600.", "vc_imageoverlay2_cq")
               ),
-              // array(
-              //   "type" => "textfield",
-              //   "heading" => __("Icon for the overlay title (optional)", "vc_imageoverlay2_cq"),
-              //   "param_name" => "overlayicon",
-              //   "value" => "",
-              //   "description" => __("For example fa-twitter will insert a Twitter icon. See all the available <a href='http://fortawesome.github.io/Font-Awesome/icons/' target='_blank'>Font Awesome icon</a>.", "vc_imageoverlay2_cq")
-              // ),
               array(
                 'type' => 'dropdown',
-                'heading' => __( 'Icon library', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon library', 'js_composer' ),
                 'value' => array(
-                  __( 'Font Awesome', 'js_composer' ) => 'fontawesome',
-                  __( 'Open Iconic', 'js_composer' ) => 'openiconic',
-                  __( 'Typicons', 'js_composer' ) => 'typicons',
-                  __( 'Entypo', 'js_composer' ) => 'entypo',
-                  __( 'Linecons', 'js_composer' ) => 'linecons',
-                  __( 'Material', 'js_composer' ) => 'material',
+                  esc_attr__( 'Font Awesome', 'js_composer' ) => 'fontawesome',
+                  esc_attr__( 'Open Iconic', 'js_composer' ) => 'openiconic',
+                  esc_attr__( 'Typicons', 'js_composer' ) => 'typicons',
+                  esc_attr__( 'Entypo', 'js_composer' ) => 'entypo',
+                  esc_attr__( 'Linecons', 'js_composer' ) => 'linecons',
+                  esc_attr__( 'Material', 'js_composer' ) => 'material',
                 ),
                 'admin_label' => true,
                 'param_name' => 'overlayicon',
                 'group' => 'Text',
-                'description' => __( 'Select icon library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon (optional, displayed in the title)', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon (optional, displayed in the title)', 'js_composer' ),
                 'param_name' => 'icon_fontawesome',
                 'value' => 'fa ', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => true, // default true, display an "EMPTY" icon?
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display, we use (big number) to display all icons in single page
                 ),
                 'dependency' => array(
                   'element' => 'overlayicon',
                   'value' => 'fontawesome',
                 ),
                 'group' => 'Text',
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon (optional, displayed in the title)', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon (optional, displayed in the title)', 'js_composer' ),
                 'param_name' => 'icon_openiconic',
                 'value' => 'vc-oi vc-oi-dial', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'openiconic',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'overlayicon',
                   'value' => 'openiconic',
                 ),
                 'group' => 'Text',
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon (optional, displayed in the title)', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon (optional, displayed in the title)', 'js_composer' ),
                 'param_name' => 'icon_typicons',
                 'value' => 'typcn typcn-adjust-brightness', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'typicons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'overlayicon',
                   'value' => 'typicons',
                 ),
                 'group' => 'Text',
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon (optional, displayed in the title)', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon (optional, displayed in the title)', 'js_composer' ),
                 'param_name' => 'icon_entypo',
                 'value' => 'entypo-icon entypo-icon-note', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'entypo',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'group' => 'Text',
                 'dependency' => array(
@@ -157,24 +137,24 @@ if (!class_exists('VC_Extensions_ImageOverlay2')) {
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon (optional, displayed in the title)', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon (optional, displayed in the title)', 'js_composer' ),
                 'param_name' => 'icon_linecons',
                 'value' => 'vc_li vc_li-heart', // default value to backend editor admin_label
                 'settings' => array(
                   'emptyIcon' => false, // default true, display an "EMPTY" icon?
                   'type' => 'linecons',
-                  'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+                  'iconsPerPage' => 100, // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
                   'element' => 'overlayicon',
                   'value' => 'linecons',
                 ),
                 'group' => 'Text',
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 'type' => 'iconpicker',
-                'heading' => __( 'Icon', 'js_composer' ),
+                'heading' => esc_attr__( 'Icon', 'js_composer' ),
                 'param_name' => 'icon_material',
                 'value' => 'vc-material vc-material-cake',
                 // default value to backend editor admin_label
@@ -182,7 +162,7 @@ if (!class_exists('VC_Extensions_ImageOverlay2')) {
                   'emptyIcon' => false,
                   // default true, display an "EMPTY" icon?
                   'type' => 'material',
-                  'iconsPerPage' => 4000,
+                  'iconsPerPage' => 100,
                   // default 100, how many icons per/page to display
                 ),
                 'dependency' => array(
@@ -190,90 +170,90 @@ if (!class_exists('VC_Extensions_ImageOverlay2')) {
                   'value' => 'material',
                 ),
                 "group" => "Text",
-                'description' => __( 'Select icon from library.', 'js_composer' ),
+                'description' => esc_attr__( 'Select icon from library.', 'js_composer' ),
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Overlay title (optional)", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Overlay title (optional)", "vc_imageoverlay2_cq"),
                 "param_name" => "overlaytitle",
                 "value" => "",
                 'group' => 'Text',
-                "description" => __("", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Overlay content (optional)", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Overlay content (optional)", "vc_imageoverlay2_cq"),
                 "param_name" => "overlaycontent",
                 "value" => "",
                 'group' => 'Text',
-                "description" => __("", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("", "vc_imageoverlay2_cq")
               ),
               array(
                 'type' => 'vc_link',
-                'heading' => __( 'URL (Optional link for the whole element)', 'vc_imageoverlay2_cq' ),
+                'heading' => esc_attr__( 'URL (Optional link for the whole element)', 'vc_imageoverlay2_cq' ),
                 'param_name' => 'link',
                 'group' => 'Link',
-                'description' => __( '', 'vc_imageoverlay2_cq' )
+                'description' => esc_attr__( '', 'vc_imageoverlay2_cq' )
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_imageoverlay2_cq",
-                "heading" => __("Overlay background style:", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Overlay background style:", "vc_imageoverlay2_cq"),
                 "param_name" => "overlaystyle",
                 "value" => array("Orange" => "", "Grape Fruit" => "grapefruit", "Grass" => "grass", "Aqua" => "aqua", "Lavender" => "lavender", "Pink Rose" => "pinkrose", "Light Gray" => "lightgray", "Dark Gray" => "darkgray", "Customize below:" => "customized"),
                 'std' => 'darkgray',
-                "description" => __("", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Overlay background color:", 'vc_imageoverlay2_cq'),
+                "heading" => esc_attr__("Overlay background color:", 'vc_imageoverlay2_cq'),
                 "param_name" => "overlaycolor",
                 "dependency" => Array('element' => "overlaystyle", 'value' => array('customized')),
                 "value" => '',
-                "description" => __("", 'vc_imageoverlay2_cq')
+                "description" => esc_attr__("", 'vc_imageoverlay2_cq')
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Overlay title (and icon) size:", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Overlay title (and icon) size:", "vc_imageoverlay2_cq"),
                 "param_name" => "titlesize",
                 "value" => "",
                 'group' => 'Text',
-                "description" => __("Default is 2em.", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("Default is 2em.", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Overlay content size:", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Overlay content size:", "vc_imageoverlay2_cq"),
                 "param_name" => "contentsize",
                 "value" => "",
                 'group' => 'Text',
-                "description" => __("Default is 1em.", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("Default is 1em.", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Overlay text color (the title, content and icon):", 'vc_imageoverlay2_cq'),
+                "heading" => esc_attr__("Overlay text color (the title, content and icon):", 'vc_imageoverlay2_cq'),
                 "param_name" => "contentcolor",
                 "value" => '',
                 'group' => 'Text',
-                "description" => __("Default is white.", 'vc_imageoverlay2_cq')
+                "description" => esc_attr__("Default is white.", 'vc_imageoverlay2_cq')
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("CSS margin of the whole element:", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("CSS margin of the whole element:", "vc_imageoverlay2_cq"),
                 "param_name" => "elementmargin",
                 "value" => "",
-                "description" => __("Default is 0, you can specify other value here. For example 0 0 12px 0 will stand for margin-bottom 12px.", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("Default is 0, you can specify other value here. For example 0 0 12px 0 will stand for margin-bottom 12px.", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Extra class name", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Extra class name", "vc_imageoverlay2_cq"),
                 "param_name" => "extraclass",
                 "value" => "",
-                "description" => __("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "vc_imageoverlay2_cq")
               )
 
 
@@ -285,148 +265,145 @@ if (!class_exists('VC_Extensions_ImageOverlay2')) {
 
 
           vc_map(array(
-            "name" => __("Image Overlay 2", 'vc_imageoverlay2_cq'),
+            "name" => esc_attr__("Image Overlay 2", 'vc_imageoverlay2_cq'),
             "base" => "cq_vc_imageoverlay2",
             "class" => "wpb_cq_vc_extension_imageoverlay2",
-            // "as_parent" => array('only' => 'cq_vc_imageoverlay2_item'),
             "icon" => "cq_allinone_imageoverlay2",
-            "category" => __('Sike Extensions', 'js_composer'),
-            // "content_element" => false,
-            // "show_settings_on_create" => false,
-            'description' => __('Caption with transition', 'js_composer'),
+            "category" => esc_attr__('Sike Extensions', 'js_composer'),
+            'description' => esc_attr__('Caption with transition', 'js_composer'),
             "params" => array(
               array(
                 "type" => "attach_image",
-                "heading" => __("Image", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Image", "vc_imageoverlay2_cq"),
                 "param_name" => "image",
                 "value" => "",
-                "description" => __("Select image from media library.", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("Select image from media library.", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_imageoverlay2_cq",
-                "heading" => __("Select the transition direction:", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Select the transition direction:", "vc_imageoverlay2_cq"),
                 "param_name" => "transitiondirection",
                 "value" => array("default (45 degree, top left to bottom right)" => "", "45 degree, top right to bottom left" => "topright_bottomleft", "45 degree, bottom left to top right" => "bottomleft_topright", "45 degree, bottom right to top left" => "bottomright_topleft"),
                 "std" => "",
-                "description" => __("", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Element height", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Element height", "vc_imageoverlay2_cq"),
                 "param_name" => "elementheight",
                 "value" => "",
-                "description" => __("Default is 480, you may have to make it smaller if your image is landscape, or make it larger if your image is portrait. The height depends on the container width too.", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("Default is 480, you may have to make it smaller if your image is landscape, or make it larger if your image is portrait. The height depends on the container width too.", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_imageoverlay2_cq",
-                "heading" => __("Resize the image?", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Resize the image?", "vc_imageoverlay2_cq"),
                 "param_name" => "isresize",
                 "value" => array("no (we will use the original image)", "yes (customize resized width below)" => "yes"),
                 "std" => "no",
-                "description" => __("", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Resize image to this width", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Resize image to this width", "vc_imageoverlay2_cq"),
                 "param_name" => "imagewidth",
                 "value" => "",
                 "dependency" => Array('element' => "isresize", 'value' => array('yes')),
-                "description" => __("Specify a width here. For example, 600 will resize the image to width 600.", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("Specify a width here. For example, 600 will resize the image to width 600.", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Icon for the overlay title (optional)", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Icon for the overlay title (optional)", "vc_imageoverlay2_cq"),
                 "param_name" => "overlayicon",
                 "value" => "",
                 "group" => "Text",
-                "description" => __("For example fa-twitter will insert a Twitter icon. See all the available <a href='http://fortawesome.github.io/Font-Awesome/icons/' target='_blank'>Font Awesome icon</a>.", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("For example fa-twitter will insert a Twitter icon. See all the available Font Awesome icon.", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Overlay title (optional)", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Overlay title (optional)", "vc_imageoverlay2_cq"),
                 "param_name" => "overlaytitle",
                 "value" => "",
                 'group' => 'Text',
-                "description" => __("", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Overlay content (optional)", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Overlay content (optional)", "vc_imageoverlay2_cq"),
                 "param_name" => "overlaycontent",
                 "value" => "",
                 'group' => 'Text',
-                "description" => __("", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("", "vc_imageoverlay2_cq")
               ),
               array(
                 'type' => 'vc_link',
-                'heading' => __( 'URL (Optional link for the whole element)', 'vc_imageoverlay2_cq' ),
+                'heading' => esc_attr__( 'URL (Optional link for the whole element)', 'vc_imageoverlay2_cq' ),
                 'param_name' => 'link',
                 'group' => 'Link',
-                'description' => __( '', 'vc_imageoverlay2_cq' )
+                'description' => esc_attr__( '', 'vc_imageoverlay2_cq' )
               ),
               array(
                 "type" => "dropdown",
                 "holder" => "",
                 "class" => "vc_imageoverlay2_cq",
-                "heading" => __("Overlay background style:", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Overlay background style:", "vc_imageoverlay2_cq"),
                 "param_name" => "overlaystyle",
                 "value" => array("Orange" => "", "Grape Fruit" => "grapefruit", "Grass" => "grass", "Aqua" => "aqua", "Lavender" => "lavender", "Pink Rose" => "pinkrose", "Light Gray" => "lightgray", "Dark Gray" => "darkgray", "Customize below:" => "customized"),
                 'std' => 'darkgray',
-                "description" => __("", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Overlay background color:", 'vc_imageoverlay2_cq'),
+                "heading" => esc_attr__("Overlay background color:", 'vc_imageoverlay2_cq'),
                 "param_name" => "overlaycolor",
                 "dependency" => Array('element' => "overlaystyle", 'value' => array('customized')),
                 "value" => '',
-                "description" => __("", 'vc_imageoverlay2_cq')
+                "description" => esc_attr__("", 'vc_imageoverlay2_cq')
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Overlay title (and icon) size:", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Overlay title (and icon) size:", "vc_imageoverlay2_cq"),
                 "param_name" => "titlesize",
                 "value" => "",
                 'group' => 'Text',
-                "description" => __("Default is 2em.", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("Default is 2em.", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Overlay content size:", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Overlay content size:", "vc_imageoverlay2_cq"),
                 "param_name" => "contentsize",
                 "value" => "",
                 'group' => 'Text',
-                "description" => __("Default is 1em.", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("Default is 1em.", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "colorpicker",
                 "holder" => "div",
                 "class" => "",
-                "heading" => __("Overlay text color (the title, content and icon):", 'vc_imageoverlay2_cq'),
+                "heading" => esc_attr__("Overlay text color (the title, content and icon):", 'vc_imageoverlay2_cq'),
                 "param_name" => "contentcolor",
                 "value" => '',
                 'group' => 'Text',
-                "description" => __("Default is white.", 'vc_imageoverlay2_cq')
+                "description" => esc_attr__("Default is white.", 'vc_imageoverlay2_cq')
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("CSS margin of the whole element:", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("CSS margin of the whole element:", "vc_imageoverlay2_cq"),
                 "param_name" => "elementmargin",
                 "value" => "",
-                "description" => __("Default is 0, you can specify other value here. For example 0 0 12px 0 will stand for margin-bottom 12px.", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("Default is 0, you can specify other value here. For example 0 0 12px 0 will stand for margin-bottom 12px.", "vc_imageoverlay2_cq")
               ),
               array(
                 "type" => "textfield",
-                "heading" => __("Extra class name", "vc_imageoverlay2_cq"),
+                "heading" => esc_attr__("Extra class name", "vc_imageoverlay2_cq"),
                 "param_name" => "extraclass",
                 "value" => "",
-                "description" => __("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "vc_imageoverlay2_cq")
+                "description" => esc_attr__("If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "vc_imageoverlay2_cq")
               )
 
 
@@ -438,7 +415,7 @@ if (!class_exists('VC_Extensions_ImageOverlay2')) {
         add_shortcode('cq_vc_imageoverlay2', array($this,'cq_vc_imageoverlay2_func'));
       }
 
-      function cq_vc_imageoverlay2_func($atts, $content=null, $tag) {
+      function cq_vc_imageoverlay2_func($atts, $content=null, $tag=null) {
           $overlayicon = $icon_fontawesome = $icon_openiconic = $icon_typicons = $icon_entypo = $icon_linecons = $icon_material = '';
           extract(shortcode_atts(array(
             "icon_fontawesome" => 'fa ',
@@ -481,6 +458,7 @@ if (!class_exists('VC_Extensions_ImageOverlay2')) {
           wp_register_script('vc-extensions-imageoverlay2-script', plugins_url('js/init.min.js', __FILE__), array("jquery"));
           wp_enqueue_script('vc-extensions-imageoverlay2-script');
           $link = vc_build_link($link);
+          $attachment = get_post($image);
           $image_full = wp_get_attachment_image_src($image, 'full');
           if(isset($color_style_arr[$overlaystyle])){
             $cardstyle_arr = $color_style_arr[$overlaystyle];
@@ -489,13 +467,13 @@ if (!class_exists('VC_Extensions_ImageOverlay2')) {
           }
 
           $output = '';
-          $output .= '<div class="cq-imageoverlay2-container '.$extraclass.' '.$transitiondirection.'" data-elementheight="'.$elementheight.'" data-overlaycolor="'.$cardstyle_arr[1].'"  data-image="'.$image[0].'" data-titlesize="'.$titlesize.'" data-contentsize="'.$contentsize.'" data-contentcolor="'.$contentcolor.'" data-overlaystyle="'.$overlaystyle.'" data-elementmargin="'.$elementmargin.'">';
+          $output .= '<div class="cq-imageoverlay2-container '.$extraclass.' '.$transitiondirection.'" data-elementheight="'.$elementheight.'" data-overlaycolor="'.$cardstyle_arr[1].'"  data-image="'.($image[0]??"").'" data-titlesize="'.$titlesize.'" data-contentsize="'.$contentsize.'" data-contentcolor="'.$contentcolor.'" data-overlaystyle="'.$overlaystyle.'" data-elementmargin="'.$elementmargin.'">';
           if($link["url"]!=="") $output .= '<a href="'.$link["url"].'" title="'.$link["title"].'" target="'.$link["target"].'" class="cq-imageoverlay2-link">';
           $output .= '<div class="cq-imageoverlay2">';
 
           $img = $thumbnail = "";
 
-          $fullimage = $image_full[0];
+          $fullimage = $image_full[0] ?? "";
           $thumbnail = $fullimage;
           if($isresize&&$imagewidth!=""){
               if(function_exists('wpb_resize')){
@@ -506,10 +484,10 @@ if (!class_exists('VC_Extensions_ImageOverlay2')) {
           }
 
           if($isresize=="yes"&&$imagewidth!=""){
-              $output .= '<img src="'.$thumbnail.'" class="cq-imageoverlay2-img" />';
+              $output .= '<img src="'.$thumbnail.'" class="cq-imageoverlay2-img" alt="'.get_post_meta($attachment->ID, '_wp_attachment_image_alt', true ).'" />';
           }else{
 
-              $output .= '<img src="'.$image_full[0].'" class="cq-imageoverlay2-img" />';
+              $output .= '<img src="'.($image_full[0]??"").'" class="cq-imageoverlay2-img" alt="'.get_post_meta($attachment->ID, '_wp_attachment_image_alt', true ).'" />';
           }
           $output .= '<div class="text-container">';
           if(version_compare(WPB_VC_VERSION,  "4.4")>=0){

@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-
+    "use strict";
     $('.cq-hovercardv2').each(function(index) {
         var _this = $(this);
         var _avatarwidth = parseInt($(this).data('avatarwidth'), 10);
@@ -19,7 +19,6 @@ jQuery(document).ready(function($) {
         var _subtitlefontsize = $(this).data('subtitlefontsize');
         var _bordercolor = $(this).data('bordercolor');
         if(_avatarwidth>0&&_avatarwidth!=80){
-            // if(_isheader=="yes") $('.cq-hovercardv2-avatar', _this).css('margin-top', -_avatarwidth*0.5 + 'px');
             $('.cq-hovercardv2-avatar', _this).css({
                 'width': _avatarwidth,
                 'line-height': _avatarwidth + 'px',

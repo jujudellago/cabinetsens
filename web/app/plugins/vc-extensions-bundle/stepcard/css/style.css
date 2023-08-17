@@ -1,10 +1,8 @@
 .cq-stepcard{
-  /*overflow: hidden;*/
 }
 
 .cq-stepcard-item {
   position: absolute;
-  /*overflow: hidden;*/
   margin: 0;
   opacity: 0;
   top: 0;
@@ -15,10 +13,8 @@
 .cq-stepcard-item p{
   color: #333;
   margin: 0;
-  /*padding: 20px 0;*/
 }
 .cq-stepcard-item .cq-stepcard-content{
-  /*height: 100%;*/
   position: relative;
   overflow: hidden;
   padding: 20px 20px 20px 20px;
@@ -36,7 +32,6 @@
   margin-top: 0;
 }
 .cq-stepcard-active {
-  /*margin: 0 auto;*/
   opacity: 1;
   transition: ease-in-out 0.6s;
 }
@@ -45,7 +40,6 @@
   position: relative;
   background: #fff;
   border-radius: 5px;
-  /*padding: 2em 0;*/
   height: 300px;
   box-sizing: border-box;
   transition: .3s ease;
@@ -142,7 +136,6 @@
 
 
 .cq-stepcard-cardbar {
-  /*background: #00c4c7;*/
   height: 8px;
   border-radius: 5px 5px 0 0;
   padding: 0;
@@ -184,18 +177,14 @@
 
 .cq-stepcard-item .cq-stepcard-button{
   font-size: 1em;
-  /*display: block;*/
 }
 .cq-stepcard-nextstep{
   display: inline-block;
   position: absolute;
   line-height: 100%;
   bottom: 12px;
-  /*left: 20px;*/
-  /*background-color: #EFEFEF;*/
 }
 .cq-stepcard-nextstep.cq-stepcard-btnright{
-  /*bottom: 12px;*/
   right: 20px;
 }
 .cq-stepcard-nextstep.cq-stepcard-btnleft{

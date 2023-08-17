@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-imageoverlay').each(function(index) {
         var _this = $(this);
         var _overlaycolor = $(this).data('overlaycolor');
@@ -19,19 +20,11 @@ jQuery(document).ready(function($) {
             });
         }else{
             $(this).find('.cq-imageoverlay-overlay').css({
-              // 'width': _overlaysize+20,
-              // 'height': _overlaysize,
               'margin': _overlaymargin
             });
 
             $(this).find('.cq-heart-before, .cq-heart-after').css({
               'background-color': _overlaycolor
-              // 'width': _overlaysize*0.5,
-              // 'left': _overlaysize*0.5,
-              // 'height': _overlaysize-20,
-              // '-moz-border-radius': (_overlaysize+20)*0.5 + ' ' + (_overlaysize+20)*0.5 + ' ' + '0 0',
-              // '-webkit-border-radius': (_overlaysize+20)*0.5 + ' ' + (_overlaysize+20)*0.5 + ' ' + '0 0',
-              // 'border-radius': (_overlaysize+20)*0.5 + ' ' + (_overlaysize+20)*0.5 + ' ' + '0 0'
             });
 
         }

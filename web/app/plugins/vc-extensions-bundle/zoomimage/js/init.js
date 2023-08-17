@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+	"use strict";
 	$('.zoomimage').each(function(index) {
 		var _this = $(this);
 		var _position = $(this).data('position') || 'bottom';
@@ -15,8 +16,6 @@ jQuery(document).ready(function($) {
 		}).zoomer({
 			controls: {
 				position: _position
-				// zoomIn: ".zoom_in",
-				// zoomOut: ".zoom_out"
 			},
 			increment: 0.01,
 			retina: _retina,

@@ -3,8 +3,8 @@
 Plugin Name: All In One Addons for WPBakery Page Builder (formerly Visual Composer)
 Description: Includes all my premium addons for WPBakery Page Builder, like Flip Box, Cube Box, Metro Carousel and Tile, Carousel & Gallery, Tabs, Accordion, Image Hotspot with Tooltip, Parallax, Medium Gallery, Stack Gallery, Expand Grid, iHover etc.
 Author: Sike
-Version: 3.5.0
-Author URI: http://codecanyon.net/user/sike?ref=sike
+Version: 3.6.5
+Author URI: https://1.envato.market/v96yv
 */
 
 require_once( 'faanimation/vc-extensions-faanimation.php' );
@@ -77,64 +77,85 @@ require_once( 'imagecompare/vc-extensions-imagecompare.php' );
 require_once( 'profilecardv2/vc-extensions-profilecardv2.php' );
 require_once( 'datatable/vc-extensions-datatable.php' );
 require_once( 'floatblock/vc-extensions-floatblock.php' );
+require_once( 'sidebysidev2/vc-extensions-sidebysidev2.php' );
+require_once( 'userprofile/vc-extensions-userprofile.php' );
+require_once( 'cardslider/vc-extensions-cardslider.php' );
+require_once( 'imagetoggle/vc-extensions-imagetoggle.php' );
+require_once( 'coveranimation/vc-extensions-coveranimation.php' );
+require_once( 'newsblock/vc-extensions-newsblock.php' );
+require_once( 'morecaption/vc-extensions-morecaption.php' );
+require_once( 'morecaptionv2/vc-extensions-morecaptionv2.php' );
+require_once( 'floatcaption/vc-extensions-floatcaption.php' );
+require_once( 'imageslider/vc-extensions-imageslider.php' );
+require_once( 'videogallery/vc-extensions-videogallery.php' );
+require_once( 'skewcard/vc-extensions-skewcard.php' );
+require_once( 'dotselection/vc-extensions-dotselection.php' );
+require_once( 'infoblock/vc-extensions-infoblock.php' );
+require_once( 'loadingslideshow/vc-extensions-loadingslideshow.php' );
+require_once( 'parallaxslider/vc-extensions-parallaxslider.php' );
+require_once( 'comparecard/vc-extensions-comparecard.php' );
+require_once( 'gridpopup/vc-extensions-gridpopup.php' );
+require_once( 'foldingcard/vc-extensions-foldingcard.php' );
+require_once( 'coverflow/vc-extensions-coverflow.php' );
+require_once( 'cardcarousel/vc-extensions-cardcarousel.php' );
 
 if (!class_exists('VC_Extensions_CQBundle')) {
     class VC_Extensions_CQBundle {
         function __construct() {
-          if(!function_exists('cq_vc_animationfw_func')) $vc_extensions_faanimation = new VC_Extensions_FAanimation();
-              if(!function_exists('cq_vc_dagallery_func')) $vc_extensions_dagallery = new VC_Extensions_DAGallery();
-              if(!function_exists('cq_vc_appmockup_func')) $vc_extensions_appmockup = new VC_Extensions_AppMockup();
-              if(!function_exists('cq_vc_depthmodal_func'))$vc_extensions_depthmodal = new VC_Extensions_DepthModal();
-              if(!function_exists('cq_vc_ihover_func')) $vc_extensions_ihover = new VC_Extensions_iHover();
-              if(!function_exists('cq_vc_profilecard_func')) $vc_extensions_profilecard = new VC_Extensions_ProfileCard();
-              if(!function_exists('cq_vc_testimonialcarousel_func')) $vc_extensions_testimonialcarousel = new VC_Extensions_TestimonialCarousel();
-              if(!function_exists('cq_vc_stackgallery_func')) $vc_extensions_stackgallery = new VC_Extensions_StackGallery();
-              // if(!function_exists('cq_vc_animatetext_func')) $vc_extensions_animatetext = new VC_Extensions_AnimateText();
-              if(!function_exists('cq_vc_figurenav_func')) $vc_extensions_figurenav = new VC_Extensions_FigureNav();
-              // if(!function_exists('cq_vc_timeline_func')) $vc_extensions_timeline = new VC_Extensions_Timeline();
-              if(!function_exists('cq_vc_ribbon_func')) $vc_extensions_ribbon = new VC_Extensions_Ribbon();
-              if(!function_exists('cq_vc_mediumgallery_func')) $vc_extensions_mediumgallery = new VC_Extensions_MediumGallery();
-              if(!function_exists('cq_vc_productcover_func')) $vc_extensions_productcover = new VC_Extensions_ProductCover();
-              if(!function_exists('cq_vc_imagewitharrow_func')) $vc_extensions_imagewitharrow = new VC_Extensions_ImageWithArrow();
-              if(!function_exists('cq_vc_parallax_func')) $vc_extensions_parallax = new VC_Extensions_Parallax();
-              if(!function_exists('cq_vc_cqbutton_func')) $vc_extensions_cqbutton = new VC_Extensions_CQButton();
-              if(!function_exists('cq_vc_hotspot_func')) $vc_extensions_hotspot = new VC_Extensions_HotSpot();
-              if(!function_exists('cq_vc_todolist_func')) $vc_extensions_todolist = new VC_Extensions_ToDoList();
-              if(!function_exists('cq_vc_accordion_func')) $vc_extensions_accordion = new VC_Extensions_Accordion();
-              if(!function_exists('cq_vc_tabs_func')) $vc_extensions_tabs = new VC_Extensions_Tabs();
-              if(!function_exists('cq_vc_cqcarousel_func')) $vc_extensions_cqcarousel = new VC_Extensions_CQCarousel();
-              if(!function_exists('cq_vc_zoomimage_func')) $vc_extensions_zoomimage = new VC_Extensions_ZoomImage();
-              if(!function_exists('cq_vc_metrocarousel_func')) $vc_extensions_metrocarousel = new VC_Extensions_MetroCarousel();
-              if(!function_exists('cq_vc_draggabletimeline_func')) $vc_extensions_draggabletimeline = new VC_Extensions_DraggableTimeline();
-              if(!function_exists('cq_vc_thumbnailcaption_func')) $vc_extensions_thumbnailcaption = new VC_Extensions_CQThumbnailCaption();
-              if(!function_exists('cq_vc_fullscreenintro_func')) $vc_extensions_fullscreenintro = new VC_Extensions_FullscreenIntro();
-              if(!function_exists('cq_vc_pagetransition_func')) $vc_extensions_pagetransition = new VC_Extensions_PageTransition();
-              if(!function_exists('cq_vc_separator_func')) $vc_extensions_separator = new VC_Extensions_Separator();
-              if(!function_exists('cq_vc_materialcard_func')) $vc_extensions_materialcard = new VC_Extensions_MaterialCard();
-              if(!function_exists('cq_vc_cubebox_func')) $vc_extensions_cubebox = new VC_Extensions_CubeBox();
-              if(!function_exists('cq_vc_sidebyside_func')) $vc_extensions_sidebyside = new VC_Extensions_SideBySide();
-              if(!function_exists('cq_vc_typewriter_func')) $vc_extensions_typewriter = new VC_Extensions_TypeWriter();
-              if(!function_exists('cq_vc_sticker_func')) $vc_extensions_sticker = new VC_Extensions_Sticker();
-              if(!function_exists('cq_vc_imageoverlay_func')) $vc_extensions_imageoverlay = new VC_Extensions_ImageOverlay();
-              if(!function_exists('cq_vc_flipbox_func')) $vc_extensions_flipbox = new VC_Extensions_FlipBox();
-              if(!function_exists('cq_vc_bannerblock_func')) $vc_extensions_bannerblock = new VC_Extensions_BannerBlock();
-              if(!function_exists('cq_vc_beforeafter_func')) $vc_extensions_beforeafter = new VC_Extensions_BeforeAfter();
-              if(!function_exists('cq_vc_compareslider_func')) $vc_extensions_compareslider = new VC_Extensions_CompareSlider();
-              if(!function_exists('cq_vc_imageoverlay2_func')) $vc_extensions_imageoverlay2 = new VC_Extensions_ImageOverlay2();
-              if(!function_exists('cq_vc_imageaccordion_func')) $vc_extensions_imageaccordion = new VC_Extensions_ImageAccordion();
-              if(!function_exists('cq_vc_profilepanel_func')) $vc_extensions_profilepanel = new VC_Extensions_ProfilePanel();
-              if(!function_exists('cq_vc_videocover_func')) $vc_extensions_videocover = new VC_Extensions_VideoCover();
-              if(!function_exists('cq_vc_stackblock_func')) $vc_extensions_stackblock = new VC_Extensions_StackBlock();
-              if(!function_exists('cq_vc_gradientbox_func')) $vc_extensions_gradientbox = new VC_Extensions_GradientBox();
-              if(!function_exists('cq_vc_vectorcard_func')) $vc_extensions_vectorcard = new VC_Extensions_VectorCard();
-              if(!function_exists('cq_vc_avatarwithpopup_func')) $vc_extensions_avatarwithpopup = new VC_Extensions_AvatarWithPopup();
-              if(!function_exists('cq_vc_coverslider_func')) $vc_extensions_coverslider = new VC_Extensions_CoverSlider();
-              if(!function_exists('cq_vc_colorblock_func')) $vc_extensions_colorblock = new VC_Extensions_ColorBlock();
-              if(!function_exists('cq_vc_testimoniallist_func')) $vc_extensions_testimoniallist = new VC_Extensions_TestimonialList();
-              if(!function_exists('cq_vc_homeslider_func')) $vc_extensions_homeslider = new VC_Extensions_HomeSlider();
-              if(!function_exists('cq_vc_accordioncover_func')) $vc_extensions_accordioncover = new VC_Extensions_AccordionCover();
-              if(!function_exists('cq_vc_hovercard_func')) $vc_extensions_hovercard = new VC_Extensions_HoverCard();
-              if(!function_exists('cq_vc_backgroundbutton_func')) $vc_extensions_backgroundbutton = new VC_Extensions_BackgroundButton();
+              if(class_exists('VC_Extensions_FAanimation')) $vc_extensions_faanimation = new VC_Extensions_FAanimation();
+              if(class_exists('VC_Extensions_DAGallery')) $vc_extensions_dagallery = new VC_Extensions_DAGallery();
+              if(class_exists('VC_Extensions_AppMockup')) $vc_extensions_appmockup = new VC_Extensions_AppMockup();
+              if(class_exists('VC_Extensions_DepthModal'))$vc_extensions_depthmodal = new VC_Extensions_DepthModal();
+              if(class_exists('VC_Extensions_iHover')) $vc_extensions_ihover = new VC_Extensions_iHover();
+              if(class_exists('VC_Extensions_ProfileCard')) $vc_extensions_profilecard = new VC_Extensions_ProfileCard();
+              if(class_exists('vc_extensions_testimonialcarousel')) $vc_extensions_testimonialcarousel = new VC_Extensions_TestimonialCarousel();
+              if(class_exists('VC_Extensions_StackGallery')) $vc_extensions_stackgallery = new VC_Extensions_StackGallery();
+              // if(class_exists('VC_Extensions_AnimateText')) $vc_extensions_animatetext = new VC_Extensions_AnimateText();
+              if(class_exists('VC_Extensions_FigureNav')) $vc_extensions_figurenav = new VC_Extensions_FigureNav();
+              // if(class_exists('VC_Extensions_Timeline')) $vc_extensions_timeline = new VC_Extensions_Timeline();
+              if(class_exists('VC_Extensions_Ribbon')) $vc_extensions_ribbon = new VC_Extensions_Ribbon();
+              if(class_exists('VC_Extensions_MediumGallery')) $vc_extensions_mediumgallery = new VC_Extensions_MediumGallery();
+              if(class_exists('VC_Extensions_ProductCover')) $vc_extensions_productcover = new VC_Extensions_ProductCover();
+              if(class_exists('VC_Extensions_ImageWithArrow')) $vc_extensions_imagewitharrow = new VC_Extensions_ImageWithArrow();
+              if(class_exists('VC_Extensions_Parallax')) $vc_extensions_parallax = new VC_Extensions_Parallax();
+              if(class_exists('VC_Extensions_CQButton')) $vc_extensions_cqbutton = new VC_Extensions_CQButton();
+              if(class_exists('VC_Extensions_HotSpot')) $vc_extensions_hotspot = new VC_Extensions_HotSpot();
+              if(class_exists('VC_Extensions_ToDoList')) $vc_extensions_todolist = new VC_Extensions_ToDoList();
+              if(class_exists('VC_Extensions_Accordion')) $vc_extensions_accordion = new VC_Extensions_Accordion();
+              if(class_exists('VC_Extensions_Tabs')) $vc_extensions_tabs = new VC_Extensions_Tabs();
+              if(class_exists('VC_Extensions_CQCarousel')) $vc_extensions_cqcarousel = new VC_Extensions_CQCarousel();
+              if(class_exists('VC_Extensions_ZoomImage')) $vc_extensions_zoomimage = new VC_Extensions_ZoomImage();
+              if(class_exists('VC_Extensions_MetroCarousel')) $vc_extensions_metrocarousel = new VC_Extensions_MetroCarousel();
+              if(class_exists('VC_Extensions_DraggableTimeline')) $vc_extensions_draggabletimeline = new VC_Extensions_DraggableTimeline();
+              if(class_exists('VC_Extensions_CQThumbnailCaption')) $vc_extensions_cqthumbnailcaption = new VC_Extensions_CQThumbnailCaption();
+              if(class_exists('VC_Extensions_FullscreenIntro')) $vc_extensions_fullscreenintro = new VC_Extensions_FullscreenIntro();
+              if(class_exists('VC_Extensions_PageTransition')) $vc_extensions_pagetransition = new VC_Extensions_PageTransition();
+              if(class_exists('VC_Extensions_Separator')) $vc_extensions_separator = new VC_Extensions_Separator();
+              if(class_exists('VC_Extensions_MaterialCard')) $vc_extensions_materialcard = new VC_Extensions_MaterialCard();
+              if(class_exists('VC_Extensions_CubeBox')) $vc_extensions_cubebox = new VC_Extensions_CubeBox();
+              if(class_exists('VC_Extensions_SideBySide')) $vc_extensions_sidebyside = new VC_Extensions_SideBySide();
+              if(class_exists('VC_Extensions_TypeWriter')) $vc_extensions_typewriter = new VC_Extensions_TypeWriter();
+              if(class_exists('VC_Extensions_Sticker')) $vc_extensions_sticker = new VC_Extensions_Sticker();
+              if(class_exists('VC_Extensions_ImageOverlay')) $vc_extensions_imageoverlay = new VC_Extensions_ImageOverlay();
+              if(class_exists('VC_Extensions_FlipBox')) $vc_extensions_flipbox = new VC_Extensions_FlipBox();
+              if(class_exists('VC_Extensions_BannerBlock')) $vc_extensions_bannerblock = new VC_Extensions_BannerBlock();
+              if(class_exists('VC_Extensions_BeforeAfter')) $vc_extensions_beforeafter = new VC_Extensions_BeforeAfter();
+              if(class_exists('VC_Extensions_CompareSlider')) $vc_extensions_compareslider = new VC_Extensions_CompareSlider();
+              if(class_exists('VC_Extensions_ImageOverlay2')) $vc_extensions_imageoverlay2 = new VC_Extensions_ImageOverlay2();
+              if(class_exists('VC_Extensions_ImageAccordion')) $vc_extensions_imageaccordion = new VC_Extensions_ImageAccordion();
+              if(class_exists('VC_Extensions_ProfilePanel')) $vc_extensions_profilepanel = new VC_Extensions_ProfilePanel();
+              if(class_exists('VC_Extensions_VideoCover')) $vc_extensions_videocover = new VC_Extensions_VideoCover();
+              if(class_exists('VC_Extensions_StackBlock')) $vc_extensions_stackblock = new VC_Extensions_StackBlock();
+              if(class_exists('VC_Extensions_GradientBox')) $vc_extensions_gradientbox = new VC_Extensions_GradientBox();
+              if(class_exists('VC_Extensions_VectorCard')) $vc_extensions_vectorcard = new VC_Extensions_VectorCard();
+              if(class_exists('VC_Extensions_AvatarWithPopup')) $vc_extensions_avatarwithpopup = new VC_Extensions_AvatarWithPopup();
+              if(class_exists('VC_Extensions_CoverSlider')) $vc_extensions_coverslider = new VC_Extensions_CoverSlider();
+              if(class_exists('VC_Extensions_ColorBlock')) $vc_extensions_colorblock = new VC_Extensions_ColorBlock();
+              if(class_exists('VC_Extensions_TestimonialList')) $vc_extensions_testimoniallist = new VC_Extensions_TestimonialList();
+              if(class_exists('VC_Extensions_HomeSlider')) $vc_extensions_homeslider = new VC_Extensions_HomeSlider();
+              if(class_exists('VC_Extensions_AccordionCover')) $vc_extensions_accordioncover = new VC_Extensions_AccordionCover();
+              if(class_exists('VC_Extensions_HoverCard')) $vc_extensions_hovercard = new VC_Extensions_HoverCard();
+              if(class_exists('VC_Extensions_BackgroundButton')) $vc_extensions_backgroundbutton = new VC_Extensions_BackgroundButton();
               if(class_exists('VC_Extensions_DiamondGrid')) $vc_extensions_diamondgrid = new VC_Extensions_DiamondGrid();
               if(class_exists('VC_Extensions_ExpandGrid')) $vc_extensions_expandgrid = new VC_Extensions_ExpandGrid();
               if(class_exists('VC_Extensions_ChatBubble')) $vc_extensions_chatbubble = new VC_Extensions_ChatBubble();
@@ -153,6 +174,27 @@ if (!class_exists('VC_Extensions_CQBundle')) {
               if(class_exists('VC_Extensions_ProfileCardV2')) $vc_extensions_profilecardv2 = new VC_Extensions_ProfileCardV2();
               if(class_exists('VC_Extensions_DataTable')) $vc_extensions_datatable = new VC_Extensions_DataTable();
               if(class_exists('VC_Extensions_FloatBlock')) $vc_extensions_floatblock = new VC_Extensions_FloatBlock();
+              if(class_exists('VC_Extensions_SideBySideV2')) $vc_extensions_sidebysidev2 = new VC_Extensions_SideBySideV2();
+              if(class_exists('VC_Extensions_UserProfile')) $vc_extensions_userprofile = new VC_Extensions_UserProfile();
+              if(class_exists('VC_Extensions_CardSlider')) $vc_extensions_cardslider = new VC_Extensions_CardSlider();
+              if(class_exists('VC_Extensions_ImageToggle')) $vc_extensions_imagetoggle = new VC_Extensions_ImageToggle();
+              if(class_exists('VC_Extensions_CoverAnimation')) $vc_extensions_coveranimation = new VC_Extensions_CoverAnimation();
+              if(class_exists('VC_Extensions_NewsBlock')) $vc_extensions_newsblock = new VC_Extensions_NewsBlock();
+              if(class_exists('VC_Extensions_MoreCaption')) $vc_extensions_morecaption = new VC_Extensions_MoreCaption();
+              if(class_exists('VC_Extensions_MoreCaptionV2')) $vc_extensions_morecaptionv2 = new VC_Extensions_MoreCaptionV2();
+              if(class_exists('VC_Extensions_FloatCaption')) $vc_extensions_floatcaption = new VC_Extensions_FloatCaption();
+              if(class_exists('VC_Extensions_ImageSlider')) $vc_extensions_imageslider = new VC_Extensions_ImageSlider();
+              if(class_exists('VC_Extensions_VideoGallery')) $vc_extensions_videogallery = new VC_Extensions_VideoGallery();
+              if(class_exists('VC_Extensions_SkewCard')) $vc_extensions_skewcard = new VC_Extensions_SkewCard();
+              if(class_exists('VC_Extensions_DotSelection')) $vc_extensions_dotselection = new VC_Extensions_DotSelection();
+              if(class_exists('VC_Extensions_InfoBlock')) $vc_extensions_infoblock = new VC_Extensions_InfoBlock();
+              if(class_exists('VC_Extensions_LoadingSlideShow')) $vc_extensions_loadingslideshow = new VC_Extensions_LoadingSlideShow();
+              if(class_exists('VC_Extensions_ParallaxSlider')) $vc_extensions_parallaxslider = new VC_Extensions_ParallaxSlider();
+              if(class_exists('VC_Extensions_CompareCard')) $vc_extensions_comparecard = new VC_Extensions_CompareCard();
+              if(class_exists('VC_Extensions_GridPopup')) $vc_extensions_gridpopup = new VC_Extensions_GridPopup();
+              if(class_exists('VC_Extensions_FoldingCard')) $vc_extensions_foldingcard = new VC_Extensions_FoldingCard();
+              if(class_exists('VC_Extensions_CoverFlow')) $vc_extensions_coverflow = new VC_Extensions_CoverFlow();
+              if(class_exists('VC_Extensions_CardCarousel')) $vc_extensions_cardcarousel = new VC_Extensions_CardCarousel();
         }
 }
 
@@ -168,7 +210,7 @@ if (!class_exists('VC_Extensions_CQBundle')) {
 
   function vc_extensions_cqbundle_init(){
     if (!defined('WPB_VC_VERSION')) {add_action('admin_notices', 'vc_addons_cq_notice'); return;}
-    // if(!function_exists('aq_resize')) require_once('aq_resizer.php');
+    // if(class_exists('aq_resize')) require_once('aq_resizer.php');
     wp_register_style( 'vc_extensions_cqbundle_adminicon', plugins_url('css/admin_icon.css', __FILE__) );
     wp_enqueue_style( 'vc_extensions_cqbundle_adminicon' );
     if(class_exists('VC_Extensions_CQBundle')) $vc_extensions_cqbundle = new VC_Extensions_CQBundle();

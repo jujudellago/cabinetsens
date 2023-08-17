@@ -59,10 +59,8 @@
   opacity: 1;
 }
 .cq-videocard-card:hover .cq-videocard-video .mbYTP_wrapper{
-  /*opacity: 1;*/
 }
 .cq-videocard-card:hover .cq-videocard-video::after{
-  /*opacity: 0;*/
 }
 
 .cq-videocard-content {
@@ -92,8 +90,6 @@
 }
 .cq-videocard-content .cq-videocard-header .cq-videocard-avatar {
   height: 60px;
-  /*-webkit-filter: grayscale(1) contrast(0.8);*/
-          /*filter: grayscale(1) contrast(0.8);*/
   width: 60px;
   border-radius: 60px;
   background-size: cover;
@@ -122,10 +118,7 @@
 .cq-videocard-content .cq-videocard-extra {
   line-height: 120%;
   padding: 0px 30px 24px 30px;
-  /*position: absolute;*/
   color: #FFF;
-  /*left: 30px;*/
-  /*bottom: 30px;*/
   font-size: 13px;
 }
 .cq-videocard-content p:last-child{
@@ -168,3 +161,10 @@
 .mb_YTPTime {
   display: none;
 }
+@media screen and (min-width: 320px) and (max-width: 479px) {
+  .cq-videocard-video .mbYTP_wrapper{
+    z-index: 1000!important;
+  }
+}
+
+

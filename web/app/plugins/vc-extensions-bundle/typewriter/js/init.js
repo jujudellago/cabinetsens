@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-typewriter-container').each(function(index) {
         var _this = $(this);
         var _textblock = $(this).find('.cq-typewriter');
@@ -79,16 +80,7 @@ jQuery(document).ready(function($) {
 
             }
         }else{
-            // if(_imagerepeat=="no-repeat"){
-            //     _imgurl = _this.find('img').attr('src');
-            //     console.log('_imgurl', _imgurl);
-            //     if(_imgurl!=""){
-            //         _this.css({
-            //             'background-image': 'url(' + _imgurl + ')',
-            //             'background-size': 'cover'
-            //         });
-            //     }
-            // }
+
         }
 
 
@@ -109,20 +101,12 @@ jQuery(document).ready(function($) {
         });
         var _length = $(this).find('.cq-typewriter-hiddentext').length;
         $(this).find('.cq-typewriter-hiddentext').each(function(index1) {
-            // _differentbgarr[index1] = $(this).data('differentbg');
             if($(this).html()!="")theater.write("TypeWriter" + _index + ":" + $(this).html(), _delaytime*1000);
             if(index1>=_length-1&&_looptype!="no"){
-                // console.log('_looptype', _looptype);
                 theater.write(function () { theater.play(true); });
             }
         });
 
-        // function _changeBg () {
-        //     if(_differentbgarr[_bgIndex]!="")_this.animate({backgroundColor: _differentbgarr[_bgIndex]});
-        //     _bgIndex++;
-        //     if(_bgIndex>_length-1) _bgIndex = 0;
-        // }
-        // if(_differentbgarr[0]!="")_this.animate({backgroundColor: _differentbgarr[0]})
 
     });
 

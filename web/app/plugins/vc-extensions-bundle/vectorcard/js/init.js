@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     $('.cq-vectorcard').each(function(index, el) {
 
         var _avatar = $(this).data('avatar');
@@ -63,13 +64,6 @@ jQuery(document).ready(function($) {
             }
 
         }
-        // var _topheight = $(this).find('.cq-vectorcard-bottom').height();
-        // var _line = $(this).find('.cq-vectorcard-line');
-        // console.log('_topheight', _topheight, _line.height());
-        // _line.css({
-        //     // 'bottom': _topheight + _line.height()
-        //     'margin-top': -(_topheight*2 + _line.height())
-        // });
 
         if(_avatar!=""&&_avatartype=="image"){
             $(this).find('.cq-vectorcard-avatar').css({
@@ -88,33 +82,6 @@ jQuery(document).ready(function($) {
         if(_iconbgcolor!=""){
             $(this).find('.cq-vectorcard-icon').css('background-color', _iconbgcolor);
         }
-
-     //    if(_iconsize!=""){
-    	// 	$(this).find('.cq-videocover-icon, .cq-videocover-label').css({
-    	// 		'font-size': _iconsize
-    	// 	});
-    	// }
-    	// if(_iconbgsize!=""){
-    	// 	_iconbgsize == parseInt(_iconbgsize) + 'px';
-    	// 	$(this).find('.cq-videocover-iconcontainer').css({
-    	// 		'width': _iconbgsize,
-    	// 		'height': _iconbgsize
-    	// 	});
-    	// 	$(this).find('.cq-videocover-icon, .cq-videocover-label').css({
-    	// 		'line-height': _iconbgsize
-    	// 	})
-    	// }
-
-    	// if(_iconcolor!=""){
-    	// 	$(this).find('.cq-videocover-icon, .cq-videocover-label').css({
-    	// 		'color': _iconcolor
-    	// 	});
-    	// }
-    	// if(_iconbgcolor!=""){
-    	// 	$(this).find('.cq-videocover-iconcontainer').css({
-    	// 		'background-color': _iconbgcolor
-    	// 	});
-    	// }
 
 
     });

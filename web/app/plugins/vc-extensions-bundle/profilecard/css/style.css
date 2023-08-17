@@ -1,6 +1,3 @@
-/*
-	customized by sike: http://codecanyon.net/user/sike?ref=sike
-*/
 .profilecard-container  {
 	-webkit-transform-style: preserve-3d;
 	-webkit-perspective: 800px;
@@ -22,10 +19,7 @@ i.profilecard-icon{
 	height: 20px;
 	margin-top: 20px;
 	margin-left: 15px;
-	/*color: rgba(100, 100, 100, 0.2);*/
-	/*text-shadow: 0px 0px 1px rgba(100, 100, 100, 0.2);*/
 	color: #333333;
-	/*opacity: 0.7;*/
 }
 i.profilecard-icon:hover{
 	opacity: 1;
@@ -65,18 +59,6 @@ i.profilecard-icon:hover{
 	position: absolute;
 	z-index: -1;
 }
-
-/*	.profilecard-controlsbottom {
-	background: -webkit-linear-gradient(left bottom, #E1E3EB, #EFEFEF);
-	background: linear-gradient(to right top, #E1E3EB, #EFEFEF);
-	border-radius: 3px;
-	-moz-box-shadow: 0px 4px 16px 2px #DCDCDC;
-	-webkit-box-shadow: 0px 4px 16px 2px #DCDCDC;
-	box-shadow: 0px 4px 16px 2px #DCDCDC;
-	position: absolute;
-	z-index: -1;
-}*/
-
 
 .profilecard-cover.right1 {
 	background: url() no-repeat;
@@ -121,7 +103,6 @@ i.profilecard-icon:hover{
 
 /* top to bottom */
 .profilecard-cover.bottom1 {
-	/*background: url() no-repeat;*/
 	background-position: 0px 0px;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
@@ -129,7 +110,6 @@ i.profilecard-icon:hover{
 }
 
 .profilecard-cover.top2 {
-	/*background: url() no-repeat;*/
 	background-position: 0px 0px;
 	border-bottom-left-radius: 5px;
 	border-bottom-right-radius: 5px;
