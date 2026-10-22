@@ -21,6 +21,9 @@ if(class_exists('BridgeQodeWidget')) {
 		}
 
 		public function widget($args, $instance) {
+			wp_enqueue_script( 'stickyKit' );
+			wp_enqueue_script( 'qode-sticky-widget' );
+			
 			echo '<div class="widget qode-widget-sticky-sidebar"></div>';
 		}
 

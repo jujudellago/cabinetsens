@@ -33,3 +33,13 @@ if(!function_exists('qode_tours_include_elementor_tours_carousel_shortcode')) {
 	
 	add_action('bridge_core_load_elementor_shortcodes_from_plugins', 'qode_tours_include_elementor_tours_carousel_shortcode');
 }
+
+if( ! function_exists( 'qode_tours_include_tours_carousel_shortcode_for_owl_carousel' ) ) {
+	function qode_tours_include_tours_carousel_shortcode_for_owl_carousel( $shortcodes_to_check ) {
+		$shortcodes_to_check[] = 'qode_tours_carousel';
+		
+		return $shortcodes_to_check;
+	}
+	
+	add_filter( 'bridge_qode_filter_owl_carousel_shortcodes', 'qode_tours_include_tours_carousel_shortcode_for_owl_carousel' );
+}

@@ -725,19 +725,40 @@ if ( ! function_exists( 'qodef_re_edit_property' ) ) {
 
 if (!function_exists('qodef_re_delete_property')) {
 	function qodef_re_delete_property(){
-		if ( empty( $_POST ) || ! isset( $_POST ) ) {
+		if ( empty( $_POST ) || ! isset( $_POST['property_id'] ) ) {
 			qodef_re_ajax_status( 'error', esc_html__( 'All fields are empty', 'qode-real-estate' ) );
-		} else {
-			$user = wp_get_current_user();
-
-			//Check if role in approved roles
-			if ( qodef_re_approved_user_roles($user->roles ) ) {
-				$deleted = wp_delete_post($_POST['property_id']);
-				if ($deleted){
-					qodef_re_ajax_status( 'success', esc_html__( 'Property deleted.', 'qode-real-estate' ) );
-				}
-			}
 		}
+
+		$property_id = absint( $_POST['property_id'] );
+		$nonce       = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+
+		if ( ! $property_id || ! wp_verify_nonce( $nonce, 'qodef_re_delete_property_' . $property_id ) ) {
+			qodef_re_ajax_status( 'error', esc_html__( 'You are unauthorized to perform this action.', 'qode-real-estate' ) );
+		}
+
+		$user = wp_get_current_user();
+
+		if ( ! qodef_re_approved_user_roles( $user->roles ) ) {
+			qodef_re_ajax_status( 'error', esc_html__( 'You are unauthorized to perform this action.', 'qode-real-estate' ) );
+		}
+
+		$property = get_post( $property_id );
+
+		if ( ! $property || 'property' !== $property->post_type ) {
+			qodef_re_ajax_status( 'error', esc_html__( 'Property not found.', 'qode-real-estate' ) );
+		}
+
+		if ( (int) $property->post_author !== (int) get_current_user_id() ) {
+			qodef_re_ajax_status( 'error', esc_html__( 'You are unauthorized to perform this action.', 'qode-real-estate' ) );
+		}
+
+		$deleted = wp_delete_post( $property_id );
+
+		if ( $deleted ) {
+			qodef_re_ajax_status( 'success', esc_html__( 'Property deleted.', 'qode-real-estate' ) );
+		}
+
+		qodef_re_ajax_status( 'error', esc_html__( 'Error.', 'qode-real-estate' ) );
 	}
 
 	add_action( 'wp_ajax_qodef_re_delete_property', 'qodef_re_delete_property' );

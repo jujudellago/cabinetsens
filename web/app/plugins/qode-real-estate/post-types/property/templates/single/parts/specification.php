@@ -1,6 +1,8 @@
 <?php
 $specification_items = qodef_re_get_property_specification_items();
 $additional_specification_items = qodef_re_get_property_additional_specification_items();
+
+if ( ! empty( $specification_items ) || ! empty( $additional_specification_items ) ) {
 ?>
 <div class="qodef-property-specification qodef-property-label-items-holder">
     <div class="qodef-property-spec-label qodef-property-label-style">
@@ -9,6 +11,7 @@ $additional_specification_items = qodef_re_get_property_additional_specification
         </h5>
     </div>
     <div class="qodef-property-spec-items qodef-property-items-style clearfix">
+        <?php if ( ! empty( $specification_items ) ) { ?>
         <div class="qodef-spec">
             <div class="qode-grid-row">
                 <?php foreach($specification_items as $item) { ?>
@@ -30,6 +33,8 @@ $additional_specification_items = qodef_re_get_property_additional_specification
                 <?php } ?>
             </div>
         </div>
+        <?php } ?>
+        <?php if ( ! empty( $additional_specification_items ) ) { ?>
         <div class="qodef-additional-spec">
             <div class="qode-grid-row">
                 <?php foreach($additional_specification_items as $item) { ?>
@@ -51,5 +56,7 @@ $additional_specification_items = qodef_re_get_property_additional_specification
                 <?php } ?>
             </div>
         </div>
+        <?php } ?>
     </div>
 </div>
+<?php } ?>

@@ -113,7 +113,10 @@ if ( ! function_exists( 'qode_lms_map_lesson_meta' ) ) {
 				'parent'          => $meta_box,
 				'name'            => 'qode_video_container',
 				'hidden_property' => 'qode_lesson_type_meta',
-				'hidden_value'    => 'reading'
+				'hidden_values'    => array(
+                	'reading',
+                	'audio'
+                )
 			)
 		);
 		
@@ -197,7 +200,10 @@ if ( ! function_exists( 'qode_lms_map_lesson_meta' ) ) {
 				'parent'          => $meta_box,
 				'name'            => 'qode_audio_container',
 				'hidden_property' => 'qode_lesson_type_meta',
-				'hidden_value'    => 'reading'
+				'hidden_values'    => array(
+                	'reading',
+                	'video'
+                )
 			)
 		);
 		

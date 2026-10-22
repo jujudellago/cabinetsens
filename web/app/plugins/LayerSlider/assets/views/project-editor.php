@@ -32,6 +32,7 @@
 		}
 	}
 
+	$origSliderVersion = ! empty( $slider['properties']['sliderVersion'] ) ? $slider['properties']['sliderVersion'] : LS_PLUGIN_VERSION;
 	$slider = ls_normalize_slider_data( $slider );
 
 	// License registration
@@ -63,19 +64,23 @@
 	$googleFontsEnabled = (int) get_option('layerslider-google-fonts-enabled', true);
 
 	// Get post types
-	$postTypes = LS_Posts::getPostTypes();
+	$postTypes 		= LS_Posts::getPostTypes();
 	$postCategories = get_categories();
-	$postTags = get_tags();
+	$postTags 		= get_tags();
 	$postTaxonomies = get_taxonomies( ['_builtin' => false ], 'objects');
 
+	$uploads 		= wp_upload_dir();
 
 	// Editor Settings
 	$editorSettings = get_user_meta( $userID, 'ls-editor-settings', true );
 	$editorSettings = json_decode( $editorSettings, true );
 	$editorSettings = ! empty( $editorSettings ) ? $editorSettings : [];
 	$editorSettings = array_merge([
-		'showTooltips' 			=> true,
-		'useKeyboardShortcuts' 	=> true
+		'showTooltips' 				=> true,
+		'useKeyboardShortcuts' 		=> true,
+		'undoNotifyOSD' 			=> true,
+		'rememberWorkspaceState' 	=> true,
+		'allowNativeContextMenus' 	=> false
 	], $editorSettings );
 
 	wp_localize_script('ls-project-editor', 'LS_editorSettings', $editorSettings );
@@ -85,12 +90,25 @@
 	wp_localize_script('ls-project-editor', 'LS_editorModules', $modules);
 
 
+	// Are there any Scroll Scene projects on the site? Cheap pre-filter for
+	// gating the scrollToSceneSlide layer action; the actual project list is
+	// fetched (and properly validated) on demand via ls_layer_action_scene_projects.
+	global $wpdb;
+	$hasSceneProjects = (bool) $wpdb->get_var("
+		SELECT COUNT(*) FROM {$wpdb->prefix}".LS_DB_TABLE."
+		WHERE flag_deleted = '0' AND flag_group = '0' AND flag_popup = '0'
+			AND data LIKE '%\"scene\":\"scroll\"%'
+	");
+
 	// Editor Meta
 	wp_localize_script('ls-project-editor', 'LS_editorMeta', [
 		'isActivatedSite' 		=> $lsActivated,
 		'googleFontsEnabled' 	=> (bool) $googleFontsEnabled,
 		'editorNonce' 			=> wp_create_nonce('ls-editor-nonce'),
-		'exportURL' 			=> wp_nonce_url( admin_url('admin.php?page=layerslider&action=export&id='.$id.''), 'export-sliders' )
+		'revisionsEnabled' 		=> LS_Revisions::$enabled,
+		'exportURL' 			=> wp_nonce_url( admin_url('admin.php?page=layerslider&action=export&id='.$id.''), 'export-sliders' ),
+		'lottieURL' 			=> $uploads['baseurl'].'/layerslider/lottiefiles',
+		'hasSceneProjects' 		=> $hasSceneProjects,
 	]);
 
 
@@ -111,10 +129,14 @@
 			'icon' 			=> lsGetSVGIcon('icons'),
 			'asset' 		=> lsGetSVGIcon('photo-video'),
 			'shape' 		=> lsGetSVGIcon('shapes'),
-			'svg' 			=> lsGetSVGIcon('stars'),
+			'svg' 			=> lsGetSVGIcon('splotch'),
 			'html' 			=> lsGetSVGIcon('code'),
 			'post' 			=> lsGetSVGIcon('database'),
-			'import' 		=> lsGetSVGIcon('file-import')
+			'import' 		=> lsGetSVGIcon('file-import'),
+			'audio' 		=> lsGetSVGIcon('volume'),
+			'countdown' 	=> lsGetSVGIcon('timer'),
+			'counter' 		=> lsGetSVGIcon('arrow-up-9-1'),
+			'lottie' 		=> lsGetSVGIcon('lottie', 'brands')
 		],
 
 		'notifications' => [
@@ -125,39 +147,47 @@
 			'upload' 			=> lsGetSVGIcon('cloud-upload-alt'),
 			'font-case' 		=> lsGetSVGIcon('font-case'),
 			'play-circle' 		=> lsGetSVGIcon('play-circle'),
-			'window-maximize' 	=> lsGetSVGIcon('window-maximize', 'regular')
+			'window-maximize' 	=> lsGetSVGIcon('window-maximize', 'regular'),
+			'undo'				=> lsGetSVGIcon('undo-alt'),
+			'redo'				=> lsGetSVGIcon('redo-alt')
 		],
 
 		'search' => [
 
-			'circle' 		=> lsGetSVGIcon('circle', 'regular'),
-			'fullscreen' 	=> lsGetSVGIcon('expand-alt'),
-			'clone' 		=> lsGetSVGIcon('clone'),
-			'eye' 			=> lsGetSVGIcon('eye'),
-			'trash' 		=> lsGetSVGIcon('trash-alt'),
-			'camera' 		=> lsGetSVGIcon('camera'),
-			'undo' 			=> lsGetSVGIcon('undo-alt'),
-			'redo' 			=> lsGetSVGIcon('redo-alt'),
-			'film' 			=> lsGetSVGIcon('film'),
-			'lock' 			=> lsGetSVGIcon('lock'),
-			'copy' 			=> lsGetSVGIcon('copy'),
-			'clipboard' 	=> lsGetSVGIcon('clipboard'),
-			'plus' 			=> lsGetSVGIcon('plus'),
-			'cog' 			=> lsGetSVGIcon('cog'),
-			'save' 			=> lsGetSVGIcon('save'),
-			'publish' 		=> lsGetSVGIcon('cloud-upload-alt'),
-			'wrench' 		=> lsGetSVGIcon('wrench'),
-			'retweet' 		=> lsGetSVGIcon('retweet'),
-			'globe' 		=> lsGetSVGIcon('globe-americas'),
-			'book' 			=> lsGetSVGIcon('book'),
-			'help' 			=> lsGetSVGIcon('question-circle'),
-			'export' 		=> lsGetSVGIcon('file-export'),
-			'history' 		=> lsGetSVGIcon('history'),
-			'keyboard' 		=> lsGetSVGIcon('keyboard'),
-			'facebook' 		=> lsGetSVGIcon('facebook-f', 'brands'),
-			'twitter' 		=> lsGetSVGIcon('twitter', 'brands'),
-			'youtube' 		=> lsGetSVGIcon('youtube', 'brands'),
-			'chevronRight' 	=> lsGetSVGIcon('chevron-right')
+			'circle' 			=> lsGetSVGIcon('circle', 'regular'),
+			'fullscreen' 		=> lsGetSVGIcon('expand-alt'),
+			'clone' 			=> lsGetSVGIcon('clone'),
+			'eye' 				=> lsGetSVGIcon('eye'),
+			'trash' 			=> lsGetSVGIcon('trash-alt'),
+			'camera' 			=> lsGetSVGIcon('camera'),
+			'undo' 				=> lsGetSVGIcon('undo-alt'),
+			'redo' 				=> lsGetSVGIcon('redo-alt'),
+			'film' 				=> lsGetSVGIcon('film'),
+			'lock' 				=> lsGetSVGIcon('lock'),
+			'copy' 				=> lsGetSVGIcon('copy', 'regular'),
+			'paste' 			=> lsGetSVGIcon('paste'),
+			'clipboard' 		=> lsGetSVGIcon('clipboard'),
+			'plus' 				=> lsGetSVGIcon('plus'),
+			'cog' 				=> lsGetSVGIcon('cog'),
+			'save' 				=> lsGetSVGIcon('save'),
+			'publish' 			=> lsGetSVGIcon('cloud-upload-alt'),
+			'wrench' 			=> lsGetSVGIcon('wrench'),
+			'brackets-curly' 	=> lsGetSVGIcon('brackets-curly'),
+			'globe' 			=> lsGetSVGIcon('globe-americas'),
+			'book' 				=> lsGetSVGIcon('book'),
+			'help' 				=> lsGetSVGIcon('question-circle'),
+			'export' 			=> lsGetSVGIcon('file-export'),
+			'history' 			=> lsGetSVGIcon('history'),
+			'keyboard' 			=> lsGetSVGIcon('keyboard'),
+			'facebook' 			=> lsGetSVGIcon('facebook-f', 'brands'),
+			'twitter' 			=> lsGetSVGIcon('twitter', 'brands'),
+			'youtube' 			=> lsGetSVGIcon('youtube', 'brands'),
+			'chevronRight' 		=> lsGetSVGIcon('chevron-right'),
+			'layer-group' 		=> lsGetSVGIcon('layer-group')
+		],
+
+		'other' => [
+			'ellipsis-v' 		=> lsGetSVGIcon('ellipsis-v'),
 		]
 	]);
 
@@ -223,7 +253,7 @@
 			</lse-p>
 			<!-- Text -->
 			<lse-p class="lse-warning-text">
-				<?= __('We are sorry, but the LayerSlider 7 Editor cannot be loaded in your current web browser. We recommend you to use the latest version of Edge, Firefox, Chrome, or Safari. You can try to load the editor anyway if you believe this is a false detection.', 'LayerSlider') ?>
+				<?= __('We are sorry, but the LayerSlider Project Editor cannot be loaded in your current web browser. We recommend you to use the latest version of Edge, Firefox, Chrome, or Safari. You can try to load the editor anyway if you believe this is a false detection.', 'LayerSlider') ?>
 			</lse-p>
 			<!-- Button -->
 			<lse-p class="lse-warning-button lse-tac">
@@ -270,65 +300,92 @@
 
 		</lse-b>
 
+
+		<!-- Outdated Version -->
+		<lse-b class="lse-warning-outdated-version">
+			<!-- Icon -->
+			<?= lsGetSVGIcon('exclamation-triangle') ?>
+			<!-- Title -->
+			<lse-p class="lse-warning-title">
+				<?= __('Outdated Version', 'LayerSlider') ?>
+			</lse-p>
+			<!-- Text -->
+			<lse-p class="lse-warning-text">
+				<?= __('The project you’re trying to edit was built using a newer release of LayerSlider, and it might rely on features not available in your current version. Editing may work, but adjustments might be needed. We strongly recommend updating your copy of LayerSlider to ensure compatibility and access to new features present in this project.', 'LayerSlider') ?>
+			</lse-p>
+			<!-- Button -->
+			<lse-p class="lse-warning-button lse-tac">
+
+				<a href="<?= admin_url('admin.php?page=layerslider') ?>" class="lse-button">
+					<?= lsGetSVGIcon('arrow-left',false,['class' => 'lse-it-fix']) ?>
+					<lse-text><?= __('Back to Dashboard', 'LayerSlider') ?></lse-text>
+				</a>
+
+				<lse-button class="lse-load-anyway">
+					<lse-text><?= __('Load Editor Anyway', 'LayerSlider') ?></lse-text>
+					<?= lsGetSVGIcon('arrow-right',false,['class' => 'lse-it-fix']) ?>
+				</lse-button>
+			</lse-p>
+
+		</lse-b>
+
 	</lse-warning>
 
 	<script>
 
 		function LSE_browserTests() {
 
+			// localStorage (still useful)
 			try {
-				var storage = window.localStorage;
-				var x = '__storage_test__';
-				storage.setItem(x, x);
-				storage.removeItem(x);
-			} catch(e) {
+				var s = localStorage, k = '__test__';
+				s.setItem( k, k ); s.removeItem( k );
+			} catch( e ) {
 				return false;
 			}
 
+			// Special syntaxes
 			try {
-				eval('"use strict"; let xxyyzz32124361');
-			} catch (e) {
+				new Function(
+					'var o = { a:{ b:1 }, f(){ return 1; } };' +
+					'var x = o?.a?.b ?? 2;' +   // optional chaining + ??
+					'var y = o.f?.();' +        // optional-call syntax
+					'var n = null; n ??= 3;'    // nullish coalescing assignment
+				)();
+			} catch( e ) {
 				return false;
 			}
 
-			try {
-				eval('"use strict"; () => {}');
-			} catch (e) {
-				return false;
-			}
-
-			var testzyx = {};
-			try {
-				eval('"use strict"; var zyx987zz = testzyx?.prop1zyx?.prop2zyx;')
-			} catch (e) {
-				return false
-	  		}
-
-			try {
-				eval('"use strict"; class Xxyyzz32124361 {}');
-			} catch (e) {
-				return false;
-			}
-
-			// try {
-			// 	eval('"use strict"; try { import("xxyyzz32124361").catch(() => {}); } catch (e) { }');
-			// } catch (e) {
-			// 	return false;
-			// }
+			// Runtime APIs
+			if( typeof Promise === 'undefined' ) return false;
+			if( typeof Symbol === 'undefined' ) return false;
+			if( typeof fetch === 'undefined' ) return false;
+			if( typeof Map === 'undefined' ) return false;
+			if( typeof Set === 'undefined' ) return false;
 
 			return true;
 		}
 
+		// Old browser
 		if( ! LSE_browserTests() ) {
 			var warningElement = document.getElementById('lse-warning');
 
 			warningElement.className += ' lse-visible lse-warning-old-browser';
 			document.body.appendChild( warningElement );
 
+
+		// Project not found
 		} else if( <?= ! empty( $lsProjectNotFound ) ? 'true' : 'false' ?>) {
 			var warningElement = document.getElementById('lse-warning');
 
 			warningElement.className += ' lse-visible lse-warning-project-not-found';
+			document.body.appendChild( warningElement );
+
+
+		// Outdated version
+		} else if( <?= version_compare( LS_PLUGIN_VERSION, $origSliderVersion, '<' ) ? 'true' : 'false' ?> ) {
+			var warningElement = document.getElementById('lse-warning');
+
+			warningElement.className += ' lse-visible lse-warning-outdated-version';
 			document.body.appendChild( warningElement );
 		}
 
@@ -337,7 +394,7 @@
 	<lse-dropzone-overlay></lse-dropzone-overlay>
 	<lse-dropzone></lse-dropzone>
 
-	<lse-editor class="lse-editor-is-loading lse-layers-list-docked lse-highlight-layers lse-selection-is-on-front lse-desktop-view <?= $lseEditorClasses ?>">
+	<lse-editor class="lse-editor-is-loading lse-layers-list-docked lse-highlight-layers lse-desktop-view <?= $lseEditorClasses ?>">
 
 		<input type="hidden" name="slider_id" value="<?= $id ?>">
 		<input type="hidden" name="action" value="ls_save_slider">
@@ -356,7 +413,7 @@
 
 					<lse-button-group id="lse-toolbar-primary">
 						<lse-submenu-wrapper>
-				 			<a class="lse-button" id="lse-brand" href="<?= admin_url('admin.php?page=layerslider') ?>">L<span class="lse-wide">ayer</span>S<span class="lse-wide">lider</span><span class="lse-highlight">7</span></a>
+				 			<a class="lse-button" id="lse-brand" href="<?= admin_url('admin.php?page=layerslider') ?>">L<span class="lse-wide">ayer</span>S<span class="lse-wide">lider</span><span class="lse-highlight">8</span></a>
 							<lse-submenu>
 
 								<!-- <?php if( ! $lsActivated ) : ?>
@@ -392,7 +449,6 @@
 						<lse-button class="lse-assets-library-button lse-no-toggle">
 							<?= lsGetSVGIcon('photo-video') ?>
 							<lse-text><?= __('Assets', 'LayerSlider') ?></lse-text>
-							<lse-badge><?= __('NEW', 'LayerSlider') ?></lse-badge>
 						</lse-button>
 						<lse-submenu-wrapper id="lse-preview">
 							<lse-button class="lse-exit-preview">
@@ -427,6 +483,10 @@
 									<?= lsGetSVGIcon('window-maximize', 'regular') ?>
 									<lse-text><?= __('Project', 'LayerSlider') ?></lse-text>
 								</lse-button>
+								<!-- <lse-button class="lse-toggle-live-preview">
+									<?= lsGetSVGIcon('waveform-lines','solid') ?>
+									<lse-text><?= __('Live (Beta)', 'LayerSlider') ?></lse-text>
+								</lse-button> -->
 							</lse-submenu>
 						</lse-submenu-wrapper>
 						<lse-submenu-wrapper id="lse-zoom-menu">
@@ -710,6 +770,43 @@
 														<label class="ls-switch lse-small"><input type="checkbox" checked data-lse-action="showQuickTip"><ls-switch></ls-switch></label>
 													</lse-slide-menu-item>
 
+													<lse-slide-menu-item>
+
+														<?= lsGetSVGIcon('rectangle-history', 'duotone') ?>
+														<lse-text><?= __('Undo/Redo Notification', 'LayerSlider') ?></lse-text>
+														<?= lsGetSwitchControl([
+															'name' => 'undoNotifyOSD',
+															'checked' => ! empty( $editorSettings['undoNotifyOSD'] )
+														],[
+															'class' => 'lse-small'
+														]) ?>
+													</lse-slide-menu-item>
+
+													<lse-slide-menu-item>
+
+														<?= lsGetSVGIcon('sidebar-flip') ?>
+														<lse-text><?= __('Remember Workspace State', 'LayerSlider') ?></lse-text>
+														<?= lsGetSwitchControl([
+															'name' => 'rememberWorkspaceState',
+															'checked' => ! empty( $editorSettings['rememberWorkspaceState'] )
+														],[
+															'class' => 'lse-small'
+														]) ?>
+													</lse-slide-menu-item>
+
+													<lse-slide-menu-item>
+
+														<?= lsGetSVGIcon('square-list') ?>
+														<lse-text><?= __('Allow Native Context Menus', 'LayerSlider') ?></lse-text>
+														<?= lsGetSwitchControl([
+															'name' => 'allowNativeContextMenus',
+															'checked' => ! empty( $editorSettings['allowNativeContextMenus'] )
+														],[
+															'class' => 'lse-small'
+														]) ?>
+													</lse-slide-menu-item>
+
+
 
 												</lse-slide-menu-holder>
 
@@ -764,11 +861,25 @@
 										<lse-col class="lse-3-1">
 											<lse-ib>
 												<lse-text>
+													<?= __('Enable Revisions', 'LayerSlider') ?>
+												</lse-text>
+											</lse-ib>
+											<lse-ib>
+												<?= lsGetSwitchControl([
+													'name' => 'enabled',
+													'checked' => LS_Revisions::$enabled ? 'checked' : '',
+													'data-warning-disable' => __('Disabling Revisions will also delete all project snapshots saved so far. Are you sure you want to continue?', 'LayerSlider'),
+												]) ?>
+											</lse-ib>
+										</lse-col>
+										<lse-col class="lse-3-1">
+											<lse-ib>
+												<lse-text>
 													<?= __('Revisions per project', 'LayerSlider') ?>
 												</lse-text>
 											</lse-ib>
 											<lse-ib>
-												<input type="number" name="ls-revisions-limit" value="<?= LS_Revisions::$limit ?>">
+												<input type="number" name="limit" value="<?= LS_Revisions::$limit ?>">
 											</lse-ib>
 										</lse-col>
 										<lse-col class="lse-3-1">
@@ -778,7 +889,7 @@
 												</lse-text>
 											</lse-ib>
 											<lse-ib>
-												<input type="number" name="ls-revisions-interval" value="<?= LS_Revisions::$interval ?>"><lse-unit><?= __('min', 'LayerSlider') ?></lse-unit>
+												<input type="number" name="interval" value="<?= LS_Revisions::$interval ?>"><lse-unit><?= __('min', 'LayerSlider') ?></lse-unit>
 											</lse-ib>
 										</lse-col>
 									</lse-row>
@@ -803,7 +914,7 @@
 						</lse-button>
 					</lse-button-group>
 					<lse-button-group id="lse-toolbar-sidebar-tabs" class="lse-tabs" data-tabs-for="lse-right-frame lse-sidebars-holder" data-for-editor="active-right-sidebar" data-update-workspace>
-						<lse-button id="lse-show-slide-settings" class="lse-active" data-for-editor="slide-settings">
+						<lse-button id="lse-show-slide-settings" class="lse-active" data-for-editor="slide-settings" data-sidebar="slide">
 							<?= lsGetSVGIcon('image',false,['class' => 'lse-ultrawide']) ?>
 							<lse-text class="lse-ultrawide">
 									<?= __('Slide Settings', 'LayerSlider') ?>
@@ -813,7 +924,7 @@
 							</lse-text>
 							<?= lsGetSVGIcon('sort-down',false,['class' => 'lse-it-0 lse-close']) ?>
 						</lse-button>
-						<lse-button id="lse-show-layer-settings" data-for-editor="layer-settings">
+						<lse-button id="lse-show-layer-settings" data-for-editor="layer-settings" data-sidebar="layers">
 							<?= lsGetSVGIcon('layer-group','duotone',['class' => 'lse-ultrawide']) ?>
 							<lse-text class="lse-ultrawide">
 									<?= __('Layer Settings', 'LayerSlider') ?>
@@ -845,7 +956,7 @@
 
 						<lse-sidebar-inner>
 
-							<lse-layers-list class="lse-sidebar ls-tabs">
+						<lse-layers-list class="lse-sidebar ls-tabs lse-has-contextmenu" data-contextmenu-selector="#lse-context-menu-sidebars">
 
 								<lse-sidebar-head>
 									<?= lsGetSVGIcon('layer-group') ?>
@@ -902,26 +1013,51 @@
 										</lse-sidebar-section-head>
 
 										<lse-tt class="tt-layer-visibility">
-											<?= __('Toggle layer visibility', 'LayerSlider') ?>
+											<?= __('Toggle visibility', 'LayerSlider') ?>
+											<kbd>
+												<kbd>⇧</kbd><kbd class="ls-mac-key">⌘</kbd><kbd class="ls-win-key">⌃</kbd><kbd>H</kbd>
+											</kbd>
 										</lse-tt>
+										<lse-tt class="tt-layer-is-hidden-in-editor">
+											<?= __('Hidden only in editor', 'LayerSlider') ?>
+											<kbd>
+												<kbd>⇧</kbd><kbd class="ls-mac-key">⌘</kbd><kbd class="ls-win-key">⌃</kbd><kbd>H</kbd>
+											</kbd>
+										</lse-tt>
+										<lse-tt class="tt-layer-is-hidden">
+											<?= __('Completely hidden', 'LayerSlider') ?>
+											<kbd>
+												<kbd>⇧</kbd><kbd class="ls-mac-key">⌘</kbd><kbd class="ls-win-key">⌃</kbd><kbd>H</kbd>
+											</kbd>
+										</lse-tt>
+
 										<lse-tt class="tt-layer-lock">
-											<?= __('Lock / Unlock layer', 'LayerSlider') ?>
+											<?= __('Lock / Unlock', 'LayerSlider') ?>
+											<kbd>
+												<kbd class="ls-mac-key">⌘</kbd><kbd class="ls-win-key">⌃</kbd><kbd>L</kbd>
+											</kbd>
 										</lse-tt>
 										<lse-tt class="tt-layer-duplicate">
-											<?= __('Duplicate layer', 'LayerSlider') ?>
+											<?= __('Duplicate', 'LayerSlider') ?>
 											<kbd>
 												<kbd class="ls-mac-key">⌘</kbd><kbd class="ls-win-key">⌃</kbd><kbd>D</kbd>
 											</kbd>
 										</lse-tt>
 										<lse-tt class="tt-layer-remove">
-											<?= __('Remove layer', 'LayerSlider') ?>
+											<?= __('Remove', 'LayerSlider') ?>
 											<kbd>
 												<kbd>&#9003;</kbd>
 											</kbd>
 										</lse-tt>
 
+										<lse-tt class="tt-layer-jump">
+											<?= __('Jump to the layer on its origin slide to quickly edit its settings.', 'LayerSlider') ?>
+										</lse-tt>
+
 										<lse-tt class="tt-layer-unregistered lse-premium">
 											<?= __('This layer’s appearance and functionality may be affected since it uses a premium feature, which requires license registration.', 'LayerSlider') ?>
+											<br><br>
+											<?= sprintf( __('%sUsed Features:%s %s', 'LayerSlider'), '<b>', '</b>', '<ttp></ttp>' ) ?>
 										</lse-tt>
 										<lse-tt class="tt-option-unregistered lse-premium">
 											<?= __('This option’s functionality may be affected since it uses a premium feature or content, which requires license registration.', 'LayerSlider') ?>
@@ -965,6 +1101,25 @@
 
 								</lse-sidebar-body>
 
+								<lse-sidebar-subnav class="lse-dark-theme lse-dn" id="lse-template-instructions">
+
+									<lse-grid class="lse-form-elements">
+										<lse-row>
+											<lse-col>
+												<lse-ib class="lse-half lse-jcc">
+													<lse-button data-search-name="<?= __('Open Template Instructions', 'LayerSlider') ?>" class="lse-giant lse-aic lse-open-template-instructions">
+														<?= lsGetSVGIcon('circle-info') ?>
+														<lse-text>
+														<?= __('Open Template Instructions', 'LayerSlider') ?>
+														</lse-text>
+													</lse-button>
+												</lse-ib>
+											</lse-col>
+										</lse-row>
+									</lse-grid>
+
+								</lse-sidebar-subnav>
+
 								<lse-sidebar-subnav class="lse-jcc" id="lse-layers-extra-settings">
 
 									<?= lsGetSVGIcon('bullseye-pointer','duotone',[
@@ -984,7 +1139,7 @@
 									<lse-tt><?= __('Snapping: Easily align layer edges, anchor points, and centers to other editor objects such as layers, ruler guides, etc.', 'LayerSlider') ?></lse-tt>
 
 									<?= lsGetSVGIcon('bring-forward',false,[
-										'class' => 'lse-no-toggle lse-can-be-activated lse-active',
+										'class' => 'lse-no-toggle lse-can-be-activated',
 										'data-tt' => '',
 										'data-tt-de' => '0',
 										'data-lse-action' => 'bringSelectionToFront'
@@ -1014,6 +1169,23 @@
 					<lse-top-frame>
 
 						<lse-slides-list class="lse-toolbar">
+
+							<lse-options>
+								<?= lsGetSVGIcon('map-pin',false,[
+									'data-lse-action' => 'pinSlidesList',
+									'id' => 'lse-action-pin-slides-list',
+									'data-tt' => '.tt-pin-slides-list'
+								]) ?>
+								<?= lsGetSVGIcon('times',false,[
+									'id' => 'lse-action-unpin-slides-list',
+									'class' => 'lse-active',
+									'data-lse-action' => 'pinSlidesList',
+									'data-tt' => '.tt-unpin-slides-list'
+								]) ?>
+							</lse-options>
+
+							<div class="lse-hide-content"></div>
+
 							<div id="lse-slide-tabs" class="ls-clearfix ui-sortable lse-hide-input-if-not-empty lse-input-style-dark-shadow lse-center-in-inputs lse-scrollbar lse-scrollbar-light">
 
 
@@ -1068,7 +1240,7 @@
 			 				<lse-stop-overflow-layers>
 				 				<lse-workspace-helper>
 									<lse-workspace id="lse-workspace">
-										<lse-workspace-content>
+										<lse-workspace-content data-tt data-tt-de="0" data-tt-append-to="lse-editor">
 											<lse-guide class="lse-guides-h">
 											</lse-guide>
 											<lse-guide class="lse-guides-v">
@@ -1088,11 +1260,13 @@
 											</lse-preview-wrapper>
 											<lse-dropzone-highlight>
 												<?= lsGetSVGIcon('file-upload') ?>
-												<lse-text><?= __('Drag & Drop Images or SVGs', 'LayerSlider') ?></lse-text>
+												<lse-text><?= __('Drag & Drop Images, SVGs, or Lottie Files', 'LayerSlider') ?></lse-text>
 												<?= lsGetSVGIcon('spinner-third', 'duotone', [ 'class' => 'lse-dropzone-p' ]) ?>
 												<lse-text class="lse-dropzone-p"><?= __('Processing...', 'LayerSlider') ?></lse-text>
 											</lse-dropzone-highlight>
+											<lse-exit-preview class="lse-exit-preview"></lse-exit-preview>
 										</lse-workspace-content>
+										<lse-tt id="lse-tt-exit-preview"><?= __('Click anywhere to exit preview', 'LayerSlider') ?></lse-tt>
 									</lse-workspace>
 				 				</lse-workspace-helper>
 							</lse-stop-overflow-layers>
@@ -1138,6 +1312,14 @@
 									(<lse-i id="lse-revisions-date"></lse-i>)
 								</lse-b>
 							</lse-ib>
+							<lse-ib id="lse-revisions-current-state" class="lse-tac">
+								<lse-b>
+									<?= __('Current State', 'LayerSlider') ?>
+								</lse-b>
+								<lse-b>
+									<?= __('Now', 'LayerSlider') ?>
+								</lse-b>
+							</lse-ib>
 							<lse-button id="lse-revisions-forward-button" class="lse-revisions-jump">
 								<?= lsGetSVGIcon('arrow-right',false,['class' => 'lse-it-fix']) ?>
 							</lse-button>
@@ -1164,7 +1346,7 @@
 								<lse-b class="lse-layer-transition-out"><?= __('out', 'LayerSlider') ?></lse-b>
 								<lse-b class="lse-layer-text-in"><?= __('text in', 'LayerSlider') ?></lse-b>
 								<lse-b class="lse-layer-text-out"><?= __('text out', 'LayerSlider') ?></lse-b>
-								<lse-b class="lse-layer-loop"><?= __('loop / middle', 'LayerSlider') ?></lse-b>
+								<lse-b class="lse-layer-loop"><?= __('loop / step', 'LayerSlider') ?></lse-b>
 								<lse-b class="lse-layer-static"><?= __('static', 'LayerSlider') ?></lse-b>
 								<lse-b class="lse-over-slide-duration"><?= __('over slide duration', 'LayerSlider') ?></lse-b>
 							</div>
@@ -1202,13 +1384,13 @@
 
 				</lse-main-frame>
 
-				<lse-right-frame class="lse-has-contextmenu" data-contextmenu-selector="#lse-context-menu-sidebars">
+				<lse-right-frame>
 
 					<lse-sidebar>
 
 						<lse-sidebar-inner>
 
-							<lse-sidebars-holder>
+							<lse-sidebars-holder class="lse-has-contextmenu" data-contextmenu-selector="#lse-context-menu-sidebars">
 
 								<!-- SLIDE SETTINGS -->
 
@@ -1234,37 +1416,38 @@
 
 									<lse-sidebar-subnav class="lse-tabs" data-tabs-for="lse-slide-settings" data-tabs-content-filter="lse-sidebar-body">
 
-										<lse-subnav-item class="lse-active">
+										<lse-subnav-item class="lse-active" data-menu="background">
 											<?= lsGetSVGIcon('image') ?>
 											<lse-text><?= __('Background', 'LayerSlider') ?></lse-text>
 										</lse-subnav-item>
 
-										<lse-subnav-item>
+										<lse-subnav-item data-menu="transition" class="lse-max-clicks" data-max-clicks-namespace="sfx-a" data-max-clicks="1">
+											<lse-badge class="lse-new-badge"><?= __('NEW', 'LayerSlider') ?></lse-badge>
 											<?= lsGetSVGIcon('wave-sine') ?>
 											<lse-text><?= __('Timing & Transition', 'LayerSlider') ?></lse-text>
 										</lse-subnav-item>
 
-										<lse-subnav-item>
-											<?= lsGetSVGIcon('magic','regular') ?>
+										<lse-subnav-item data-menu="effects">
+											<?= lsGetSVGIcon('sparkles') ?>
 											<lse-text><?= __('Effects', 'LayerSlider') ?></lse-text>
 										</lse-subnav-item>
 
-										<lse-subnav-item>
+										<lse-subnav-item data-menu="content">
 											<?= lsGetSVGIcon('box-open') ?>
 											<lse-text><?= __('Content Sources', 'LayerSlider') ?></lse-text>
 										</lse-subnav-item>
 
-										<lse-subnav-item>
+										<lse-subnav-item data-menu="linking">
 											<?= lsGetSVGIcon('link','regular') ?>
 											<lse-text><?= __('Slide Linking', 'LayerSlider') ?></lse-text>
 										</lse-subnav-item>
 
-										<lse-subnav-item>
+										<lse-subnav-item data-menu="schedule">
 											<?= lsGetSVGIcon('calendar-alt','regular') ?>
 											<lse-text><?= __('Schedule', 'LayerSlider') ?></lse-text>
 										</lse-subnav-item>
 
-										<lse-subnav-item>
+										<lse-subnav-item data-menu="misc">
 											<?= lsGetSVGIcon('cog') ?>
 											<lse-text><?= __('Misc', 'LayerSlider') ?></lse-text>
 										</lse-subnav-item>
@@ -1299,7 +1482,7 @@
 																	<?= lsGetSVGIcon('exclamation-triangle', false, [
 																		'class' => 'lse-unregistered-layer lse-premium lse-premium-lock',
 																		'data-tt' => '.tt-option-unregistered'
-            														]) ?>
+																	]) ?>
 																	<lse-text>
 																		<?= __('Background Image', 'LayerSlider') ?>
 																	</lse-text>
@@ -1332,7 +1515,9 @@
 																</lse-ib>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help lse-color-input" data-smart-help="backgroundcolor" data-smart-help-title="<?= __('Background Color', 'LayerSlider') ?>" data-smart-load="lse-color-picker">
-																		<?php lsGetInput( $lsDefaults['slides']['imageColor'], null ) ?>
+																		<?php lsGetInput( $lsDefaults['slides']['imageColor'], null, [
+																			'data-type' => 'gradient'
+																		]) ?>
 																		<?= lsGetSVGIcon('times', null, [
 																			'class' => 'lse-remove lse-it-0'
 																		]) ?>
@@ -1360,7 +1545,7 @@
 																			'type' => 'hidden',
 																			'class' => 'lse-restore-prop'
 																		]) ?>
-																	</lse-fe-wraper>
+																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
 															<lse-col class="lse-full">
@@ -1395,7 +1580,7 @@
 																	<?= lsGetSVGIcon('exclamation-triangle', false, [
 																		'class' => 'lse-unregistered-layer lse-premium lse-premium-lock',
 																		'data-tt' => '.tt-option-unregistered'
-            														]) ?>
+																	]) ?>
 																	<lse-text>
 																		<?= __('Set Thumbnail', 'LayerSlider') ?>
 																	</lse-text>
@@ -1446,7 +1631,7 @@
 															<lse-col>
 																<lse-ib>
 																	<lse-text>
-																		<?= __('Duration', 'LayerSlider') ?>
+																		<?= __('Slide Duration', 'LayerSlider') ?>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
@@ -1499,7 +1684,7 @@
 															</lse-col>
 															<lse-col>
 																<lse-ib class="lse-jcc">
-																<lse-button class="lse-giant lse-select-transitions" data-search-name="<?= __('Select Transitions', 'LayerSlider') ?>"><?= __('Select Transitions', 'LayerSlider') ?></lse-button>
+																<lse-button class="lse-giant lse-select-transitions lse-max-clicks" data-max-clicks-namespace="sfx-b" data-max-clicks="1" data-search-name="<?= __('Select Transitions', 'LayerSlider') ?>"><lse-badge class="lse-new-badge"><?= __('NEW', 'LayerSlider') ?></lse-badge><?= __('Select Transitions', 'LayerSlider') ?></lse-button>
 																</lse-ib>
 															</lse-col>
 															<lse-col class="lse-mt-s lse-wide lse-col-notice lse-no-slide-bg-notice">
@@ -1626,6 +1811,22 @@
 
 													<lse-grid class="lse-form-elements">
 														<lse-row>
+															<lse-col>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Mode', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="parallaxmode" data-smart-help-title="<?= __('Parallax Mode', 'LayerSlider') ?>">
+																		<select value="cursor" name="parallaxevent" data-prop="parallaxevent" data-search-name="Mode" lse-tgl="slide-parallax-event" data-default="cursor">
+																			<option value="cursor" selected=""><?= __('Cursor', 'LayerSlider') ?></option>
+																			<option value="scroll"><?= __('Scroll', 'LayerSlider') ?></option>
+																			<option value="auto"><?= __('Automated', 'LayerSlider') ?></option>
+																			<option value="random"><?= __('Random', 'LayerSlider') ?></option>
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
 															</lse-col>
 															<lse-col>
 																<lse-ib>
@@ -1634,37 +1835,82 @@
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-select">
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="parallaxtype" data-smart-help-title="<?= __('Parallax Type', 'LayerSlider') ?>">
 																		<?php lsGetSelect( $lsDefaults['slides']['parallaxType'], null, [
-																			'class' => 'lse-editor-slide-parallax-type-input'
+																			'class' => 'lse-editor-slide-parallax-type-input',
+																			'lse-tgl' => 'slide-parallax-type'
 																		] ) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col>
+															<lse-separator></lse-separator>
+															<lse-col lse-tgl-t="slide-parallax-event" tgl-auto>
 																<lse-ib>
 																	<lse-text>
-																		<?= __('Event', 'LayerSlider') ?>
+																		<?= __('Path', 'LayerSlider') ?>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-select">
-																		<?php lsGetSelect( $lsDefaults['slides']['parallaxEvent'] ) ?>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="parallaxpath" data-smart-help-title="<?= __('Parallax Path', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['slides']['parallaxPath']) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col>
+															<lse-col lse-tgl-t="slide-parallax-event" tgl-auto>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Direction', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="parallaxdirection" data-smart-help-title="<?= __('Parallax Direction', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['slides']['parallaxDirection']) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="slide-parallax-event" tgl-cursor tgl-scroll>
 																<lse-ib>
 																	<lse-text>
 																		<?= __('Axes', 'LayerSlider') ?>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-select">
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="parallaxaxes" data-smart-help-title="<?= __('Parallax Axes', 'LayerSlider') ?>">
 																		<?php lsGetSelect( $lsDefaults['slides']['parallaxAxis'] ) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
+															<lse-col class="lse-full" lse-tgl-t="slide-parallax-event" tgl-random>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Range X', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxrange" data-smart-help-title="<?= __('Parallax Range', 'LayerSlider') ?>" data-smart-options-title="<?= __('Range | X axis', 'LayerSlider') ?>" data-smart-options="random-parallax-x" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['slides']['parallaxRangeX'], null, [
+																			'class' 				=> 'lse-transition-prop',
+																			'data-clipboard-key' 	=> 'parallaxRangeX'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col class="lse-full" lse-tgl-t="slide-parallax-event" tgl-random>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Range Y', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxrange" data-smart-help-title="<?= __('Parallax Range', 'LayerSlider') ?>" data-smart-options-title="<?= __('Range | Y axis', 'LayerSlider') ?>" data-smart-options="random-parallax-y" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['slides']['parallaxRangeY'], null, [
+																			'class' 				=> 'lse-transition-prop',
+																			'data-clipboard-key' 	=> 'parallaxRangeY'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-separator lse-tgl-t="slide-parallax-event" tgl-random></lse-separator>
 															<lse-col>
 																<lse-ib>
 																	<lse-text>
@@ -1677,7 +1923,7 @@
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col>
+															<lse-col lse-tgl-t="slide-parallax-type" tgl-3d>
 																<lse-ib>
 																	<lse-text>
 																		<?= __('Rotation', 'LayerSlider') ?>
@@ -1689,22 +1935,81 @@
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col-placeholder></lse-col-placeholder>
-															<lse-separator></lse-separator>
-															<lse-col>
+															<lse-col lse-tgl-t="slide-parallax-event" tgl-auto>
 																<lse-ib>
 																	<lse-text>
-																		<?= __('Move Duration', 'LayerSlider') ?>
+																		<?= __('Start At', 'LayerSlider') ?>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxmoveduration" data-smart-help-title="<?= __('Move Duration', 'LayerSlider') ?>">
-																		<?php lsGetInput( $lsDefaults['slides']['parallaxDurationMove'] ) ?>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['slides']['parallaxStartAt'], null, [
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="slide-parallax-event" tgl-auto>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Duration', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxmoveduration" data-smart-help-title="<?= __('Duration', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['slides']['parallaxPathDuration'], null, [
+																			'class' => 'lse-transition-prop'
+																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-unit>ms</lse-unit>
 																</lse-ib>
 															</lse-col>
-															<lse-col>
+															<lse-col lse-tgl-t="slide-parallax-event" tgl-random>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Duration', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxrandomduration" data-smart-options="parallaxrandomduration"data-smart-help-title="<?= __('Duration', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['slides']['parallaxRandomDuration'], null, [
+																			'type' => 'text',
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="slide-parallax-event" tgl-cursor>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Enter Duration', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxenterduration" data-smart-help-title="<?= __('Enter Duration', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['slides']['parallaxDurationEnter']) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="slide-parallax-event" tgl-cursor tgl-scroll>
+																<lse-ib>
+																	<lse-text lse-tgl-t="slide-parallax-event" tgl-cursor>
+																		<?= __('Move Duration', 'LayerSlider') ?>
+																	</lse-text>
+																	<lse-text lse-tgl-t="slide-parallax-event" tgl-scroll>
+																		<?= __('Duration', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxmoveduration" data-smart-help-title="<?= __('Move Duration', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['slides']['parallaxDurationMove']) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="slide-parallax-event" tgl-cursor>
 																<lse-ib>
 																	<lse-text>
 																		<?= __('Leave Duration', 'LayerSlider') ?>
@@ -1712,12 +2017,105 @@
 																</lse-ib>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxleaveduration" data-smart-help-title="<?= __('Leave Duration', 'LayerSlider') ?>">
-																		<?php lsGetInput( $lsDefaults['slides']['parallaxDurationLeave'] ) ?>
+																		<?php lsGetInput( $lsDefaults['slides']['parallaxDurationLeave']) ?>
 																	</lse-fe-wrapper>
 																	<lse-unit>ms</lse-unit>
 																</lse-ib>
 															</lse-col>
+															<lse-col lse-tgl-t="slide-parallax-event" tgl-auto>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Repeat', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['slides']['parallaxCount'], null, [
+																			'class' => 'lse-transition-prop'
+																		], true) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="slide-parallax-event" tgl-random>
+																<lse-ib>
+																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['slides']['parallaxEasing'], null, [
+																			'options' 	=> $lsDefaults['easings']
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="slide-parallax-event" tgl-random>
+																<lse-ib>
+																	<lse-text><?= __('Wait', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxrandomwait" data-smart-options="parallaxrandomwait" data-smart-help-title="<?= __('Wait', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['slides']['parallaxRandomWait'], null, [
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col-placeholder></lse-col-placeholder>
 															<lse-separator></lse-separator>
+
+															<lse-col class="lse-full" lse-tgl-t="slide-parallax-event" tgl-cursor>
+																<lse-ib>
+																	<?= lsGetSVGIcon('link','regular',[
+																			'class' => 'lse-can-be-activated',
+																			'data-link-property' => 'scale-slide-parallax',
+																			'data-tt' => ''
+																		]) ?>
+																	<lse-tt><?= __('Link / Unlink fields', 'LayerSlider') ?></lse-tt>
+
+																	<lse-text>
+																		<?= __('Scale', 'LayerSlider') ?><lse-props>X, Y</lse-props><lse-cur-prop></lse-cur-prop><lse-units><?= __('intensity', 'LayerSlider') ?></lse-units>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib class="lse-half">
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxscalex" data-smart-help-title="<?= __('Scale X', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['slides']['parallaxScaleX'], null, [
+																			'data-prop-type' 		=> 'X',
+																			'data-link' 			=> 'scale-slide-parallax'
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxscaley" data-smart-help-title="<?= __('Scale Y', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['slides']['parallaxScaleY'], null, [
+																			'data-prop-type' 		=> 'Y',
+																			'data-link' 			=> 'scale-slide-parallax'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col class="lse-full" lse-tgl-t="slide-parallax-event" tgl-cursor>
+																<lse-ib>
+																	<lse-text>
+																	<?= __('Skew', 'LayerSlider') ?><lse-props>X, Y</lse-props><lse-cur-prop></lse-cur-prop><lse-units><?= __('intensity', 'LayerSlider') ?></lse-units>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib class="lse-half">
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxskewx" data-smart-help-title="<?= __('Skew X', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['slides']['parallaxSkewX'], null, [
+																			'data-prop-type' 		=> 'X'
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxskewy" data-smart-help-title="<?= __('Skew Y', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['slides']['parallaxSkewY'], null, [
+																			'data-prop-type' 		=> 'Y'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col-placeholder></lse-col-placeholder>
+
+															<lse-separator lse-tgl-t="slide-parallax-event" tgl-cursor></lse-separator>
+
 															<lse-col>
 																<lse-ib>
 																	<lse-text>
@@ -1727,6 +2125,21 @@
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="transformorigin" data-smart-help-title="<?= __('Transform Origin', 'LayerSlider') ?> " data-smart-options="transformorigin" data-set-values>
 																		<?php lsGetInput( $lsDefaults['slides']['parallaxTransformOrigin'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="slide-parallax-event" tgl-cursor>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Parallax Origin', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxorigin" data-smart-help-title="<?= __('Parallax Origin', 'LayerSlider') ?> " data-smart-options="parallaxorigin" data-set-values>
+																		<?php lsGetInput( $lsDefaults['slides']['parallaxOrigin'], null, [
+																			'class' => 'lse-must-be-validated',
+																			'pattern' => '(?:layer|slider)(?:left|center|right)\s(?:layer|slider)(?:top|middle|bottom)'
+																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
@@ -1742,6 +2155,7 @@
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
+															<lse-col-placeholder></lse-col-placeholder>
 														</lse-row>
 													</lse-grid>
 
@@ -2006,7 +2420,7 @@
 
 								<!-- LAYER SETTINGS -->
 
-								<lse-layer-settings data-layer-type="image" class="lse-sidebar lse-dark-theme">
+								<lse-layer-settings data-layer-type="image" class="lse-sidebar lse-dark-theme" lse-tgl-d="bg-video">
 
 									<lse-sidebar-head>
 										<?= lsGetSVGIcon('layer-group','duotone') ?>
@@ -2023,45 +2437,60 @@
 									<lse-b id="lse-multiple-notice">
 										<lse-text>
 											<?= __('Multiple selection mode', 'LayerSlider') ?>
+											<lse-ib></lse-ib>
+										</lse-text>
+									</lse-b>
+									<lse-b id="lse-bg-video-notice">
+										<lse-text>
+											<?= __('Background video layer', 'LayerSlider') ?>
 										</lse-text>
 									</lse-b>
 									<lse-sidebar-subnav class="lse-make-attention lse-tabs" data-tabs-for="lse-layer-settings" data-tabs-filter=":not(.lse-no-toggle, lse-flex-placeholder)" data-tabs-content-filter="lse-sidebar-body">
 
-										<lse-subnav-item id="lse-open-layers-list" class="lse-grayaaa lse-no-toggle lse-get-attention lse-attention-once" data-lse-action="closeLayersList">
+										<lse-subnav-item id="lse-open-layers-list" class="lse-grayaaa lse-no-toggle lse-get-attention lse-attention-once" data-lse-action="closeLayersList" data-menu="layers">
 											<?= lsGetSVGIcon('list-alt') ?>
 											<lse-text><?= __('Layers List', 'LayerSlider') ?></lse-text>
 										</lse-subnav-item>
 
-										<lse-subnav-item class="lse-active lse-layer-content-tab">
+										<lse-subnav-item class="lse-active lse-layer-content-tab" data-menu="content">
 											<?= lsGetSVGIcon('edit','regular') ?>
 											<lse-text><?= __('Content', 'LayerSlider') ?></lse-text>
 										</lse-subnav-item>
 
-										<lse-subnav-item class="lse-layer-style-tab lse-not-bg-video-only">
+										<lse-subnav-item class="lse-layer-style-tab lse-not-bg-video-only" data-menu="style">
 											<?= lsGetSVGIcon('palette','regular') ?>
 											<lse-text><?= __('Style', 'LayerSlider') ?></lse-text>
+											<lse-badge class="lse-single-selection lse-multiple-selection" data-tt=".tt-subnav-custom-css"></lse-badge>
 										</lse-subnav-item>
 
-										<lse-subnav-item class="lse-layer-transition-tab lse-not-bg-video-only">
+										<lse-subnav-item class="lse-layer-transition-tab lse-not-bg-video-only" data-menu="transition">
 											<?= lsGetSVGIcon('wave-sine') ?>
 											<lse-text><?= __('Transition', 'LayerSlider') ?></lse-text>
 										</lse-subnav-item>
 
-										<lse-subnav-item class="lse-layer-link-tab lse-not-bg-video-only">
-											<?= lsGetSVGIcon('link','regular') ?>
-											<lse-text><?= __('Link', 'LayerSlider') ?></lse-text>
+										<lse-subnav-item class="lse-layer-link-tab lse-not-bg-video-only" data-menu="linking">
+											<?= lsGetSVGIcon('link-attrs') ?>
+											<lse-text><?= _x('Link & Attrs', 'Attrs refers to attributes, shortened due to space constraints', 'LayerSlider') ?></lse-text>
+											<lse-badge class="lse-single-selection-link" data-tt=".tt-subnav-single-link"></lse-badge>
+											<lse-badge class="lse-single-selection-link-attrs" data-tt=".tt-subnav-single-link-attrs"></lse-badge>
+											<lse-badge class="lse-multiple-selection" data-tt=".tt-subnav-multi-link-attrs"></lse-badge>
 										</lse-subnav-item>
 
-										<lse-subnav-item class="lse-layer-actions-tab lse-not-bg-video-only">
+										<lse-subnav-item class="lse-layer-effects-tab lse-not-bg-video-only lse-max-clicks" data-menu="effects" data-max-clicks-namespace="layerEffects-<?= LS_LAYER_EFFECTS_VERSION ?>" data-max-clicks="1">
+											<?= lsGetSVGIcon('sparkles') ?>
+											<lse-text><?= __('Effects', 'LayerSlider') ?></lse-text>
+											<lse-badge class="lse-single-selection" data-tt=".tt-subnav-single-effect"></lse-badge>
+											<lse-badge class="lse-multiple-selection" data-tt=".tt-subnav-multi-effect"></lse-badge>
+											<lse-badge class="lse-new-badge"><?= __('NEW', 'LayerSlider') ?></lse-badge>
+										</lse-subnav-item>
+
+										<lse-subnav-item class="lse-layer-actions-tab lse-not-bg-video-only" data-menu="actions">
 											<?= lsGetSVGIcon('bullseye-pointer','regular',[
 												'class' => 'lse-mirror-h'
 											]) ?>
 											<lse-text><?= __('Actions', 'LayerSlider') ?></lse-text>
-										</lse-subnav-item>
-
-										<lse-subnav-item class="lse-layer-attributes-tab lse-not-bg-video-only">
-											<?= lsGetSVGIcon('list-alt','regular') ?>
-											<lse-text><?= __('Attributes', 'LayerSlider') ?></lse-text>
+											<lse-badge class="lse-single-selection" data-tt=".tt-subnav-single-action"></lse-badge>
+											<lse-badge class="lse-multiple-selection" data-tt=".tt-subnav-multi-action"></lse-badge>
 										</lse-subnav-item>
 
 										<lse-flex-placeholder></lse-flex-placeholder>
@@ -2072,12 +2501,21 @@
 
 									</lse-sidebar-subnav>
 
+									<lse-tt class="tt-subnav-custom-css"><?= __('This layer has custom CSS.', 'LayerSlider') ?></lse-tt>
+									<lse-tt class="tt-subnav-single-link"><?= __('This layer has a link.', 'LayerSlider') ?></lse-tt>
+									<lse-tt class="tt-subnav-single-link-attrs"><?= __('The number of link and attributes set for this layer.', 'LayerSlider') ?></lse-tt>
+									<lse-tt class="tt-subnav-multi-link-attrs"><?= __('One or more layers in the selection have a link or attributes.', 'LayerSlider') ?></lse-tt>
+									<lse-tt class="tt-subnav-single-action"><?= __('The number of actions set for this layer.', 'LayerSlider') ?></lse-tt>
+									<lse-tt class="tt-subnav-multi-action"><?= __('One or more layers in the selection have actions.', 'LayerSlider') ?></lse-tt>
+									<lse-tt class="tt-subnav-single-effect"><?= __('The number of effects set for this layer.', 'LayerSlider') ?></lse-tt>
+									<lse-tt class="tt-subnav-multi-effect"><?= __('One or more layers in the selection have effects.', 'LayerSlider') ?></lse-tt>
+
 									<!-- LAYER CONTENT -->
-									<lse-sidebar-body data-section-name="<?= __('Content', 'LayerSlider') ?>">
+									<lse-sidebar-body class="lse-layer-content-panel" data-section-name="<?= __('Content', 'LayerSlider') ?>">
 
 										<?php lsGetInput( $lsDefaults['layers']['media'], null, [ 'type' => 'hidden' ]) ?>
 										<lse-sidebar-content-nav id="lse-set-layer-type" class="lse-smart-dropdown-wrapper lse-max-clicks" data-max-clicks="3" data-max-clicks-namespace="layerTypeSelector" data-tt>
-											<lse-text></lse-text>
+											<lse-text data-mixed-layer-type-text="<?= __('Mixed Layer Types Selected', 'LayerSlider') ?>"></lse-text>
 											<lse-options class="lse-icons-only">
 												<?= lsGetSVGIcon('sort-down',false,['class' => 'lse-open']) ?>
 												<?= lsGetSVGIcon('times',false,['class' => 'lse-close lse-it-fix']) ?>
@@ -2092,9 +2530,12 @@
 														<lse-li data-name="button"><?= lsGetSVGIcon('dot-circle') ?><ls-text><?= __('Button', 'LayerSlider') ?></ls-text></lse-li>
 														<lse-li data-name="shape"><?= lsGetSVGIcon('shapes') ?><ls-text><?= __('Shape', 'LayerSlider') ?></ls-text></lse-li>
 														<lse-li data-name="icon"><?= lsGetSVGIcon('icons') ?><ls-text><?= __('Icon', 'LayerSlider') ?></ls-text></lse-li>
-														<lse-li data-name="svg"><?= lsGetSVGIcon('stars') ?><ls-text><?= __('SVG', 'LayerSlider') ?></ls-text></lse-li>
+														<lse-li data-name="svg"><?= lsGetSVGIcon('splotch') ?><ls-text><?= __('SVG', 'LayerSlider') ?></ls-text></lse-li>
 														<lse-li data-name="html"><?= lsGetSVGIcon('code') ?><ls-text><?= __('HTML', 'LayerSlider') ?></ls-text></lse-li>
 														<lse-li data-name="post"><?= lsGetSVGIcon('database') ?><ls-text><?= __('Dynamic Layer', 'LayerSlider') ?></ls-text></lse-li>
+														<lse-li data-name="countdown"><?= lsGetSVGIcon('timer') ?><ls-text><?= __('Countdown', 'LayerSlider') ?></ls-text></lse-li>
+														<lse-li data-name="counter"><?= lsGetSVGIcon('arrow-up-9-1') ?><ls-text><?= __('Counter', 'LayerSlider') ?></ls-text></lse-li>
+														<lse-li data-name="lottie"><?= lsGetSVGIcon('lottie', 'brands') ?><ls-text><?= __('Lottie', 'LayerSlider') ?></ls-text></lse-li>
 													</lse-ul>
 												</lse-smart-dropdown-inner>
 											</lse-smart-dropdown>
@@ -2104,7 +2545,7 @@
 
 										<lse-sidebar-content>
 
-											<lse-sidebar-section class="lse-scrollbar lse-scrollbar-light">
+											<lse-sidebar-section id="lse-sidebar-layer-content" class="lse-scrollbar lse-scrollbar-light">
 
 												<lse-sidebar-section-body>
 
@@ -2113,28 +2554,62 @@
 
 															<!-- COMMON -->
 
-															<lse-col class="lse-full">
+															<lse-col class="lse-full lse-show-on-mixed-layer-selection">
 																<lse-ib>
 																	<lse-text class="lse-tac">
-																		<?= __('Toggle device visibility', 'LayerSlider') ?>
+																		<?= __('This layer is visible on', 'LayerSlider') ?>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib class="lse-jcc lse-it-fix">
 																	<lse-button-group id="lse-layer-device-types" class="lse-min-one lse-toggle-all">
-																		<lse-button data-type="desktop" class="lse-active">
+																		<lse-button data-type="desktop" class="lse-active" data-tt=".tt-desktop-view">
 																			<?= lsGetSVGIcon('desktop') ?>
 																		</lse-button>
-																		<lse-button data-type="tablet" class="lse-active">
+																		<lse-button data-type="tablet" class="lse-active" data-tt=".tt-tablet-view">
 																			<?= lsGetSVGIcon('tablet-alt') ?>
 																		</lse-button>
-																		<lse-button data-type="phone" class="lse-active">
+																		<lse-button data-type="phone" class="lse-active" data-tt=".tt-mobile-view">
 																			<?= lsGetSVGIcon('mobile-alt') ?>
 																		</lse-button>
 																	</lse-button-group>
+																	<lse-tt class="tt-desktop-view">
+																	<?= __('Desktop', 'LayerSlider') ?>
+																	</lse-tt>
+																	<lse-tt class="tt-tablet-view">
+																	<?= __('Tablet', 'LayerSlider') ?>
+																	</lse-tt>
+																	<lse-tt class="tt-mobile-view">
+																	<?= __('Mobile', 'LayerSlider') ?>
+																	</lse-tt>
 																</lse-ib>
 															</lse-col>
 
-															<lse-separator></lse-separator>
+															<lse-col class="lse-mt-s lse-wide lse-col-notice lse-mixed-layer-selection-notice lse-show-on-mixed-layer-selection">
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Layer content options are not available when mixed layer types are selected.', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col id="lse-multi-select-lottie-notice" class="lse-show-on-multi-select-lottie lse-mt-s lse-wide lse-col-notice">
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Lottie layer settings are not available in multiple selection mode.', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+															</lse-col>
+
+															<lse-separator class="lse-hide-on-filter-type lse-hide-on-countdown-type lse-hide-on-counter-type lse-hide-on-lottie-type">
+																<!-- <lse-button-group id="lse-toggled-content" class="lse-toggle-type-only lse-max-one lse-min-one lse-toggle-all">
+																	<lse-button data-type="untoggled" class="lse-active">
+																		<lse-text id="lse-switch-to-untoggled"><?= _x('default', 'The layer’s default content.', 'LayerSlider') ?></lse-text>
+																	</lse-button>
+																	<lse-button data-type="toggled">
+																		<lse-text id="lse-switch-to-toggled"><?= _x('toggled', 'The layer’s toggled content when clicked', 'LayerSlider') ?></lse-text>
+																	</lse-button>
+																</lse-button-group> -->
+															</lse-separator>
 
 															<!-- IMAGE LAYER -->
 
@@ -2143,7 +2618,7 @@
 																	<?= lsGetSVGIcon('exclamation-triangle', false, [
 																		'class' => 'lse-unregistered-layer lse-premium lse-premium-lock',
 																		'data-tt' => '.tt-option-unregistered'
-            														]) ?>
+																	]) ?>
 																	<lse-text><?= __('Set image', 'LayerSlider') ?></lse-text>
 																</lse-ib>
 																<lse-ib class="lse-tac">
@@ -2169,7 +2644,7 @@
 
 
 															<!-- COMMON (CONTENT BOX) -->
-															<lse-col class="lse-content-box-type-only lse-wide">
+															<lse-col id="lse-layer-content-box" class="lse-content-box-type-only lse-wide lse-hide-on-filter-type">
 																<lse-ib>
 																	<textarea name="html" data-prop="html" data-default="" data-search-name="<?= __('Content', 'LayerSlider') ?>" id="lse-layer-content" placeholder="<?= __('Type / add your layer content here', 'LayerSlider') ?>"></textarea>
 																</lse-ib>
@@ -2189,6 +2664,18 @@
 															</lse-col>
 															<lse-separator class="lse-button-type-only"></lse-separator>
 
+
+															<!-- MEDIA WITH ATTACHMENTS -->
+															<lse-col id="lse-media-layer-preview-wrapper" class="lse-media-type-only lse-wide lse-hide-on-multiple-selection">
+																<lse-ib id="lse-media-layer-preview">
+																</lse-ib>
+																<?= lsGetSVGIcon('times', null, [
+																	'class' => 'lse-remove lse-it-0'
+																]) ?>
+															</lse-col>
+
+
+															<!-- MEDIA LAYER -->
 															<lse-col class="lse-media-type-only">
 																<lse-ib class="lse-half lse-jcc">
 																	<lse-button class="lse-giant lse-aic lse-open-media-modal">
@@ -2200,13 +2687,25 @@
 																	<button class="lse-dn lse-media-upload lse-bulk-upload lse-insert-media"></button>
 																</lse-ib>
 															</lse-col>
+
+															<lse-col class="lse-media-type-only">
+																<lse-ib class="lse-half lse-jcc">
+																	<lse-button class="lse-giant lse-aic lse-assets-library-button" data-accepts="video" data-asset-for="layer-video" data-asset-category="videos">
+																		<?= lsGetSVGIcon('photo-video')?>
+																		<lse-text>
+																		<?= __('Choose Asset', 'LayerSlider') ?>
+																		</lse-text>
+																	</lse-button>
+																</lse-ib>
+															</lse-col>
+
 															<lse-separator class="lse-media-type-only"></lse-separator>
 
 
 															<!-- LINE BREAK OPTIONS -->
-															<lse-col class="lse-content-box-type-only">
+															<lse-col class="lse-content-box-type-only lse-hide-on-filter-type">
 																<lse-ib>
-																	<lse-text><?= __('line breaks', 'LayerSlider') ?></lse-text>
+																	<lse-text><?= __('Line breaks', 'LayerSlider') ?></lse-text>
 																</lse-ib>
 																<lse-ib class="lse-jcc">
 																	<lse-fe-wrapper class="lse-select">
@@ -2216,7 +2715,7 @@
 															</lse-col>
 
 															<!-- ELEMENT TYPE -->
-															<lse-col class="lse-content-box-type-only">
+															<lse-col class="lse-content-box-type-only lse-hide-on-filter-type">
 																<lse-ib>
 																	<lse-text><?= __('HTML element', 'LayerSlider') ?></lse-text>
 																</lse-ib>
@@ -2234,7 +2733,7 @@
 															<lse-col class="lse-object-type-only">
 																<lse-ib class="lse-half lse-jcc">
 																	<lse-button data-search-name="<?= __('Modify SVG', 'LayerSlider') ?>" class="lse-giant lse-aic lse-modify-object">
-																		<?= lsGetSVGIcon('palette')?>
+																		<?= lsGetSVGIcon('splotch')?>
 																		<lse-text>
 																		<?= __('Modify SVG', 'LayerSlider') ?>
 																		</lse-text>
@@ -2287,29 +2786,51 @@
 
 															<lse-separator class="lse-post-type-only"></lse-separator>
 															<lse-col id="lse-post-placeholders" class="lse-post-type-only lse-wide">
-																<lse-button>[post-id]</lse-button>
-																<lse-button>[post-slug]</lse-button>
-																<lse-button>[post-url]</lse-button>
-																<lse-button>[date-published]</lse-button>
-																<lse-button>[time-published]</lse-button>
-																<lse-button>[date-modified]</lse-button>
-																<lse-button>[time-modified]</lse-button>
-																<lse-button>[image]</lse-button>
-																<lse-button>[image-url]</lse-button>
-																<lse-button>[thumbnail]</lse-button>
-																<lse-button>[thumbnail-url]</lse-button>
-																<lse-button>[title]</lse-button>
-																<lse-button>[content]</lse-button>
-																<lse-button>[excerpt]</lse-button>
-																<!-- <lse-button data-placeholder="<a href=&quot;[post-url]&quot;>Read more</a>">[link]</lse-button> -->
-																<lse-button>[author]</lse-button>
-																<lse-button>[author-name]</lse-button>
-																<lse-button>[author-avatar]</lse-button>
-																<lse-button>[author-id]</lse-button>
-																<lse-button>[categories]</lse-button>
-																<lse-button>[tags]</lse-button>
-																<lse-button>[comments]</lse-button>
-																<lse-button>[meta:&lt;fieldname&gt;]</lse-button>															</lse-col>
+																<lse-button data-key="post-id" data-tt data-tt-de="0">[post-id]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="post-slug" data-tt data-tt-de="0">[post-slug]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="post-url" data-tt data-tt-de="0">[post-url]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="date-published" data-tt data-tt-de="0">[date-published]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="time-published" data-tt data-tt-de="0">[time-published]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="date-modified" data-tt data-tt-de="0">[date-modified]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="time-modified" data-tt data-tt-de="0">[time-modified]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="image" data-tt data-tt-de="0">[image]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="image-url" data-tt data-tt-de="0">[image-url]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="thumbnail" data-tt data-tt-de="0">[thumbnail]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="thumbnail-url" data-tt data-tt-de="0">[thumbnail-url]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="title" data-tt data-tt-de="0">[title]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="content" data-tt data-tt-de="0">[content]</lse-button>
+																<lse-tt class="lse-unformatted"></lse-tt>
+																<lse-button data-key="excerpt" data-tt data-tt-de="0">[excerpt]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="author" data-tt data-tt-de="0">[author]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="author-name" data-tt data-tt-de="0">[author-name]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="author-avatar" data-tt data-tt-de="0">[author-avatar]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="author-id" data-tt data-tt-de="0">[author-id]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="categories" data-tt data-tt-de="0">[categories]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="tags" data-tt data-tt-de="0">[tags]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="comments" data-tt data-tt-de="0">[comments]</lse-button>
+																<lse-tt></lse-tt>
+																<lse-button data-key="meta" data-tt data-tt-de="0">[meta:fieldname]</lse-button>
+																<lse-tt></lse-tt>
+															</lse-col>
 															<lse-col class="lse-post-type-only lse-wide lse-text-only">
 																<lse-text><?= __('Click on one or more post placeholders to insert them into your layer’s content. Post placeholders act like shortcodes in WP, and they will be filled with the actual content from your posts.', 'LayerSlider') ?></lse-text>
 															</lse-col>
@@ -2340,15 +2861,445 @@
 													</lse-grid>
 												</lse-sidebar-section-body>
 
-												<!-- LAYER ICON -->
-
-												<lse-sidebar-section-head class="lse-add-replace-icon">
+												<!-- COUNTDOWN LAYER -->
+												<lse-sidebar-section-head class="lse-countdown-type-only">
 													<lse-text>
-														<?= __('Additional Options', 'LayerSlider') ?>
+														<?= __('Countdown Settings', 'LayerSlider') ?>
 													</lse-text>
 												</lse-sidebar-section-head>
 
-												<lse-sidebar-section-body class="lse-add-replace-icon">
+												<lse-sidebar-section-body class="lse-countdown-type-only">
+													<lse-grid class="lse-form-elements">
+														<lse-row>
+
+															<lse-col class="lse-full lse-dn">
+																<lse-ib>
+																	<lse-text><?= __('Type', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layers']['countdownType'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col class="lse-full lse-undomanager-exclude">
+																<lse-ib>
+																	<lse-text><?= __('Due Date', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<?php lsGetInput( $lsDefaults['layers']['countdownDueDate'], null, [
+																		'class' => 'lse-datepicker-input lse-countdown-datepicker-input',
+																		'data-datepicker-classes' => 'lse-datepicker-floating',
+																		'data-lse-update-data-exclude' => 1
+																	] ) ?>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col class="lse-full lse-undomanager-exclude">
+																<lse-ib>
+																	<lse-text><?= __('Repeat', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layers']['countdownRepeat'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text><?= __('Show Component', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layers']['countdownComponent'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Leading Zeros', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<?php lsGetCheckbox( $lsDefaults['layers']['countdownLeadingZeros'] ) ?>
+																</lse-ib>
+															</lse-col>
+
+														</lse-row>
+													</lse-grid>
+												</lse-sidebar-section-body>
+
+												<!-- COUNTER LAYER -->
+												<lse-sidebar-section-head class="lse-counter-type-only">
+													<lse-text>
+														<?= __('Counter Settings', 'LayerSlider') ?>
+													</lse-text>
+												</lse-sidebar-section-head>
+												<lse-sidebar-section-body class="lse-counter-type-only">
+													<lse-grid class="lse-form-elements">
+														<lse-row>
+
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text><?= __('Starting Number', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<?php lsGetInput( $lsDefaults['layers']['counterStart'] ) ?>
+																</lse-ib>
+															</lse-col>
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text><?= __('Ending Number', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<?php lsGetInput( $lsDefaults['layers']['counterEnd'] ) ?>
+																</lse-ib>
+															</lse-col>
+
+														</lse-row>
+													</lse-grid>
+												</lse-sidebar-section-body>
+												<lse-sidebar-section-head class="lse-counter-type-only">
+													<lse-text>
+														<?= __('Number Format', 'LayerSlider') ?>
+													</lse-text>
+												</lse-sidebar-section-head>
+												<lse-sidebar-section-body class="lse-counter-type-only">
+													<lse-grid class="lse-form-elements">
+														<lse-row>
+
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text><?= __('Decimal Places', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<?php lsGetInput( $lsDefaults['layers']['counterDecimals'] ) ?>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text><?= __('Decimal Separator', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layers']['counterDecimalSeparator'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text><?= __('Thousand Separator', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layers']['counterThousandsSeparator'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Leading Zeros', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<?php lsGetCheckbox( $lsDefaults['layers']['counterLeadingZeros'] ) ?>
+																</lse-ib>
+															</lse-col>
+
+														</lse-row>
+													</lse-grid>
+												</lse-sidebar-section-body>
+												<lse-sidebar-section-head class="lse-counter-type-only">
+													<lse-text>
+														<?= __('Animation Settings', 'LayerSlider') ?>
+													</lse-text>
+												</lse-sidebar-section-head>
+												<lse-sidebar-section-body class="lse-counter-type-only">
+													<lse-grid class="lse-form-elements">
+														<lse-row>
+
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text><?= __('Type', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layers']['counterAnimationType'], null, [
+																			'lse-tgl' => 'counter-anim-type'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col class="lse-full" lse-tgl-t="counter-anim-type" tgl-time>
+																<lse-ib>
+																	<lse-text><?= __('Duration', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<?php lsGetInput( $lsDefaults['layers']['counterDuration']) ?>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col class="lse-full" lse-tgl-t="counter-anim-type" tgl-time>
+																<lse-ib>
+																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layers']['counterEasing'], null, [
+																			'options' 	=> $lsDefaults['easings']
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col class="lse-full" lse-tgl-t="counter-anim-type" tgl-step>
+																<lse-ib>
+																	<lse-text><?= __('Step', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<?php lsGetInput( $lsDefaults['layers']['counterStep'], null, [
+																		'options' 	=> $lsDefaults['easings']
+																	]) ?>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col class="lse-full" lse-tgl-t="counter-anim-type" tgl-step>
+																<lse-ib>
+																	<lse-text><?= __('Step Delay', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<?php lsGetInput( $lsDefaults['layers']['counterStepDelay'], null, [
+																		'options' 	=> $lsDefaults['easings']
+																	]) ?>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text><?= __('Start When', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layers']['counterStartAt'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+														</lse-row>
+													</lse-grid>
+												</lse-sidebar-section-body>
+
+												<!-- AFFIX Settings -->
+												<lse-sidebar-section-head class="lse-timer-type-only">
+													<lse-text>
+														<?= __('Affix Settings', 'LayerSlider') ?>
+													</lse-text>
+												</lse-sidebar-section-head>
+
+												<lse-sidebar-section-body class="lse-timer-type-only lse-has-toolbar" data-storage="affix">
+													<lse-button-group class="lse-toolbar">
+
+														<lse-ib class="lse-f11"></lse-ib>
+
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
+														</lse-button>
+
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
+
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
+
+													</lse-button-group>
+													<lse-grid class="lse-form-elements">
+														<lse-row>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Text Before', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<lse-fe-wrapper>
+																		<?php lsGetInput( $lsDefaults['layers']['affixBefore'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Text After', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<lse-fe-wrapper>
+																		<?php lsGetInput( $lsDefaults['layers']['affixAfter'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Free Floating', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<?php lsGetCheckbox( $lsDefaults['layers']['affixFloat'] ) ?>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('New Line', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<?php lsGetCheckbox( $lsDefaults['layers']['affixNewLine'] ) ?>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col-placeholder></lse-col-placeholder>
+
+															<lse-separator></lse-separator>
+
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text><?= __('Horizontal Adjustment', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-range-inputs lse-2-1">
+																	<?php lsGetInput( $lsDefaults['layers']['affixHA'], null, [
+																		'name' => '',
+																		'type' => 'range',
+																		'min' => -3,
+																		'max' => 3,
+																		'class' => 'lse-small'
+																	]) ?>
+
+																	<?php lsGetInput( $lsDefaults['layers']['affixHA'] ) ?>
+																	<lse-unit>em</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text><?= __('Vertical Adjustment', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-range-inputs lse-2-1">
+																	<?php lsGetInput( $lsDefaults['layers']['affixVA'], null, [
+																		'name' => '',
+																		'type' => 'range',
+																		'min' => -3,
+																		'max' => 3,
+																		'class' => 'lse-small'
+																	]) ?>
+
+																	<?php lsGetInput( $lsDefaults['layers']['affixVA'] ) ?>
+																	<lse-unit>em</lse-unit>
+																</lse-ib>
+															</lse-col>
+
+															<lse-separator></lse-separator>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Text Color', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help lse-color-input" data-smart-help="affixColor" data-smart-help-title="<?= __('Text Color', 'LayerSlider') ?>" data-smart-load="lse-color-picker">
+																		<?php lsGetInput( $lsDefaults['layers']['affixColor'] ) ?>
+																		<?= lsGetSVGIcon('times', null, [
+																			'class' => 'lse-remove lse-it-0'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Font Family', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="fontfamily" data-smart-help-title="<?= __('Font family', 'LayerSlider') ?>" data-smart-options="fontfamily" data-hide-smart-options-title>
+																		<?php lsGetInput( $lsDefaults['layers']['affixFontFamily'], null, [
+																			'class' => 'lse-layer-font-family',
+																			'placeholder' => 'inherit'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Font Size', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-range-inputs lse-1-2">
+																	<?php lsGetInput( $lsDefaults['layers']['affixFontSize'], null, [
+																		'name' => '',
+																		'type' => 'range',
+																		'max' => 10,
+																		'class' => 'lse-small'
+																	]) ?>
+
+																	<?php lsGetInput( $lsDefaults['layers']['affixFontSize'] ) ?>
+																	<lse-unit>em</lse-unit>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Font weight', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib class="lse-range-inputs lse-1-2">
+																	<?php lsGetInput( $lsDefaults['layers']['affixFontWeight'], null, [
+																		'name' => '',
+																		'type' => 'range',
+																		'class' => 'lse-small'
+																	]) ?>
+
+																	<?php lsGetInput( $lsDefaults['layers']['affixFontWeight'], null, [
+																	]) ?>
+																</lse-ib>
+															</lse-col>
+
+
+
+														</lse-row>
+													</lse-grid>
+												</lse-sidebar-section-body>
+
+												<!-- LAYER ICON -->
+												<lse-sidebar-section-head class="lse-add-replace-icon">
+													<lse-text>
+														<?= __('Icon Settings', 'LayerSlider') ?>
+													</lse-text>
+												</lse-sidebar-section-head>
+
+												<lse-sidebar-section-body class="lse-add-replace-icon lse-has-toolbar" data-storage="icon">
+
+													<lse-button-group class="lse-toolbar">
+														<lse-ib class="lse-f11"></lse-ib>
+
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
+														</lse-button>
+
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
+
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
+													</lse-button-group>
+
 													<lse-grid class="lse-form-elements">
 														<lse-row>
 															<lse-col>
@@ -2449,11 +3400,27 @@
 
 												<lse-sidebar-section-head class="lse-media-type-only">
 													<lse-text>
-														<?= __('Media Options', 'LayerSlider') ?>
+														<?= __('Media Settings', 'LayerSlider') ?>
 													</lse-text>
 												</lse-sidebar-section-head>
 
-												<lse-sidebar-section-body class="lse-media-type-only">
+												<lse-sidebar-section-body class="lse-media-type-only lse-has-toolbar" data-storage="media">
+
+													<lse-button-group class="lse-toolbar">
+														<lse-ib class="lse-f11"></lse-ib>
+
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
+														</lse-button>
+
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
+
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
+													</lse-button-group>
 
 													<lse-grid class="lse-form-elements">
 
@@ -2464,7 +3431,7 @@
 																	<?= lsGetSVGIcon('exclamation-triangle', false, [
 																		'class' => 'lse-unregistered-layer lse-premium lse-premium-lock',
 																		'data-tt' => '.tt-option-unregistered'
-            														]) ?>
+																	]) ?>
 																	<lse-text><?= __('Poster image', 'LayerSlider') ?></lse-text>
 																</lse-ib>
 																<lse-ib>
@@ -2477,22 +3444,21 @@
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col>
+															<lse-col class="lse-hide-on-multiple-selection">
 																<lse-ib>
 																	<lse-text><?= __('background video', 'LayerSlider') ?></lse-text>
 																</lse-ib>
 																<lse-ib class="lse-jcc">
 																	<?php lsGetCheckbox( $lsDefaults['layers']['mediaBackgroundVideo'], null, [
 																		'class' => 'lse-bgvideo lse-transition-prop',
-																		'data-toggle-class' => 'lse-bg-video',
-																		'data-toggle-selector' => 'lse-layer-settings'
+																		'lse-tgl' => 'bg-video'
 																	] ) ?>
 																</lse-ib>
 															</lse-col>
 
 															<lse-col-placeholder></lse-col-placeholder>
 
-															<lse-col class="lse-wide lse-bg-video-only lse-col-notice">
+															<lse-col class="lse-wide lse-col-notice" lse-tgl-t="bg-video" tgl-on>
 																<lse-ib>
 																	<lse-text>
 																		<?= __('Please note, the slide background image and any layers will cover the video.', 'LayerSlider') ?>
@@ -2502,7 +3468,7 @@
 
 															<lse-separator></lse-separator>
 
-															<lse-col class="lse-not-bg-video-only">
+															<lse-col lse-tgl-t="bg-video" tgl-off>
 																<lse-ib>
 																	<lse-text><?= __('Autoplay', 'LayerSlider') ?></lse-text>
 																</lse-ib>
@@ -2546,20 +3512,7 @@
 																</lse-ib>
 															</lse-col>
 
-															<lse-col class="lse-not-bg-video-only">
-																<lse-ib>
-																	<lse-text><?= __('Fill mode', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<lse-fe-wrapper class="lse-select">
-																		<?php lsGetSelect( $lsDefaults['layers']['mediaFillMode'], null, [
-																			'class' => 'lse-transition-prop'
-																		]) ?>
-																	</lse-fe-wrapper>
-																</lse-ib>
-															</lse-col>
-
-															<lse-col class="lse-not-bg-video-only">
+															<lse-col lse-tgl-t="bg-video" tgl-off>
 																<lse-ib>
 																	<lse-text><?= __('Controls', 'LayerSlider') ?></lse-text>
 																</lse-ib>
@@ -2572,7 +3525,7 @@
 																</lse-ib>
 															</lse-col>
 
-															<lse-col class="lse-not-bg-video-only">
+															<lse-col lse-tgl-t="bg-video" tgl-off>
 																<lse-ib>
 																	<lse-text><?= __('Show info', 'LayerSlider') ?></lse-text>
 																</lse-ib>
@@ -2598,7 +3551,7 @@
 																</lse-ib>
 															</lse-col>
 
-															<lse-col class="lse-bg-video-only">
+															<lse-col lse-tgl-t="bg-video" tgl-on>
 																<lse-ib>
 																	<lse-text>
 																		<?= __('Overlay image', 'LayerSlider') ?>
@@ -2636,6 +3589,311 @@
 
 												</lse-sidebar-section-body>
 
+												<!-- LOTTIE -->
+												<lse-sidebar-section-head class="lse-lottie-type-only lse-hide-on-multi-select-lottie">
+													<lse-text>
+														<?= __('Animation', 'LayerSlider') ?>
+													</lse-text>
+												</lse-sidebar-section-head>
+												<lse-sidebar-section-body class="lse-lottie-type-only lse-hide-on-multi-select-lottie">
+													<lse-grid class="lse-form-elements">
+
+														<lse-row class="lse-dn">
+
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text><?= __('Source', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<?php lsGetInput( $lsDefaults['lottie']['src'], null, [
+																		'class' => 'lse-lottie-prop',
+																		'readonly' => '',
+																		'placeholder' => __('No animation selected', 'LayerSlider')
+																	]) ?>
+																</lse-ib>
+															</lse-col>
+														</lse-row>
+														<lse-row id="lse-lottie-playback-controls">
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-button id="lse-lottie-play-button" class="lse-lottie-playing lse-small">
+																		<?= lsGetSVGIcon('play') ?>
+																		<?= lsGetSVGIcon('pause') ?>
+																	</lse-button>
+																	<?php lsGetInput( $lsDefaults['lottie']['startPoint'], null, [
+																		'name' => '',
+																		'type' => 'range',
+																		'min' => 0,
+																		'max' => 100,
+																		'step' => 1,
+																		'class' => 'lse-small lse-lottie-prop'
+																	]) ?>
+																</lse-ib>
+															</lse-col>
+														</lse-row>
+
+														<lse-row id="lse-lottie-buttons">
+															<lse-col class="lse-full">
+																<lse-ib class="lse-half">
+																	<lse-button class="lse-giant lse-aic lse-open-lottie-modal">
+																		<?= lsGetSVGIcon('lottie', 'brands') ?>
+																		<lse-text>
+																		<?= __('Change', 'LayerSlider') ?>
+																		</lse-text>
+																	</lse-button>
+
+																	<lse-button class="lse-giant lse-aic lse-enter-lottie-url">
+																		<?= lsGetSVGIcon('lottie', 'brands') ?>
+																		<lse-text>
+																		<?= __('Enter URL', 'LayerSlider') ?>
+																		</lse-text>
+																	</lse-button>
+																</lse-ib>
+															</lse-col>
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['lottie']['theme'], null, [
+																			'class' => 'lse-lottie-prop lse-lottie-themes-select',
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+														</lse-row>
+
+													</lse-grid>
+												</lse-sidebar-section-body>
+
+												<lse-sidebar-section-head class="lse-lottie-type-only lse-hide-on-multi-select-lottie">
+													<lse-text>
+														<?= __('Playback', 'LayerSlider') ?>
+													</lse-text>
+												</lse-sidebar-section-head>
+												<lse-sidebar-section-body class="lse-lottie-type-only lse-hide-on-multi-select-lottie">
+													<lse-grid class="lse-form-elements">
+														<lse-row>
+
+
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text><?= __('Play animation', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['lottie']['trigger'], null, [
+																			'id' => 'lse-lottie-trigger-select',
+																			'class' => 'lse-lottie-prop',
+																			'lse-tgl' 	=> 'lottie-trigger'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col id="lse-lottie-scroll-notice" class="lse-mt-s lse-wide lse-col-notice">
+																<lse-ib>
+																	<lse-text>
+																		<?= sprintf( __('You must enable %s Scroll Scene %s to use this feature, otherwise the animation will default to automatic playback.', 'LayerSlider'), '<a href="#layout">', '</a>') ?>
+																	</lse-text>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col class="lse-full" lse-tgl-t="lottie-trigger" tgl-autoplay tgl-scroll>
+																<lse-ib>
+																	<lse-text><?= __('Start When', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['lottie']['startAt'], null, [ 'class' => 'lse-lottie-prop' ] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col class="lse-full" lse-tgl-t="lottie-trigger" tgl-autoplay tgl-scroll>
+																<lse-ib>
+																	<lse-text><?= __('Delay', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<?php lsGetInput( $lsDefaults['lottie']['delay'], null, [
+																		'class' => 'lse-lottie-prop',
+																		'type'  => 'number',
+																		'min'   => 0
+																	] ) ?>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+
+
+															<lse-col class="lse-full" lse-tgl-t="lottie-trigger" tgl-mousemove>
+																<lse-ib>
+																	<lse-text><?= __('Move Direction', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['lottie']['triggerFrom'], null, [
+																			'class' => 'lse-lottie-prop',
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+
+
+															<lse-col class="lse-full" lse-tgl-t="lottie-trigger" tgl-autoplay tgl-click tgl-toggleclick tgl-hover tgl-togglehover>
+																<lse-ib>
+																	<lse-text><?= __('Mode', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['lottie']['mode'], null, [
+																			'class' => 'lse-lottie-prop',
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+
+															<lse-col class="lse-full" lse-tgl-t="lottie-trigger" tgl-autoplay tgl-click tgl-toggleclick tgl-hover tgl-togglehover>
+																<lse-ib>
+																	<lse-text><?= __('Loop', 'LayerSlider') ?></lse-text>
+																	<lse-text><?= __('Loop Count', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-half">
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['lottie']['loop'], null, [
+																			'class' => 'lse-lottie-prop',
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-fe-wrapper>
+
+																	<?php lsGetInput( $lsDefaults['lottie']['loopCount'], null, [
+																			'class' => 'lse-lottie-prop',
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+
+															<lse-col class="lse-full" lse-tgl-t="lottie-trigger" tgl-autoplay tgl-click tgl-toggleclick tgl-hover tgl-togglehover tgl-scroll>
+																<lse-ib>
+																	<lse-text><?= __('Speed', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-range-inputs lse-2-1">
+																	<?php lsGetInput( $lsDefaults['lottie']['speed'], null, [
+																		'name' => '',
+																		'type' => 'range',
+																		'min' => 0.1,
+																		'max' => 3,
+																		'step' => 0.1,
+																		'class' => 'lse-small lse-lottie-prop'
+																	]) ?>
+																	<?php lsGetInput( $lsDefaults['lottie']['speed'], null, [
+																		'class' => 'lse-lottie-prop'
+																	]) ?>
+																	<lse-unit>×</lse-unit>
+																</lse-ib>
+															</lse-col>
+
+															<lse-separator></lse-separator>
+
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text><?= __('Start Point', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-range-inputs lse-2-1">
+																	<?php lsGetInput( $lsDefaults['lottie']['startPoint'], null, [
+																		'name' => '',
+																		'type' => 'range',
+																		'min' => 0,
+																		'max' => 100,
+																		'step' => 1,
+																		'class' => 'lse-small lse-lottie-prop'
+																	]) ?>
+																	<?php lsGetInput( $lsDefaults['lottie']['startPoint'], null, [
+																		'class' => 'lse-lottie-prop'
+																	]) ?>
+																	<lse-unit>%</lse-unit>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text><?= __('End Point', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-range-inputs lse-2-1">
+																	<?php lsGetInput( $lsDefaults['lottie']['endPoint'], null, [
+																		'name' => '',
+																		'type' => 'range',
+																		'min' => 0,
+																		'max' => 100,
+																		'step' => 1,
+																		'class' => 'lse-small lse-lottie-prop'
+																	]) ?>
+																	<?php lsGetInput( $lsDefaults['lottie']['endPoint'], null, [
+																		'class' => 'lse-lottie-prop'
+																	]) ?>
+																	<lse-unit>%</lse-unit>
+																</lse-ib>
+															</lse-col>
+														</lse-row>
+													</lse-grid>
+												</lse-sidebar-section-body>
+
+												<lse-sidebar-section-head class="lse-lottie-type-only lse-hide-on-multi-select-lottie">
+													<lse-text>
+														<?= __('Layout', 'LayerSlider') ?>
+													</lse-text>
+												</lse-sidebar-section-head>
+												<lse-sidebar-section-body class="lse-lottie-type-only lse-hide-on-multi-select-lottie">
+													<lse-grid class="lse-form-elements">
+														<lse-row>
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text><?= __('Fit', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['lottie']['fit'], null, [
+																			'class' => 'lse-lottie-prop',
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text><?= __('Horizontal Alignment', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-range-inputs lse-2-1">
+																	<?php lsGetInput( $lsDefaults['lottie']['alignX'], null, [
+																		'name' => '',
+																		'type' => 'range',
+																		'class' => 'lse-small lse-lottie-prop'
+																	]) ?>
+																	<?php lsGetInput( $lsDefaults['lottie']['alignX'], null, [
+																		'class' => 'lse-lottie-prop'
+																	]) ?>
+																</lse-ib>
+															</lse-col>
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text><?= __('Vertical Alignment', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-range-inputs lse-2-1">
+																	<?php lsGetInput( $lsDefaults['lottie']['alignY'], null, [
+																		'name' => '',
+																		'type' => 'range',
+																		'class' => 'lse-small lse-lottie-prop'
+																	]) ?>
+																	<?php lsGetInput( $lsDefaults['lottie']['alignY'], null, [
+																		'class' => 'lse-lottie-prop'
+																	]) ?>
+																</lse-ib>
+															</lse-col>
+															<lse-col-placeholder></lse-col-placeholder>
+														</lse-row>
+													</lse-grid>
+												</lse-sidebar-section-body>
+
 											</lse-sidebar-section>
 
 										</lse-sidebar-content>
@@ -2671,9 +3929,9 @@
 													</lse-options>
 												</lse-sidebar-section-head>
 
-												<lse-sidebar-section-body class="lse-has-toolbar">
+												<lse-sidebar-section-body class="lse-has-toolbar" data-storage="styles-size-position">
 
-													<lse-button-group class="lse-toolbar">
+													<lse-button-group id="lse-layer-layout-toolbar" class="lse-toolbar">
 
 														<lse-button data-set='{"style-width":"100%","style-height":"100%","style-left":"0","style-top":"0"}' data-tt data-tt-de="0">
 															<?= lsGetSVGIcon('expand-arrows-alt') ?>
@@ -2687,13 +3945,6 @@
 														</lse-button>
 														<lse-tt>
 															<?= __('Set layer to auto size', 'LayerSlider') ?>
-														</lse-tt>
-
-														<lse-button data-set='{"style-width":"","style-height":"","style-left":"","style-top":""}' data-tt data-tt-de="0">
-															<?= lsGetSVGIcon('ban') ?>
-														</lse-button>
-														<lse-tt>
-															<?= __('Clear all size and position values', 'LayerSlider') ?>
 														</lse-tt>
 
 														<lse-button id="lse-pos-to-percent" data-tt data-tt-de="0">
@@ -2710,7 +3961,22 @@
 															<?= __('Convert left and top values to pixels', 'LayerSlider') ?>
 														</lse-tt>
 
-														<lse-ib class="lse-f11"></lse-ib>
+<!--
+ 														<lse-button class="lse-pos-from-right" data-tt data-tt-de="0">
+															php lsGetSVGIcon('arrow-left-from-line') /php
+														</lse-button>
+														<lse-tt>
+															php __('Calculate horizontal position from the right side.', 'LayerSlider') /php
+														</lse-tt>
+
+														<lse-button class="lse-pos-from-bottom" data-tt data-tt-de="0">
+															php lsGetSVGIcon('arrow-up-from-line') /php
+														</lse-button>
+														<lse-tt>
+															php __('Calculate vertical position from the bottom side.', 'LayerSlider') /php
+														</lse-tt>
+ -->
+
 														<lse-button class="lse-pos-to-center lse-center-h" data-tt data-tt-de="0">
 															<?= lsGetSVGIcon('border-center-v', 'duotone') ?>
 														</lse-button>
@@ -2732,14 +3998,28 @@
 															<?= lsGetSVGIcon('border-inner', 'duotone') ?>
 														</lse-button>
 
+														<lse-ib class="lse-f11"></lse-ib>
+
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
+														</lse-button>
+
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
+
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
+
 													</lse-button-group>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row>
 															<lse-col class="lse-full">
 																<lse-ib>
-																	<lse-text>
-																		<?= __('Size', 'LayerSlider') ?><lse-props><?= __('width', 'LayerSlider') ?>, <?= __('height', 'LayerSlider') ?></lse-props><lse-cur-prop></lse-cur-prop><lse-units>px %</lse-units>
+																	<lse-text class="lse-cuttext">
+																		<span><?= __('Size', 'LayerSlider') ?></span><lse-props><?= __('width', 'LayerSlider') ?>, <?= __('height', 'LayerSlider') ?></lse-props><lse-cur-prop></lse-cur-prop><lse-units>px %</lse-units>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib class="lse-half">
@@ -2763,8 +4043,8 @@
 															</lse-col>
 															<lse-col class="lse-full">
 																<lse-ib>
-																	<lse-text>
-																		<?= __('Position', 'LayerSlider') ?><lse-props><?= __('left', 'LayerSlider') ?>, <?= __('top', 'LayerSlider') ?></lse-props><lse-cur-prop></lse-cur-prop><lse-units>px %</lse-units>
+																	<lse-text class="lse-cuttext">
+																		<span><?= __('Position', 'LayerSlider') ?></span><lse-props><?= __('left', 'LayerSlider') ?>, <?= __('top', 'LayerSlider') ?></lse-props><lse-cur-prop></lse-cur-prop><lse-units>px %</lse-units>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib class="lse-half">
@@ -2790,45 +4070,103 @@
 															<lse-col class="lse-full">
 																<lse-ib>
 																	<lse-text class="lse-show-for-static-position-only">
-																		<?= __('Margin', 'LayerSlider') ?> <lse-cur-prop></lse-cur-prop><lse-units>px</lse-units>
+																		<span><?= __('Margin', 'LayerSlider') ?></span><lse-cur-prop></lse-cur-prop><lse-units>px</lse-units>
 																	</lse-text>
-																	<lse-text class="lse-show-for-positioned-layers-only">
-																		<?= __('Position Adjustment', 'LayerSlider') ?> <lse-cur-prop></lse-cur-prop><lse-units>px</lse-units>
+																	<lse-text class="lse-show-for-positioned-layers-only lse-cuttext">
+																		<span><?= __('Position Adjustment', 'LayerSlider') ?></span><lse-cur-prop></lse-cur-prop><lse-units>px</lse-units>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib class="lse-quarter lse-margin-style">
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="position-adjustment-left" data-smart-help-title="<?= __('Position Adjustment', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['marginLeft'], null, [
+																			'class' 			=> 'lse-style-prop',
+																			'data-prop-type' 	=> __('left', 'LayerSlider'),
+																			'data-link' 		=> 'margin-style',
+																			'data-get' 			=> 'style-margin-left'
+																		]) ?>
+																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="position-adjustment-top" data-smart-help-title="<?= __('Position Adjustment', 'LayerSlider') ?>" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['marginTop'], null, [
 																			'class' 			=> 'lse-style-prop',
 																			'data-prop-type' 	=> __('top', 'LayerSlider'),
-																			'data-link' 		=> 'margin-style'
+																			'data-link' 		=> 'margin-style',
+																			'data-get' 			=> 'style-margin-top'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-show-for-static-position-only">
 																		<?php lsGetInput( $lsDefaults['layers']['marginRight'], null, [
 																			'class' 			=> 'lse-style-prop',
 																			'data-prop-type' 	=> __('right', 'LayerSlider'),
-																			'data-link' 		=> 'margin-style'
+																			'data-link' 		=> 'margin-style',
+																			'data-get' 			=> 'style-margin-right'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-show-for-static-position-only">
 																		<?php lsGetInput( $lsDefaults['layers']['marginBottom'], null, [
 																			'class' 			=> 'lse-style-prop',
 																			'data-prop-type' 	=> __('bottom', 'LayerSlider'),
-																			'data-link' 		=> 'margin-style'
-																		]) ?>
-																	</lse-fe-wrapper>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="position-adjustment-left" data-smart-help-title="<?= __('Position Adjustment', 'LayerSlider') ?>" data-smart-operations>
-																		<?php lsGetInput( $lsDefaults['layers']['marginLeft'], null, [
-																			'class' 			=> 'lse-style-prop',
-																			'data-prop-type' 	=> __('left', 'LayerSlider'),
-																			'data-link' 		=> 'margin-style'
+																			'data-link' 		=> 'margin-style',
+																			'data-get' 			=> 'style-margin-bottom'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
 
+															<lse-col-placeholder></lse-col-placeholder>
+
 															<lse-separator></lse-separator>
+
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text class="lse-cuttext">
+																		<span><?= __('Minimum Size', 'LayerSlider') ?></span><lse-props><?= __('width', 'LayerSlider') ?>, <?= __('height', 'LayerSlider') ?></lse-props><lse-cur-prop></lse-cur-prop><lse-units>px % em rem</lse-units>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib class="lse-half">
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="min-width" data-smart-help-title="<?= __('Minimum Width', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['minWidth'], null, [
+																			'class' 			=> 'lse-style-prop',
+																			'placeholder' 		=> '0px',
+																			'data-prop-type' 	=> __('width', 'LayerSlider'),
+																			'data-get' 			=> 'style-min-width'
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="min-height" data-smart-help-title="<?= __('Minimum Height', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['minHeight'], null, [
+																			'class' 			=> 'lse-style-prop',
+																			'placeholder' 		=> '0px',
+																			'data-prop-type' 	=> __('height', 'LayerSlider'),
+																			'data-get' 			=> 'style-min-height'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text class="lse-cuttext">
+																		<span><?= __('Maximum Size', 'LayerSlider') ?></span><lse-props><?= __('width', 'LayerSlider') ?>, <?= __('height', 'LayerSlider') ?></lse-props><lse-cur-prop></lse-cur-prop><lse-units>px % em rem</lse-units>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib class="lse-half">
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="max-width" data-smart-help-title="<?= __('Maximum Width', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['maxWidth'], null, [
+																			'class' 			=> 'lse-style-prop',
+																			'placeholder' 		=> 'none',
+																			'data-prop-type' 	=> __('width', 'LayerSlider'),
+																			'data-get' 			=> 'style-max-width'
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="max-height" data-smart-help-title="<?= __('Maximum Height', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['maxHeight'], null, [
+																			'class' 			=> 'lse-style-prop',
+																			'placeholder' 		=> 'none',
+																			'data-prop-type' 	=> __('height', 'LayerSlider'),
+																			'data-get' 			=> 'style-max-height'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
 
 															<lse-col class="lse-full">
 																<lse-ib>
@@ -2897,6 +4235,7 @@
 																		'class' => 'lse-style-prop'
 																	]) ?>
 																	<?php lsGetInput( $lsDefaults['layers']['fontSize'], null, [
+																		'min' 	=> 0,
 																		'class' => 'lse-style-prop',
 																		'data-search-name' => __('Icon Size', 'LayerSlider')
 																	]) ?>
@@ -3008,7 +4347,23 @@
 													</lse-options>
 												</lse-sidebar-section-head>
 
-												<lse-sidebar-section-body class="lse-textish-type-only">
+												<lse-sidebar-section-body class="lse-textish-type-only lse-has-toolbar" data-storage="styles-text-typography">
+
+													<lse-button-group class="lse-toolbar">
+														<lse-ib class="lse-f11"></lse-ib>
+
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
+														</lse-button>
+
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
+
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
+													</lse-button-group>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row>
@@ -3042,6 +4397,7 @@
 																		'class' => 'lse-style-prop'
 																	]) ?>
 																	<?php lsGetInput( $lsDefaults['layers']['fontSize'], null, [
+																		'min' 	=> 0,
 																		'class' => 'lse-style-prop'
 																	]) ?>
 																	<lse-unit>px</lse-unit>
@@ -3062,6 +4418,7 @@
 																		'class' => 'lse-style-prop'
 																	]) ?>
 																	<?php lsGetInput( $lsDefaults['layers']['lineHeight'], null, [
+																		'min' 	=> 0,
 																		'class' => 'lse-style-prop'
 																	]) ?>
 																	<lse-unit>px</lse-unit>
@@ -3077,7 +4434,7 @@
 																	<lse-fe-wrapper class="lse-smart-help lse-color-input" data-smart-help="textcolor" data-smart-help-title="<?= __('Text Color', 'LayerSlider') ?>" data-smart-load="lse-color-picker">
 																		<?php lsGetInput( $lsDefaults['layers']['color'], null, [
 																			'type' => 'text',
-																			'class' => 'lse-style-prop'
+																			'class' => 'lse-style-prop lse-text-color-colorpicker'
 																		] ) ?>
 																		<?= lsGetSVGIcon('times', null, [
 																			'class' => 'lse-remove lse-it-0'
@@ -3097,7 +4454,11 @@
 																	]) ?>
 																</lse-ib>
 															</lse-col>
+
+															<lse-col-placeholder></lse-col-placeholder>
+
 															<lse-separator></lse-separator>
+
 															<lse-col class="lse-wide lse-jcfe lse-it-fix lse-set-text-sample">
 																<lse-ib>
 																	<lse-button-group class="lse-icons-only lse-max-one lse-min-one lse-toggle-all" data-style="text-align" data-set-hidden-input-to="value">
@@ -3220,6 +4581,22 @@
 															<lse-col>
 																<lse-ib>
 																	<lse-text>
+																		<?= __('Align Last Line', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layers']['textAlignLast'], null, [
+																			'class' => 'lse-style-prop'
+																		] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col-placeholder></lse-col-placeholder>
+															<lse-separator></lse-separator>
+															<lse-col>
+																<lse-ib>
+																	<lse-text>
 																		<?= __('Min. Font Size', 'LayerSlider') ?>
 																	</lse-text>
 																</lse-ib>
@@ -3260,9 +4637,9 @@
 
 												</lse-sidebar-section-body>
 
-												<lse-sidebar-section-head class="lse-can-be-closed lse-show-more lse-textish-type-only">
+												<lse-sidebar-section-head class="lse-textish-type-only lse-can-be-closed lse-show-more">
 													<lse-text>
-														<?= __('Text Shadow', 'LayerSlider') ?>
+														<?= __('Text Stroke', 'LayerSlider') ?>
 													</lse-text>
 													<lse-options class="lse-icons-only">
 														<?= lsGetSVGIcon('sort-down',false,['class' => 'lse-open']) ?>
@@ -3270,16 +4647,22 @@
 													</lse-options>
 												</lse-sidebar-section-head>
 
-												<lse-sidebar-section-body class="lse-has-toolbar lse-textish-type-only">
+												<lse-sidebar-section-body class="lse-has-toolbar lse-textish-type-only" data-storage="styles-text-stroke">
 
 													<lse-button-group class="lse-toolbar">
-
 														<lse-ib class="lse-f11"></lse-ib>
 
-														<lse-button class="lse-clear-property" data-tt=".tt-clear-property" data-tt-de="0">
-															<?= lsGetSVGIcon('trash-alt') ?>
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
 														</lse-button>
 
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
+
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
 													</lse-button-group>
 
 													<lse-grid class="lse-form-elements lse-dark-theme">
@@ -3292,7 +4675,74 @@
 																</lse-ib>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help lse-color-input" data-smart-help="color" data-smart-help-title="<?= __('Color', 'LayerSlider') ?>" data-smart-load="lse-color-picker">
-																		<input data-cv="text-shadow" data-cv-id="4" data-default="" type="text">
+																		<input data-cv="-webkit-text-stroke" data-cv-id="2" data-default="currentColor" type="text">
+																		<?= lsGetSVGIcon('times', null, [
+																			'class' => 'lse-remove lse-it-0'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Size', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib class="lse-range-inputs lse-2-1">
+																	<input class="lse-small" type="range" min="0" max="20" step="1" value="0" data-default="0">
+																	<input data-cv="-webkit-text-stroke" data-cv-unit="em" data-cv-id="1" type="number" min="0" max="200" step="1" value="0" data-default="0">
+																</lse-ib>
+															</lse-col>
+
+														</lse-row>
+														<?php lsGetInput( $lsDefaults['layers']['textStroke'], null, [
+															'class' 	=> 'lse-style-prop lse-restore-prop lse-undomanager-merge',
+															'data-sv' 	=> '-webkit-text-stroke',
+															'type' 		=> 'hidden'
+														]) ?>
+													</lse-grid>
+
+												</lse-sidebar-section-body>
+
+												<lse-sidebar-section-head class="lse-can-be-closed lse-show-more lse-textish-type-only">
+													<lse-text>
+														<?= __('Text Shadow', 'LayerSlider') ?>
+													</lse-text>
+													<lse-options class="lse-icons-only">
+														<?= lsGetSVGIcon('sort-down',false,['class' => 'lse-open']) ?>
+														<?= lsGetSVGIcon('sort-up',false,['class' => 'lse-close lse-it-fix-2']) ?>
+													</lse-options>
+												</lse-sidebar-section-head>
+
+												<lse-sidebar-section-body class="lse-has-toolbar lse-textish-type-only" data-storage="styles-text-shadow">
+
+													<lse-button-group class="lse-toolbar">
+														<lse-ib class="lse-f11"></lse-ib>
+
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
+														</lse-button>
+
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
+
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
+													</lse-button-group>
+
+													<lse-grid class="lse-form-elements lse-dark-theme">
+														<lse-row>
+															<lse-col>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Color', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help lse-color-input" data-smart-help="color" data-smart-help-title="<?= __('Color', 'LayerSlider') ?>" data-smart-load="lse-color-picker">
+																		<input data-cv="text-shadow" data-cv-id="4" data-default="currentColor" type="text">
 																		<?= lsGetSVGIcon('times', null, [
 																			'class' => 'lse-remove lse-it-0'
 																		]) ?>
@@ -3306,7 +4756,7 @@
 																	</lse-text>
 																</lse-ib>
 																<lse-ib class="lse-range-inputs lse-2-1">
-																	<input type="range" min="-50" max="50" value="0" data-default="0">
+																	<input class="lse-small" type="range" min="-50" max="50" value="0" data-default="0">
 																	<input data-cv="text-shadow" data-cv-unit="px" data-cv-id="1" type="number" value="0" data-default="0"><lse-unit>px</lse-unit>
 																</lse-ib>
 															</lse-col>
@@ -3317,7 +4767,7 @@
 																	</lse-text>
 																</lse-ib>
 																<lse-ib class="lse-range-inputs lse-2-1">
-																	<input type="range" min="-50" max="50" value="0" data-default="0">
+																	<input class="lse-small" type="range" min="-50" max="50" value="0" data-default="0">
 																	<input data-cv="text-shadow" data-cv-unit="px" data-cv-id="2" type="number" value="0" data-default="0"><lse-unit>px</lse-unit>
 																</lse-ib>
 															</lse-col>
@@ -3328,8 +4778,8 @@
 																	</lse-text>
 																</lse-ib>
 																<lse-ib class="lse-range-inputs lse-2-1">
-																	<input type="range" min="0" max="100" value="0" data-default="0">
-																	<input data-cv="text-shadow" data-cv-unit="px" data-cv-id="3" type="number" value="0" data-default="0"><lse-unit>px</lse-unit>
+																	<input class="lse-small" type="range" min="0" max="100" value="0" data-default="0">
+																	<input data-cv="text-shadow" data-cv-unit="px" data-cv-id="3" type="number" min="0" value="0" data-default="0"><lse-unit>px</lse-unit>
 																</lse-ib>
 															</lse-col>
 														</lse-row>
@@ -3352,7 +4802,23 @@
 													</lse-options>
 												</lse-sidebar-section-head>
 
-												<lse-sidebar-section-body>
+												<lse-sidebar-section-body class="lse-has-toolbar" data-storage="styles-border-corners-padding">
+
+													<lse-button-group class="lse-toolbar">
+														<lse-ib class="lse-f11"></lse-ib>
+
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
+														</lse-button>
+
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
+
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
+													</lse-button-group>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row>
@@ -3369,23 +4835,23 @@
 																		<?= __('Border size', 'LayerSlider') ?> <lse-cur-prop></lse-cur-prop><lse-units>px em</lse-units>
 																	</lse-text>
 																</lse-ib>
-																<lse-ib class="lse-quarter">
+																<lse-ib class="lse-quarter lse-expandable">
 																	<lse-fe-wrapper>
-																	<input type="text" data-cv="border-width-style" data-cv-id="1" data-prop-type="<?= __('top', 'LayerSlider') ?>" data-link="border-width-style">
+																		<input type="text" data-cv="border-width-style" data-cv-id="1" data-prop-type="<?= __('top', 'LayerSlider') ?>" data-link="border-width-style">
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper>
-																	<input type="text" data-cv="border-width-style" data-cv-id="2" data-prop-type="<?= __('right', 'LayerSlider') ?>" data-link="border-width-style">
+																		<input type="text" data-cv="border-width-style" data-cv-id="2" data-prop-type="<?= __('right', 'LayerSlider') ?>" data-link="border-width-style">
 																	</lse-fe-wrapper>
-																	<?php lsGetInput( $lsDefaults['layers']['borderWidth'], null, [
-																		'class' 	=> 'lse-style-prop lse-restore-prop lse-undomanager-merge',
-																		'data-sv' 	=> 'border-width-style',
-																		'type' 		=> 'hidden'
-																	]) ?>
+																		<?php lsGetInput( $lsDefaults['layers']['borderWidth'], null, [
+																			'class' 	=> 'lse-style-prop lse-restore-prop lse-undomanager-merge',
+																			'data-sv' 	=> 'border-width-style',
+																			'type' 		=> 'hidden'
+																		]) ?>
 																	<lse-fe-wrapper>
-																	<input type="text" data-cv="border-width-style" data-cv-id="3" data-prop-type="<?= __('bottom', 'LayerSlider') ?>" data-link="border-width-style">
+																		<input type="text" data-cv="border-width-style" data-cv-id="3" data-prop-type="<?= __('bottom', 'LayerSlider') ?>" data-link="border-width-style">
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper>
-																	<input type="text" data-cv="border-width-style" data-cv-id="4" data-prop-type="<?= __('left', 'LayerSlider') ?>" data-link="border-width-style">
+																		<input type="text" data-cv="border-width-style" data-cv-id="4" data-prop-type="<?= __('left', 'LayerSlider') ?>" data-link="border-width-style">
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
@@ -3433,18 +4899,18 @@
 																		<?= __('Rounding', 'LayerSlider') ?> <lse-cur-prop></lse-cur-prop><lse-units>px % em</lse-units>
 																	</lse-text>
 																</lse-ib>
-																<lse-ib class="lse-quarter">
+																<lse-ib class="lse-quarter lse-expandable">
 																	<lse-fe-wrapper>
-																	<input type="text" data-cv="border-radius-style" data-cv-id="1" data-prop-type="<?= __('top-left', 'LayerSlider') ?>" data-link="border-radius-style">
+																		<input type="text" data-cv="border-radius-style" data-cv-id="1" data-prop-type="<?= __('top-left', 'LayerSlider') ?>" data-link="border-radius-style">
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper>
-																	<input type="text" data-cv="border-radius-style" data-cv-id="2" data-prop-type="<?= __('top-right', 'LayerSlider') ?>" data-link="border-radius-style">
+																		<input type="text" data-cv="border-radius-style" data-cv-id="2" data-prop-type="<?= __('top-right', 'LayerSlider') ?>" data-link="border-radius-style">
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper>
-																	<input type="text" data-cv="border-radius-style" data-cv-id="3" data-prop-type="<?= __('btm-right', 'LayerSlider') ?>" data-link="border-radius-style">
+																		<input type="text" data-cv="border-radius-style" data-cv-id="3" data-prop-type="<?= __('btm-right', 'LayerSlider') ?>" data-link="border-radius-style">
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper>
-																	<input type="text" data-cv="border-radius-style" data-cv-id="4" data-prop-type="<?= __('btm-left', 'LayerSlider') ?>" data-link="border-radius-style">
+																		<input type="text" data-cv="border-radius-style" data-cv-id="4" data-prop-type="<?= __('btm-left', 'LayerSlider') ?>" data-link="border-radius-style">
 																	</lse-fe-wrapper>
 																	<?php lsGetInput( $lsDefaults['layers']['borderRadius'], null, [
 																		'class' 	=> 'lse-style-prop lse-restore-prop lse-undomanager-merge',
@@ -3466,7 +4932,7 @@
 																		<?= __('Padding', 'LayerSlider') ?> <lse-cur-prop></lse-cur-prop><lse-units>px em</lse-units>
 																	</lse-text>
 																</lse-ib>
-																<lse-ib class="lse-quarter">
+																<lse-ib class="lse-quarter lse-expandable">
 																	<lse-fe-wrapper>
 																		<?php lsGetInput( $lsDefaults['layers']['paddingTop'], null, [
 																			'class' 			=> 'lse-style-prop',
@@ -3512,7 +4978,23 @@
 													</lse-options>
 												</lse-sidebar-section-head>
 
-												<lse-sidebar-section-body>
+												<lse-sidebar-section-body class="lse-has-toolbar" data-storage="styles-background">
+
+													<lse-button-group class="lse-toolbar">
+														<lse-ib class="lse-f11"></lse-ib>
+
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
+														</lse-button>
+
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
+
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
+													</lse-button-group>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row>
@@ -3521,7 +5003,7 @@
 																	<?= lsGetSVGIcon('exclamation-triangle', false, [
 																		'class' => 'lse-unregistered-layer lse-premium lse-premium-lock',
 																		'data-tt' => '.tt-option-unregistered'
-            														]) ?>
+																	]) ?>
 																	<lse-text>
 																		<?= __('Background Image', 'LayerSlider') ?>
 																	</lse-text>
@@ -3585,18 +5067,44 @@
 																			'type' => 'hidden',
 																			'class' => 'lse-style-prop lse-restore-prop'
 																		] ) ?>
-																	</lse-fe-wraper>
+																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
 															<lse-col class="lse-full">
 																<lse-ib>
 																	<lse-text>
-																		<?= __('Background Size', 'LayerSlider') ?><lse-units>px % +</lse-units>
+																		<?= __('Background Size', 'LayerSlider') ?><lse-units>px % ...</lse-units>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="backgroundsize" data-smart-help-title="<?= __('Background Size', 'LayerSlider') ?>" data-smart-options="backgroundsize">
 																		<?php lsGetInput( $lsDefaults['layers']['backgroundSize'], null, [ 'class' => 'lse-style-prop'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text><?= __('Smart Background Behavior', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="smartbg" data-smart-help-title="<?= __('Smart Background Behavior', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layers']['smartBG'], null, [
+																			'class' 	=> 'lse-transition-prop',
+																			'lse-tgl' 	=> 'smart-bg-behavior',
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col class="lse-full" lse-tgl-t="smart-bg-behavior" tgl-loop tgl-inoutloop tgl-inoutloopparallax>
+																<lse-ib>
+																	<lse-text><?= __('Smart Background Easing', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="smartbgease" data-smart-help-title="<?= __('Smart Background Easing', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layers']['smartBGEase'], null, [
+																			'class' => 'lse-transition-prop',
+																			'options' => array_merge( [ 'inherit' => __('Inherit', 'LayerSlider') ], $lsDefaults['easings'] )
+																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
@@ -3612,7 +5120,7 @@
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col class="lse-full">
+															<lse-col class="lse-full lse-hide-on-filter-type">
 																<lse-ib>
 																	<?php if( ! $lsActivated ) : ?>
 																	<?= lsGetSVGIcon('lock',false,[
@@ -3645,7 +5153,23 @@
 													</lse-options>
 												</lse-sidebar-section-head>
 
-												<lse-sidebar-section-body>
+												<lse-sidebar-section-body class="lse-has-toolbar" data-storage="transformation">
+
+													<lse-button-group class="lse-toolbar">
+														<lse-ib class="lse-f11"></lse-ib>
+
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
+														</lse-button>
+
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
+
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
+													</lse-button-group>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row>
@@ -3665,16 +5189,18 @@
 																<lse-ib class="lse-half">
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="scale" data-smart-options="scale" data-smart-help-title="<?= __('Scale', 'LayerSlider') ?>" data-smart-options-title="<?= __('Scale | X axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="style">
 																		<?php lsGetInput( $lsDefaults['layers']['scaleX'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-link' 		=> 'scale-style',
-																			'data-prop-type' 	=> 'X'
+																			'class' 				=> 'lse-transition-prop',
+																			'data-link' 			=> 'scale-style',
+																			'data-prop-type' 		=> 'X',
+																			'data-clipboard-key' 	=> 'scaleX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="scale" data-smart-options="scale" data-smart-help-title="<?= __('Scale', 'LayerSlider') ?>" data-smart-options-title="<?= __('Scale | Y axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="style">
 																		<?php lsGetInput( $lsDefaults['layers']['scaleY'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-link' 		=> 'scale-style',
-																			'data-prop-type' 	=> 'Y'
+																			'class' 				=> 'lse-transition-prop',
+																			'data-link' 			=> 'scale-style',
+																			'data-prop-type' 		=> 'Y',
+																			'data-clipboard-key' 	=> 'scaleY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -3685,23 +5211,26 @@
 																		<?= __('Rotation', 'LayerSlider') ?><lse-props>Z, X, Y</lse-props><lse-cur-prop></lse-cur-prop><lse-units><?= _x('degree', 'measurement unit', 'LayerSlider') ?></lse-units>
 																	</lse-text>
 																</lse-ib>
-																<lse-ib class="lse-third">
+																<lse-ib class="lse-third lse-expandable">
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['rotate'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> __('Z (normal)', 'LayerSlider')
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> __('Z (normal)', 'LayerSlider'),
+																			'data-clipboard-key' 	=> 'rotate'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-options-title="<?= __('Rotation | X axis', 'LayerSlider') ?>" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['rotateX'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'X'
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'X',
+																			'data-clipboard-key' 	=> 'rotateX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-options-title="<?= __('Rotation | Y axis', 'LayerSlider') ?>" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['rotateY'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'Y'
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'Y',
+																			'data-clipboard-key' 	=> 'rotateY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -3715,14 +5244,31 @@
 																<lse-ib class="lse-half">
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="skew" data-smart-help-title="<?= __('Skew', 'LayerSlider') ?>" data-smart-options-title="<?= __('Skew | X axis', 'LayerSlider') ?>" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['skewX'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'X'
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'X',
+																			'data-clipboard-key' 	=> 'skewX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="skew" data-smart-help-title="<?= __('Skew', 'LayerSlider') ?>" data-smart-options-title="<?= __('Skew | Y axis', 'LayerSlider') ?>" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['skewY'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'Y'
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'Y',
+																			'data-clipboard-key' 	=> 'skewY'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Mask', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="maskStyle" data-smart-options="mask" data-smart-help-title="<?= __('Mask', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layers']['clip'], null, [
+																			'class' => 'lse-style-prop',
+																			'data-clipboard-key' => 'clip'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -3743,7 +5289,8 @@
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="transformorigin" data-smart-help-title="<?= __('Transform Origin', 'LayerSlider') ?>" data-smart-options="transformorigin" data-set-values>
 																		<?php lsGetInput( $lsDefaults['layers']['transitionInTransformOrigin'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-link' => 'transform-origin-in'
+																			'data-link' => 'transform-origin-in',
+																			'data-clipboard-key' => 'transformOrigin'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -3753,7 +5300,7 @@
 
 												</lse-sidebar-section-body>
 
-												<lse-sidebar-section-head class="lse-can-be-closed lse-show-more">
+												<lse-sidebar-section-head class="lse-can-be-closed lse-show-more lse-hide-on-filter-type">
 													<lse-text>
 														<?= __('Box Shadow', 'LayerSlider') ?>
 													</lse-text>
@@ -3763,18 +5310,23 @@
 													</lse-options>
 												</lse-sidebar-section-head>
 
-												<lse-sidebar-section-body class="lse-has-toolbar">
+												<lse-sidebar-section-body class="lse-has-toolbar lse-hide-on-filter-type" data-storage="styles-box-shadow">
 
 													<lse-button-group class="lse-toolbar">
-
 														<lse-ib class="lse-f11"></lse-ib>
 
-														<lse-button class="lse-clear-property" data-tt=".tt-clear-property" data-tt-de="0">
-															<?= lsGetSVGIcon('trash-alt') ?>
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
 														</lse-button>
 
-													</lse-button-group>
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
 
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
+													</lse-button-group>
 
 													<lse-grid class="lse-form-elements lse-dark-theme">
 														<lse-row>
@@ -3794,7 +5346,7 @@
 																</lse-ib>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help lse-color-input" data-smart-help="color" data-smart-help-title="<?= __('Color', 'LayerSlider') ?>" data-smart-load="lse-color-picker">
-																		<input data-cv="box-shadow" data-cv-id="6" data-default="" type="text">
+																		<input data-cv="box-shadow" data-cv-id="6" data-default="currentColor" type="text">
 																		<?= lsGetSVGIcon('times', null, [
 																			'class' => 'lse-remove lse-it-0'
 																		]) ?>
@@ -3808,7 +5360,7 @@
 																	</lse-text>
 																</lse-ib>
 																<lse-ib class="lse-range-inputs lse-2-1">
-																	<input type="range" min="-50" max="50" value="0" data-default="0">
+																	<input class="lse-small" type="range" min="-50" max="50" value="0" data-default="0">
 																	<input data-cv="box-shadow" data-cv-unit="px" data-cv-id="2" type="number" value="0" data-default="0"><lse-unit>px</lse-unit>
 																</lse-ib>
 															</lse-col>
@@ -3819,7 +5371,7 @@
 																	</lse-text>
 																</lse-ib>
 																<lse-ib class="lse-range-inputs lse-2-1">
-																	<input type="range" min="-50" max="50" value="0"  data-default="0">
+																	<input class="lse-small" type="range" min="-50" max="50" value="0"  data-default="0">
 																	<input data-cv="box-shadow" data-cv-unit="px" data-cv-id="3" type="number" value="0"  data-default="0"><lse-unit>px</lse-unit>
 																</lse-ib>
 															</lse-col>
@@ -3830,7 +5382,7 @@
 																	</lse-text>
 																</lse-ib>
 																<lse-ib class="lse-range-inputs lse-2-1">
-																	<input type="range" min="0" max="100" value="0" data-default="0">
+																	<input class="lse-small" type="range" min="0" max="100" value="0" data-default="0">
 																	<input data-cv="box-shadow" data-cv-unit="px" data-cv-id="4" type="number" value="0" data-default="0"><lse-unit>px</lse-unit>
 																</lse-ib>
 															</lse-col>
@@ -3841,8 +5393,8 @@
 																	</lse-text>
 																</lse-ib>
 																<lse-ib class="lse-range-inputs lse-2-1">
-																	<input type="range" min="-50" max="50" value="0" data-default="0">
-																	<input data-cv="box-shadow" data-cv-unit="px" data-cv-id="5" type="number" value="0" data-default="0"><lse-unit>px</lse-unit>
+																	<input class="lse-small" type="range" min="-50" max="50" value="0" data-default="0">
+																	<input data-cv="box-shadow" data-cv-unit="px" data-cv-id="5" type="number" min="0" value="0" data-default="0"><lse-unit>px</lse-unit>
 																</lse-ib>
 															</lse-col>
 														</lse-row>
@@ -3857,7 +5409,7 @@
 
 												<lse-sidebar-section-head class="lse-can-be-closed lse-show-more">
 													<lse-text>
-														<?= __('Effects', 'LayerSlider') ?>
+														<?= __('Opacity, Blending & Filters', 'LayerSlider') ?>
 													</lse-text>
 													<lse-options class="lse-icons-only">
 														<?= lsGetSVGIcon('sort-down',false,['class' => 'lse-open']) ?>
@@ -3865,17 +5417,33 @@
 													</lse-options>
 												</lse-sidebar-section-head>
 
-												<lse-sidebar-section-body>
+												<lse-sidebar-section-body class="lse-has-toolbar" data-storage="styles-effects">
+
+													<lse-button-group class="lse-toolbar">
+														<lse-ib class="lse-f11"></lse-ib>
+
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
+														</lse-button>
+
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
+
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
+													</lse-button-group>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row>
-															<lse-col>
+															<lse-col class="lse-full">
 																<lse-ib>
 																	<lse-text>
 																		<?= __('Opacity', 'LayerSlider') ?>
 																	</lse-text>
 																</lse-ib>
-																<lse-ib class="lse-range-inputs lse-half">
+																<lse-ib class="lse-range-inputs lse-2-1">
 																	<?php lsGetInput( $lsDefaults['layers']['opacity'], null, [
 																		'type' 	=> 'range',
 																		'min' 	=> 0,
@@ -3884,12 +5452,15 @@
 																		'name' 	=> '',
 																		'class' => 'lse-small lse-style-prop'
 																	]) ?>
-																	<?php lsGetInput( $lsDefaults['layers']['opacity'], null, [
-																		'class' => 'lse-style-prop'
-																	]) ?>
+
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="opacity" data-smart-help-title="<?= __('Opacity', 'LayerSlider') ?>" data-smart-help-filter="style" data-smart-options="opacity" data-smart-options-title="<?= __('Opacity', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['opacity'], null, [
+																			'class' => 'lse-style-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col>
+															<lse-col class="lse-full">
 																<lse-ib>
 																	<lse-text>
 																		<?= __('Blend Mode', 'LayerSlider') ?>
@@ -3903,7 +5474,7 @@
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col>
+															<lse-col class="lse-full">
 																<lse-ib>
 																	<lse-text>
 																		<?= __('Filter', 'LayerSlider') ?>
@@ -3917,7 +5488,7 @@
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col>
+															<lse-col class="lse-full">
 																<lse-ib>
 																	<lse-text>
 																		<?= __('Backdrop Filter', 'LayerSlider') ?>
@@ -3946,7 +5517,23 @@
 													</lse-options>
 												</lse-sidebar-section-head>
 
-												<lse-sidebar-section-body>
+												<lse-sidebar-section-body class="lse-has-toolbar" data-storage="styles-advanced-settings">
+
+													<lse-button-group class="lse-toolbar">
+														<lse-ib class="lse-f11"></lse-ib>
+
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
+														</lse-button>
+
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
+
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
+													</lse-button-group>
 
 													<lse-grid class="lse-form-elements">
 
@@ -3967,21 +5554,35 @@
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col>
+															<lse-col class="lse-hide-on-filter-type">
 																<lse-ib>
 																	<lse-text>
 																		<?= __('Overflow', 'LayerSlider') ?>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-select">
+																<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="overflow" data-smart-help-title="<?= __('Overflow', 'LayerSlider') ?>">
 																		<?php lsGetSelect( $lsDefaults['layers']['overflow'], null, [
 																				'class' => 'lse-style-prop'
 																			]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col>
+															<lse-col class="lse-hide-on-filter-type">
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Selection', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="userselect" data-smart-help-title="<?= __('Selection', 'LayerSlider') ?>">
+																			<?php lsGetSelect( $lsDefaults['layers']['userSelect'], null ) ?>
+																		</lse-fe-wrapper>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col class="lse-hide-on-filter-type">
 																<lse-ib>
 																	<lse-text>
 																		<?= __('Mouse Cursor', 'LayerSlider') ?>
@@ -3997,15 +5598,28 @@
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col class="lse-3-1">
+															<lse-col class="lse-3-1 lse-hide-on-filter-type">
 																<lse-ib>
 																	<lse-text><?= __('Prevent mouse events', 'LayerSlider') ?></lse-text>
 																</lse-ib>
-																<lse-ib class="lse-jcc">
+																<lse-ib class="lse-jcc" data-tt-de="0" data-tt>
 																	<?php lsGetCheckbox( $lsDefaults['layers']['pointerEvents'], null, [
 																		'class' => 'lse-transition-prop'
 																	]) ?>
 																</lse-ib>
+																<lse-tt><?= __('By turning on this option, you can click through the selected layers, which can be useful in case of overlapping layers. This way, they won’t block the interaction with the layers behind them. Furthermore, Hover Transition won’t trigger when you move your mouse cursor over them.', 'LayerSlider') ?></lse-tt>
+															</lse-col>
+															<lse-col class="lse-3-1 lse-slider-type-only lse-hide-on-filter-type">
+																<lse-ib>
+																	<lse-text><?= __('Mask transitions', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc" data-tt-de="0" data-tt>
+																	<?php lsGetCheckbox( $lsDefaults['layers']['trmask'], null, [
+																		'class' => 'lse-transition-prop'
+																	]) ?>
+
+																</lse-ib>
+																<lse-tt><?= __('The transformation of the loop and scroll transitions can be masked to prevent overflowing the layer relative to it’s original position.', 'LayerSlider') ?></lse-tt>
 															</lse-col>
 
 															<lse-separator></lse-separator>
@@ -4037,6 +5651,18 @@
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
+															</lse-col>
+															<lse-col class="lse-3-1">
+																<lse-ib>
+																	<lse-text><?= __('Skip min. and max. ratios for positioning', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc" data-tt-de="0" data-tt>
+																	<?php lsGetCheckbox( $lsDefaults['layers']['useSliderRatioForPositions'], null, [
+																		'class' => 'lse-transition-prop'
+																	]) ?>
+
+																</lse-ib>
+																<lse-tt><?= __('If you enable this option, the Min. and Max. Responsive Ratio values will no longer affect the layer’s positioning, since it will always be calculated based on the project’s actual current ratio. All other layer properties will still follow the minimum and maximum responsive ratio limits as usual.', 'LayerSlider') ?></lse-tt>
 															</lse-col>
 
 															<lse-separator></lse-separator>
@@ -4077,14 +5703,14 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 											<lse-smart-dropdown>
 												<lse-smart-dropdown-inner>
 													<lse-ul id="lse-transition-dropdown" class="lse-tabs" data-tabs-for="#lse-transition-tabs" data-append-to-active-tab=".lse-additional-transition-settings">
-														<lse-li class="lse-active"><?= __('Opening Transition', 'LayerSlider') ?></lse-li>
-														<lse-li class="lse-textish-type-only"><?= __('Opening Text Transition', 'LayerSlider') ?></lse-li>
-														<lse-li><?= __('Loop or Middle Transition', 'LayerSlider') ?></lse-li>
-														<lse-li class="lse-textish-type-only"><?= __('Ending Text Transition', 'LayerSlider') ?></lse-li>
-														<lse-li class="lse-ending-transition-option"><?= __('Ending Transition', 'LayerSlider') ?></lse-li>
-														<lse-li><?= __('Hover Transition', 'LayerSlider') ?></lse-li>
-														<lse-li><?= __('Parallax Transition', 'LayerSlider') ?></lse-li>
- 														<lse-li class="lse-slider-type-only lse-registration-required">
+														<lse-li data-transition="opening" class="lse-active"><?= __('Opening Transition', 'LayerSlider') ?></lse-li>
+														<lse-li data-transition="opening-text" class="lse-textish-type-only lse-hide-on-countdown-type lse-hide-on-counter-type"><?= __('Opening Text Transition', 'LayerSlider') ?></lse-li>
+														<lse-li data-transition="loop"><?= __('Loop / Step Transition', 'LayerSlider') ?></lse-li>
+														<lse-li data-transition="ending-text" class="lse-textish-type-only lse-hide-on-countdown-type lse-hide-on-counter-type"><?= __('Ending Text Transition', 'LayerSlider') ?></lse-li>
+														<lse-li data-transition="ending" class="lse-ending-transition-option"><?= __('Ending Transition', 'LayerSlider') ?></lse-li>
+														<lse-li data-transition="hover" class="lse-hide-on-filter-type"><?= __('Hover Transition', 'LayerSlider') ?></lse-li>
+														<lse-li data-transition="parallax"><?= __('Parallax Transition', 'LayerSlider') ?></lse-li>
+ 														<lse-li data-transition="scroll" class="lse-registration-required">
 															<?= __('Scroll Transition', 'LayerSlider') ?>
 														</lse-li>
 													</lse-ul>
@@ -4129,7 +5755,6 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 												<lse-sidebar-section-head class="lse-can-be-closed lse-show-more">
 													<lse-text class="lse-inline-badge-holder">
 														<?= __('Transition presets', 'LayerSlider') ?>
-															<lse-badge><?= __('NEW', 'LayerSlider') ?></lse-badge>
 													</lse-text>
 
 													<lse-options class="lse-icons-only">
@@ -4143,6 +5768,17 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row class="lse-wide-cols">
+
+															<lse-col class="lse-mt-s lse-wide lse-col-notice lse-transition-preset-bg-notice" data-max-clicks-namespace="applyTransitionPreset">
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Click a preset for preview, then the checkmark on the right to apply it.', 'LayerSlider') ?>
+																		<lse-b>
+																			<lse-button class="lse-max-clicks" data-max-clicks="1" data-max-clicks-namespace="applyTransitionPreset"><?= __('I understand', 'LayerSlider') ?></lse-button>
+																		</lse-b>
+																	</lse-text>
+																</lse-ib>
+															</lse-col>
 															<lse-col class="lse-full lse-transition-presets-cnt">
 																<lse-b class="lse-transition-presets">
 																	<lse-b class="lse-transition-presets-box">
@@ -4184,7 +5820,7 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																		?>
 
 																		<lse-b class="lse-transition-presets-option lse-transition-presets-option-clone" >
-																			<lse-b class="lse-transition-presets-option-text">	
+																			<lse-b class="lse-transition-presets-option-text">
 																			</lse-b>
 																			<lse-b class="lse-transition-presets-option-icons">
 
@@ -4202,7 +5838,7 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																					'class' => 'lse-transition-presets-option-delete',
 																					'data-tt' => '.tt-delete-transition'
 																				]) ?>
-																					
+
 																			</lse-b>
 																		</lse-b>
 
@@ -4234,7 +5870,23 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 													</lse-options>
 												</lse-sidebar-section-head>
 
-												<lse-sidebar-section-body>
+												<lse-sidebar-section-body class="lse-has-toolbar" data-storage="transformation">
+
+													<lse-button-group class="lse-toolbar">
+														<lse-ib class="lse-f11"></lse-ib>
+
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
+														</lse-button>
+
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
+
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
+													</lse-button-group>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row>
@@ -4247,16 +5899,18 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib class="lse-half">
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="offsetin" data-smart-help-title="<?= __('Offset', 'LayerSlider') ?>" data-smart-options-title="<?= __('Offset | X axis', 'LayerSlider') ?>" data-smart-options="offset" data-smart-operations data-smart-help-filter="in-x">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionInOffsetX'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'X',
-																			'data-units' 		=> 'px % left lw sw +'
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'X',
+																			'data-units' 			=> 'px % left lw sw ...',
+																			'data-clipboard-key' 	=> 'offsetX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="offsetin" data-smart-help-title="<?= __('Offset', 'LayerSlider') ?>" data-smart-options-title="<?= __('Offset | Y axis', 'LayerSlider') ?>" data-smart-options="offset" data-smart-operations data-smart-help-filter="in-y">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionInOffsetY'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'Y',
-																			'data-units' 		=> 'px % top lh sh +'
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'Y',
+																			'data-units' 			=> 'px % top lh sh ...',
+																			'data-clipboard-key' 	=> 'offsetY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -4277,16 +5931,18 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib class="lse-half">
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="scalein" data-smart-options="scale" data-smart-help-title="<?= __('Scale', 'LayerSlider') ?>" data-smart-options-title="<?= __('Scale | X axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="in">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionInScaleX'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'X',
-																			'data-link' 		=> 'scale-transition-in'
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'X',
+																			'data-link' 			=> 'scale-transition-in',
+																			'data-clipboard-key' 	=> 'scaleX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="scalein" data-smart-options="scale" data-smart-help-title="<?= __('Scale', 'LayerSlider') ?>" data-smart-options-title="<?= __('Scale | Y axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="in">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionInScaleY'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'Y',
-																			'data-link' 		=> 'scale-transition-in'
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'Y',
+																			'data-link' 			=> 'scale-transition-in',
+																			'data-clipboard-key' 	=> 'scaleY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -4297,23 +5953,26 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																		<?= __('Rotation', 'LayerSlider') ?><lse-props>Z, X, Y</lse-props><lse-cur-prop></lse-cur-prop><lse-units><?= _x('degree', 'measurement unit', 'LayerSlider') ?></lse-units>
 																	</lse-text>
 																</lse-ib>
-																<lse-ib class="lse-third">
+																<lse-ib class="lse-third lse-expandable">
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotatein" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="in">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionInRotate'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> __('Z (normal)', 'LayerSlider')
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> __('Z (normal)', 'LayerSlider'),
+																			'data-clipboard-key' 	=> 'rotate'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotatein" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-options-title="<?= __('Rotation | X axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="in">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionInRotateX'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'X'
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'X',
+																			'data-clipboard-key' 	=> 'rotateX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotatein" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-options-title="<?= __('Rotation | Y axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="in">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionInRotateY'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'Y'
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'Y',
+																			'data-clipboard-key' 	=> 'rotateY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -4327,14 +5986,16 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib class="lse-half">
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="skewin" data-smart-options="skew" data-smart-help-title="<?= __('Skew', 'LayerSlider') ?>" data-smart-options-title="<?= __('Skew | X axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="in">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionInSkewX'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'X'
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'X',
+																			'data-clipboard-key' 	=> 'skewX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="skewin" data-smart-options="skew" data-smart-help-title="<?= __('Skew', 'LayerSlider') ?>" data-smart-options-title="<?= __('Skew | Y axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="in">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionInSkewY'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'Y'
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'Y',
+																			'data-clipboard-key' 	=> 'skewY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -4346,16 +6007,18 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib class="lse-half">
-																	<lse-fe-wrapper>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="widthin" data-smart-help-title="<?= __('Width', 'LayerSlider') ?>" data-smart-options="width" data-smart-options-title="<?= __('Width', 'LayerSlider') ?>" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['transitionInWidth'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> __('width', 'LayerSlider')
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> __('width', 'LayerSlider'),
+																			'data-clipboard-key' 	=> 'width'
 																		]) ?>
 																	</lse-fe-wrapper>
-																	<lse-fe-wrapper>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="heightin" data-smart-help-title="<?= __('Height', 'LayerSlider') ?>" data-smart-options="height" data-smart-options-title="<?= __('Height', 'LayerSlider') ?>" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['transitionInHeight'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> __('height', 'LayerSlider')
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> __('height', 'LayerSlider'),
+																			'data-clipboard-key' 	=> 'height'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -4367,9 +6030,10 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="mask" data-smart-options="mask" data-smart-help-title="<?= __('Mask', 'LayerSlider') ?>">
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="mask" data-smart-options="maskin" data-smart-help-filter="in" data-smart-help-title="<?= __('Mask', 'LayerSlider') ?>">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionInClip'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'clip'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -4385,7 +6049,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="transformorigin" data-smart-help-title="<?= __('Transform Origin', 'LayerSlider') ?>" data-smart-options="transformorigin" data-set-values>
 																		<?php lsGetInput( $lsDefaults['layers']['transitionInTransformOrigin'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-link' => 'transform-origin-in'
+																			'data-link' => 'transform-origin-in',
+																			'data-clipboard-key' => 'transformOrigin'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -4399,7 +6064,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="perspective" data-smart-help-title="<?= __('Perspective', 'LayerSlider') ?>">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionInPerspective'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'perspective'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -4413,7 +6079,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="mirrortransition" data-smart-options="mirrortransition"  data-set-values data-smart-help-title="<?= __('Mirror Transition', 'LayerSlider') ?>">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionInMirror'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'mirror'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -4444,11 +6111,27 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="startat" data-smart-help-title="<?= __('Start at', 'LayerSlider') ?>" data-smart-operations>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="startat" data-smart-help-title="<?= __('Start at', 'LayerSlider') ?>" data-smart-options="startatin" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['transitionInDelay'], null, [
 																			'class' => 'lse-transition-prop'
 																		]) ?>
-																	</lse-fe-wrapper><lse-unit>ms</lse-unit>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Start at first', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="startatfirst" data-smart-help-title="<?= __('Start at first', 'LayerSlider') ?>" data-smart-options="startatin" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['startAtFirst'], null, [
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
 																</lse-ib>
 															</lse-col>
 															<lse-col>
@@ -4458,11 +6141,12 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="duration" data-smart-help-title="<?= __('Duration', 'LayerSlider') ?>" data-smart-operations>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="duration" data-smart-help-title="<?= __('Duration', 'LayerSlider') ?>" data-smart-options="duration" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['transitionInDuration'], null, [
 																			'class' => 'lse-transition-prop'
 																		]) ?>
-																	</lse-fe-wrapper><lse-unit>ms</lse-unit>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
 																</lse-ib>
 															</lse-col>
 															<lse-col>
@@ -4512,6 +6196,21 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	]) ?>
 																</lse-ib>
 															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Stacking order', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="zindex" data-smart-help-title="<?= __('Stacking Order', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['zIndexIn'], null, [
+																			'placeholder' => __('default', 'LayerSlider'),
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
 															<lse-col class="lse-textish-type-only">
 																<lse-ib>
 																	<lse-text>
@@ -4546,7 +6245,7 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col>
+															<lse-col class="lse-full">
 																<lse-ib>
 																	<lse-text>
 																		<?= __('Filter', 'LayerSlider') ?>
@@ -4560,8 +6259,6 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col-placeholder></lse-col-placeholder>
-															<lse-separator></lse-separator>
 															<lse-col class="lse-full">
 																<lse-ib>
 																	<?= lsGetSVGIcon('link','regular',[
@@ -4575,18 +6272,18 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																		<?= __('Rounding', 'LayerSlider') ?> <lse-cur-prop></lse-cur-prop><lse-units>px % em</lse-units>
 																	</lse-text>
 																</lse-ib>
-																<lse-ib class="lse-quarter">
+																<lse-ib class="lse-quarter lse-expandable">
 																	<lse-fe-wrapper>
-																	<input type="text" data-cv="border-radius-transition-in" data-cv-id="1" data-prop-type="<?= __('top-left', 'LayerSlider') ?>" data-link="border-radius-transition-in">
+																		<input type="text" data-cv="border-radius-transition-in" data-cv-id="1" data-prop-type="<?= __('top-left', 'LayerSlider') ?>" data-link="border-radius-transition-in">
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper>
-																	<input type="text" data-cv="border-radius-transition-in" data-cv-id="2" data-prop-type="<?= __('top-right', 'LayerSlider') ?>" data-link="border-radius-transition-in">
+																		<input type="text" data-cv="border-radius-transition-in" data-cv-id="2" data-prop-type="<?= __('top-right', 'LayerSlider') ?>" data-link="border-radius-transition-in">
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper>
-																	<input type="text" data-cv="border-radius-transition-in" data-cv-id="3" data-prop-type="<?= __('btm-right', 'LayerSlider') ?>" data-link="border-radius-transition-in">
+																		<input type="text" data-cv="border-radius-transition-in" data-cv-id="3" data-prop-type="<?= __('btm-right', 'LayerSlider') ?>" data-link="border-radius-transition-in">
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper>
-																	<input type="text" data-cv="border-radius-transition-in" data-cv-id="4" data-prop-type="<?= __('btm-left', 'LayerSlider') ?>" data-link="border-radius-transition-in">
+																		<input type="text" data-cv="border-radius-transition-in" data-cv-id="4" data-prop-type="<?= __('btm-left', 'LayerSlider') ?>" data-link="border-radius-transition-in">
 																	</lse-fe-wrapper>
 																	<?php lsGetInput( $lsDefaults['layers']['transitionInRadius'], null, [
 																		'class' 	=> 'lse-transition-prop lse-restore-prop lse-undomanager-merge',
@@ -4701,7 +6398,6 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 												<lse-sidebar-section-head class="lse-can-be-closed lse-show-more">
 													<lse-text class="lse-inline-badge-holder">
 														<?= __('Transition presets', 'LayerSlider') ?>
-															<lse-badge><?= __('NEW', 'LayerSlider') ?></lse-badge>
 													</lse-text>
 
 													<lse-options class="lse-icons-only">
@@ -4715,6 +6411,18 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row class="lse-wide-cols">
+
+															<lse-col class="lse-mt-s lse-wide lse-col-notice lse-transition-preset-bg-notice" data-max-clicks-namespace="applyTransitionPreset">
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Click a preset for preview, then the checkmark on the right to apply it.', 'LayerSlider') ?>
+																		<lse-b>
+																			<lse-button class="lse-max-clicks" data-max-clicks="1" data-max-clicks-namespace="applyTransitionPreset"><?= __('I understand', 'LayerSlider') ?></lse-button>
+																		</lse-b>
+																	</lse-text>
+																</lse-ib>
+															</lse-col>
+
 															<lse-col class="lse-full lse-transition-presets-cnt">
 																<lse-b class="lse-transition-presets">
 																	<lse-b class="lse-transition-presets-box">
@@ -4779,7 +6487,23 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 													</lse-options>
 												</lse-sidebar-section-head>
 
-												<lse-sidebar-section-body>
+												<lse-sidebar-section-body class="lse-has-toolbar" data-storage="transformation">
+
+													<lse-button-group class="lse-toolbar">
+														<lse-ib class="lse-f11"></lse-ib>
+
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
+														</lse-button>
+
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
+
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
+													</lse-button-group>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row>
@@ -4792,7 +6516,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-select">
 																		<?php lsGetSelect( $lsDefaults['layers']['textTypeIn'], null, [
-																			'class' 			=> 'lse-transition-prop',
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'textType'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -4806,16 +6531,18 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib class="lse-half">
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="offsettextin" data-smart-help-title="<?= __('Offset', 'LayerSlider') ?>" data-smart-options-title="<?= __('Offset | X axis', 'LayerSlider') ?>" data-smart-options="offset" data-smart-operations data-smart-help-filter="textin-x">
 																		<?php lsGetInput( $lsDefaults['layers']['textOffsetXIn'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'X',
-																			'data-units' 		=> 'px % left lw sw +'
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'X',
+																			'data-units' 			=> 'px % left lw sw ...',
+																			'data-clipboard-key' 	=> 'offsetX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="offsettextin" data-smart-help-title="<?= __('Offset', 'LayerSlider') ?>" data-smart-options-title="<?= __('Offset | Y axis', 'LayerSlider') ?>" data-smart-options="offset" data-smart-operations data-smart-help-filter="textin-y">
 																		<?php lsGetInput( $lsDefaults['layers']['textOffsetYIn'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'Y',
-																			'data-units' 		=> 'px % top lh sh +'
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'Y',
+																			'data-units' 			=> 'px % top lh sh ...',
+																			'data-clipboard-key' 	=> 'offsetY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -4836,16 +6563,18 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib class="lse-half">
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="scaletextin" data-smart-options="scale" data-smart-help-title="<?= __('Scale', 'LayerSlider') ?>" data-smart-options-title="<?= __('Scale | X axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="text">
 																		<?php lsGetInput( $lsDefaults['layers']['textScaleXIn'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'X',
-																			'data-link' 		=> 'scale-transition-text-in'
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'X',
+																			'data-link' 			=> 'scale-transition-text-in',
+																			'data-clipboard-key' 	=> 'scaleX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="scaletextin" data-smart-options="scale" data-smart-help-title="<?= __('Scale', 'LayerSlider') ?>" data-smart-options-title="<?= __('Scale | Y axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="text">
 																		<?php lsGetInput( $lsDefaults['layers']['textScaleYIn'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'Y',
-																			'data-link' 		=> 'scale-transition-text-in'
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'Y',
+																			'data-link' 			=> 'scale-transition-text-in',
+																			'data-clipboard-key' 	=> 'scaleY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -4856,23 +6585,26 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																		<?= __('Rotation', 'LayerSlider') ?><lse-props>Z, X, Y</lse-props><lse-cur-prop></lse-cur-prop><lse-units><?= _x('degree', 'measurement unit', 'LayerSlider') ?></lse-units>
 																	</lse-text>
 																</lse-ib>
-																<lse-ib class="lse-third">
+																<lse-ib class="lse-third lse-expandable">
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotatetextin" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="text">
 																		<?php lsGetInput( $lsDefaults['layers']['textRotateIn'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> __('Z (normal)', 'LayerSlider'),
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> __('Z (normal)', 'LayerSlider'),
+																			'data-clipboard-key' 	=> 'rotate'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotatetextin" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-options-title="<?= __('Rotation | X axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="text">
 																		<?php lsGetInput( $lsDefaults['layers']['textRotateXIn'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'X',
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'X',
+																			'data-clipboard-key' 	=> 'rotateX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotatetextin" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-options-title="<?= __('Rotation | Y axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="text">
 																		<?php lsGetInput( $lsDefaults['layers']['textRotateYIn'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'Y',
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'Y',
+																			'data-clipboard-key' 	=> 'rotateY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -4886,14 +6618,31 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib class="lse-half">
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="skewtextin" data-smart-options="skew" data-smart-help-title="<?= __('Skew', 'LayerSlider') ?>" data-smart-options-title="<?= __('Skew | X axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="text">
 																		<?php lsGetInput( $lsDefaults['layers']['textSkewXIn'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'X',
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'X',
+																			'data-clipboard-key' 	=> 'skewX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="skewtextin" data-smart-options="skew" data-smart-help-title="<?= __('Skew', 'LayerSlider') ?>" data-smart-options-title="<?= __('Skew | Y axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="text">
 																		<?php lsGetInput( $lsDefaults['layers']['textSkewYIn'], null, [
-																			'class' 			=> 'lse-transition-prop',
-																			'data-prop-type' 	=> 'Y',
+																			'class' 				=> 'lse-transition-prop',
+																			'data-prop-type' 		=> 'Y',
+																			'data-clipboard-key'	=> 'skewY'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Mask', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="maskText" data-smart-options="maskin" data-smart-help-title="<?= __('Mask', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layers']['textClipIn'], null, [
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'clip'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -4908,7 +6657,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="transformorigin" data-smart-help-title="<?= __('Transform Origin', 'LayerSlider') ?>" data-smart-options="transformorigin" data-set-values>
 																		<?php lsGetInput( $lsDefaults['layers']['textTransformOriginIn'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'transformOrigin'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -4922,7 +6672,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="perspective" data-smart-help-title="<?= __('Perspective', 'LayerSlider') ?>">
 																		<?php lsGetInput( $lsDefaults['layers']['textPerspectiveIn'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'perspective'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -4936,7 +6687,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="mirrortransition" data-smart-options="mirrortransition"  data-set-values data-smart-help-title="<?= __('Mirror Transition', 'LayerSlider') ?>">
 																		<?php lsGetInput( $lsDefaults['layers']['textMirrorIn'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'mirror'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -5120,8 +6872,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 
 											</lse-sidebar-section>
 
-											<!-- LOOP / MIDDLE TRANSITION -->
-											<lse-sidebar-section class="lse-scrollbar lse-scrollbar-light lse-disabled" data-storage="loop-transition" data-section-name="<?= __('Loop or Middle Transition', 'LayerSlider') ?>">
+											<!-- LOOP / STEP TRANSITION -->
+											<lse-sidebar-section class="lse-scrollbar lse-scrollbar-light lse-disabled" data-storage="loop-transition" data-section-name="<?= __('Loop / Step Transition', 'LayerSlider') ?>">
 
 												<lse-button-group class="lse-toolbar lse-aic lse-jcfe">
 
@@ -5146,13 +6898,12 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 														<lse-preview-slider-side></lse-preview-slider-side>
 														<lse-preview-layer></lse-preview-layer>
 													</lse-preview-slider>
-													<lse-tt><?= __('Animates layers continuously with an optional Yo-yo effect. <br><br>Can also act as a middle animation step between Opening and Ending transitions.', 'LayerSlider') ?></lse-tt>
+													<lse-tt><?= __('Animates layers continuously with an optional Yoyo effect. <br><br>Can act as a middle animation between Opening and Ending transitions. Also supports multi-step sequences for complex, evolving animations.', 'LayerSlider') ?></lse-tt>
 												</lse-transition-preview>
 
 												<lse-sidebar-section-head class="lse-can-be-closed lse-show-more">
 													<lse-text class="lse-inline-badge-holder">
 														<?= __('Transition presets', 'LayerSlider') ?>
-															<lse-badge><?= __('NEW', 'LayerSlider') ?></lse-badge>
 													</lse-text>
 
 													<lse-options class="lse-icons-only">
@@ -5166,6 +6917,18 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row class="lse-wide-cols">
+
+															<lse-col class="lse-mt-s lse-wide lse-col-notice lse-transition-preset-bg-notice" data-max-clicks-namespace="applyTransitionPreset">
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Click a preset for preview, then the checkmark on the right to apply it.', 'LayerSlider') ?>
+																		<lse-b>
+																			<lse-button class="lse-max-clicks" data-max-clicks="1" data-max-clicks-namespace="applyTransitionPreset"><?= __('I understand', 'LayerSlider') ?></lse-button>
+																		</lse-b>
+																	</lse-text>
+																</lse-ib>
+															</lse-col>
+
 															<lse-col class="lse-full lse-transition-presets-cnt">
 																<lse-b class="lse-transition-presets">
 																	<lse-b class="lse-transition-presets-box">
@@ -5230,7 +6993,23 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 													</lse-options>
 												</lse-sidebar-section-head>
 
-												<lse-sidebar-section-body>
+												<lse-sidebar-section-body class="lse-has-toolbar" data-storage="transformation">
+
+													<lse-button-group class="lse-toolbar">
+														<lse-ib class="lse-f11"></lse-ib>
+
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
+														</lse-button>
+
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
+
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
+													</lse-button-group>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row>
@@ -5245,14 +7024,16 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																		<?php lsGetInput( $lsDefaults['layers']['loopOffsetX'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'X',
-																			'data-units' => 'px % left lw sw +'
+																			'data-units' => 'px % left lw sw ...',
+																			'data-clipboard-key' => 'offsetX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="offset" data-smart-help-title="<?= __('Offset', 'LayerSlider') ?>" data-smart-options-title="<?= __('Offset | Y axis', 'LayerSlider') ?>" data-smart-options="offset" data-smart-operations data-smart-help-filter="loop-y">
 																		<?php lsGetInput( $lsDefaults['layers']['loopOffsetY'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'Y',
-																			'data-units' => 'px % top lh sh +'
+																			'data-units' => 'px % top lh sh ...',
+																			'data-clipboard-key' => 'offsetY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -5271,18 +7052,20 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib class="lse-half">
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="scale" data-smart-options="scale" data-smart-help-title="<?= __('Scale', 'LayerSlider') ?>" data-smart-options-title="<?= __('Scale | X axis', 'LayerSlider') ?>" data-smart-operations>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="scale" data-smart-options="scale" data-smart-help-title="<?= __('Scale', 'LayerSlider') ?>" data-smart-options-title="<?= __('Scale | X axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="loop">
 																		<?php lsGetInput( $lsDefaults['layers']['loopScaleX'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'X',
-																			'data-link' => 'scale-transition-loop'
+																			'data-link' => 'scale-transition-loop',
+																			'data-clipboard-key' => 'scaleX'
 																		]) ?>
 																	</lse-fe-wrapper>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="scale" data-smart-options="scale" data-smart-help-title="<?= __('Scale', 'LayerSlider') ?>" data-smart-options-title="<?= __('Scale | Y axis', 'LayerSlider') ?>" data-smart-operations>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="scale" data-smart-options="scale" data-smart-help-title="<?= __('Scale', 'LayerSlider') ?>" data-smart-options-title="<?= __('Scale | Y axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="loop">
 																		<?php lsGetInput( $lsDefaults['layers']['loopScaleY'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'Y',
-																			'data-link' => 'scale-transition-loop'
+																			'data-link' => 'scale-transition-loop',
+																			'data-clipboard-key' => 'scaleY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -5293,23 +7076,26 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																		<?= __('Rotation', 'LayerSlider') ?><lse-props>Z, X, Y</lse-props><lse-cur-prop></lse-cur-prop><lse-units><?= _x('degree', 'measurement unit', 'LayerSlider') ?></lse-units>
 																	</lse-text>
 																</lse-ib>
-																<lse-ib class="lse-third">
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotate" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-operations>
+																<lse-ib class="lse-third lse-expandable">
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotate" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="loop">
 																		<?php lsGetInput( $lsDefaults['layers']['loopRotate'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-prop-type' => __('Z (normal)', 'LayerSlider')
+																			'data-prop-type' => __('Z (normal)', 'LayerSlider'),
+																			'data-clipboard-key' => 'rotate'
 																		]) ?>
 																	</lse-fe-wrapper>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotate" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-options-title="<?= __('Rotation | X axis', 'LayerSlider') ?>" data-smart-operations>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotate" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-options-title="<?= __('Rotation | X axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="loop">
 																		<?php lsGetInput( $lsDefaults['layers']['loopRotateX'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-prop-type' => 'X'
+																			'data-prop-type' => 'X',
+																			'data-clipboard-key' => 'rotateX'
 																		]) ?>
 																	</lse-fe-wrapper>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotate" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-options-title="<?= __('Rotation | Y axis', 'LayerSlider') ?>" data-smart-operations>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotate" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-options-title="<?= __('Rotation | Y axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="loop">
 																		<?php lsGetInput( $lsDefaults['layers']['loopRotateY'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-prop-type' => 'Y'
+																			'data-prop-type' => 'Y',
+																			'data-clipboard-key' => 'rotateY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -5321,16 +7107,18 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib class="lse-half">
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="skew" data-smart-options="skew" data-smart-help-title="<?= __('Skew', 'LayerSlider') ?>" data-smart-options-title="<?= __('Skew | X axis', 'LayerSlider') ?>" data-smart-operations>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="skew" data-smart-options="skew" data-smart-help-title="<?= __('Skew', 'LayerSlider') ?>" data-smart-options-title="<?= __('Skew | X axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="loop">
 																		<?php lsGetInput( $lsDefaults['layers']['loopSkewX'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-prop-type' => 'X'
+																			'data-prop-type' => 'X',
+																			'data-clipboard-key' => 'skewX'
 																		]) ?>
 																	</lse-fe-wrapper>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="skew" data-smart-options="skew" data-smart-help-title="<?= __('Skew', 'LayerSlider') ?>" data-smart-options-title="<?= __('Skew | Y axis', 'LayerSlider') ?>" data-smart-operations>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="skew" data-smart-options="skew" data-smart-help-title="<?= __('Skew', 'LayerSlider') ?>" data-smart-options-title="<?= __('Skew | Y axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="loop">
 																		<?php lsGetInput( $lsDefaults['layers']['loopSkewY'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-prop-type' => 'Y'
+																			'data-prop-type' => 'Y',
+																			'data-clipboard-key' => 'skewY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -5342,9 +7130,10 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="mask" data-smart-options="mask" data-smart-help-title="<?= __('Mask', 'LayerSlider') ?>">
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="mask" data-smart-options="maskout" data-smart-help-title="<?= __('Mask', 'LayerSlider') ?>">
 																		<?php lsGetInput( $lsDefaults['layers']['loopClip'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'clip'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -5360,7 +7149,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="transformorigin" data-smart-help-title="<?= __('Transform Origin', 'LayerSlider') ?>" data-smart-options="transformorigin" data-set-values>
 																		<?php lsGetInput( $lsDefaults['layers']['loopTransformOrigin'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'transformOrigin'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -5374,7 +7164,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="perspective" data-smart-help-title="<?= __('Perspective', 'LayerSlider') ?>">
 																		<?php lsGetInput( $lsDefaults['layers']['loopPerspective'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'perspective'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -5448,7 +7239,7 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="duration" data-smart-help-title="<?= __('Duration', 'LayerSlider') ?>" data-smart-operations>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="loopduration" data-smart-help-title="<?= __('Duration', 'LayerSlider') ?>" data-smart-options="loopduration" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['loopDuration'], null, [
 																			'class' => 'lse-transition-prop'
 																		]) ?>
@@ -5480,19 +7271,20 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-select">
 																		<?php lsGetSelect( $lsDefaults['layers']['loopCount'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'lse-tgl' => 'loop-repeat'
 																		], true ) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col>
+															<lse-col lse-tgl-t-inverse="loop-repeat" tgl-1>
 																<lse-ib>
 																	<lse-text>
-																		<?= __('Wait', 'LayerSlider') ?>
+																		<?= __('Repeat Wait', 'LayerSlider') ?>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-operations data-smart-help="loopwait" data-smart-help-title="<?= __('Loop Wait', 'LayerSlider') ?>">
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-operations data-smart-help="loopwait" data-smart-help-title="<?= __('Loop Wait', 'LayerSlider') ?>" data-smart-options="loopwait" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['loopWait'], null, [
 																			'class' => 'lse-transition-prop'
 																		]) ?>
@@ -5508,8 +7300,55 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																</lse-ib>
 																<lse-ib class="lse-jcc">
 																	<?php lsGetCheckbox( $lsDefaults['layers']['loopYoyo'], null, [
-																		'class' => 'lse-transition-prop'
+																		'class' => 'lse-transition-prop',
+																		'lse-tgl' => 'loop-yoyo'
 																	]) ?>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="loop-yoyo" tgl-on>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Yoyo Wait', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-operations data-smart-help="loopyoyowait" data-smart-help-title="<?= __('Loop Yoyo Wait', 'LayerSlider') ?>" data-smart-options="loopyoyowait" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['loopYoyoWait'], null, [
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Resume', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<?php lsGetCheckbox( $lsDefaults['layers']['loopResume'], null, [
+																		'class' => 'lse-transition-prop'
+																	], false, [
+																		'data-tt-de' => '0',
+																		'data-tt' => ''
+																	]) ?>
+																	<lse-tt><?= __('When enabled, each loop cycle continues the animation from the layer’s current state instead of restarting from its initial state.', 'LayerSlider') ?></lse-tt>
+																</lse-ib>
+															</lse-col>
+															<lse-col class="lse-hide-if-loop-stagger">
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Step Wait', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-operations data-smart-help="loopstepwait" data-smart-help-title="<?= __('Loop Step Wait', 'LayerSlider') ?>" data-smart-options="loopstepwait" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['loopTweenWait'], null, [
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
 																</lse-ib>
 															</lse-col>
 															<lse-col-placeholder></lse-col-placeholder>
@@ -5532,13 +7371,13 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row>
-															<lse-col>
+															<lse-col class="lse-full">
 																<lse-ib>
 																	<lse-text>
 																		<?= __('Opacity', 'LayerSlider') ?>
 																	</lse-text>
 																</lse-ib>
-																<lse-ib class="lse-range-inputs lse-half">
+																<lse-ib class="lse-range-inputs lse-2-1">
 																	<?php lsGetInput( $lsDefaults['layers']['loopOpacity'], null, [
 																		'type' 	=> 'range',
 																		'min' 	=> 0,
@@ -5548,12 +7387,14 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																		'class' => 'lse-small lse-transition-prop'
 																	]) ?>
 
-																	<?php lsGetInput( $lsDefaults['layers']['loopOpacity'], null, [
-																		'class' => 'lse-transition-prop'
-																	]) ?>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="opacity" data-smart-help-title="<?= __('Opacity', 'LayerSlider') ?>" data-smart-help-filter="loop" data-smart-options="opacity" data-smart-options-title="<?= __('Opacity', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['loopOpacity'], null, [
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col>
+															<lse-col class="lse-full">
 																<lse-ib>
 																	<lse-text>
 																		<?= __('Filter', 'LayerSlider') ?>
@@ -5567,6 +7408,7 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
+															<lse-col-placeholder></lse-col-placeholder>
 														</lse-row>
 													</lse-grid>
 
@@ -5610,7 +7452,6 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 												<lse-sidebar-section-head class="lse-can-be-closed lse-show-more">
 													<lse-text class="lse-inline-badge-holder">
 														<?= __('Transition presets', 'LayerSlider') ?>
-															<lse-badge><?= __('NEW', 'LayerSlider') ?></lse-badge>
 													</lse-text>
 
 													<lse-options class="lse-icons-only">
@@ -5624,6 +7465,18 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row class="lse-wide-cols">
+
+															<lse-col class="lse-mt-s lse-wide lse-col-notice lse-transition-preset-bg-notice" data-max-clicks-namespace="applyTransitionPreset">
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Click a preset for preview, then the checkmark on the right to apply it.', 'LayerSlider') ?>
+																		<lse-b>
+																			<lse-button class="lse-max-clicks" data-max-clicks="1" data-max-clicks-namespace="applyTransitionPreset"><?= __('I understand', 'LayerSlider') ?></lse-button>
+																		</lse-b>
+																	</lse-text>
+																</lse-ib>
+															</lse-col>
+
 															<lse-col class="lse-full lse-transition-presets-cnt">
 																<lse-b class="lse-transition-presets">
 																	<lse-b class="lse-transition-presets-box">
@@ -5688,7 +7541,23 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 													</lse-options>
 												</lse-sidebar-section-head>
 
-												<lse-sidebar-section-body>
+												<lse-sidebar-section-body class="lse-has-toolbar" data-storage="transformation">
+
+													<lse-button-group class="lse-toolbar">
+														<lse-ib class="lse-f11"></lse-ib>
+
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
+														</lse-button>
+
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
+
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
+													</lse-button-group>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row>
@@ -5701,7 +7570,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-select">
 																		<?php lsGetSelect( $lsDefaults['layers']['textTypeOut'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'textType'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -5717,14 +7587,16 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																		<?php lsGetInput( $lsDefaults['layers']['textOffsetXOut'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'X',
-																			'data-units' => 'px % left lw sw +'
+																			'data-units' => 'px % left lw sw ...',
+																			'data-clipboard-key' => 'offsetX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="offsettextout" data-smart-help-title="<?= __('Offset', 'LayerSlider') ?>" data-smart-options-title="<?= __('Offset | Y axis', 'LayerSlider') ?>" data-smart-options="offset" data-smart-operations data-smart-help-filter="textout-y">
 																		<?php lsGetInput( $lsDefaults['layers']['textOffsetYOut'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'Y',
-																			'data-units' => 'px % top lh sh +'
+																			'data-units' => 'px % top lh sh ...',
+																			'data-clipboard-key' => 'offsetY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -5747,14 +7619,16 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																		<?php lsGetInput( $lsDefaults['layers']['textScaleXOut'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'X',
-																			'data-link' => 'scale-transition-text-out'
+																			'data-link' => 'scale-transition-text-out',
+																			'data-clipboard-key' => 'scaleX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="scaletextout" data-smart-options="scale" data-smart-help-title="<?= __('Scale', 'LayerSlider') ?>" data-smart-options-title="<?= __('Scale | Y axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="text">
 																		<?php lsGetInput( $lsDefaults['layers']['textScaleYOut'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'Y',
-																			'data-link' => 'scale-transition-text-out'
+																			'data-link' => 'scale-transition-text-out',
+																			'data-clipboard-key' => 'scaleY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -5765,23 +7639,26 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																		<?= __('Rotation', 'LayerSlider') ?><lse-props>Z, X, Y</lse-props><lse-cur-prop></lse-cur-prop><lse-units><?= _x('degree', 'measurement unit', 'LayerSlider') ?></lse-units>
 																	</lse-text>
 																</lse-ib>
-																<lse-ib class="lse-third">
+																<lse-ib class="lse-third lse-expandable">
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotatetextout" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="text">
 																		<?php lsGetInput( $lsDefaults['layers']['textRotateOut'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => __('Z (normal)', 'LayerSlider'),
+																			'data-clipboard-key' => 'rotate'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotatetextout" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-options-title="<?= __('Rotation | X axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="text">
 																		<?php lsGetInput( $lsDefaults['layers']['textRotateXOut'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'X',
+																			'data-clipboard-key' => 'rotateX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotatetextout" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-options-title="<?= __('Rotation | Y axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="text">
 																		<?php lsGetInput( $lsDefaults['layers']['textRotateYOut'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'Y',
+																			'data-clipboard-key' => 'rotateY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -5797,12 +7674,29 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																		<?php lsGetInput( $lsDefaults['layers']['textSkewXOut'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'X',
+																			'data-clipboard-key' => 'skewX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="skewtextout" data-smart-options="skew" data-smart-help-title="<?= __('Skew', 'LayerSlider') ?>" data-smart-options-title="<?= __('Skew | Y axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="text">
 																		<?php lsGetInput( $lsDefaults['layers']['textSkewYOut'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'Y',
+																			'data-clipboard-key' => 'skewY'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Mask', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="maskText" data-smart-options="maskout" data-smart-help-title="<?= __('Mask', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layers']['textClipOut'], null, [
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'clip'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -5817,7 +7711,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="transformorigin" data-smart-help-title="<?= __('Transform Origin', 'LayerSlider') ?>" data-smart-options="transformorigin" data-set-values>
 																		<?php lsGetInput( $lsDefaults['layers']['textTransformOriginOut'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'transformOrigin'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -5831,7 +7726,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="perspective" data-smart-help-title="<?= __('Perspective', 'LayerSlider') ?>">
 																		<?php lsGetInput( $lsDefaults['layers']['textPerspectiveOut'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'perspective'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -5845,7 +7741,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="mirrortransition" data-smart-options="mirrortransition"  data-set-values data-smart-help-title="<?= __('Mirror Transition', 'LayerSlider') ?>">
 																		<?php lsGetInput( $lsDefaults['layers']['textMirrorOut'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'mirror'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -6060,7 +7957,6 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 												<lse-sidebar-section-head class="lse-can-be-closed lse-show-more">
 													<lse-text class="lse-inline-badge-holder">
 														<?= __('Transition presets', 'LayerSlider') ?>
-															<lse-badge><?= __('NEW', 'LayerSlider') ?></lse-badge>
 													</lse-text>
 
 													<lse-options class="lse-icons-only">
@@ -6074,6 +7970,18 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row class="lse-wide-cols">
+
+															<lse-col class="lse-mt-s lse-wide lse-col-notice lse-transition-preset-bg-notice" data-max-clicks-namespace="applyTransitionPreset">
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Click a preset for preview, then the checkmark on the right to apply it.', 'LayerSlider') ?>
+																		<lse-b>
+																			<lse-button class="lse-max-clicks" data-max-clicks="1" data-max-clicks-namespace="applyTransitionPreset"><?= __('I understand', 'LayerSlider') ?></lse-button>
+																		</lse-b>
+																	</lse-text>
+																</lse-ib>
+															</lse-col>
+
 															<lse-col class="lse-full lse-transition-presets-cnt">
 																<lse-b class="lse-transition-presets">
 																	<lse-b class="lse-transition-presets-box">
@@ -6138,7 +8046,23 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 													</lse-options>
 												</lse-sidebar-section-head>
 
-												<lse-sidebar-section-body>
+												<lse-sidebar-section-body class="lse-has-toolbar" data-storage="transformation">
+
+													<lse-button-group class="lse-toolbar">
+														<lse-ib class="lse-f11"></lse-ib>
+
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
+														</lse-button>
+
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
+
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
+													</lse-button-group>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row>
@@ -6153,14 +8077,16 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																		<?php lsGetInput( $lsDefaults['layers']['transitionOutOffsetX'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'X',
-																			'data-units' => 'px % left lw sw +'
+																			'data-units' => 'px % left lw sw ...',
+																			'data-clipboard-key' => 'offsetX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="offsetout" data-smart-help-title="<?= __('Offset', 'LayerSlider') ?>" data-smart-options-title="<?= __('Offset | Y axis', 'LayerSlider') ?>" data-smart-options="offset" data-smart-operations data-smart-help-filter="out-y">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionOutOffsetY'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'Y',
-																			'data-units' => 'px % top lh sh +'
+																			'data-units' => 'px % top lh sh ...',
+																			'data-clipboard-key' => 'offsetY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -6183,14 +8109,16 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																		<?php lsGetInput( $lsDefaults['layers']['transitionOutScaleX'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'X',
-																			'data-link' => 'scale-transition-out'
+																			'data-link' => 'scale-transition-out',
+																			'data-clipboard-key' => 'scaleX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="scaleout" data-smart-options="scale" data-smart-help-title="<?= __('Scale', 'LayerSlider') ?>" data-smart-options-title="<?= __('Scale | Y axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="out">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionOutScaleY'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'Y',
-																			'data-link' => 'scale-transition-out'
+																			'data-link' => 'scale-transition-out',
+																			'data-clipboard-key' => 'scaleY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -6201,23 +8129,26 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																		<?= __('Rotation', 'LayerSlider') ?><lse-props>Z, X, Y</lse-props><lse-cur-prop></lse-cur-prop><lse-units><?= _x('degree', 'measurement unit', 'LayerSlider') ?></lse-units>
 																	</lse-text>
 																</lse-ib>
-																<lse-ib class="lse-third">
+																<lse-ib class="lse-third lse-expandable">
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotateout" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="out">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionOutRotate'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-prop-type' => __('Z (normal)', 'LayerSlider')
+																			'data-prop-type' => __('Z (normal)', 'LayerSlider'),
+																			'data-clipboard-key' => 'rotate'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotateout" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-options-title="<?= __('Rotation | X axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="out">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionOutRotateX'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-prop-type' => 'X'
+																			'data-prop-type' => 'X',
+																			'data-clipboard-key' => 'rotateX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotateout" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-options-title="<?= __('Rotation | Y axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="out">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionOutRotateY'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-prop-type' => 'Y'
+																			'data-prop-type' => 'Y',
+																			'data-clipboard-key' => 'rotateY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -6232,13 +8163,15 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="skewout" data-smart-options="skew" data-smart-help-title="<?= __('Skew', 'LayerSlider') ?>" data-smart-options-title="<?= __('Skew | X axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="out">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionOutSkewX'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-prop-type' => 'X'
+																			'data-prop-type' => 'X',
+																			'data-clipboard-key' => 'skewX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="skewout" data-smart-options="skew" data-smart-help-title="<?= __('Skew', 'LayerSlider') ?>" data-smart-options-title="<?= __('Skew | Y axis', 'LayerSlider') ?>" data-smart-operations data-smart-help-filter="out">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionOutSkewY'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-prop-type' => 'Y'
+																			'data-prop-type' => 'Y',
+																			'data-clipboard-key' => 'skewY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -6250,16 +8183,18 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib class="lse-half">
-																	<lse-fe-wrapper>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="widthout" data-smart-help-title="<?= __('Width', 'LayerSlider') ?>" data-smart-options="width" data-smart-options-title="<?= __('Width', 'LayerSlider') ?>" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['transitionOutWidth'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-prop-type' => __('width', 'LayerSlider')
+																			'data-prop-type' => __('width', 'LayerSlider'),
+																			'data-clipboard-key' => 'width'
 																		]) ?>
 																	</lse-fe-wrapper>
-																	<lse-fe-wrapper>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="heightout" data-smart-help-title="<?= __('Height', 'LayerSlider') ?>" data-smart-options="height" data-smart-options-title="<?= __('Height', 'LayerSlider') ?>" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['transitionOutHeight'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-prop-type' => __('height', 'LayerSlider')
+																			'data-prop-type' => __('height', 'LayerSlider'),
+																			'data-clipboard-key' => 'height'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -6271,9 +8206,10 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="mask" data-smart-options="maskout" data-smart-help-title="<?= __('Mask', 'LayerSlider') ?>">
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="mask" data-smart-options="maskout" data-smart-help-filter="out" data-smart-help-title="<?= __('Mask', 'LayerSlider') ?>">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionOutClip'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'clip'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -6288,7 +8224,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="transformorigin" data-smart-help-title="<?= __('Transform Origin', 'LayerSlider') ?>" data-smart-options="transformorigin" data-set-values>
 																		<?php lsGetInput( $lsDefaults['layers']['transitionOutTransformOrigin'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'transformOrigin'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -6302,7 +8239,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="perspective" data-smart-help-title="<?= __('Perspective', 'LayerSlider') ?>">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionOutPerspective'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'perspective'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -6316,7 +8254,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="mirrortransition" data-smart-options="mirrortransition"  data-set-values data-smart-help-title="<?= __('Mirror Transition', 'LayerSlider') ?>">
 																		<?php lsGetInput( $lsDefaults['layers']['transitionOutMirror'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'mirror'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -6447,6 +8386,21 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 															<lse-col>
 																<lse-ib>
 																	<lse-text>
+																		<?= __('Stacking order', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="zindex" data-smart-help-title="<?= __('Stacking Order', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['zIndexOut'], null, [
+																			'placeholder' => __('default', 'LayerSlider'),
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text>
 																		<?= __('Text Color', 'LayerSlider') ?>
 																	</lse-text>
 																</lse-ib>
@@ -6478,7 +8432,7 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col>
+															<lse-col class="lse-full">
 																<lse-ib>
 																	<lse-text>
 																		<?= __('Filter', 'LayerSlider') ?>
@@ -6492,7 +8446,6 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-separator></lse-separator>
 															<lse-col class="lse-full">
 																<lse-ib>
 																	<?= lsGetSVGIcon('link','regular',[
@@ -6506,18 +8459,18 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																		<?= __('Rounding', 'LayerSlider') ?> <lse-cur-prop></lse-cur-prop><lse-units>px % em</lse-units>
 																	</lse-text>
 																</lse-ib>
-																<lse-ib class="lse-quarter">
+																<lse-ib class="lse-quarter lse-expandable">
 																	<lse-fe-wrapper>
-																	<input type="text" data-cv="border-radius-transition-out" data-cv-id="1" data-prop-type="<?= __('top-left', 'LayerSlider') ?>" data-link="border-radius-transition-out">
+																		<input type="text" data-cv="border-radius-transition-out" data-cv-id="1" data-prop-type="<?= __('top-left', 'LayerSlider') ?>" data-link="border-radius-transition-out">
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper>
-																	<input type="text" data-cv="border-radius-transition-out" data-cv-id="2" data-prop-type="<?= __('top-right', 'LayerSlider') ?>" data-link="border-radius-transition-out">
+																		<input type="text" data-cv="border-radius-transition-out" data-cv-id="2" data-prop-type="<?= __('top-right', 'LayerSlider') ?>" data-link="border-radius-transition-out">
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper>
-																	<input type="text" data-cv="border-radius-transition-out" data-cv-id="3" data-prop-type="<?= __('btm-right', 'LayerSlider') ?>" data-link="border-radius-transition-out">
+																		<input type="text" data-cv="border-radius-transition-out" data-cv-id="3" data-prop-type="<?= __('btm-right', 'LayerSlider') ?>" data-link="border-radius-transition-out">
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper>
-																	<input type="text" data-cv="border-radius-transition-out" data-cv-id="4" data-prop-type="<?= __('btm-left', 'LayerSlider') ?>" data-link="border-radius-transition-out">
+																		<input type="text" data-cv="border-radius-transition-out" data-cv-id="4" data-prop-type="<?= __('btm-left', 'LayerSlider') ?>" data-link="border-radius-transition-out">
 																	</lse-fe-wrapper>
 																	<?php lsGetInput( $lsDefaults['layers']['transitionOutRadius'], null, [
 																		'class' 	=> 'lse-transition-prop lse-restore-prop lse-undomanager-merge',
@@ -6535,7 +8488,7 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 											</lse-sidebar-section>
 
 											<!-- HOVER TRANSITION -->
-											<lse-sidebar-section class="lse-scrollbar lse-scrollbar-light lse-disabled" data-storage="hover-transition" data-section-name="<?= __('Hover Transition', 'LayerSlider') ?>">
+											<lse-sidebar-section class="lse-scrollbar lse-scrollbar-light lse-disabled lse-hide-on-filter-type" data-storage="hover-transition" data-section-name="<?= __('Hover Transition', 'LayerSlider') ?>">
 
 												<lse-button-group class="lse-toolbar lse-aic lse-jcfe">
 
@@ -6566,7 +8519,6 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 												<lse-sidebar-section-head class="lse-can-be-closed lse-show-more">
 													<lse-text class="lse-inline-badge-holder">
 														<?= __('Transition presets', 'LayerSlider') ?>
-															<lse-badge><?= __('NEW', 'LayerSlider') ?></lse-badge>
 													</lse-text>
 
 													<lse-options class="lse-icons-only">
@@ -6580,6 +8532,18 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row class="lse-wide-cols">
+
+															<lse-col class="lse-mt-s lse-wide lse-col-notice lse-transition-preset-bg-notice" data-max-clicks-namespace="applyTransitionPreset">
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Click a preset for preview, then the checkmark on the right to apply it.', 'LayerSlider') ?>
+																		<lse-b>
+																			<lse-button class="lse-max-clicks" data-max-clicks="1" data-max-clicks-namespace="applyTransitionPreset"><?= __('I understand', 'LayerSlider') ?></lse-button>
+																		</lse-b>
+																	</lse-text>
+																</lse-ib>
+															</lse-col>
+
 															<lse-col class="lse-full lse-transition-presets-cnt">
 																<lse-b class="lse-transition-presets">
 																	<lse-b class="lse-transition-presets-box">
@@ -6645,7 +8609,23 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 													</lse-options>
 												</lse-sidebar-section-head>
 
-												<lse-sidebar-section-body>
+												<lse-sidebar-section-body class="lse-has-toolbar" data-storage="transformation">
+
+													<lse-button-group class="lse-toolbar">
+														<lse-ib class="lse-f11"></lse-ib>
+
+														<lse-button class="lse-copy-layer-properties" data-tt=".tt-copy-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('copy','regular') ?>
+														</lse-button>
+
+														<lse-button class="lse-paste-layer-properties" data-tt=".tt-paste-section-settings" data-tt-de="0">
+															<?= lsGetSVGIcon('paste') ?>
+														</lse-button>
+
+														<lse-button class="lse-clear-layer-properties" data-tt=".tt-clear-property" data-tt-de="0">
+															<?= lsGetSVGIcon('trash-alt') ?>
+														</lse-button>
+													</lse-button-group>
 
 													<lse-grid class="lse-form-elements">
 														<lse-row>
@@ -6660,14 +8640,16 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																		<?php lsGetInput( $lsDefaults['layers']['hoverOffsetX'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'X',
-																			'data-units' => 'px % lw +'
+																			'data-units' => 'px % lw ...',
+																			'data-clipboard-key' => 'offsetX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="offset" data-smart-help-title="<?= __('Offset', 'LayerSlider') ?>" data-smart-options-title="<?= __('Offset | Y axis', 'LayerSlider') ?>" data-smart-options="offset" data-smart-operations data-smart-help-filter="hover-y">
 																		<?php lsGetInput( $lsDefaults['layers']['hoverOffsetY'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'Y',
-																			'data-units' => 'px % lh +'
+																			'data-units' => 'px % lh ...',
+																			'data-clipboard-key' => 'offsetY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -6690,14 +8672,16 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																		<?php lsGetInput( $lsDefaults['layers']['hoverScaleX'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'X',
-																			'data-link' => 'scale-transition-hover'
+																			'data-link' => 'scale-transition-hover',
+																			'data-clipboard-key' => 'scaleX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="scale" data-smart-help-title="<?= __('Scale', 'LayerSlider') ?>" data-smart-options-title="<?= __('Scale | Y axis', 'LayerSlider') ?>" data-smart-operations data-smart-options="scale">
 																		<?php lsGetInput( $lsDefaults['layers']['hoverScaleY'], null, [
 																			'class' => 'lse-transition-prop',
 																			'data-prop-type' => 'Y',
-																			'data-link' => 'scale-transition-hover'
+																			'data-link' => 'scale-transition-hover',
+																			'data-clipboard-key' => 'scaleY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -6708,23 +8692,26 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																		<?= __('Rotation', 'LayerSlider') ?><lse-props>Z, X, Y</lse-props><lse-cur-prop></lse-cur-prop><lse-units><?= _x('degree', 'measurement unit', 'LayerSlider') ?></lse-units>
 																	</lse-text>
 																</lse-ib>
-																<lse-ib class="lse-third">
+																<lse-ib class="lse-third lse-expandable">
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotate" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['hoverRotate'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-prop-type' => __('Z (normal)', 'LayerSlider')
+																			'data-prop-type' => __('Z (normal)', 'LayerSlider'),
+																			'data-clipboard-key' => 'rotate'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotate" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-options-title="<?= __('Rotation | X axis', 'LayerSlider') ?>" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['hoverRotateX'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-prop-type' => 'X'
+																			'data-prop-type' => 'X',
+																			'data-clipboard-key' => 'rotateX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="rotate" data-smart-options="rotate" data-smart-help-title="<?= __('Rotation', 'LayerSlider') ?>" data-smart-options-title="<?= __('Rotation | Y axis', 'LayerSlider') ?>" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['hoverRotateY'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-prop-type' => 'Y'
+																			'data-prop-type' => 'Y',
+																			'data-clipboard-key' => 'rotateY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -6739,13 +8726,15 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="skew" data-smart-options="skew" data-smart-help-title="<?= __('Skew', 'LayerSlider') ?>" data-smart-options-title="<?= __('Skew | X axis', 'LayerSlider') ?>" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['hoverSkewX'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-prop-type' => 'X'
+																			'data-prop-type' => 'X',
+																			'data-clipboard-key' => 'skewX'
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="skew" data-smart-options="skew" data-smart-help-title="<?= __('Skew', 'LayerSlider') ?>" data-smart-options-title="<?= __('Skew | Y axis', 'LayerSlider') ?>" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['hoverSkewY'], null, [
 																			'class' => 'lse-transition-prop',
-																			'data-prop-type' => 'Y'
+																			'data-prop-type' => 'Y',
+																			'data-clipboard-key' => 'skewY'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -6761,7 +8750,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="transformorigin" data-smart-help-title="<?= __('Transform Origin', 'LayerSlider') ?>" data-smart-options="transformorigin" data-set-values>
 																		<?php lsGetInput( $lsDefaults['layers']['hoverTransformOrigin'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'transformOrigin'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -6775,7 +8765,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																<lse-ib>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="perspective" data-smart-help-title="<?= __('Perspective', 'LayerSlider') ?>">
 																		<?php lsGetInput( $lsDefaults['layers']['hoverTransformPerspective'], null, [
-																			'class' => 'lse-transition-prop'
+																			'class' => 'lse-transition-prop',
+																			'data-clipboard-key' => 'perspective'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -6806,7 +8797,7 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="duration" data-smart-help-title="<?= __('Duration', 'LayerSlider') ?>" data-smart-operations>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="duration" data-smart-help-title="<?= __('Duration', 'LayerSlider') ?>" data-smart-options="duration" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['hoverInDuration'], null, [
 																			'class' => 'lse-transition-prop'
 																		]) ?>
@@ -6817,14 +8808,14 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 															<lse-col>
 																<lse-ib>
 																	<lse-text>
-																		<?= __('Reverse', 'LayerSlider') ?>
+																		<?= __('Reverse Duration', 'LayerSlider') ?>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="duration" data-smart-help-title="<?= __('Duration | reverse', 'LayerSlider') ?>" data-smart-operations>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="duration" data-smart-help-title="<?= __('Reverse Duration', 'LayerSlider') ?>" data-smart-options="duration" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['hoverOutDuration'], null, [
 																			'class' => 'lse-transition-prop',
-																			'placeholder' => __('Same', 'LayerSlider')
+																			'placeholder' => __('same', 'LayerSlider')
 																		]) ?>
 																	</lse-fe-wrapper>
 																	<lse-unit>ms</lse-unit>
@@ -6848,16 +8839,28 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 															<lse-col>
 																<lse-ib>
 																	<lse-text>
-																		<?= __('Reverse', 'LayerSlider') ?>
+																		<?= __('Reverse Easing', 'LayerSlider') ?>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing | reverse', 'LayerSlider') ?>">
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Reverse Easing', 'LayerSlider') ?>">
 																		<?php lsGetSelect( $lsDefaults['layers']['hoverOutEasing'], null, [
 																			'class' => 'lse-transition-prop',
-																			'options' => array_merge( [ '' => __('Same', 'LayerSlider') ], $lsDefaults['easings'] )
+																			'options' => array_merge( [ '' => __('same', 'LayerSlider') ], $lsDefaults['easings'] )
 																		]) ?>
 																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Exclude from Global Hover', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<?php lsGetCheckbox( $lsDefaults['layers']['hoverSkipGlobal'], null, [
+																		'class' => 'lse-transition-prop'
+																	]) ?>
 																</lse-ib>
 															</lse-col>
 														</lse-row>
@@ -6879,26 +8882,6 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 
 												<lse-grid class="lse-form-elements">
 													<lse-row>
-														<lse-col>
-															<lse-ib>
-																<lse-text>
-																	<?= __('Opacity', 'LayerSlider') ?>
-																</lse-text>
-															</lse-ib>
-															<lse-ib class="lse-range-inputs lse-half">
-																<?php lsGetInput( $lsDefaults['layers']['hoverOpacity'], null, [
-																	'type' 	=> 'range',
-																	'min' 	=> 0,
-																	'max' 	=> 1,
-																	'step' 	=> 0.05,
-																	'name' 	=> '',
-																	'class' => 'lse-small lse-transition-prop'
-																]) ?>
-																<?php lsGetInput( $lsDefaults['layers']['hoverOpacity'], null, [
-																	'class' => 'lse-transition-prop'
-																]) ?>
-															</lse-ib>
-														</lse-col>
 														<lse-col>
 															<lse-ib>
 																<lse-text>
@@ -6945,6 +8928,30 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																</lse-fe-wrapper>
 															</lse-ib>
 														</lse-col>
+														<lse-col-placeholder></lse-col-placeholder>
+														<lse-col class="lse-full">
+															<lse-ib>
+																<lse-text>
+																	<?= __('Opacity', 'LayerSlider') ?>
+																</lse-text>
+															</lse-ib>
+															<lse-ib class="lse-range-inputs lse-2-1">
+																<?php lsGetInput( $lsDefaults['layers']['hoverOpacity'], null, [
+																	'type' 	=> 'range',
+																	'min' 	=> 0,
+																	'max' 	=> 1,
+																	'step' 	=> 0.05,
+																	'name' 	=> '',
+																	'class' => 'lse-small lse-transition-prop'
+																]) ?>
+
+																<lse-fe-wrapper class="lse-smart-help" data-smart-help="opacity" data-smart-help-title="<?= __('Opacity', 'LayerSlider') ?>" data-smart-help-filter="transition" data-smart-options="opacity" data-smart-options-title="<?= __('Opacity', 'LayerSlider') ?>" data-smart-operations>
+																	<?php lsGetInput( $lsDefaults['layers']['hoverOpacity'], null, [
+																		'class' => 'lse-transition-prop'
+																	]) ?>
+																</lse-fe-wrapper>
+															</lse-ib>
+														</lse-col>
 														<lse-col class="lse-full">
 															<lse-ib>
 																<?= lsGetSVGIcon('link','regular',[
@@ -6958,18 +8965,18 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	<?= __('Rounding', 'LayerSlider') ?> <lse-cur-prop></lse-cur-prop><lse-units>px % em</lse-units>
 																</lse-text>
 															</lse-ib>
-															<lse-ib class="lse-quarter">
+															<lse-ib class="lse-quarter lse-expandable">
 																<lse-fe-wrapper>
-																<input type="text" data-cv="border-radius-transition-hover" data-cv-id="1" data-prop-type="<?= __('top-left', 'LayerSlider') ?>" data-link="border-radius-transition-hover">
+																	<input type="text" data-cv="border-radius-transition-hover" data-cv-id="1" data-prop-type="<?= __('top-left', 'LayerSlider') ?>" data-link="border-radius-transition-hover">
 																</lse-fe-wrapper>
 																<lse-fe-wrapper>
-																<input type="text" data-cv="border-radius-transition-hover" data-cv-id="2" data-prop-type="<?= __('top-right', 'LayerSlider') ?>" data-link="border-radius-transition-hover">
+																	<input type="text" data-cv="border-radius-transition-hover" data-cv-id="2" data-prop-type="<?= __('top-right', 'LayerSlider') ?>" data-link="border-radius-transition-hover">
 																</lse-fe-wrapper>
 																<lse-fe-wrapper>
-																<input type="text" data-cv="border-radius-transition-hover" data-cv-id="3" data-prop-type="<?= __('btm-right', 'LayerSlider') ?>" data-link="border-radius-transition-hover">
+																	<input type="text" data-cv="border-radius-transition-hover" data-cv-id="3" data-prop-type="<?= __('btm-right', 'LayerSlider') ?>" data-link="border-radius-transition-hover">
 																</lse-fe-wrapper>
 																<lse-fe-wrapper>
-																<input type="text" data-cv="border-radius-transition-hover" data-cv-id="4" data-prop-type="<?= __('btm-left', 'LayerSlider') ?>" data-link="border-radius-transition-hover">
+																	<input type="text" data-cv="border-radius-transition-hover" data-cv-id="4" data-prop-type="<?= __('btm-left', 'LayerSlider') ?>" data-link="border-radius-transition-hover">
 																</lse-fe-wrapper>
 																<?php lsGetInput( $lsDefaults['layers']['hoverBorderRadius'], null, [
 																	'class' 	=> 'lse-transition-prop lse-restore-prop lse-undomanager-merge',
@@ -7055,45 +9062,111 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 															<lse-col>
 																<lse-ib>
 																	<lse-text>
-																		<?= __('Type', 'LayerSlider') ?>
+																		<?= __('Mode', 'LayerSlider') ?>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-select">
-																		<?php lsGetSelect( $lsDefaults['layers']['parallaxType'], null, [
-																			'class' => 'lse-transition-prop'
-																		]) ?>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="parallaxmode" data-smart-help-title="<?= __('Parallax Mode', 'LayerSlider') ?>">
+																		<select id="lse-layer-parallax-event-select" value="inherit" name="parallaxevent" data-prop="parallaxevent" data-search-name="Mode" class="lse-transition-prop" lse-tgl="layer-parallax-event" data-default="inherit">
+																			<option value="inherit" selected=""><?= __('Inherit', 'LayerSlider') ?></option>
+																			<option value="cursor"><?= __('Cursor', 'LayerSlider') ?></option>
+																			<option value="scroll"><?= __('Scroll', 'LayerSlider') ?></option>
+																			<option value="auto"><?= __('Automated', 'LayerSlider') ?></option>
+																			<option value="random"><?= __('Random', 'LayerSlider') ?></option>
+																		</select>
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
 															<lse-col>
 																<lse-ib>
 																	<lse-text>
-																		<?= __('Event', 'LayerSlider') ?>
+																		<?= __('Type', 'LayerSlider') ?>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-select">
-																		<?php lsGetSelect( $lsDefaults['layers']['parallaxEvent'], null, [
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="parallaxtype" data-smart-help-title="<?= __('Parallax Type', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layers']['parallaxType'], null, [
+																			'id' => 'lse-layer-parallax-type-select',
+																			'class' => 'lse-transition-prop',
+																			'lse-tgl' => 'layer-parallax-type'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-separator></lse-separator>
+															<lse-col lse-tgl-t="layer-parallax-event" tgl-auto>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Path', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="parallaxpath" data-smart-help-title="<?= __('Parallax Path', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layers']['parallaxPath'], null, [
 																			'class' => 'lse-transition-prop'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col>
+															<lse-col lse-tgl-t="layer-parallax-event" tgl-auto>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Direction', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select  lse-smart-help" data-smart-help="parallaxdirection" data-smart-help-title="<?= __('Parallax Direction', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layers']['parallaxDirection'], null, [
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="layer-parallax-event" tgl-cursor tgl-scroll>
 																<lse-ib>
 																	<lse-text>
 																		<?= __('Axes', 'LayerSlider') ?>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-select">
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="parallaxaxes" data-smart-help-title="<?= __('Parallax Axes', 'LayerSlider') ?>">
 																		<?php lsGetSelect( $lsDefaults['layers']['parallaxAxis'], null, [
 																			'class' => 'lse-transition-prop'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
+															<lse-col class="lse-full" lse-tgl-t="layer-parallax-event" tgl-random>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Range X', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxrange" data-smart-help-title="<?= __('Parallax Range', 'LayerSlider') ?>" data-smart-options-title="<?= __('Range | X axis', 'LayerSlider') ?>" data-smart-options="random-parallax-x" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['parallaxRangeX'], null, [
+																			'class' 				=> 'lse-transition-prop',
+																			'data-clipboard-key' 	=> 'parallaxRangeX'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col class="lse-full" lse-tgl-t="layer-parallax-event" tgl-random>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Range Y', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxrange" data-smart-help-title="<?= __('Parallax Range', 'LayerSlider') ?>" data-smart-options-title="<?= __('Range | Y axis', 'LayerSlider') ?>" data-smart-options="random-parallax-y" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['parallaxRangeY'], null, [
+																			'class' 				=> 'lse-transition-prop',
+																			'data-clipboard-key' 	=> 'parallaxRangeY'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-separator lse-tgl-t="layer-parallax-event" tgl-random></lse-separator>
 															<lse-col>
 																<lse-ib>
 																	<lse-text>
@@ -7108,7 +9181,7 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
-															<lse-col>
+															<lse-col lse-tgl-t="layer-parallax-type" tgl-3d>
 																<lse-ib>
 																	<lse-text>
 																		<?= __('Rotation', 'LayerSlider') ?>
@@ -7122,7 +9195,213 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
+															<lse-col lse-tgl-t="layer-parallax-event" tgl-auto>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Start At', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layers']['parallaxStartAt'], null, [
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="layer-parallax-event" tgl-random>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Start At', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layers']['parallaxRandomStartAt'], null, [
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="layer-parallax-event" tgl-auto>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Duration', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxmoveduration" data-smart-help-title="<?= __('Duration', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['parallaxPathDuration'], null, [
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="layer-parallax-event" tgl-random>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Duration', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxrandomduration" data-smart-options="parallaxrandomduration" data-smart-help-title="<?= __('Duration', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['parallaxRandomDuration'], null, [
+																			'type' => 'text',
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="layer-parallax-event" tgl-cursor>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Enter Duration', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxenterduration" data-smart-help-title="<?= __('Enter Duration', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layers']['parallaxDurationEnter'], null, [
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="layer-parallax-event" tgl-cursor tgl-scroll>
+																<lse-ib>
+																	<lse-text lse-tgl-t="layer-parallax-event" tgl-cursor>
+																		<?= __('Move Duration', 'LayerSlider') ?>
+																	</lse-text>
+																	<lse-text lse-tgl-t="layer-parallax-event" tgl-scroll>
+																		<?= __('Duration', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxmoveduration" data-smart-help-title="<?= __('Move Duration', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['parallaxDurationMove'], null, [
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="layer-parallax-event" tgl-cursor>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Leave Duration', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxleaveduration" data-smart-help-title="<?= __('Leave Duration', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['parallaxDurationLeave'], null, [
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="layer-parallax-event" tgl-random>
+																<lse-ib>
+																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<lse-fe-wrapper class="lse-select  lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layers']['parallaxEasing'], null, [
+																			'class' => 'lse-transition-prop',
+																			'options' => array_merge( [ '' => __('Inherit', 'LayerSlider') ], $lsDefaults['easings'] )
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="layer-parallax-event" tgl-random>
+																<lse-ib>
+																	<lse-text><?= __('Wait', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib class="lse-jcc">
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxrandomwait" data-smart-options="parallaxrandomwait" data-smart-help-title="<?= __('Wait', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layers']['parallaxRandomWait'], null, [
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="layer-parallax-event" tgl-auto>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Repeat', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layers']['parallaxCount'], null, [
+																			'class' => 'lse-transition-prop'
+																		], true) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col-placeholder></lse-col-placeholder>
 															<lse-separator></lse-separator>
+
+															<lse-col class="lse-full" lse-tgl-t="layer-parallax-event" tgl-cursor>
+																<lse-ib>
+																	<?= lsGetSVGIcon('link','regular',[
+																			'class' => 'lse-can-be-activated',
+																			'data-link-property' => 'scale-layer-parallax',
+																			'data-tt' => ''
+																		]) ?>
+																	<lse-tt><?= __('Link / Unlink fields', 'LayerSlider') ?></lse-tt>
+
+																	<lse-text>
+																		<?= __('Scale', 'LayerSlider') ?><lse-props>X, Y</lse-props><lse-cur-prop></lse-cur-prop><lse-units><?= __('intensity', 'LayerSlider') ?></lse-units>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib class="lse-half">
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxscalex" data-smart-help-title="<?= __('Scale X', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['parallaxScaleX'], null, [
+																			'class' 			=> 'lse-transition-prop',
+																			'data-prop-type' 	=> 'X',
+																			'data-link' 		=> 'scale-layer-parallax'
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxscaley" data-smart-help-title="<?= __('Scale Y', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['parallaxScaleY'], null, [
+																			'class' 			=> 'lse-transition-prop',
+																			'data-prop-type' 	=> 'Y',
+																			'data-link' 		=> 'scale-layer-parallax'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col class="lse-full" lse-tgl-t="layer-parallax-event" tgl-cursor>
+																<lse-ib>
+																	<lse-text>
+																	<?= __('Skew', 'LayerSlider') ?><lse-props>X, Y</lse-props><lse-cur-prop></lse-cur-prop><lse-units><?= __('intensity', 'LayerSlider') ?></lse-units>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib class="lse-half">
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxskewx" data-smart-help-title="<?= __('Skew X', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['parallaxSkewX'], null, [
+																			'class' 			=> 'lse-transition-prop',
+																			'data-prop-type' 	=> 'X'
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxskewy" data-smart-help-title="<?= __('Skew Y', 'LayerSlider') ?>" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['parallaxSkewY'], null, [
+																			'class' 			=> 'lse-transition-prop',
+																			'data-prop-type' 	=> 'Y'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col-placeholder></lse-col-placeholder>
+
+															<lse-separator lse-tgl-t="layer-parallax-event" tgl-cursor></lse-separator>
+
 															<lse-col>
 																<lse-ib>
 																	<lse-text>
@@ -7133,6 +9412,21 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="transformorigin" data-smart-help-title="<?= __('Transform Origin', 'LayerSlider') ?>" data-smart-options="transformorigin" data-set-values>
 																		<?php lsGetInput( $lsDefaults['layers']['parallaxTransformOrigin'], null, [
 																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="layer-parallax-event" tgl-cursor>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Parallax Origin', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxorigin" data-smart-help-title="<?= __('Parallax Origin', 'LayerSlider') ?> " data-smart-options="parallaxorigin" data-set-values>
+																		<?php lsGetInput( $lsDefaults['layers']['parallaxOrigin'], null, [
+																			'class' => 'lse-transition-prop lse-must-be-validated',
+																			'pattern' => '(?:layer|slider)(?:left|center|right)\s(?:layer|slider)(?:top|middle|bottom)'
 																		]) ?>
 																	</lse-fe-wrapper>
 																</lse-ib>
@@ -7152,55 +9446,23 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																</lse-ib>
 															</lse-col>
 
-														</lse-row>
-													</lse-grid>
-
-												</lse-sidebar-section-body>
-
-												<lse-sidebar-section-head class="lse-can-be-closed lse-show-more lse-active">
-													<lse-text>
-														<?= __('Transition Properties', 'LayerSlider') ?>
-													</lse-text>
-													<lse-options class="lse-icons-only">
-														<?= lsGetSVGIcon('sort-down',false,['class' => 'lse-open']) ?>
-														<?= lsGetSVGIcon('sort-up',false,['class' => 'lse-close lse-it-fix-2']) ?>
-													</lse-options>
-												</lse-sidebar-section-head>
-
-												<lse-sidebar-section-body>
-
-													<lse-grid class="lse-form-elements">
-														<lse-row>
 															<lse-col>
 																<lse-ib>
 																	<lse-text>
-																		<?= __('Move Duration', 'LayerSlider') ?>
+																		<?= __('Reset', 'LayerSlider') ?>
 																	</lse-text>
 																</lse-ib>
-																<lse-ib>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxmoveduration" data-smart-help-title="<?= __('Move Duration', 'LayerSlider') ?>" data-smart-operations>
-																		<?php lsGetInput( $lsDefaults['layers']['parallaxDurationMove'], null, [
-																			'class' => 'lse-transition-prop'
-																		]) ?>
-																	</lse-fe-wrapper>
-																	<lse-unit>ms</lse-unit>
+																<lse-ib class="lse-jcc" data-tt-de="0" data-tt>
+																	<?php lsGetCheckbox( $lsDefaults['layers']['parallaxReset'], null, [
+																		'class' => 'lse-transition-prop'
+																	]) ?>
+
 																</lse-ib>
+																<lse-tt><?= __('Controls whether layers return to their original state when changing slides or when the mouse leaves the slider with the Parallax Mode is set to Cursor.', 'LayerSlider') ?></lse-tt>
 															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text>
-																		<?= __('Leave Duration', 'LayerSlider') ?>
-																	</lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="parallaxleaveduration" data-smart-help-title="<?= __('Leave Duration', 'LayerSlider') ?>" data-smart-operations>
-																		<?php lsGetInput( $lsDefaults['layers']['parallaxDurationLeave'], null, [
-																			'class' => 'lse-transition-prop'
-																		]) ?>
-																	</lse-fe-wrapper>
-																	<lse-unit>ms</lse-unit>
-																</lse-ib>
-															</lse-col>
+
+															<lse-col-placeholder></lse-col-placeholder>
+
 														</lse-row>
 													</lse-grid>
 
@@ -7926,6 +10188,20 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 															<lse-col>
 																<lse-ib>
 																	<lse-text>
+																		<?= __('Alternate Transf. Origin', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="alternatetransformorigin" data-smart-help-title="<?= __('Alternate Tf. Origin', 'LayerSlider') ?>" data-smart-options="transformorigin" data-set-values>
+																		<?php lsGetInput( $lsDefaults['layers']['scrollTransformOriginAlt'], null, [
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text>
 																		<?= __('Perspective', 'LayerSlider') ?>
 																	</lse-text>
 																</lse-ib>
@@ -7963,11 +10239,57 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	</lse-text>
 																</lse-ib>
 																<lse-ib>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="durationscroll" data-smart-help-title="<?= __('Scroll Duration', 'LayerSlider') ?>">
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="durationscroll" data-smart-help-title="<?= __('Scroll Duration', 'LayerSlider') ?>" data-smart-options="duration" data-smart-operations>
 																		<?php lsGetInput( $lsDefaults['layers']['scrollDuration'], null, [
 																			'class' => 'lse-transition-prop'
 																		]) ?>
-																	</lse-fe-wrapper><lse-unit>ms</lse-unit>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Reverse Duration', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="durationscroll" data-smart-help-title="<?= __('Scroll Reverse Duration', 'LayerSlider') ?>" data-smart-options="duration" data-smart-operations>
+																		<?php lsGetInput( $lsDefaults['layers']['scrollDurationRev'], null, [
+																			'class' => 'lse-transition-prop'
+																		]) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Easing', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layers']['scrollEase'], null, [
+																			'class' => 'lse-transition-prop',
+																			'options' => $lsDefaults['easings']
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Reverse Easing', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Reverse Easing', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layers']['scrollEaseRev'], null, [
+																			'class' => 'lse-transition-prop',
+																			'options' => array_merge( [ '' => __('same', 'LayerSlider') ], $lsDefaults['easings'] )
+																		]) ?>
+																	</lse-fe-wrapper>
 																</lse-ib>
 															</lse-col>
 															<lse-col>
@@ -8061,8 +10383,8 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 									</lse-sidebar-body>
 
 
-									<!-- Link -->
-									<lse-sidebar-body data-section-name="<?= __('Link', 'LayerSlider') ?>">
+									<!-- LINK & ATTRIBUTES -->
+									<lse-sidebar-body data-section-name="<?= __('Link & Attributes', 'LayerSlider') ?>">
 
 										<lse-sidebar-content>
 											<lse-sidebar-section class="lse-scrollbar lse-scrollbar-light">
@@ -8072,12 +10394,7 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 												<lse-sidebar-section-body>
 													<lse-grid class="lse-form-elements lse-link-fields">
 														<lse-row>
-															<lse-col class="lse-wide">
-																<lse-ib>
-																	<lse-text>
-																		<?= __('Set link', 'LayerSlider') ?>
-																	</lse-text>
-																</lse-ib>
+															<lse-col class="lse-full">
 																<lse-ib>
 																	<?php lsGetInput( $lsDefaults['layers']['linkURL'], null, [
 																		'class' => 'lse-link-url-input',
@@ -8094,6 +10411,13 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	]) ?>
 																</lse-ib>
 															</lse-col>
+															<lse-col class="lse-full">
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layers']['linkTarget'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
 															<lse-col class="lse-hide-if-has-link">
 																<lse-ib class="lse-jcc">
 																	<lse-button class="lse-link-post"><?= __('Choose Post or Page', 'LayerSlider') ?></lse-button>
@@ -8104,535 +10428,10 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 																	<lse-button class="lse-link-dyn"><?= __('Use dynamic post URL', 'LayerSlider') ?></lse-button>
 																</lse-ib>
 															</lse-col>
-															<lse-separator></lse-separator>
-															<lse-col class="lse-full">
-																<lse-ib>
-																	<lse-fe-wrapper class="lse-select">
-																		<?php lsGetSelect( $lsDefaults['layers']['linkTarget'] ) ?>
-																	</lse-fe-wrapper>
-																</lse-ib>
-															</lse-col>
+
 														</lse-row>
 													</lse-grid>
 												</lse-sidebar-section-body>
-											</lse-sidebar-section>
-										</lse-sidebar-content>
-									</lse-sidebar-body>
-
-									<!-- Actions -->
-									<lse-sidebar-body data-section-name="<?= __('Actions', 'LayerSlider') ?>">
-										<lse-sidebar-content>
-											<lse-sidebar-section class="lse-scrollbar lse-scrollbar-light">
-
-												<lse-sidebar-section-head>
-													<lse-text><?= __('Layer Actions', 'LayerSlider') ?></lse-text>
-												</lse-sidebar-section-head>
-
-												<lse-sidebar-section-body>
-
-													<lse-wrapper id="lse-layer-actions-data">
-
-														<!-- Scroll -->
-														<lse-b data-layer-action="scrollBelowProject">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Scrolls below the project, pushing it outside of the viewport to make room for any content that follows.', 'LayerSlider') ?>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Duration', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<input type="text" name="duration" value="1000">
-																	<lse-unit>ms</lse-unit>
-																</lse-ib>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
-																		<select name="easing">
-																			<?php foreach( $lsDefaults['easings'] as $easing ) : ?>
-																			<option <?= ( $easing === 'easeInOutQuart' ) ? 'selected' : '' ?>><?= $easing ?></option>
-																			<?php endforeach ?>
-																		</select>
-																	</lse-fe-wrapper>
-																</lse-ib>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Scroll Offset', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<input type="number" name="offset" value="0">
-																	<lse-unit>px</lse-unit>
-																</lse-ib>
-															</lse-col>
-														</lse-b>
-
-														<lse-b data-layer-action="scrollToNextProject">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Scrolls to the next LayerSlider project on page (if there’s any).', 'LayerSlider') ?>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Duration', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<input type="text" name="duration" value="1000">
-																	<lse-unit>ms</lse-unit>
-																</lse-ib>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
-																		<select name="easing">
-																			<?php foreach( $lsDefaults['easings'] as $easing ) : ?>
-																			<option <?= ( $easing === 'easeInOutQuart' ) ? 'selected' : '' ?>><?= $easing ?></option>
-																			<?php endforeach ?>
-																		</select>
-																	</lse-fe-wrapper>
-																</lse-ib>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Scroll Offset', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<input type="number" name="offset" value="0">
-																	<lse-unit>px</lse-unit>
-																</lse-ib>
-															</lse-col>
-														</lse-b>
-
-														<lse-b data-layer-action="scrollToPrevProject">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Scrolls to the previous LayerSlider project on page (if there’s any).', 'LayerSlider') ?>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Duration', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<input type="text" name="duration" value="1000">
-																	<lse-unit>ms</lse-unit>
-																</lse-ib>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
-																		<select name="easing">
-																			<?php foreach( $lsDefaults['easings'] as $easing ) : ?>
-																			<option <?= ( $easing === 'easeInOutQuart' ) ? 'selected' : '' ?>><?= $easing ?></option>
-																			<?php endforeach ?>
-																		</select>
-																	</lse-fe-wrapper>
-																</lse-ib>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Scroll Offset', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<input type="number" name="offset" value="0">
-																	<lse-unit>px</lse-unit>
-																</lse-ib>
-															</lse-col>
-														</lse-b>
-
-														<lse-b data-layer-action="scrollToElement">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Scrolls to the specified element. You can enter a CSS/jQuery selector to target elements. To target LayerSlider projects, use custom class names instead of relying on their randomized ID.', 'LayerSlider') ?>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Duration', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<input type="text" name="duration" value="1000">
-																	<lse-unit>ms</lse-unit>
-																</lse-ib>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
-																		<select name="easing">
-																			<?php foreach( $lsDefaults['easings'] as $easing ) : ?>
-																			<option <?= ( $easing === 'easeInOutQuart' ) ? 'selected' : '' ?>><?= $easing ?></option>
-																			<?php endforeach ?>
-																		</select>
-																	</lse-fe-wrapper>
-																</lse-ib>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Scroll Offset', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<input type="number" name="offset" value="0">
-																	<lse-unit>px</lse-unit>
-																</lse-ib>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Selector', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<input type="text" name="selector" value="" placeholder=".myClass">
-																</lse-ib>
-															</lse-col>
-														</lse-b>
-
-														<lse-b data-layer-action="scrollToScenePosition">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Scrolls to the specified position of the target scene.', 'LayerSlider') ?>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Duration', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<input type="text" name="duration" value="1000">
-																	<lse-unit>ms</lse-unit>
-																</lse-ib>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
-																		<select name="easing">
-																			<?php foreach( $lsDefaults['easings'] as $easing ) : ?>
-																			<option <?= ( $easing === 'easeInOutQuart' ) ? 'selected' : '' ?>><?= $easing ?></option>
-																			<?php endforeach ?>
-																		</select>
-																	</lse-fe-wrapper>
-																</lse-ib>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Target', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<lse-fe-wrapper class="lse-select">
-																		<select name="target">
-																			<option value="currentScene"><?= __('Current Scene', 'LayerSlider') ?></option>
-																			<option value="previousScene"><?= __('Previous Scene', 'LayerSlider') ?></option>
-																			<option value="nextScene"><?= __('Next Scene', 'LayerSlider') ?></option>
-																		</select>
-																	</lse-fe-wrapper>
-																</lse-ib>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Position', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="scroll-to-scene-position" data-smart-options="scroll-to-scene-position" data-smart-help-title="<?= __('Scene Position', 'LayerSlider') ?>">
-																		<input type="text" name="position" placeholder="0% / 0ms">
-																	</lse-fe-wrapper>
-																</lse-ib>
-															</lse-col>
-														</lse-b>
-														<!-- Navigation -->
-														<lse-b data-layer-action="switchSlide">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Jumps to the specified slide. Project Settings like Shuffle mode does not affect the selected slide.', 'LayerSlider') ?>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Slide', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<lse-fe-wrapper class="lse-select">
-																		<select name="slide" class="lse-layer-action-slide-list">
-																			<option disabled><?= __('Select Slide', 'LayerSlider') ?></option>
-																		</select>
-																	</lse-fe-wrapper>
-																</lse-ib>
-															</lse-col>
-														</lse-b>
-
-														<lse-b data-layer-action="nextSlide">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Jumps to the next slide. Options like Shuffle mode or Two way slideshow can affect the sequence.', 'LayerSlider') ?>
-															</lse-col>
-														</lse-b>
-
-														<lse-b data-layer-action="prevSlide">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Jumps to the previous slide. Options like Shuffle mode or Two way slideshow can affect the sequence.', 'LayerSlider') ?>
-															</lse-col>
-														</lse-b>
-
-														<!-- Slideshow -->
-														<lse-b data-layer-action="stopSlideshow">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Stops the slideshow. Depending on your settings, layer animations and progress timers may not be interrupted, but your project will not commence to the next slide automatically.', 'LayerSlider') ?>
-															</lse-col>
-														</lse-b>
-
-														<lse-b data-layer-action="startSlideshow">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Resumes the slideshow and re-enables the automatic slide change.', 'LayerSlider') ?>
-															</lse-col>
-														</lse-b>
-
-
-														<!-- Slide Animation Timeline -->
-														<lse-b data-layer-action="replaySlide">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Instantly restarts the slide replaying all layer transitions from the beginning.', 'LayerSlider') ?>
-															</lse-col>
-														</lse-b>
-
-														<lse-b data-layer-action="reverseSlide">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Plays all transitions backward from the moment it’s triggered, then pauses at the beginning of the slide. An option is provided to continue replaying the slide normally afterward.', 'LayerSlider') ?>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Replay', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<?= lsGetSwitchControl(['name' => 'replay']) ?>
-																</lse-ib>
-															</lse-col>
-														</lse-b>
-
-														<lse-b data-layer-action="resetSlide">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Immediately sets the current slide back to its starting state and pauses it.', 'LayerSlider') ?>
-															</lse-col>
-														</lse-b>
-
-														<!-- Project Animation Timeline -->
-														<lse-b data-layer-action="pauseProject">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Stops the project by freezing every animation taking place when triggered, including slide transitions when changing slides.', 'LayerSlider') ?>
-															</lse-col>
-														</lse-b>
-
-														<lse-b data-layer-action="resumeProject">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Resumes the project and continues playing frozen animations.', 'LayerSlider') ?>
-															</lse-col>
-														</lse-b>
-
-														<lse-b data-layer-action="toggleProject">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Toggles between Pause Project and Resume Project by respecting the current state.', 'LayerSlider') ?>
-															</lse-col>
-														</lse-b>
-
-
-														<!-- Media Playback -->
-														<lse-b data-layer-action="playMedia">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Starts playback of any active media element on the current slide.', 'LayerSlider') ?>
-															</lse-col>
-														</lse-b>
-
-														<lse-b data-layer-action="pauseMedia">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Pauses playback of any active media element on the current slide.', 'LayerSlider') ?>
-															</lse-col>
-														</lse-b>
-
-														<lse-b data-layer-action="unmuteMedia">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Unmutes playback of any active media element on the current slide. Using this action may require a Click or Tap trigger due to browser restrictions.', 'LayerSlider') ?>
-															</lse-col>
-														</lse-b>
-
-
-														<!-- Popups -->
-														<lse-b data-layer-action="openPopup">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Opens the selected Popup. Embedding it to the page is optional; the Popup will be loaded dynamically if needed. Manually embedding it in advance makes it open faster.', 'LayerSlider') ?>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Popup', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<lse-fe-wrapper class="lse-select">
-																		<select name="popup" class="lse-layer-action-popup-list">
-																		</select>
-																	</lse-fe-wrapper>
-																</lse-ib>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Open With Slide', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<lse-fe-wrapper>
-																		<input name="slide" type="number" placeholder="<?= __('No override', 'LayerSlider') ?>" min="1" max="100">
-																	</lse-fe-wrapper>
-																</lse-ib>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Close if already open', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<?= lsGetSwitchControl(['name' => 'toggle']) ?>
-																</lse-ib>
-															</lse-col>
-														</lse-b>
-
-														<lse-b data-layer-action="closePopup">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Closes this Popup. Works only if the current project type is set to a Popup.', 'LayerSlider') ?>
-															</lse-col>
-														</lse-b>
-
-														<lse-b data-layer-action="launchPopups">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Opens all Popups waiting in the background to be launched. Popups must be embedded on the page beforehand.', 'LayerSlider') ?>
-															</lse-col>
-														</lse-b>
-
-														<lse-b data-layer-action="closeAllPopups">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Closes all opened Popups on page.', 'LayerSlider') ?>
-															</lse-col>
-														</lse-b>
-
-
-														<!-- Advanced -->
-														<lse-b data-layer-action="jsFunction">
-															<lse-col class="lse-wide lse-layer-action-desc">
-																<?= __('Calls a JavaScript function by its name. This is intended for web developers. The function must be present on page prior triggering this action.', 'LayerSlider') ?>
-															</lse-col>
-															<lse-col>
-																<lse-ib>
-																	<lse-text><?= __('Function Name', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<input type="text" name="function" value="" placeholder="<?= __('myFunction', 'LayerSlider') ?>">
-																</lse-ib>
-															</lse-col>
-														</lse-b>
-
-
-
-													</lse-wrapper>
-
-													<lse-grid id="lse-layer-actions-list" class="lse-form-elements lse-form-rows lse-undomanager-exclude">
-														<?= lsGetSVGIcon('times-circle',false,['class' => 'lse-form-rows-close']) ?>
-														<lse-row class="lse-placeholder lse-layer-action">
-															<lse-col class="lse-wide">
-																<lse-ib>
-																	<lse-fe-wrapper class="lse-select">
-																		<select name="action" class="lse-select-layer-action" data-search-name="<?= __('Layer Action', 'LayerSlider') ?>">
-																			<option selected disabled value=""><?= __('ADD NEW LAYER ACTION...', 'LayerSlider') ?></option>
-																			<option disabled></option>
-
-																			<optgroup label="<?= __('Scroll', 'LayerSlider') ?>">
-
-																				<option value="scrollBelowProject"><?= __('Scroll Below Project', 'LayerSlider') ?></option>
-																				<option value="scrollToNextProject"><?= __('Scroll to Next Project', 'LayerSlider') ?></option>
-																				<option value="scrollToPrevProject"><?= __('Scroll to Previous Project', 'LayerSlider') ?></option>
-																				<option value="scrollToElement"><?= __('Scroll to Element', 'LayerSlider') ?></option>
-																				<option value="scrollToScenePosition"><?= __('Scroll to Scene Position', 'LayerSlider') ?></option>
-																			</optgroup>
-
-																			<optgroup label="<?= __('Navigation', 'LayerSlider') ?>">
-																				<option value="switchSlide"><?= __('Jump to Slide', 'LayerSlider') ?></option>
-																				<option value="nextSlide"><?= __('Next Slide', 'LayerSlider') ?></option>
-																				<option value="prevSlide"><?= __('Previous Slide', 'LayerSlider') ?></option>
-																			</optgroup>
-
-																			<optgroup label="<?= __('Slideshow', 'LayerSlider') ?>">
-																				<option value="stopSlideshow"><?= __('Stop Slideshow', 'LayerSlider') ?></option>
-																				<option value="startSlideshow"><?= __('Start Slideshow', 'LayerSlider') ?></option>
-																			</optgroup>
-
-																			<optgroup label="<?= __('Slide Animation Timeline', 'LayerSlider') ?>">
-																				<option value="replaySlide"><?= __('Replay Slide', 'LayerSlider') ?></option>
-																				<option value="reverseSlide"><?= __('Reverse Slide', 'LayerSlider') ?></option>
-																				<option value="resetSlide"><?= __('Reset Slide', 'LayerSlider') ?></option>
-																			</optgroup>
-
-																			<optgroup label="<?= __('Project Animation Timeline', 'LayerSlider') ?>">
-																				<option value="pauseProject"><?= __('Pause Project', 'LayerSlider') ?></option>
-																				<option value="resumeProject"><?= __('Resume Project', 'LayerSlider') ?></option>
-																				<option value="toggleProject"><?= __('Toggle Pause/Resume', 'LayerSlider') ?></option>
-																			</optgroup>
-
-																			<optgroup label="<?= __('Media Playback', 'LayerSlider') ?>">
-																				<option value="playMedia"><?= __('Play Media', 'LayerSlider') ?></option>
-																				<option value="pauseMedia"><?= __('Pause Media', 'LayerSlider') ?></option>
-																				<option value="unmuteMedia"><?= __('Unmute Media', 'LayerSlider') ?></option>
-																			</optgroup>
-
-																			<optgroup label="<?= __('Popups', 'LayerSlider') ?>">
-																				<option value="openPopup"><?= __('Open Popup', 'LayerSlider') ?></option>
-																				<option value="closePopup"><?= __('Close Popup', 'LayerSlider') ?></option>
-																				<option value="launchPopups"><?= __('Launch Popups', 'LayerSlider') ?></option>
-																				<option value="closeAllPopups"><?= __('Close All Popups', 'LayerSlider') ?></option>
-																			</optgroup>
-
-																			<optgroup label="<?= __('Advanced', 'LayerSlider') ?>">
-																				<option value="jsFunction"><?= __('Call JavaScript function', 'LayerSlider') ?></option>
-																			</optgroup>
-
-																		</select>
-																	</lse-fe-wrapper>
-																</lse-ib>
-															</lse-col>
-															<lse-col class="lse-wide lse-layer-action-desc"></lse-col>
-															<lse-col class="lse-dn">
-																<lse-ib>
-																	<lse-text><?= __('Trigger', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<lse-fe-wrapper class="lse-select">
-																		<select name="trigger">
-																			<option value="click"><?= __('Click or Tap', 'LayerSlider') ?></option>
-																			<option value="mouseenter"><?= __('Mouse Enter', 'LayerSlider') ?></option>
-																			<option value="mouseleave"><?= __('Mouse Leave', 'LayerSlider') ?></option>
-																		</select>
-																	</lse-fe-wrapper>
-																</lse-ib>
-															</lse-col>
-															<lse-col class="lse-dn">
-																<lse-ib>
-																	<lse-text><?= __('Delay', 'LayerSlider') ?></lse-text>
-																</lse-ib>
-																<lse-ib>
-																	<input type="number" name="delay" min="0" step="100" value="0">
-																	<lse-unit>ms</lse-unit>
-																</lse-ib>
-															</lse-col>
-															<lse-col-separator></lse-col-separator>
-															<lse-col-placeholder></lse-col-placeholder>
-														</lse-row>
-													</lse-grid>
-
-												</lse-sidebar-section-body>
-
-											</lse-sidebar-section>
-										</lse-sidebar-content>
-									</lse-sidebar-body>
-
-									<!-- Attributes -->
-									<lse-sidebar-body data-section-name="<?= __('Attributes', 'LayerSlider') ?>">
-										<lse-sidebar-content>
-											<lse-sidebar-section class="lse-scrollbar lse-scrollbar-light">
 
 												<lse-sidebar-section-head>
 													<lse-text><?= __('Common Attributes', 'LayerSlider') ?></lse-text>
@@ -8708,6 +10507,1636 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 										</lse-sidebar-content>
 									</lse-sidebar-body>
 
+									<!-- EFFECTS -->
+									<lse-sidebar-body class="lse-layer-effects-panel" data-section-name="<?= __('Effects', 'LayerSlider') ?>">
+										<lse-sidebar-content>
+											<lse-sidebar-section class="lse-scrollbar lse-scrollbar-light">
+
+												<lse-sidebar-section-head>
+													<lse-text><?= __('Layer Effects', 'LayerSlider') ?></lse-text>
+												</lse-sidebar-section-head>
+
+												<lse-sidebar-section-body>
+
+													<lse-wrapper lse-tgl-skip class="lse-dynlist-data lse-exclude-from-multi-select ">
+
+														<!-- Borderize -->
+														<lse-b data-dynlist-item-settings="borderize">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Borderize lets you draw stylish animated borders around your layers. Choose the sides, color, thickness, and even how the animation plays out for a sleek, custom effect.', 'LayerSlider') ?>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Apply to', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['borderize']['applyTo'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Color', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help lse-color-input" data-smart-help="color" data-smart-help-title="<?= __('Color', 'LayerSlider') ?>" data-smart-load="lse-color-picker">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['borderize']['color'], null, [
+																			'class' => 'lse-borderize-color-colorpicker'
+																		]) ?>
+																		<?= lsGetSVGIcon('times', null, [
+																			'class' => 'lse-remove lse-it-0'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Thickness', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-borderize-thickness" data-smart-help-title="<?= __('Thickness', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['borderize']['thickness'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>px</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Placement', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="le-borderize-position" data-smart-help-title="<?= __('Placement', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['borderize']['placement'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Offset', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-borderize-offset" data-smart-help-title="<?= __('Offset', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['borderize']['offset'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>px</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Mode', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="le-borderize-mode" data-smart-help-title="<?= __('Mode', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['borderize']['mode'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Direction', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="le-borderize-direction" data-smart-help-title="<?= __('Direction', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['borderize']['direction'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Filter', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="filter" data-smart-help-title="<?= __('Filter', 'LayerSlider') ?>" data-smart-options="filter" data-set-values>
+																		<?php lsGetInput( $lsDefaults['layerEffects']['borderize']['filter'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Duration', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-borderize-duration" data-smart-help-title="<?= __('Duration', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['borderize']['duration'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['borderize']['easing'], null, [
+																			'options' 	=> $lsDefaults['easings']
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Start At', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['borderize']['startAt'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Delay', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-borderize-delay" data-smart-help-title="<?= __('Delay', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['borderize']['delay'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+
+														</lse-b>
+
+														<!-- Liquify -->
+														<lse-b data-dynlist-item-settings="liquify">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Adds a playful, elastic twist that makes layers bend and ripple like soft jelly when you move your cursor over them.', 'LayerSlider') ?>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Axes', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="le-liquify-axes" data-smart-help-title="<?= __('Axes', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['liquify']['axes'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Max Scale X', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-liquify-scale-max-x" data-smart-help-title="<?= __('Max Scale X', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['liquify']['scaleMaxX'], null, [
+																			'class' => 'lse-must-be-validated',
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Max Scale Y', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-liquify-scale-max-y" data-smart-help-title="<?= __('Max Scale Y', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['liquify']['scaleMaxY'], null, [
+																			'class' => 'lse-must-be-validated',
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Max Skew', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-liquify-skew-max-x" data-smart-help-title="<?= __('Max Skew X', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['liquify']['skewMaxX'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>deg</lse-unit>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Max Rotation', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-liquify-rotation-max" data-smart-help-title="<?= __('Max Rotation', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['liquify']['rotationMax'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>deg</lse-unit>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Intensity', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-liquify-intensity" data-smart-help-title="<?= __('Intensity', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['liquify']['intensity'], null, [
+																			'class' => 'lse-must-be-validated',
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-separator></lse-separator>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Duration', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-liquify-duration" data-smart-help-title="<?= __('Duration', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['liquify']['duration'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['liquify']['ease'], null, [ 'options' => $lsDefaults['easings'] ] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-separator></lse-separator>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Duration Out', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-liquify-duration-out" data-smart-help-title="<?= __('Duration Out', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['liquify']['durationOut'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Easing Out', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing Out', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['liquify']['easeOut'], null, [ 'options' => $lsDefaults['easings'] ] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Release Effect', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="le-liquify-release-effect" data-smart-help-title="<?= __('Release Effect', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['liquify']['releaseEffect'], null ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+														</lse-b>
+
+														<!-- Replicator -->
+														<lse-b data-dynlist-item-settings="replicator">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Produces identical copies of a layer that can stay in sync or drift apart in timing, movement, or style. Perfect for depth effects with unified motion, subtle blend enhancements, or staggered motion trails where each copy follows slightly behind.', 'LayerSlider') ?>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Copies', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-replicator-copies" data-smart-help-title="<?= __('Copies', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['replicator']['clones'], null, [
+																			'class' => 'lse-must-be-validated',
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Delay', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-replicator-delay" data-smart-help-title="<?= __('Delay', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['replicator']['delay'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Offset X', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-replicator-offset-x" data-smart-help-title="<?= __('Offset X', 'LayerSlider') ?>" data-smart-options-title="<?= __('Offset | X axis', 'LayerSlider') ?>" data-smart-options="le-replicator-offset-x">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['replicator']['offsetX'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Offset Y', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-replicator-offset-y" data-smart-help-title="<?= __('Offset Y', 'LayerSlider') ?>" data-smart-options-title="<?= __('Offset | Y axis', 'LayerSlider') ?>" data-smart-options="le-replicator-offset-y">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['replicator']['offsetY'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Min. Opacity', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-replicator-min-opacity" data-smart-help-title="<?= __('Min. Opacity', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['replicator']['minOpacity'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Max. Opacity', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-replicator-max-opacity" data-smart-help-title="<?= __('Max. Opacity', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['replicator']['maxOpacity'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Fade Method', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="le-replicator-fade-method" data-smart-help-title="<?= __('Fade Method', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['replicator']['fadeMethod'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-separator></lse-separator>
+															<lse-col>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Blend Mode', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['replicator']['blendMode'], null ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Filter', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="filter" data-smart-help-title="<?= __('Filter', 'LayerSlider') ?>" data-smart-options="filter" data-set-values>
+																		<?php lsGetInput( $lsDefaults['layerEffects']['replicator']['filter'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Scale Step', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-replicator-scale-step" data-smart-help-title="<?= __('Scale Step', 'LayerSlider') ?>" data-smart-options="le-replicator-scale-step">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['replicator']['scaleStep'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Rotation Step', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-replicator-rotation-step" data-smart-help-title="<?= __('Rotation Step', 'LayerSlider') ?>" data-smart-options="le-replicator-rotation-step">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['replicator']['rotationStep'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Width Step', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-replicator-width-step" data-smart-help-title="<?= __('Width Step', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['replicator']['widthStep'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>px</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Height Step', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-replicator-height-step" data-smart-help-title="<?= __('Height Step', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['replicator']['heightStep'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>px</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Parallax Level Step', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-replicator-parallax-step" data-smart-help-title="<?= __('Parallax Level Step', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['replicator']['parallaxLevelStep'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Parallax Move Duration Step', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-replicator-parallax-duration-step" data-smart-help-title="<?= __('Parallax Move Duration Step', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['replicator']['parallaxDurationStep'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Reverse Order', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<?php lsGetCheckbox( $lsDefaults['layerEffects']['replicator']['reverseOrder'], null, [], false, [
+																		'data-tt-de' => '0',
+																		'data-tt' => ''
+																	]) ?>
+																	<lse-tt><?= __('When enabled, Replicator creates cloned elements above the original layer instead of below it, effectively reversing the stacking order of all generated clones.', 'LayerSlider') ?></lse-tt>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Reverse Parallax', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<?php lsGetCheckbox( $lsDefaults['layerEffects']['replicator']['reverseParallax'], null, [], false, [
+																		'data-tt-de' => '0',
+																		'data-tt' => ''
+																	]) ?>
+																	<lse-tt><?= __('By default, Parallax Level values increase progressively from the original layer toward the last copy, based on the Parallax Level Step. Enabling this option flips this order, so values start with the last copy and progress back toward the original layer. This applies to both positive and negative step values.', 'LayerSlider') ?></lse-tt>
+																</lse-ib>
+															</lse-col>
+														</lse-b>
+
+														<!-- Reveal -->
+														<lse-b data-dynlist-item-settings="reveal">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Reveal layers with smooth transitions, as a mask expands to cover the layer and then collapses to unveil the content behind it.', 'LayerSlider') ?>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Animation', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['reveal']['animation'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Fill Color', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help lse-color-input" data-smart-help="color" data-smart-help-title="<?= __('Color', 'LayerSlider') ?>" data-smart-load="lse-color-picker">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['reveal']['background'], null, [
+																			'class' => 'lse-reveal-background-colorpicker',
+																			'data-type' => 'gradient'
+																		]) ?>
+																		<?= lsGetSVGIcon('times', null, [
+																			'class' => 'lse-remove lse-it-0'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Fill Duration', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-reveal-fill-duration" data-smart-help-title="<?= __('Fill Duration', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['reveal']['durationFill'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Wait Duration', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-reveal-wait-duration" data-smart-help-title="<?= __('Wait Duration', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['reveal']['wait'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Hide Duration', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-reveal-hide-duration" data-smart-help-title="<?= __('Hide Duration', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['reveal']['durationHide'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['reveal']['easing'], null, [
+																			'options' 	=> $lsDefaults['easings']
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Tile Delay', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-reveal-tile-delay" data-smart-help-title="<?= __('Tile Delay', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['reveal']['tileDelay'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+
+															<lse-separator></lse-separator>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Skip Fill & Wait At First', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<?php lsGetCheckbox( $lsDefaults['layerEffects']['reveal']['skipFillAtFirst'], null, [], false, [
+																		'data-tt-de' => '0',
+																		'data-tt' => ''
+																	]) ?>
+																	<lse-tt><?= __('When enabled, the effect will skip the initial fill and wait phases the first time it plays. This can make the animation appear instantly on the first run, then use the full sequence afterward.', 'LayerSlider') ?></lse-tt>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Skip Opening Transition', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<?php lsGetCheckbox( $lsDefaults['layerEffects']['reveal']['skipOpening'], null, [], false, [
+																		'data-tt-de' => '0',
+																		'data-tt' => ''
+																	]) ?>
+																	<lse-tt><?= __('When enabled, this effect will handle displaying the layer and will prevent the Opening Transition from playing, ensuring the two transitions do not run simultaneously.', 'LayerSlider') ?></lse-tt>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Mirror Transition', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<?php lsGetCheckbox( $lsDefaults['layerEffects']['reveal']['mirrorTransition'], null, [], false, [
+																		'data-tt-de' => '0',
+																		'data-tt' => ''
+																	]) ?>
+																	<lse-tt><?= __('When enabled, this option makes the animation play in the opposite direction when moving backward in the slideshow, so its movement aligns with the reverse navigation.', 'LayerSlider') ?></lse-tt>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Use As Ending Transition', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<?php lsGetCheckbox( $lsDefaults['layerEffects']['reveal']['endingTransition'], null, [], false, [
+																		'data-tt-de' => '0',
+																		'data-tt' => ''
+																	]) ?>
+																	<lse-tt>
+																		<?= __('When enabled, the reveal animation will also play in reverse during the Ending Transition.', 'LayerSlider') ?>
+																		<br><br>
+																		<?= __('If the Ending Transition coincides with a slide change, LayerSlider may speed up the animation and override certain settings to ensure the slide transition can begin promptly.', 'LayerSlider') ?>
+																	</lse-tt>
+																</lse-ib>
+															</lse-col>
+
+														</lse-b>
+
+														<!-- Slicer -->
+														<lse-b data-dynlist-item-settings="slicer">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Slices your layer into thin strips that break apart and scatter, turning the layer into drifting fragments.', 'LayerSlider') ?>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Slices', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-slicer-count" data-smart-help-title="<?= __('Slices', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['slicer']['count'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Direction', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="le-slicer-direction" data-smart-help-title="<?= __('Direction', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['slicer']['direction'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Intensity', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-slicer-intensity" data-smart-options="le-slicer-intensity" data-smart-help-title="<?= __('Intensity', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['slicer']['intensity'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>px</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Scale', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-slicer-scale" data-smart-options="le-slicer-scale" data-smart-help-title="<?= __('Scale', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['slicer']['scale'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Gap', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-slicer-gap" data-smart-help-title="<?= __('Gap', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['slicer']['gap'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>px</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Duration', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-slicer-duration" data-smart-help-title="<?= __('Duration', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['slicer']['duration'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['slicer']['ease'], null, [
+																			'options' 	=> $lsDefaults['easings']
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Start At', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['slicer']['startAt'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Delay', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-slicer-delay" data-smart-help-title="<?= __('Delay', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['slicer']['delay'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+														</lse-b>
+
+														<!-- Typewriter -->
+														<lse-b data-dynlist-item-settings="typewriter">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Simulate a classic typing effect by revealing text one character at a time, creating an engaging, retro typewriter feel.', 'LayerSlider') ?>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Start At', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['typewriter']['startAt'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Delay', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-typewriter-delay" data-smart-help-title="<?= __('Delay', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['typewriter']['delay'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Typing Speed', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['typewriter']['speed'], null, [], true ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Typing Style', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['typewriter']['style'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Show Cursor', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<?php lsGetCheckbox( $lsDefaults['layerEffects']['typewriter']['cursor'], null, [
+																		'lse-tgl' => 'typewriter-cursor'
+																	]) ?>
+																</lse-ib>
+															</lse-col>
+															<lse-separator lse-tgl-t="typewriter-cursor" tgl-on></lse-separator>
+															<lse-col lse-tgl-t="typewriter-cursor" tgl-on>
+																<lse-ib>
+																	<lse-text><?= __('Cursor Type', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['typewriter']['cursorType'] ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="typewriter-cursor" tgl-on>
+																<lse-ib>
+																	<lse-text><?= __('Cursor Color', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help lse-color-input" data-smart-help="color" data-smart-help-title="<?= __('Color', 'LayerSlider') ?>" data-smart-load="lse-color-picker">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['typewriter']['cursorColor'] ) ?>
+																		<?= lsGetSVGIcon('times', null, [
+																			'class' => 'lse-remove lse-it-0'
+																		]) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="typewriter-cursor" tgl-on>
+																<lse-ib>
+																	<lse-text><?= __('Cursor Size', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['typewriter']['cursorSize'], null, [], true ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="typewriter-cursor" tgl-on>
+																<lse-ib>
+																	<lse-text><?= __('Hide After Animation', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<?= lsGetCheckbox( $lsDefaults['layerEffects']['typewriter']['cursorHide'] ) ?>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="typewriter-cursor" tgl-on>
+																<lse-ib>
+																	<lse-text><?= __('Hide Delay', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="le-typewriter-hide-delay" data-smart-help-title="<?= __('Hide Delay', 'LayerSlider') ?>">
+																		<?php lsGetInput( $lsDefaults['layerEffects']['typewriter']['cursorHideDelay'] ) ?>
+																	</lse-fe-wrapper>
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col lse-tgl-t="typewriter-cursor" tgl-on>
+																<lse-ib>
+																	<lse-text><?= __('Blink Effect', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<?php lsGetSelect( $lsDefaults['layerEffects']['typewriter']['blinkSpeed'], null, [], true  ) ?>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+
+															<lse-separator></lse-separator>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Skip Opening Transition', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<?= lsGetCheckbox( $lsDefaults['layerEffects']['typewriter']['skipOpening'], null, [], false, [
+																		'data-tt-de' => '0',
+																		'data-tt' => ''
+																	]) ?>
+																	<lse-tt><?= __('When enabled, this effect will handle displaying the layer and will prevent the Opening Transition from playing, ensuring the two transitions do not run simultaneously.', 'LayerSlider') ?></lse-tt>
+																</lse-ib>
+															</lse-col>
+														</lse-b>
+
+
+													</lse-wrapper>
+
+													<lse-grid id="lse-layer-effects-list" class="lse-exclude-from-multi-select lse-form-elements lse-form-rows lse-undomanager-exclude">
+														<?= lsGetSVGIcon('times-circle',false,['class' => 'lse-form-rows-close']) ?>
+														<lse-row class="lse-placeholder lse-dynlist-item">
+															<lse-col class="lse-wide">
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-dynlist-select-wrapper">
+																		<select name="effect" class="lse-dynlist-select" data-search-name="<?= __('Add Effect', 'LayerSlider') ?>">
+																			<option selected disabled value=""><?= __('ADD NEW LAYER EFFECT...', 'LayerSlider') ?></option>
+																			<option disabled></option>
+																				<option value="borderize"><?= __('Borderize', 'LayerSlider') ?></option>
+																				<option value="liquify"><?= __('Liquify', 'LayerSlider') ?></option>
+																				<option value="replicator"><?= __('Replicator', 'LayerSlider') ?></option>
+																				<option value="reveal"><?= __('Reveal', 'LayerSlider') ?></option>
+																				<option value="slicer"><?= __('Slicer', 'LayerSlider') ?></option>
+																				<option value="typewriter"><?= __('Typewriter', 'LayerSlider') ?></option>
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col class="lse-wide lse-dynlist-desc"></lse-col>
+															<lse-col-separator></lse-col-separator>
+															<lse-col-placeholder></lse-col-placeholder>
+														</lse-row>
+													</lse-grid>
+
+													<lse-grid id="lse-multi-select-effects-notice" class="lse-form-elements lse-dynlist-notice">
+														<lse-row>
+															<lse-col class="lse-wide lse-col-notice">
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Changes made in multiple-selection mode will override effects used on other layers.', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+															</lse-col>
+														</lse-row>
+													</lse-grid>
+
+												</lse-sidebar-section-body>
+
+											</lse-sidebar-section>
+										</lse-sidebar-content>
+									</lse-sidebar-body>
+
+
+
+
+
+									<!-- Actions -->
+									<lse-sidebar-body class="lse-layer-actions-panel" data-section-name="<?= __('Actions', 'LayerSlider') ?>">
+										<lse-sidebar-content>
+											<lse-sidebar-section class="lse-scrollbar lse-scrollbar-light">
+
+												<lse-sidebar-section-head>
+													<lse-text><?= __('Layer Actions', 'LayerSlider') ?></lse-text>
+												</lse-sidebar-section-head>
+
+												<lse-sidebar-section-body>
+
+													<lse-wrapper class="lse-dynlist-data lse-exclude-from-multi-select">
+
+														<!-- Scroll -->
+														<lse-b data-dynlist-item-settings="scrollToSelf">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Scrolls to the top of the current project on the page.', 'LayerSlider') ?>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Duration', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<input type="text" name="duration" value="1000">
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
+																		<select name="easing">
+																			<?php foreach( $lsDefaults['easings'] as $easing ) : ?>
+																			<option <?= ( $easing === 'easeInOutQuart' ) ? 'selected' : '' ?>><?= $easing ?></option>
+																			<?php endforeach ?>
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Scroll Offset', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<input type="number" name="offset" value="0">
+																	<lse-unit>px</lse-unit>
+																</lse-ib>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="scrollBelowProject">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Scrolls below the project, pushing it outside of the viewport to make room for any content that follows.', 'LayerSlider') ?>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Duration', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<input type="text" name="duration" value="1000">
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
+																		<select name="easing">
+																			<?php foreach( $lsDefaults['easings'] as $easing ) : ?>
+																			<option <?= ( $easing === 'easeInOutQuart' ) ? 'selected' : '' ?>><?= $easing ?></option>
+																			<?php endforeach ?>
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Scroll Offset', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<input type="number" name="offset" value="0">
+																	<lse-unit>px</lse-unit>
+																</lse-ib>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="scrollToNextProject">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Scrolls to the next LayerSlider project on page (if there’s any).', 'LayerSlider') ?>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Duration', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<input type="text" name="duration" value="1000">
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
+																		<select name="easing">
+																			<?php foreach( $lsDefaults['easings'] as $easing ) : ?>
+																			<option <?= ( $easing === 'easeInOutQuart' ) ? 'selected' : '' ?>><?= $easing ?></option>
+																			<?php endforeach ?>
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Scroll Position', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<select name="scrollposition">
+																			<option value="top"><?= __('Element Top', 'LayerSlider') ?></option>
+																			<option value="middle"><?= __('Element Middle', 'LayerSlider') ?></option>
+																			<option value="bottom"><?= __('Element Bottom', 'LayerSlider') ?></option>
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Scroll Offset', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<input type="number" name="offset" value="0">
+																	<lse-unit>px</lse-unit>
+																</lse-ib>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="scrollToPrevProject">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Scrolls to the previous LayerSlider project on page (if there’s any).', 'LayerSlider') ?>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Duration', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<input type="text" name="duration" value="1000">
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
+																		<select name="easing">
+																			<?php foreach( $lsDefaults['easings'] as $easing ) : ?>
+																			<option <?= ( $easing === 'easeInOutQuart' ) ? 'selected' : '' ?>><?= $easing ?></option>
+																			<?php endforeach ?>
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Scroll Position', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<select name="scrollposition">
+																			<option value="top"><?= __('Element Top', 'LayerSlider') ?></option>
+																			<option value="middle"><?= __('Element Middle', 'LayerSlider') ?></option>
+																			<option value="bottom"><?= __('Element Bottom', 'LayerSlider') ?></option>
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Scroll Offset', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<input type="number" name="offset" value="0">
+																	<lse-unit>px</lse-unit>
+																</lse-ib>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="scrollToElement">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Scrolls to the specified element. You can enter a CSS/jQuery selector to target elements. To target LayerSlider projects, use custom class names instead of relying on their randomized ID.', 'LayerSlider') ?>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Duration', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<input type="text" name="duration" value="1000">
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
+																		<select name="easing">
+																			<?php foreach( $lsDefaults['easings'] as $easing ) : ?>
+																			<option <?= ( $easing === 'easeInOutQuart' ) ? 'selected' : '' ?>><?= $easing ?></option>
+																			<?php endforeach ?>
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Scroll Position', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<select name="scrollposition">
+																			<option value="top"><?= __('Element Top', 'LayerSlider') ?></option>
+																			<option value="middle"><?= __('Element Middle', 'LayerSlider') ?></option>
+																			<option value="bottom"><?= __('Element Bottom', 'LayerSlider') ?></option>
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Scroll Offset', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<input type="number" name="offset" value="0">
+																	<lse-unit>px</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Selector', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<input type="text" name="selector" value="" placeholder=".myClass">
+																</lse-ib>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="scrollToScenePosition">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Scrolls to the specified position of the target scene.', 'LayerSlider') ?>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Duration', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<input type="text" name="duration" value="1000">
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
+																		<select name="easing">
+																			<?php foreach( $lsDefaults['easings'] as $easing ) : ?>
+																			<option <?= ( $easing === 'easeInOutQuart' ) ? 'selected' : '' ?>><?= $easing ?></option>
+																			<?php endforeach ?>
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Target', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<select name="target">
+																			<option value="currentScene"><?= __('Current Scene', 'LayerSlider') ?></option>
+																			<option value="previousScene"><?= __('Previous Scene', 'LayerSlider') ?></option>
+																			<option value="nextScene"><?= __('Next Scene', 'LayerSlider') ?></option>
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Position', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="scroll-to-scene-position" data-smart-options="scroll-to-scene-position" data-smart-help-title="<?= __('Scene Position', 'LayerSlider') ?>">
+																		<input type="text" name="position" placeholder="0% / 0ms">
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="scrollToSceneSlide">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Scrolls to the scene displaying the chosen slide when a multi-slide Scroll Scene is embedded using the Create Per-Slide Embeds option. Optionally, it can also scroll further to the specified position within the target scene.', 'LayerSlider') ?>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Duration', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<input type="text" name="duration" value="1000">
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
+																		<select name="easing">
+																			<?php foreach( $lsDefaults['easings'] as $easing ) : ?>
+																			<option <?= ( $easing === 'easeInOutQuart' ) ? 'selected' : '' ?>><?= $easing ?></option>
+																			<?php endforeach ?>
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Project', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<select name="project" class="lse-dynlist-scene-project-list">
+																			<option value="" data-protected selected><?= __('Current project', 'LayerSlider') ?></option>
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Slide', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<select name="slide" class="lse-dynlist-slide-list">
+																			<option disabled><?= __('Select Slide', 'LayerSlider') ?></option>
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Position', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="scroll-to-scene-slide" data-smart-options="scroll-to-scene-slide" data-smart-help-title="<?= __('Scene Position', 'LayerSlider') ?>">
+																		<input type="text" name="position" placeholder="0% / 0ms">
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="scrollToTimelinePosition">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Animates the slide timeline to the specified position or plays it forward/backward by the given amount.', 'LayerSlider') ?>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Duration', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<input type="text" name="duration" value="1000">
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Easing', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select lse-smart-help" data-smart-help="easing" data-smart-help-title="<?= __('Easing', 'LayerSlider') ?>">
+																		<select name="easing">
+																			<?php foreach( $lsDefaults['easings'] as $easing ) : ?>
+																			<option <?= ( $easing === 'easeInOutQuart' ) ? 'selected' : '' ?>><?= $easing ?></option>
+																			<?php endforeach ?>
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Position', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-smart-help" data-smart-help="scroll-to-timeline-position" data-smart-options="scroll-to-timeline-position" data-smart-help-title="<?= __('Timeline Position', 'LayerSlider') ?>">
+																		<input type="text" name="position" placeholder="0% / 0ms">
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+														</lse-b>														<!-- Navigation -->
+														<lse-b data-dynlist-item-settings="switchSlide">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Jumps to the specified slide. Project Settings like Shuffle mode does not affect the selected slide.', 'LayerSlider') ?>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Slide', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<select name="slide" class="lse-dynlist-slide-list">
+																			<option disabled><?= __('Select Slide', 'LayerSlider') ?></option>
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="nextSlide">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Jumps to the next slide. Options like Shuffle mode or Two way slideshow can affect the sequence.', 'LayerSlider') ?>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="prevSlide">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Jumps to the previous slide. Options like Shuffle mode or Two way slideshow can affect the sequence.', 'LayerSlider') ?>
+															</lse-col>
+														</lse-b>
+
+														<!-- Slideshow -->
+														<lse-b data-dynlist-item-settings="stopSlideshow">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Stops the slideshow. Depending on your settings, layer animations and progress timers may not be interrupted, but your project will not commence to the next slide automatically.', 'LayerSlider') ?>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="startSlideshow">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Resumes the slideshow and re-enables the automatic slide change.', 'LayerSlider') ?>
+															</lse-col>
+														</lse-b>
+
+
+														<!-- Slide Animation Timeline -->
+														<lse-b data-dynlist-item-settings="replaySlide">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Instantly restarts the slide replaying all layer transitions from the beginning.', 'LayerSlider') ?>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="reverseSlide">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Plays all transitions backward from the moment it’s triggered, then pauses at the beginning of the slide. An option is provided to continue replaying the slide normally afterward.', 'LayerSlider') ?>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Replay', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<?= lsGetSwitchControl(['name' => 'replay']) ?>
+																</lse-ib>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="resetSlide">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Immediately sets the current slide back to its starting state and pauses it.', 'LayerSlider') ?>
+															</lse-col>
+														</lse-b>
+
+														<!-- Project Animation Timeline -->
+														<lse-b data-dynlist-item-settings="pauseProject">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Stops the project by freezing every animation taking place when triggered, including slide transitions when changing slides.', 'LayerSlider') ?>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="resumeProject">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Resumes the project and continues playing frozen animations.', 'LayerSlider') ?>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="toggleProject">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Toggles between Pause Project and Resume Project by respecting the current state.', 'LayerSlider') ?>
+															</lse-col>
+														</lse-b>
+
+
+														<!-- Media Playback -->
+														<lse-b data-dynlist-item-settings="playMedia">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Starts playback of any active media element on the current slide.', 'LayerSlider') ?>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="pauseMedia">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Pauses playback of any active media element on the current slide.', 'LayerSlider') ?>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="unmuteMedia">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Unmutes playback of any active media element on the current slide. Using this action may require a Click or Tap trigger due to browser restrictions.', 'LayerSlider') ?>
+															</lse-col>
+														</lse-b>
+
+
+														<!-- Popups -->
+														<lse-b data-dynlist-item-settings="openPopup">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Opens the selected Popup. Embedding it to the page is optional; the Popup will be loaded dynamically if needed. Manually embedding it in advance makes it open faster.', 'LayerSlider') ?>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Popup', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<select name="popup" class="lse-dynlist-popup-list">
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Open With Slide', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper>
+																		<input name="slide" type="number" placeholder="<?= __('No override', 'LayerSlider') ?>" min="1" max="100">
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Close if already open', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<?= lsGetSwitchControl(['name' => 'toggle']) ?>
+																</lse-ib>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="closePopup">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Closes this Popup. Works only if the current project type is set to a Popup.', 'LayerSlider') ?>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="launchPopups">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Opens all Popups waiting in the background to be launched. Popups must be embedded on the page beforehand.', 'LayerSlider') ?>
+															</lse-col>
+														</lse-b>
+
+														<lse-b data-dynlist-item-settings="closeAllPopups">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Closes all opened Popups on page.', 'LayerSlider') ?>
+															</lse-col>
+														</lse-b>
+
+
+														<!-- Advanced -->
+														<lse-b data-dynlist-item-settings="jsFunction">
+															<lse-col class="lse-wide lse-dynlist-desc">
+																<?= __('Calls a JavaScript function by its name. This is intended for web developers. The function must be present on page prior triggering this action.', 'LayerSlider') ?>
+															</lse-col>
+															<lse-col>
+																<lse-ib>
+																	<lse-text><?= __('Function Name', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<input type="text" name="function" value="" placeholder="<?= __('myFunction', 'LayerSlider') ?>">
+																</lse-ib>
+															</lse-col>
+														</lse-b>
+
+
+
+													</lse-wrapper>
+
+													<lse-grid id="lse-layer-actions-list" class="lse-exclude-from-multi-select lse-form-elements lse-form-rows lse-undomanager-exclude">
+														<?= lsGetSVGIcon('times-circle',false,['class' => 'lse-form-rows-close']) ?>
+														<lse-row class="lse-placeholder lse-dynlist-item">
+															<lse-col class="lse-wide">
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<select name="action" class="lse-dynlist-select" data-search-name="<?= __('Layer Action', 'LayerSlider') ?>">
+																			<option selected disabled value=""><?= __('ADD NEW LAYER ACTION...', 'LayerSlider') ?></option>
+																			<option disabled></option>
+
+																			<optgroup label="<?= __('Scroll', 'LayerSlider') ?>">
+
+																				<option value="scrollToSelf"><?= __('Scroll to Project Top', 'LayerSlider') ?></option>
+																				<option value="scrollBelowProject"><?= __('Scroll Below Project', 'LayerSlider') ?></option>
+																				<option value="scrollToNextProject"><?= __('Scroll to Next Project', 'LayerSlider') ?></option>
+																				<option value="scrollToPrevProject"><?= __('Scroll to Previous Project', 'LayerSlider') ?></option>
+																				<option value="scrollToElement"><?= __('Scroll to Element', 'LayerSlider') ?></option>
+																				<option value="scrollToScenePosition"><?= __('Scroll to Scene Position', 'LayerSlider') ?></option>
+																				<option value="scrollToSceneSlide"><?= __('Scroll to Scene Slide', 'LayerSlider') ?></option>
+																			</optgroup>
+
+																			<optgroup label="<?= __('Navigation', 'LayerSlider') ?>">
+																				<option value="switchSlide"><?= __('Jump to Slide', 'LayerSlider') ?></option>
+																				<option value="nextSlide"><?= __('Next Slide', 'LayerSlider') ?></option>
+																				<option value="prevSlide"><?= __('Previous Slide', 'LayerSlider') ?></option>
+																			</optgroup>
+
+																			<optgroup label="<?= __('Slideshow', 'LayerSlider') ?>">
+																				<option value="stopSlideshow"><?= __('Stop Slideshow', 'LayerSlider') ?></option>
+																				<option value="startSlideshow"><?= __('Start Slideshow', 'LayerSlider') ?></option>
+																			</optgroup>
+
+																			<optgroup label="<?= __('Slide Animation Timeline', 'LayerSlider') ?>">
+																				<option value="replaySlide"><?= __('Replay Slide', 'LayerSlider') ?></option>
+																				<option value="reverseSlide"><?= __('Reverse Slide', 'LayerSlider') ?></option>
+																				<option value="resetSlide"><?= __('Reset Slide', 'LayerSlider') ?></option>
+																				<option value="scrollToTimelinePosition"><?= __('Animate to Timeline Position', 'LayerSlider') ?></option>
+																			</optgroup>
+
+																			<optgroup label="<?= __('Project Animation Timeline', 'LayerSlider') ?>">
+																				<option value="pauseProject"><?= __('Pause Project', 'LayerSlider') ?></option>
+																				<option value="resumeProject"><?= __('Resume Project', 'LayerSlider') ?></option>
+																				<option value="toggleProject"><?= __('Toggle Pause/Resume', 'LayerSlider') ?></option>
+																			</optgroup>
+
+																			<optgroup label="<?= __('Media Playback', 'LayerSlider') ?>">
+																				<option value="playMedia"><?= __('Play Media', 'LayerSlider') ?></option>
+																				<option value="pauseMedia"><?= __('Pause Media', 'LayerSlider') ?></option>
+																				<option value="unmuteMedia"><?= __('Unmute Media', 'LayerSlider') ?></option>
+																			</optgroup>
+
+																			<optgroup label="<?= __('Popups', 'LayerSlider') ?>">
+																				<option value="openPopup"><?= __('Open Popup', 'LayerSlider') ?></option>
+																				<option value="closePopup"><?= __('Close Popup', 'LayerSlider') ?></option>
+																				<option value="launchPopups"><?= __('Launch Popups', 'LayerSlider') ?></option>
+																				<option value="closeAllPopups"><?= __('Close All Popups', 'LayerSlider') ?></option>
+																			</optgroup>
+
+																			<optgroup label="<?= __('Advanced', 'LayerSlider') ?>">
+																				<option value="jsFunction"><?= __('Call JavaScript function', 'LayerSlider') ?></option>
+																			</optgroup>
+
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col class="lse-wide lse-dynlist-desc"></lse-col>
+															<lse-col class="lse-dn">
+																<lse-ib>
+																	<lse-text><?= __('Trigger', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<lse-fe-wrapper class="lse-select">
+																		<select name="trigger">
+																			<option value="click"><?= __('Click or Tap', 'LayerSlider') ?></option>
+																			<option value="mouseenter"><?= __('Mouse Enter', 'LayerSlider') ?></option>
+																			<option value="mouseleave"><?= __('Mouse Leave', 'LayerSlider') ?></option>
+																		</select>
+																	</lse-fe-wrapper>
+																</lse-ib>
+															</lse-col>
+															<lse-col class="lse-dn">
+																<lse-ib>
+																	<lse-text><?= __('Delay', 'LayerSlider') ?></lse-text>
+																</lse-ib>
+																<lse-ib>
+																	<input type="number" name="delay" min="0" step="100" value="0">
+																	<lse-unit>ms</lse-unit>
+																</lse-ib>
+															</lse-col>
+															<lse-col-separator></lse-col-separator>
+															<lse-col-placeholder></lse-col-placeholder>
+														</lse-row>
+													</lse-grid>
+
+													<lse-grid id="lse-multi-select-actions-notice" class="lse-form-elements lse-dynlist-notice">
+														<lse-row>
+															<lse-col class="lse-wide lse-col-notice">
+																<lse-ib>
+																	<lse-text>
+																		<?= __('Changes made in multiple-selection mode will override actions used on other layers.', 'LayerSlider') ?>
+																	</lse-text>
+																</lse-ib>
+															</lse-col>
+														</lse-row>
+													</lse-grid>
+
+
+
+												</lse-sidebar-section-body>
+
+											</lse-sidebar-section>
+										</lse-sidebar-content>
+									</lse-sidebar-body>
+
+
 								</lse-layer-settings>
 
 								<!-- NAVIGATION SETTINGS -->
@@ -8758,6 +12187,50 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 														</lse-button>
 													</lse-ib>
 												</lse-col>
+
+											<?php if( ls_should_use_string_translation() ) : ?>
+												<lse-separator></lse-separator>
+												<lse-col class="lse-wide lse-col-notice lse-translation-notice">
+													<lse-ib>
+														<lse-text>
+															<?= __('Dont’t forget to update your project’s translations.', 'LayerSlider') ?>
+														</lse-text>
+													</lse-ib>
+												</lse-col>
+												<lse-col class="lse-wide">
+													<lse-ib class="lse-jcc">
+														<?php
+															$stURL = '';
+															$strButtonLabel = __('Go to String Translation', 'LayerSlider');
+
+															// WPML
+															if( ls_get_string_translation_engine() === 'wpml' ) {
+
+																$createdWith = ! empty( $slider['properties']['createdWith'] ) ? $slider['properties']['createdWith'] : null;
+																$importVersion = ! empty( $slider['properties']['importVersion'] ) ? $slider['properties']['importVersion'] : null;
+
+																// New implementation: Translation Management
+																if( ls_should_use_wpml_string_packages( $createdWith, $importVersion ) ) {
+																	$stURL = admin_url('admin.php?page=tm/menu/main.php&sections=string,stringPackage/layerslider&predefinedStringDomain=LayerSlider Sliders');
+																	$strButtonLabel = __('Go to Translation Management', 'LayerSlider');
+
+																// Old implementation: String Translation
+																} else {
+																	$stURL = admin_url( 'admin.php?page=wpml-string-translation/menu/string-translation.php&context=LayerSlider Sliders&search=slider-' . $id );
+																}
+
+															// Polylang: the dedicated integration collects strings under
+															// the 'LayerSlider' group with a "Project #id / " name prefix.
+															} elseif( ls_get_string_translation_engine() === 'polylang' ) {
+																$stURL = admin_url( 'admin.php?page=mlang_strings&group=LayerSlider&s='.rawurlencode( 'Project #'.$id.' /' ).'&paged=1' );
+															}
+														?>
+														<a href="<?= $stURL ?>" target="_blank" class="lse-button">
+															<lse-text class="lse-f11 lse-tac"><?= $strButtonLabel ?></lse-text>
+														</a>
+													</lse-ib>
+												</lse-col>
+											<?php endif ?>
 											</lse-row>
 										</lse-grid>
 									</lse-b>
@@ -8802,6 +12275,7 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 <?php include LS_ROOT_PATH . '/templates/tmpl-smart-alert.php'; ?>
 
 <!-- GLOBAL TOOLTIPS -->
+
 <lse-tt class="tt-scroll-transition-properties-responsive">
 	<?= __('The transition property will be normalized regarding to the current responsive ratio of the slider.', 'LayerSlider') ?>
 </lse-tt>
@@ -8841,17 +12315,29 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 <lse-tt class="tt-close-layers-list">
 	<?= __('Close layers list', 'LayerSlider') ?>
 </lse-tt>
+<lse-tt class="tt-pin-slides-list">
+	<?= __('Pin slides list', 'LayerSlider') ?>
+</lse-tt>
+<lse-tt class="tt-unpin-slides-list">
+	<?= __('Unpin slides list', 'LayerSlider') ?>
+</lse-tt>
 <lse-tt class="tt-copy-style-properties">
-	<?= __('Copy style properties', 'LayerSlider') ?>
+	<?= __('Copy all style properties', 'LayerSlider') ?>
 </lse-tt>
 <lse-tt class="tt-paste-style-properties">
-	<?= __('Paste style properties', 'LayerSlider') ?>
+	<?= __('Paste all style properties', 'LayerSlider') ?>
 </lse-tt>
 <lse-tt class="tt-copy-transition-properties">
-	<?= __('Copy transition properties', 'LayerSlider') ?>
+	<?= __('Copy all transition properties', 'LayerSlider') ?>
 </lse-tt>
 <lse-tt class="tt-paste-transition-properties">
-	<?= __('Paste transition properties', 'LayerSlider') ?>
+	<?= __('Paste all transition properties', 'LayerSlider') ?>
+</lse-tt>
+<lse-tt class="tt-copy-section-settings">
+	<?= __('Copy section settings', 'LayerSlider') ?>
+</lse-tt>
+<lse-tt class="tt-paste-section-settings">
+	<?= __('Paste section settings', 'LayerSlider') ?>
 </lse-tt>
 <lse-tt class="tt-expand-sidebar">
 	<?= __('Expand / shrink sidebar', 'LayerSlider') ?>
@@ -8892,6 +12378,15 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 <lse-tt class="tt-delete-transition">
 	<?= __('Delete', 'LayerSlider') ?>
 </lse-tt>
+<lse-tt class="tt-custom-sfx-preset">
+	<?= __('Create a new custom effect', 'LayerSlider') ?>
+</lse-tt>
+<lse-tt class="tt-enabled-sfx-preset">
+	<?= __('Use this effect on the current slide', 'LayerSlider') ?>
+</lse-tt>
+<lse-tt class="tt-sfx-auto-dir">
+	<?= __('Runs the effect in the opposite direction when navigating backwards between slides, so directional motions stay natural in reverse.', 'LayerSlider') ?>
+</lse-tt>
 
 <!-- CONTEXT MENUS GO HERE -->
 
@@ -8899,63 +12394,15 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 
 	<div id="lse-context-menu-preview" class="lse-floating-window-theme">
 		<lse-context-content class="lse-menu">
-			<lse-submenu-wrapper>
-				<lse-button>
-					<?= lsGetSVGIcon('plus') ?>
-					<lse-text><?= __('Add Layer', 'LayerSlider') ?></lse-text>
-					<?= lsGetSVGIcon('chevron-right','regular',['class' => 'lse-submenu-icon']) ?>
-				</lse-button>
-				<lse-submenu class="lse-context-add-layer">
-					<lse-button data-type="img">
-						<?= lsGetSVGIcon('image-polaroid', 'regular') ?>
-						<span><?= __('Image', 'LayerSlider') ?></span>
-					</lse-button>
-					<lse-button data-type="text">
-						<?= lsGetSVGIcon('align-left') ?>
-						<span><?= __('Text', 'LayerSlider') ?></span>
-					</lse-button>
-					<lse-button data-type="media">
-						<?= lsGetSVGIcon('play-circle') ?>
-						<span><?= __('Video / Audio', 'LayerSlider') ?></span>
-					</lse-button>
-					<lse-button data-type="button">
-						<?= lsGetSVGIcon('dot-circle') ?>
-						<span><?= __('Button', 'LayerSlider') ?></span>
-					</lse-button>
-					<lse-button data-type="asset">
-						<?= lsGetSVGIcon('photo-video') ?>
-						<span><?= __('Asset', 'LayerSlider') ?></span>
-					</lse-button>
-					<lse-button data-type="shape-modal">
-						<?= lsGetSVGIcon('shapes') ?>
-						<span><?= __('Shape', 'LayerSlider') ?></span>
-					</lse-button>
-					<lse-button data-type="icon-modal">
-						<?= lsGetSVGIcon('icons') ?>
-						<span><?= __('Icon', 'LayerSlider') ?></span>
-					</lse-button>
-					<lse-button data-type="svg-modal">
-						<?= lsGetSVGIcon('stars') ?>
-						<span><?= __('SVG', 'LayerSlider') ?></span>
-					</lse-button>
-					<lse-button data-type="html">
-						<?= lsGetSVGIcon('code') ?>
-						<span><?= __('HTML', 'LayerSlider') ?></span>
-					</lse-button>
-					<lse-button data-type="post">
-						<?= lsGetSVGIcon('database') ?>
-						<span><?= __('Dynamic Layer', 'LayerSlider') ?></span>
-					</lse-button>
-				</lse-submenu>
-			</lse-submenu-wrapper>
 			<lse-submenu-wrapper class="lse-context-overlapping-layers">
 				<lse-button>
-					<?= lsGetSVGIcon('bring-forward') ?>
-					<lse-text><?= __('Overlapping Layers', 'LayerSlider') ?></lse-text>
+					<?= lsGetSVGIcon('mouse-pointer') ?>
+					<lse-text><?= __('Select Layer', 'LayerSlider') ?></lse-text>
 					<?= lsGetSVGIcon('chevron-right','regular',['class' => 'lse-submenu-icon']) ?>
 				</lse-button>
 				<lse-submenu></lse-submenu>
 			</lse-submenu-wrapper>
+			<lse-separator></lse-separator>
 			<lse-submenu-wrapper>
 				<lse-button>
 					<?= lsGetSVGIcon('border-inner', 'duotone') ?>
@@ -8964,6 +12411,11 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 					<?= lsGetSVGIcon('chevron-right','regular',['class' => 'lse-submenu-icon']) ?>
 				</lse-button>
 				<lse-submenu class="lse-context-menu-align">
+					<lse-button data-move="middle center" class="ls-align-center-center">
+						<?= lsGetSVGIcon('border-inner', 'duotone') ?>
+						<lse-text><?= __('Center Center', 'LayerSlider') ?></lse-text>
+					</lse-button>
+					<lse-separator></lse-separator>
 					<lse-button data-move="left">
 						<?= lsGetSVGIcon('border-left', 'duotone') ?>
 						<lse-text><?= __('Left Edge', 'LayerSlider') ?></lse-text>
@@ -8988,11 +12440,6 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 					<lse-button data-move="bottom">
 						<?= lsGetSVGIcon('border-bottom', 'duotone') ?>
 						<lse-text><?= __('Bottom Edge', 'LayerSlider') ?></lse-text>
-					</lse-button>
-					<lse-separator></lse-separator>
-					<lse-button data-move="middle center" class="ls-align-center-center">
-						<?= lsGetSVGIcon('border-inner', 'duotone') ?>
-						<lse-text><?= __('Center Center', 'LayerSlider') ?></lse-text>
 					</lse-button>
 				</lse-submenu>
 			</lse-submenu-wrapper>
@@ -9030,9 +12477,26 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 					</lse-button>
 				</lse-submenu>
 			</lse-submenu-wrapper>
-			<lse-button class="lse-import-layer-button">
-				<?= lsGetSVGIcon('file-import') ?>
-				<span><?= __('Import Layer', 'LayerSlider') ?></span>
+			<lse-separator></lse-separator>
+			<lse-button class="lse-context-menu-copy-layer">
+				<?= lsGetSVGIcon('copy','regular') ?>
+				<lse-text class="lse-context-menu-single"><?= __('Copy Layer', 'LayerSlider') ?></lse-text>
+				<lse-text class="lse-context-menu-multiple"><?= __('Copy Layers', 'LayerSlider') ?></lse-text>
+				<kbd>
+					<kbd class="ls-mac-key">⌘</kbd>
+					<kbd class="ls-win-key">⌃</kbd>
+					<kbd>C</kbd>
+				</kbd>
+			</lse-button>
+			<lse-button class="lse-context-menu-paste-layer">
+				<?= lsGetSVGIcon('paste') ?>
+				<lse-text class="lse-context-menu-single"><?= __('Paste Layer', 'LayerSlider') ?></lse-text>
+				<lse-text class="lse-context-menu-multiple"><?= __('Paste Layers', 'LayerSlider') ?></lse-text>
+				<kbd>
+					<kbd class="ls-mac-key">⌘</kbd>
+					<kbd class="ls-win-key">⌃</kbd>
+					<kbd>V</kbd>
+				</kbd>
 			</lse-button>
 			<lse-button class="lse-context-menu-duplicate">
 				<?= lsGetSVGIcon('clone') ?>
@@ -9050,8 +12514,131 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 				<lse-text class="lse-context-menu-multiple"><?= __('Remove Layers', 'LayerSlider') ?></lse-text>
 				<kbd>&#9003;</kbd>
 			</lse-button>
+			<lse-separator></lse-separator>
+			<lse-submenu-wrapper>
+				<lse-button>
+					<?= lsGetSVGIcon('eye') ?>
+					<lse-text class="lse-context-menu-single"><?= __('Toggle Layer Visibility', 'LayerSlider') ?></lse-text>
+					<lse-text class="lse-context-menu-multiple"><?= __('Toggle Layers Visibility', 'LayerSlider') ?></lse-text>
+					<?= lsGetSVGIcon('chevron-right','regular',['class' => 'lse-submenu-icon']) ?>
+				</lse-button>
+				<lse-submenu class="lse-context-menu-visibility">
+					<lse-button data-visibility="visible">
+						<?= lsGetSVGIcon('eye') ?>
+						<lse-text><?= __('Visible', 'LayerSlider') ?></lse-text>
+					</lse-button>
+					<lse-button data-visibility="editor">
+						<?= lsGetSVGIcon('eye-slash') ?>
+						<lse-text><?= __('Hidden Only in Editor', 'LayerSlider') ?></lse-text>
+					</lse-button>
+					<lse-button data-visibility="all">
+						<?= lsGetSVGIcon('eye-slash') ?>
+						<lse-text><?= __('Hidden Everywhere', 'LayerSlider') ?></lse-text>
+					</lse-button>
+				</lse-submenu>
+			</lse-submenu-wrapper>
+			<lse-submenu-wrapper>
+				<lse-button>
+					<?= lsGetSVGIcon('lock') ?>
+					<lse-text class="lse-context-menu-single"><?= __('Toggle Layer Locking', 'LayerSlider') ?></lse-text>
+					<lse-text class="lse-context-menu-multiple"><?= __('Toggle Layers Locking', 'LayerSlider') ?></lse-text>
+					<?= lsGetSVGIcon('chevron-right','regular',['class' => 'lse-submenu-icon']) ?>
+				</lse-button>
+				<lse-submenu class="lse-context-menu-locking">
+					<lse-button data-locking="lock">
+						<?= lsGetSVGIcon('lock') ?>
+						<lse-text class="lse-context-menu-single"><?= __('Lock Layer', 'LayerSlider') ?></lse-text>
+						<lse-text class="lse-context-menu-multiple"><?= __('Lock Layers', 'LayerSlider') ?></lse-text>
+					</lse-button>
+					<lse-button data-locking="unlock">
+						<?= lsGetSVGIcon('unlock') ?>
+						<lse-text class="lse-context-menu-single"><?= __('Unlock Layer', 'LayerSlider') ?></lse-text>
+						<lse-text class="lse-context-menu-multiple"><?= __('Unlock Layers', 'LayerSlider') ?></lse-text>
+					</lse-button>
+				</lse-submenu>
+			</lse-submenu-wrapper>
+			<lse-separator></lse-separator>
+			<lse-button class="lse-context-menu-copy-styles">
+				<?= lsGetSVGIcon('copy','regular') ?>
+				<lse-text><?= __('Copy Layer Styles', 'LayerSlider') ?></lse-text>
+			</lse-button>
+			<lse-button class="lse-context-menu-paste-styles">
+				<?= lsGetSVGIcon('paste') ?>
+				<lse-text><?= __('Paste Layer Styles', 'LayerSlider') ?></lse-text>
+			</lse-button>
+			<lse-separator></lse-separator>
+			<lse-submenu-wrapper class="lse-context-menu-add-layer">
+				<lse-button>
+					<?= lsGetSVGIcon('plus') ?>
+					<lse-text><?= __('Add Layer', 'LayerSlider') ?></lse-text>
+					<?= lsGetSVGIcon('chevron-right','regular',['class' => 'lse-submenu-icon']) ?>
+				</lse-button>
+				<lse-submenu class="lse-context-add-layer">
+					<lse-button data-type="img">
+						<?= lsGetSVGIcon('image-polaroid', 'regular') ?>
+						<span><?= __('Image', 'LayerSlider') ?></span>
+					</lse-button>
+					<lse-button data-type="text">
+						<?= lsGetSVGIcon('align-left') ?>
+						<span><?= __('Text', 'LayerSlider') ?></span>
+					</lse-button>
+					<lse-button data-type="media">
+						<?= lsGetSVGIcon('play-circle') ?>
+						<span><?= __('Video / Audio', 'LayerSlider') ?></span>
+					</lse-button>
+					<lse-button data-type="button">
+						<?= lsGetSVGIcon('dot-circle') ?>
+						<span><?= __('Button', 'LayerSlider') ?></span>
+					</lse-button>
+					<lse-button data-type="asset">
+						<?= lsGetSVGIcon('photo-video') ?>
+						<span><?= __('Asset', 'LayerSlider') ?></span>
+					</lse-button>
+					<lse-button data-type="shape-modal">
+						<?= lsGetSVGIcon('shapes') ?>
+						<span><?= __('Shape', 'LayerSlider') ?></span>
+					</lse-button>
+					<lse-button data-type="icon-modal">
+						<?= lsGetSVGIcon('icons') ?>
+						<span><?= __('Icon', 'LayerSlider') ?></span>
+					</lse-button>
+					<lse-button data-type="svg-modal">
+						<?= lsGetSVGIcon('splotch') ?>
+						<span><?= __('SVG', 'LayerSlider') ?></span>
+					</lse-button>
+					<lse-button data-type="html">
+						<?= lsGetSVGIcon('code') ?>
+						<span><?= __('HTML', 'LayerSlider') ?></span>
+					</lse-button>
+					<lse-button data-type="post">
+						<?= lsGetSVGIcon('database') ?>
+						<span><?= __('Dynamic Layer', 'LayerSlider') ?></span>
+					</lse-button>
+					<lse-button data-type="countdown">
+						<?= lsGetSVGIcon('timer') ?>
+						<span><?= __('Countdown', 'LayerSlider') ?></span>
+					</lse-button>
+					<lse-button data-type="counter">
+						<?= lsGetSVGIcon('arrow-up-9-1') ?>
+						<span><?= __('Counter', 'LayerSlider') ?></span>
+					</lse-button>
+					<lse-button data-type="lottie">
+						<?= lsGetSVGIcon('lottie', 'brands') ?>
+						<span><?= __('Lottie', 'LayerSlider') ?></span>
+					</lse-button>
+				</lse-submenu>
+			</lse-submenu-wrapper>
+			<lse-button class="lse-import-layer-button">
+				<?= lsGetSVGIcon('file-import') ?>
+				<span><?= __('Import Layer', 'LayerSlider') ?></span>
+			</lse-button>
+		</lse-context-content>
+	</div>
+
+	<div id="lse-context-menu-layer" class="lse-floating-window-theme">
+		<lse-context-content class="lse-menu">
 			<lse-button class="lse-context-menu-copy-layer">
-				<?= lsGetSVGIcon('copy') ?>
+				<?= lsGetSVGIcon('copy','regular') ?>
 				<lse-text class="lse-context-menu-single"><?= __('Copy Layer', 'LayerSlider') ?></lse-text>
 				<lse-text class="lse-context-menu-multiple"><?= __('Copy Layers', 'LayerSlider') ?></lse-text>
 				<kbd>
@@ -9061,7 +12648,7 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 				</kbd>
 			</lse-button>
 			<lse-button class="lse-context-menu-paste-layer">
-				<?= lsGetSVGIcon('clipboard') ?>
+				<?= lsGetSVGIcon('paste') ?>
 				<lse-text class="lse-context-menu-single"><?= __('Paste Layer', 'LayerSlider') ?></lse-text>
 				<lse-text class="lse-context-menu-multiple"><?= __('Paste Layers', 'LayerSlider') ?></lse-text>
 				<kbd>
@@ -9070,26 +12657,65 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 					<kbd>V</kbd>
 				</kbd>
 			</lse-button>
+			<lse-button class="lse-context-menu-duplicate">
+				<?= lsGetSVGIcon('clone') ?>
+				<lse-text class="lse-context-menu-single"><?= __('Duplicate Layer', 'LayerSlider') ?></lse-text>
+				<lse-text class="lse-context-menu-multiple"><?= __('Duplicate Layers', 'LayerSlider') ?></lse-text>
+				<kbd>
+					<kbd class="ls-mac-key">⌘</kbd>
+					<kbd class="ls-win-key">⌃</kbd>
+					<kbd>D</kbd>
+				</kbd>
+			</lse-button>
+			<lse-button class="lse-context-menu-remove">
+				<?= lsGetSVGIcon('trash-alt') ?>
+				<lse-text class="lse-context-menu-single"><?= __('Remove Layer', 'LayerSlider') ?></lse-text>
+				<lse-text class="lse-context-menu-multiple"><?= __('Remove Layers', 'LayerSlider') ?></lse-text>
+				<kbd>&#9003;</kbd>
+			</lse-button>
 			<lse-separator></lse-separator>
-			<lse-button class="lse-context-menu-hide">
-				<?= lsGetSVGIcon('eye') ?>
-				<lse-text class="lse-context-menu-single"><?= __('Toggle Layer Visibility', 'LayerSlider') ?></lse-text>
-				<lse-text class="lse-context-menu-multiple"><?= __('Toggle Layers Visibility', 'LayerSlider') ?></lse-text>
-			</lse-button>
-			<lse-button class="lse-context-menu-lock">
-				<?= lsGetSVGIcon('lock') ?>
-				<lse-text class="lse-context-menu-single"><?= __('Toggle Layer Locking', 'LayerSlider') ?></lse-text>
-				<lse-text class="lse-context-menu-multiple"><?= __('Toggle Layers Locking', 'LayerSlider') ?></lse-text>
-			</lse-button>
-			<lse-separator></lse-separator>
-			<lse-button class="lse-context-menu-copy-styles">
-				<?= lsGetSVGIcon('copy') ?>
-				<lse-text><?= __('Copy Layer Styles', 'LayerSlider') ?></lse-text>
-			</lse-button>
-			<lse-button class="lse-context-menu-paste-styles">
-				<?= lsGetSVGIcon('clipboard') ?>
-				<lse-text><?= __('Paste Layer Styles', 'LayerSlider') ?></lse-text>
-			</lse-button>
+			<lse-submenu-wrapper>
+				<lse-button>
+					<?= lsGetSVGIcon('eye') ?>
+					<lse-text class="lse-context-menu-single"><?= __('Toggle Layer Visibility', 'LayerSlider') ?></lse-text>
+					<lse-text class="lse-context-menu-multiple"><?= __('Toggle Layers Visibility', 'LayerSlider') ?></lse-text>
+					<?= lsGetSVGIcon('chevron-right','regular',['class' => 'lse-submenu-icon']) ?>
+				</lse-button>
+				<lse-submenu class="lse-context-menu-visibility">
+					<lse-button data-visibility="visible">
+						<?= lsGetSVGIcon('eye') ?>
+						<lse-text><?= __('Visible', 'LayerSlider') ?></lse-text>
+					</lse-button>
+					<lse-button data-visibility="editor">
+						<?= lsGetSVGIcon('eye-slash') ?>
+						<lse-text><?= __('Hidden Only in Editor', 'LayerSlider') ?></lse-text>
+					</lse-button>
+					<lse-button data-visibility="all">
+						<?= lsGetSVGIcon('eye-slash') ?>
+						<lse-text><?= __('Hidden Everywhere', 'LayerSlider') ?></lse-text>
+					</lse-button>
+				</lse-submenu>
+			</lse-submenu-wrapper>
+			<lse-submenu-wrapper>
+				<lse-button>
+					<?= lsGetSVGIcon('lock') ?>
+					<lse-text class="lse-context-menu-single"><?= __('Toggle Layer Locking', 'LayerSlider') ?></lse-text>
+					<lse-text class="lse-context-menu-multiple"><?= __('Toggle Layers Locking', 'LayerSlider') ?></lse-text>
+					<?= lsGetSVGIcon('chevron-right','regular',['class' => 'lse-submenu-icon']) ?>
+				</lse-button>
+				<lse-submenu class="lse-context-menu-locking">
+					<lse-button data-locking="lock">
+						<?= lsGetSVGIcon('lock') ?>
+						<lse-text class="lse-context-menu-single"><?= __('Lock Layer', 'LayerSlider') ?></lse-text>
+						<lse-text class="lse-context-menu-multiple"><?= __('Lock Layers', 'LayerSlider') ?></lse-text>
+					</lse-button>
+					<lse-button data-locking="unlock">
+						<?= lsGetSVGIcon('unlock') ?>
+						<lse-text class="lse-context-menu-single"><?= __('Unlock Layer', 'LayerSlider') ?></lse-text>
+						<lse-text class="lse-context-menu-multiple"><?= __('Unlock Layers', 'LayerSlider') ?></lse-text>
+					</lse-button>
+				</lse-submenu>
+			</lse-submenu-wrapper>
 		</lse-context-content>
 	</div>
 
@@ -9261,6 +12887,30 @@ overflow: hidden;', 'LayerSlider') ?>"></textarea>
 		</lse-context-content>
 	</div>
 
+	<div id="lse-context-menu-slide-transitions" class="lse-floating-window-theme">
+		<lse-context-content class="lse-menu">
+			<lse-button data-action="effect-enable-all">
+				<?= lsGetSVGIcon('check') ?>
+				<lse-text></lse-text>
+			</lse-button>
+			<lse-button data-action="effect-disable-all">
+				<?= lsGetSVGIcon('times') ?>
+				<lse-text></lse-text>
+			</lse-button>
+
+			<lse-separator></lse-separator>
+
+			<lse-button data-action="global-enable-all">
+				<?= lsGetSVGIcon('check') ?>
+				<lse-text><?= __('Use All Effects ', 'LayerSlider') ?></lse-text>
+			</lse-button>
+			<lse-button data-action="global-disable-all">
+				<?= lsGetSVGIcon('times') ?>
+				<lse-text><?= __('Use None', 'LayerSlider') ?></lse-text>
+			</lse-button>
+		</lse-context-content>
+	</div>
+
 </div>
 
 <!-- CONTEXT MENUS END HERE -->
@@ -9274,9 +12924,12 @@ include LS_ROOT_PATH . '/templates/tmpl-static-layer-item.php';
 include LS_ROOT_PATH . '/templates/tmpl-add-layer.php';
 include LS_ROOT_PATH . '/templates/tmpl-post-chooser.php';
 include LS_ROOT_PATH . '/templates/tmpl-insert-icons-modal.php';
+include LS_ROOT_PATH . '/templates/tmpl-lottie-modal.php';
 include LS_ROOT_PATH . '/templates/tmpl-insert-media-modal.php';
 include LS_ROOT_PATH . '/templates/tmpl-assets-library-modal.php';
 include LS_ROOT_PATH . '/templates/tmpl-button-presets.php';
+include LS_ROOT_PATH . '/templates/tmpl-countdown-presets.php';
+include LS_ROOT_PATH . '/templates/tmpl-counter-presets.php';
 include LS_ROOT_PATH . '/templates/tmpl-import-slide.php';
 include LS_ROOT_PATH . '/templates/tmpl-import-layer.php';
 include LS_ROOT_PATH . '/templates/tmpl-slide-tab.php';
@@ -9291,6 +12944,7 @@ include LS_ROOT_PATH . '/templates/tmpl-font-library.php';
 include LS_ROOT_PATH . '/templates/tmpl-search-window.php';
 include LS_ROOT_PATH . '/templates/tmpl-transition-window.php';
 include LS_ROOT_PATH . '/templates/tmpl-post-options.php';
+include LS_ROOT_PATH . '/templates/tmpl-scroll-scene-multi-slide-modal.php';
 ?>
 
 

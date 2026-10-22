@@ -395,6 +395,36 @@ class BridgeQodeTitle implements iBridgeQodeRender {
 }
 
 /*
+   Class: QodeSubTitle
+   A class that initializes Qode Subtitle
+*/
+class BridgeQodeSubtitle implements iBridgeQodeRender {
+    private $name;
+    private $title;
+    public $hidden_property;
+    public $hidden_value;
+    public $hidden_values = array();
+
+    function __construct($name="",$title_class="",$hidden_property="",$hidden_value="") {
+        $this->title = $title_class;
+        $this->name = $name;
+        $this->hidden_property = $hidden_property;
+        $this->hidden_value = $hidden_value;
+    }
+
+    public function render($factory) {
+        $hidden = false;
+        if (!empty($this->hidden_property)){
+            if (bridge_qode_option_get_value($this->hidden_property)==$this->hidden_value)
+                $hidden = true;
+        }
+        ?>
+        <h6 class="qodef-page-section-additional-subtitle" id="qodef_<?php echo esc_attr($this->name); ?>"<?php if ($hidden) { ?> style="display: none"<?php } ?>><?php echo esc_html($this->title); ?></h6>
+        <?php
+    }
+}
+
+/*
    Class: QodeField
    A class that initializes Qode Field
 */

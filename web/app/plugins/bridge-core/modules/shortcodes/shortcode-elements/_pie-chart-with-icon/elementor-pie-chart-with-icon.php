@@ -16,6 +16,10 @@ class BridgeCoreElementorPieChartWithIcon extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode' ];
     }
+	
+	public function get_script_depends() {
+		return array( 'easyPieChart', 'qode-pie-chart-with-icon' );
+	}
 
     protected function register_controls() {
 

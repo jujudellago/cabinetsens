@@ -16,6 +16,10 @@ class BridgeCoreElementorVerticalPortfolioSlider extends \Elementor\Widget_Base{
 	public function get_categories() {
 		return [ 'qode' ];
 	}
+	
+	public function get_script_depends() {
+		return array( 'swiper', 'qode-vertical-portfolio-slider' );
+	}
 
 	protected function register_controls(){
 		$this->start_controls_section(

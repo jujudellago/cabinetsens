@@ -1,4 +1,4 @@
-<div class="qode-course-list-holder <?php echo esc_attr( $holder_classes ); ?>" <?php echo wp_kses( $holder_data, array( 'data' ) ); ?>>
+<div class="qode-course-list-holder <?php echo esc_attr( $holder_classes ); ?>" <?php echo wp_kses( $holder_data, array( 'data' ) ); ?> data-nonce="<?php echo esc_attr( wp_create_nonce( 'qode_lms_course_load_more_nonce' ) ); ?>">
 	<?php echo qode_lms_get_cpt_shortcode_module_template_part( 'course', 'parts/filter', '', $params, $additional_params ); ?>
 	<div class="qode-cl-inner <?php echo esc_attr( $holder_inner_classes ); ?> clearfix">
 		<?php

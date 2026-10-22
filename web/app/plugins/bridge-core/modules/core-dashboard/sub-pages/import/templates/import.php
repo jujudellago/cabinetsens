@@ -31,6 +31,15 @@
 								}
 							}
 						}
+						
+						if( str_contains( $demo_key, 'db' ) ) {
+							//new demos url
+							$demo_url = 'https://' . str_replace( 'db', '', $demo_key ) . '.qodeinteractive.com';
+						} else {
+							//old demos url
+							$demo_url = 'https://demo.qodeinteractive.com/' . $demo_key;
+						}
+						
 						?>
 						<article class="qodef-cd-demo-item <?php echo implode(' ', $item_category); ?>">
 							<div class="qodef-cd-demo-item-inner">
@@ -41,7 +50,7 @@
 											<?php if( $item_has_related_demos ) { ?>
 												<div class="qodef-cd-di-image-links-holder">
 													<div class="qodef-cd-di-image-link">
-														<a href="#" class="qodef-cd-demo-item-link" data-demo-id="<?php echo esc_attr( $demo_key ); ?>">
+														<a href="#" class="qodef-cd-demo-item-link" data-demo-id="<?php echo esc_attr( $demo_key ); ?>" data-demo-url="<?php echo esc_url( $demo_url ) ?>">
 														<?php echo esc_html__('WPBakery', 'bridge-core'); ?>
 														<svg x="0px" y="0px" width="7.918px" height="7.917px" viewBox="0 0 7.918 7.917" enable-background="new 0 0 7.918 7.917" xml:space="preserve">
 																<g>
@@ -55,7 +64,7 @@
 													</div>
 													<?php foreach( $demo['related_demos'] as $related_demo_id => $related_demo_plugin ) { ?>
 														<div class="qodef-cd-di-image-link qodef-cd-di-related-demo-link">
-															<a href="#" class="qodef-cd-demo-item-link" data-demo-id="<?php echo esc_attr( $related_demo_id ); ?>" data-original-demo-id="<?php echo esc_attr( $demo_key ); ?>">
+															<a href="#" class="qodef-cd-demo-item-link" data-demo-id="<?php echo esc_attr( $related_demo_id ); ?>" data-original-demo-id="<?php echo esc_attr( $demo_key ); ?>" data-demo-url="<?php echo esc_url( $demo_url ) ?>">
 																<?php echo esc_html( $related_demo_plugin ); ?>
 																<svg x="0px" y="0px" width="7.918px" height="7.917px" viewBox="0 0 7.918 7.917" enable-background="new 0 0 7.918 7.917" xml:space="preserve">
 																	<g>
@@ -75,7 +84,7 @@
 											<?php } else { ?>
 												<div class="qodef-cd-di-image-link-holder">
 													<div class="qodef-cd-di-image-link">
-														<a href="#" class="qodef-cd-demo-item-link" data-demo-id="<?php echo esc_attr( $demo_key ); ?>">
+														<a href="#" class="qodef-cd-demo-item-link" data-demo-id="<?php echo esc_attr( $demo_key ); ?>" data-demo-url="<?php echo esc_url( $demo_url ) ?>">
 														<?php echo esc_html__('Import Demo', 'bridge-core'); ?>
 														<svg x="0px" y="0px" width="7.918px" height="7.917px" viewBox="0 0 7.918 7.917" enable-background="new 0 0 7.918 7.917" xml:space="preserve">
 																<g>
@@ -120,6 +129,7 @@
 					<?php }
 					} ?>
 			</div>
+			<?php wp_nonce_field( "qodef_cd_demo_links_popup", "qodef_cd_demo_links_popup" ); ?>
 		</div>
 	</div>
 </div>

@@ -62,7 +62,7 @@ class QodeWoocommerceCheckoutIntegration {
 		$post_types         = $this->supported_post_types();
 		
 		foreach ( $post_types as $post_type ) {
-			$custom_data_stores[ $post_type ]                 = 'WC_' . $this->transform_class_name( $post_type ) . '_Data_Store_CPT';
+			$custom_data_stores[ 'product-' . $post_type ]                 = 'WC_' . $this->transform_class_name( $post_type ) . '_Data_Store_CPT';
 			$custom_data_stores[ 'order-item-' . $post_type ] = 'WC_Order_Item_' . $this->transform_class_name( $post_type ) . '_Data_Store';
 		}
 		

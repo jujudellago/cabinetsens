@@ -74,30 +74,31 @@ class VideoBox implements ShortcodeInterface {
      * @return string
      */
     public function render($atts, $content = null) {
-
-        $args = array(
-            "video_link" => "",
-            "video_image" => "",
-            "disable_hover" => "no",
-            "disable_zoom"  => "no"
-        );
-
-        $params = shortcode_atts($args, $atts);
-
-        extract($params);
-
-        $params['img_src'] = $this->getImageSrc($params);
-        $params['holder_classes'] = $this->getHolderClasses($params);
-
-        $html = bridge_core_get_shortcode_template_part('templates/video-box-template', 'video-box', '', $params);
-
-        return $html;
-    }
-
-    public function getImageSrc($params){
-        $image_original = wp_get_attachment_image_src($params['video_image'], 'full');
-        $img_src = $image_original[0];
-        return $img_src;
+	    
+	    $args = array(
+		    "video_link"    => "",
+		    "video_image"   => "",
+		    "disable_hover" => "no",
+		    "disable_zoom"  => "no"
+	    );
+	    
+	    $params = shortcode_atts(
+		    $args,
+		    $atts
+	    );
+	    
+	    extract( $params );
+	    
+	    $params['holder_classes'] = $this->getHolderClasses( $params );
+	    
+	    $html = bridge_core_get_shortcode_template_part(
+		    'templates/video-box-template',
+		    'video-box',
+		    '',
+		    $params
+	    );
+	    
+	    return $html;
     }
 
     private function getHolderClasses($params){

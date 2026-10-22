@@ -21,7 +21,7 @@
     function qodeInitElementorTopReviewsCarousel(){
         $j(window).on('elementor/frontend/init', function () {
             elementorFrontend.hooks.addAction( 'frontend/element_ready/qode_top_reviews_carousel.default', function() {
-	            qodeOwlSlider();
+                qode.modules.owlSlider.qodeOwlSlider();
             } );
         });
     }

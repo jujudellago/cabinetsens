@@ -17,7 +17,7 @@
 								{
 									foreach($timetable_shortcodes_list as $key=>$val)
 									{
-										echo "<option value='{$key}'>{$key}</option>";
+										echo "<option value='" . esc_attr($key) . "'>" . esc_html($key) . "</option>";
 									}
 								}
 							?>
@@ -39,7 +39,7 @@
 	</div>
 </form>
 <div class="timetable_shortcode_container">
-	<input style="width: 580px;" type="text" class="regular-text tt_shortcode" value="[tt_timetable]" data-default="[tt_timetable]" name="shortcode">
+	<input style="width: 560px;" type="text" class="regular-text tt_shortcode" value="[tt_timetable]" data-default="[tt_timetable]" name="shortcode">
 	<button id="copy_to_clipboard1" class="button button-primary" data-clipboard-target=".tt_shortcode"><?php esc_html_e("Copy to Clipboard", "timetable"); ?></button>
 	
 	<a href="#" id="timetable_shortcode_save1" class="button button-primary"><?php esc_html_e("Save", "timetable"); ?></a>
@@ -1204,7 +1204,7 @@
 	</div>
 </form>
 <div class="timetable_shortcode_container">
-	<input style="width: 580px;" type="text" class="regular-text tt_shortcode" value="[tt_timetable]" data-default="[tt_timetable]" name="shortcode">
+	<input style="width: 560px;" type="text" class="regular-text tt_shortcode" value="[tt_timetable]" data-default="[tt_timetable]" name="shortcode">
 	<button href="#" id="copy_to_clipboard2" class="button button-primary" data-clipboard-target=".tt_shortcode"><?php esc_html_e("Copy to Clipboard", "timetable"); ?></button>
 	<a href="#" id="timetable_shortcode_save2" class="button button-primary"><?php esc_html_e("Save", "timetable"); ?></a>
 	<span class="copy_info"><?php esc_html_e("Shortcode has been copied to clipboard!", "timetable"); ?></span>

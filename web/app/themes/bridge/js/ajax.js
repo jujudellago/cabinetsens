@@ -9,15 +9,22 @@ function perPageBindings () {
     content = $j('.content_inner');
     contentMinHeight();
     contentMinHeightWithPaspartu();
-    initQodeSlider();
-    initQodeCarousel();
+	if( 'object' === typeof qode.modules.qodeSlider ) {
+		qode.modules.qodeSlider.initQodeSlider();
+	}
+	if( 'object' === typeof qode.modules.carousel ) {
+		qode.modules.carousel.initQodeCarousel();
+	}
     initMessageHeight();
     initListAnimation();
-    initPieChart();
-    initPieChartWithIcon();
+	if( 'object' === typeof qode.modules.pieChart ) {
+		qode.modules.pieChart.initPieChart();
+	}
+	if( 'object' === typeof qode.modules.pieChartWithIcon ) {
+		qode.modules.pieChartWithIcon.initPieChartWithIcon();
+	}
     initServiceAnimation();
     initParallaxTitle();
-    loadMore();
     prettyPhoto();
     initFlexSlider();
     fitVideo();
@@ -25,14 +32,19 @@ function perPageBindings () {
     initAccordionContentLink();
     initMessages();
     fitAudio();
-    initProgressBarsIcon();
+	if( 'object' === typeof qode.modules.progressBarIcon ) {
+		qode.modules.progressBarIcon.initProgressBarsIcon();
+	}
     initMoreFacts();
     placeholderReplace();
-    initPortfolio();
-    initPortfolioZIndex();
-    initPortfolioJustifiedGallery();
-    initPortfolioMasonry();
-    initPortfolioMasonryFilter();
+	if( 'object' === typeof qode.modules.portfolioList ) {
+		qode.modules.portfolioList.initPortfolio();
+		qode.modules.portfolioList.initPortfolioZIndex();
+		qode.modules.portfolioList.initPortfolioJustifiedGallery();
+		qode.modules.portfolioList.initPortfolioMasonry();
+		qode.modules.portfolioList.initPortfolioMasonryFilter();
+		qode.modules.portfolioList.loadMore();
+	}
     initTabs();
 	qodeInitAdvancedTabs();
 	qodeInitAdvancedTabsIcons();
@@ -47,9 +59,13 @@ function perPageBindings () {
     backButtonShowHide();
     backToTop();
     initSteps();
-    showGoogleMap();
+	if( 'object' === typeof qode.modules.googleMap ) {
+		qode.modules.googleMap.showGoogleMap();
+	}
     updateShoppingCart();
-    initProgressBarsVertical();
+	if( 'object' === typeof qode.modules.progressBarVertical ) {
+		qode.modules.progressBarVertical.initProgressBarsVertical();
+	}
     initImageHover();
     countClientsPerRow();
     animatedTextIconHeight();
@@ -58,12 +74,18 @@ function perPageBindings () {
     initVideoBackground();
     initVideoBackgroundSize();
     initIconWithTextAnimation();
-    initPortfolioSlider();
-    initBlogSlider();
-	qodeInitBlogCarouselTitled();
+	if( 'object' === typeof qode.modules.portfolioSlider ) {
+		qode.modules.portfolioSlider.initPortfolioSlider();
+	}
+	if( 'object' === typeof qode.modules.blogSlider ) {
+		qode.modules.blogSlider.initBlogSlider();
+	}
+	if( 'object' === typeof qode.modules.blogCarouselTitled ) {
+		qode.modules.blogCarouselTitled.qodeInitBlogCarouselTitled();
+	}
     initCoverBoxes();
     countAnimatedTextIconPerRow();
-    bridgeQodeAjaxSubmitCommentForm();
+	qodeAjaxSubmitCommentForm();
     createContentMenu();
     contentMenuScrollTo();
     contentMenuCheckLastSection();
@@ -74,12 +96,22 @@ function perPageBindings () {
 	qodeIcon().init();
     initTabsActiveBorder();
     setActiveTabBorder();
-    initImageGallerySliderNoSpace();
-    initVerticalSplitSlider();
-    initToCounter();
-    initCounter();
-    initCountdown();
-    initProgressBars();
+	if( 'object' === typeof qode.modules.imageSliderNoSpace ) {
+		qode.modules.imageSliderNoSpace.initImageGallerySliderNoSpace();
+	}
+	if( 'object' === typeof qode.modules.verticalSplitSlider ) {
+		qode.modules.verticalSplitSlider.initVerticalSplitSlider();
+	}
+	if( 'object' === typeof qode.modules.counter ) {
+		qode.modules.counter.initToCounter();
+		qode.modules.counter.initCounter();
+	}
+	if( 'object' === typeof qode.modules.countdown ) {
+		qode.modules.countdown.initCountdown();
+	}
+	if( 'object' === typeof qode.modules.progressBar ) {
+		qode.modules.progressBar.initProgressBars();
+	}
     initPageTitleAnimation();
     initQodeElementAnimationSkrollr();
     initIconShortcodeHover();
@@ -87,7 +119,9 @@ function perPageBindings () {
     initMasonryGallery();
     parallaxLayers();
     initHorizontalMarquee();
-    initTextMarquee();
+	if( 'object' === typeof qode.modules.textMarquee ) {
+		qode.modules.textMarquee.initTextMarquee();
+	}
     initExpandingImages();
     initBlogMasonryGallery();
 	initBlogGallery();
@@ -97,7 +131,9 @@ function perPageBindings () {
     qodeBlogCompundMasonryGallery().init();
     qodeBlogHeadlines();
     qodeBlogGalleryAnimation();
-    qodeInitStickyWidget();
+	if( 'object' === typeof qode.modules.stickyWidget ) {
+		qode.modules.stickyWidget.qodeInitStickyWidget();
+	}
     qodeLazyImages();
     initItemShowcase();
 	qodeV2Button().init();
@@ -112,7 +148,9 @@ function perPageBindings () {
 	qodeInitSendContactForm();
 	qodeRecaptchaCallback();
 	qodeWorkflow();
-	qodeCustomFontTypeOut();
+	if( 'object' === typeof qode.modules.customFont ) {
+		qode.modules.customFont.qodeCustomFontTypeOut();
+	}
 	//these functions are for landing page
 	if($j('.landing_holder').length){
 		initExamplesFilter();
@@ -128,6 +166,42 @@ function perPageBindings () {
     	//reinitiate CF7's recaptcha callback function on ajax
     	recaptchaCallback();
     }
+	if( 'object' === typeof qode.modules.comparisonSlider ) {
+		qode.modules.comparisonSlider.qodeInitComparisonSlider();
+	}
+	if( 'object' === typeof qode.modules.interestRateCalculator ) {
+		qode.modules.interestRateCalculator.qodeInitInterestRateCalculator();
+	}
+	if( 'object' === typeof qode.modules.invertedPortfolioSlider ) {
+		qode.modules.invertedPortfolioSlider.qodeInvertedPortfolioSlider();
+	}
+	if( 'object' === typeof qode.modules.lineGraph ) {
+		qode.modules.lineGraph.qodeLineGraph();
+	}
+	if( 'object' === typeof qode.modules.numberedCarousel ) {
+		qode.modules.numberedCarousel.qodeNumberedCarousel().init();
+	}
+	if( 'object' === typeof qode.modules.pieChartDoughnut ) {
+		qode.modules.pieChartDoughnut.qodePieChartDoughnut();
+	}
+	if( 'object' === typeof qode.modules.pieChartFull ) {
+		qode.modules.pieChartFull.qodePieChartFull();
+	}
+	if( 'object' === typeof qode.modules.portfolioCarousel ) {
+		qode.modules.portfolioCarousel.qodePortfolioCarousel();
+	}
+	if( 'object' === typeof qode.modules.portfolioProjectSlider ) {
+		qode.modules.portfolioProjectSlider.qodePortfolioProjectSlider();
+	}
+	if( 'object' === typeof qode.modules.verticalPortfolioSlider ) {
+		qode.modules.verticalPortfolioSlider.qodeVerticalPortfolioSlider();
+	}
+	if( 'object' === typeof qode.modules.owlSlider ) {
+		qode.modules.owlSlider.qodeOwlSlider();
+	}
+	if( 'object' === typeof qode.modules.multiDeviceShowcase ) {
+		qode.modules.multiDeviceShowcase.qodeInitMultiDeviceShowcase();
+	}
 }
 
 function ajaxSetActiveState(me){
@@ -322,10 +396,34 @@ function slideOutOldPage(content, direction, direction2, animationTime, callback
     }
 }
 
-//sliding in current page
-function slideInNewPage(text, direction, direction2, animationTime, callbacks, url) {
-	"use strict";
+//adjust loading of required scripts for new page
+function adjustRequiredScriptsLoading( text ) {
+	var newDocument = new DOMParser().parseFromString( text, 'text/html' ),
+		allNewScripts = newDocument.getElementsByTagName( 'script' );
+	
+	for( const key in allNewScripts ) {
+		var newScriptID = allNewScripts[key].id;
+		
+		if( newScriptID ) {
+			var scriptPresentFlag = document.getElementById( newScriptID );
+			
+			//load new script only if it is not already loaded in old document
+			if( scriptPresentFlag == null ) {
+				var newScriptObject = newDocument.getElementById( newScriptID ),
+					newScript = document.createElement( 'script' );
+				
+				newScript.type = 'text/javascript';
+				newScript.src = newScriptObject.src;
+				document.body.appendChild( newScript );
+			}
+		}
+	}
+}
 
+//sliding in current page
+function slideInNewPage(text, direction, direction2, animationTime, callbacks, url ) {
+	"use strict";
+	
 	viewport.html('');
 
 	var newHTML = $j(text);
@@ -470,7 +568,7 @@ function slideInNewPage(text, direction, direction2, animationTime, callbacks, u
 
 	$j('.side_menu_button a').removeClass('opened');
 	newHTML.filter('script').each(function(){
-			$j.globalEval(this.text || this.textContent || this.innerHTML || '');
+		$j.globalEval(this.text || this.textContent || this.innerHTML || '');
 	});
 
 	newContent.waitForImages(function() {
@@ -507,8 +605,8 @@ function slideInNewPage(text, direction, direction2, animationTime, callbacks, u
 			$j('header.page_header').removeClass("left right").addClass(header_style);
             $j('aside.vertical_menu_area').removeClass("left right").addClass(header_style);
 		}
-		if($j('.carousel').length){
-			checkSliderForHeaderStyle($j('.carousel .active'));
+		if($j('.carousel').length && 'object' === typeof qode.modules.qodeSlider ){
+			qode.modules.qodeSlider.checkSliderForHeaderStyle($j('.carousel .active'));
 		}
 		/* check for dark/light class - end */
 
@@ -831,14 +929,21 @@ function loadResource(url) {
 					return window.setTimeout(insertNewPage, 100);
 
 				}
-				//slide in new page
-
-				slideInNewPage(text, direction, direction2, animationTime, {
-				oncomplete: function () {
-						ajaxSetActiveState(me);
-					}
-				}, url);
-				balanceNavArrows();
+				
+				//adjust loading of required scripts for new page
+				adjustRequiredScriptsLoading( text );
+				
+				//temp solution to wrap it by tiny timeout so mixitup scripts can be loaded properly always
+				setTimeout( function() {
+					//slide in new page
+					slideInNewPage(text, direction, direction2, animationTime, {
+						oncomplete: function () {
+							ajaxSetActiveState(me);
+						}
+					}, url);
+					
+					balanceNavArrows();
+				}, 600 );
 			}
 			insertNewPage();
 			firstLoad = false;
@@ -993,4 +1098,37 @@ $j(document).ready(function() {
 			}
 		});
 	}
+	
+	qodeAjaxSubmitCommentForm();
 });
+
+function qodeAjaxSubmitCommentForm(){
+	"use strict";
+	
+	var options = {
+		success: function( response ){
+			var responseHTML = new DOMParser().parseFromString( response, 'text/html' );
+			var errorHolder = responseHTML.getElementsByClassName( 'wp-die-message' );
+			
+			if( errorHolder.length ) {
+				$j("#commentform .success p").html( errorHolder[0].innerHTML );
+			} else {
+				$j("#commentform textarea").val("");
+				if( $j("#commentform input[type=text]").length ){
+					$j("#commentform input[type=text]").each( function() {
+						$j( this ).val("");
+					} )
+				}
+				
+				$j("#commentform .success p").text( qodeGlobalVars.vars.commentSentLabel );
+			}
+		}
+	};
+	
+	$j('#commentform').submit(function() {
+		$j(this).find('input[type="submit"]').next('.success').remove();
+		$j(this).find('input[type="submit"]').after('<div class="success"><p></p></div>');
+		$j(this).ajaxSubmit(options);
+		return false;
+	});
+}

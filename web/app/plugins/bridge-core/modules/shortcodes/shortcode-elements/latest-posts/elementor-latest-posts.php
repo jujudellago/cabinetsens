@@ -310,7 +310,7 @@ class BridgeCoreElementorLatestPosts extends \Elementor\Widget_Base{
             );
         } else {
             $params['q'] = new \WP_Query(
-                array('orderby' => $params['order_by'], 'order' => $params['order'], 'posts_per_page' => $params['number_of_colums']*$params['number_of_rows'], 'category_name' => $params['category'])
+                array('orderby' => $params['order_by'], 'order' => $params['order'], 'posts_per_page' => intval( $params['number_of_colums'] ) * intval( $params['number_of_rows'] ), 'category_name' => $params['category'])
             );
         }
 

@@ -26,6 +26,7 @@
 	    qodeSearchCourses();
 	    qodeInitCourseList();
 	    qodeInitAdvancedCourseSearch();
+		qodeInitLoginPopup();
     }
 
     /*
@@ -460,6 +461,7 @@
                 }
 
                 var ajaxData = qode.modules.common.setLoadMoreAjaxData(loadMoreData, 'qode_lms_course_ajax_load_more');
+                ajaxData.nonce = thisCourseList.data('nonce');
 
                 $.ajax({
                     type: 'POST',
@@ -472,7 +474,7 @@
 
                         thisCourseList.data('next-page', nextPage);
 
-                        var response = $.parseJSON(data),
+                        var response = (typeof data === 'object') ? data : $.parseJSON(data),
                             responseHtml =  response.html,
                             minValue = response.minValue,
                             maxValue = response.maxValue;
@@ -673,6 +675,21 @@
             })
         }
     }
+	
+	function qodeInitLoginPopup() {
+		var $button = $( '.qode-course-login' );
+		
+		if ( $button.length ) {
+			$button.on(
+				'click',
+				function ( e ) {
+					e.preventDefault();
+					
+					$( document.body ).trigger( 'qode_membership_trigger_login_modal' );
+				}
+			);
+		}
+	}
 
     function qodeLessonFluidVideo() {
         fluidvids.init({
@@ -702,7 +719,7 @@
     function qodeInitElementorCourseSlider(){
         $j(window).on('elementor/frontend/init', function () {
             elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_course_slider.default', function() {
-                qodeOwlSlider();
+                qode.modules.owlSlider.qodeOwlSlider();
             } );
         });
     }
@@ -756,7 +773,7 @@
     function qodeInitElementorInstructorSlider(){
         $j(window).on('elementor/frontend/init', function () {
             elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_instructor_slider.default', function() {
-                qodeOwlSlider();
+                qode.modules.owlSlider.qodeOwlSlider();
             } );
         });
     }
@@ -826,7 +843,7 @@
         var prevForm = $('.qode-lms-question-prev-form');
         var finishForm = $('.qode-lms-finish-quiz-form');
 
-        radios.change(function() {
+        radios.on('change', function() {
             checkForm.find('input[name=qode_lms_question_answer]').val(this.value);
             nextForm.find('input[name=qode_lms_question_answer]').val(this.value);
             prevForm.find('input[name=qode_lms_question_answer]').val(this.value);
@@ -834,7 +851,7 @@
         });
 
         checkboxes.on('change', function() {
-            var values = $('input[type=checkbox]:checked').map(function() {
+            var values = $('.qode-course-popup input[type=checkbox]:checked').map(function() {
                 return this.value;
             }).get().join(',');
             checkForm.find('input[name=qode_lms_question_answer]').val(values);

@@ -7,7 +7,10 @@ include LS_ROOT_PATH . '/classes/class.ls.templateutils.php';
 
 $lsTemplatesConnectionError = empty( $lsStoreData );
 
-$lsStoreData = LS_TemplateUtils::processTemplatesData( $lsStoreData );
+$lsStoreData = LS_TemplateUtils::processTemplatesData( $lsStoreData, [
+	'lastViewed' => $lsStoreLastViewed,
+]);
+
 $demoSliders = LS_Sources::getDemoSliders();
 
 
@@ -16,6 +19,7 @@ function lsPrintTemplateGridItems( $originalCategory, $items, $max = 9999, $excl
 	if( empty( $items ) ) { return ''; }
 
 	$counter = 0;
+	$dateFormat = get_option('date_format');
 
 	foreach( $items as $handle => $item ) {
 
@@ -42,7 +46,12 @@ function lsPrintTemplateGridItems( $originalCategory, $items, $max = 9999, $excl
 			break;
 		}
 
+
 		$item['order'] 			= ! empty( $item['released'] ) ? str_replace('-', '', $item['released']) : '19700101';
+
+		//$item['releasedStr'] 	= ! empty( $item['released'] ) ? ls_date( $dateFormat , strtotime( $item['released'] ) ) : '';
+		//$item['updatedStr'] 	= ! empty( $item['updated'] ) ? ls_date( $dateFormat , strtotime( $item['updated'] ) ) : $item['released'];
+
 		$item['collections'] 	= ! empty( $item['collections'] ) ? $item['collections'] : '';
 		$item['bundled'] 		= ! empty( $item['bundled'] ) ? 'true' : 'false';
 		$item['premium'] 		= ! empty( $item['premium'] ) ? 'true' : 'false';
@@ -53,8 +62,8 @@ function lsPrintTemplateGridItems( $originalCategory, $items, $max = 9999, $excl
 	<ls-template data-groups="<?= $item['groups'] ?>" data-collections="<?= $item['collections'] ?>" data-order="<?= $item['order'] ?>">
 		<ls-wrapper>
 			<ls-image-holder style="background-image: url(<?= $item['preview'] ?>);"></ls-image-holder>
+			<ls-image-holder-effect></ls-image-holder-effect>
 			<ls-content-wrapper>
-				<ls-template-name><?= $item['name'] ?></ls-template-name>
 				<ls-template-buttons>
 
 					<?php if( ! empty( $item['url'] ) ) : ?>
@@ -62,12 +71,25 @@ function lsPrintTemplateGridItems( $originalCategory, $items, $max = 9999, $excl
 						href="<?= $item['url'] ?>"
 						class="ls--button"
 						target="_blank">
+						<?= lsGetSVGIcon('eye'); ?>
+						<ls-text>
 							<?= __('Preview', 'LayerSlider') ?>
+						</ls-text>
 					</a>
 					<?php endif ?>
 
-					<a
+					<!-- <a
 						href="#"
+						class="ls--button ls-open-inspector-button"
+						target="_blank">
+						<?= lsGetSVGIcon('circle-info'); ?>
+						<ls-text>
+							<?= __('More Info', 'LayerSlider') ?>
+						</ls-text>
+					</a> -->
+
+					<a
+						href="#download-template=<?= $handle ?>"
 						class="ls--button ls--import-template-button"
 						data-name="<?= $item['name'] ?>"
 						data-handle="<?= $handle ?>"
@@ -75,12 +97,16 @@ function lsPrintTemplateGridItems( $originalCategory, $items, $max = 9999, $excl
 						data-bundled="<?= $item['bundled'] ?>"
 						data-premium="<?= $item['premium'] ?>"
 						data-version-warning="<?= $item['warning'] ?>">
-							<?= __('Import', 'LayerSlider') ?>
+						<?= lsGetSVGIcon('cloud-arrow-down'); ?>
+						<ls-text>
+							<?= __('Download', 'LayerSlider') ?>
+						</ls-text>
 					</a>
 				</ls-template-buttons>
 			</ls-content-wrapper>
 		</ls-wrapper>
-	</ls-template>
+		<ls-template-name><?= $item['name'] ?></ls-template-name>
+		</ls-template>
 <?php } } ?>
 
 
@@ -95,7 +121,7 @@ function lsPrintTemplateGridItems( $originalCategory, $items, $max = 9999, $excl
 
 <script type="text/html" id="tmpl-import-sliders">
 
-	<div id="ls-import-modal-window" class="<?php if( $lsTemplatesConnectionError ) : ?>connection-failed<?php endif ?> <?= $lsStoreHasUpdate ? 'has-updates' : '' ?>">
+	<div id="ls-import-modal-window" class=" <?php if( $lsTemplatesConnectionError ) : ?>connection-failed<?php endif ?> <?= $lsStoreHasUpdate ? 'has-updates' : '' ?>">
 
 		<ls-templates>
 
@@ -103,7 +129,7 @@ function lsPrintTemplateGridItems( $originalCategory, $items, $max = 9999, $excl
 				<ls-wrapper class="ls--back">
 					<ls-ib class="ls--button ls--close-templates">
 						<?= lsGetSVGIcon('arrow-left'); ?>
-						<ls-ib><?= __('Back to Dashboard [ESC]', 'LayerSlider') ?></ls-ib>
+						<ls-ib><?= __('Back to Dashboard', 'LayerSlider') ?> <span><?= __('[ESC]', 'LayerSlider') ?></span></ls-ib>
 					</ls-ib>
 				</ls-wrapper>
 				<ls-templates-nav>
@@ -113,19 +139,26 @@ function lsPrintTemplateGridItems( $originalCategory, $items, $max = 9999, $excl
 							<ls-ib><?= __('Discover', 'LayerSlider') ?></ls-ib>
 						</ls-li>
 
+						<?php foreach( $lsStoreData['categories'] as $categoryKey => $category ) { ?>
+						<?php if( ! empty( $category['separator-before'] ) ) : ?>
+						<ls-separator></ls-separator>
+						<?php endif ?>
+						<ls-li data-show-category="<?= $categoryKey ?>">
+							<lse-badge <?= ! empty( $category['new_items_counter'] ) ? 'data-new-items="'.$category['new_items_counter'].'"' : '' ?>></lse-badge>
+							<?= $category['icon'] ?>
+							<ls-ib><?= $category['name'] ?></ls-ib>
+						</ls-li>
+						<?php if( ! empty( $category['separator-after'] ) ) : ?>
+						<ls-separator></ls-separator>
+						<?php endif ?>
+						<?php } ?>
+
 						<?php if( ! empty( $lsStoreData['collections'] ) ) : ?>
 						<ls-li data-show-category="collections">
 							<?= lsGetSVGIcon('rectangle-history', 'duotone'); ?>
 							<ls-ib><?= __('Collections', 'LayerSlider') ?></ls-ib>
 						</ls-li>
 						<?php endif ?>
-
-						<?php foreach( $lsStoreData['categories'] as $categoryKey => $category ) { ?>
-						<ls-li data-show-category="<?= $categoryKey ?>">
-							<?= $category['icon'] ?>
-							<ls-ib><?= $category['name'] ?></ls-ib>
-						</ls-li>
-						<?php } ?>
 					</ls-ul>
 
 				</ls-templates-nav>
@@ -223,6 +256,7 @@ function lsPrintTemplateGridItems( $originalCategory, $items, $max = 9999, $excl
 					</ls-templates-holder>
 
 					<?php foreach( $lsStoreData['categories'] as $categoryKey => $category ) : ?>
+					<?php if( ! empty( $category['supports']['discover'] ) ) : ?>
 					<ls-templates-title>
 						<ls-ib><?= sprintf( _x('Latest %s', 'Templates category (eg. Latest Sliders)', 'LayerSlider'), $category['name-alt'] ) ?></ls-ib>
 					</ls-templates-title>
@@ -232,6 +266,7 @@ function lsPrintTemplateGridItems( $originalCategory, $items, $max = 9999, $excl
 					<ls-templates-button-holder>
 						<ls-ib class="ls--button ls--show-all" data-show-category="<?= $categoryKey ?>"><?= __('Show All', 'LayerSlider') ?></ls-ib>
 					</ls-templates-button-holder>
+					<?php endif ?>
 					<?php endforeach ?>
 
 
@@ -242,35 +277,38 @@ function lsPrintTemplateGridItems( $originalCategory, $items, $max = 9999, $excl
 				<?php if( ! empty( $lsStoreData['collections'] ) ) : ?>
 				<ls-templates-container data-category="collections">
 
-					<ls-templates-holder class="ls--collections-list">
-						<?php
-						$counter = 0;
-						foreach( $lsStoreData['collections']['items'] as $handle => $collection ) {
+					<ls-b class="ls--sticky-header">
+						<ls-templates-holder class="ls--collections-list">
+							<?php
+							$counter = 0;
+							foreach( $lsStoreData['collections']['items'] as $handle => $collection ) {
 
-							$activeClass = '';
-							if( ! empty( $lsStoreData['collections']['active'] ) ) {
-								if( $lsStoreData['collections']['active'] === $handle ) {
+								$activeClass = '';
+								if( ! empty( $lsStoreData['collections']['active'] ) ) {
+									if( $lsStoreData['collections']['active'] === $handle ) {
+										$activeClass = 'ls--active';
+									}
+								} elseif( $counter++ === 0 ) {
 									$activeClass = 'ls--active';
 								}
-							} elseif( $counter++ === 0 ) {
-								$activeClass = 'ls--active';
-							}
-						?>
-						<ls-template class="<?= $activeClass ?>" data-handle="<?= $handle ?>" data-name="<?= $collection['name'] ?>">
-							<ls-wrapper>
-								<ls-image-holder <?= ! empty( $collection['image'] ) ? 'style="background-image: url('.$collection['image'].');"' : '' ?>></ls-image-holder>
-								<ls-content-wrapper>
-									<ls-template-name>
-										<?= $collection['icon'] ?>
-										<ls-text><?= $collection['name'] ?></ls-text>
-									</ls-template-name>
-								</ls-content-wrapper>
-							</ls-wrapper>
-						</ls-template>
-						<?php } ?>
-					</ls-templates-holder>
+							?>
+							<ls-template class="<?= $activeClass ?>" data-handle="<?= $handle ?>" data-name="<?= $collection['name'] ?>">
+								<ls-wrapper>
+									<ls-image-holder <?= ! empty( $collection['image'] ) ? 'style="background-image: url('.$collection['image'].');"' : '' ?>></ls-image-holder>
+									<ls-image-holder-effect></ls-image-holder-effect>
+									<ls-content-wrapper>
+										<ls-template-name>
+											<?= $collection['icon'] ?>
+											<ls-text><?= $collection['name'] ?></ls-text>
+										</ls-template-name>
+									</ls-content-wrapper>
+								</ls-wrapper>
+							</ls-template>
+							<?php } ?>
+						</ls-templates-holder>
+						<!-- <ls-templates-holder-separator></ls-templates-holder-separator> -->
+					</ls-b>
 
-					<ls-templates-title id="ls--collection-title"><ls-ib><?= sprintf( __('Showing %s Collection', 'LayerSlider'), '<span></span>') ?></ls-ib></ls-templates-title>
 					<ls-templates-holder id="ls--collection-templates" class="ls--templates-list">
 					</ls-templates-holder>
 
@@ -296,17 +334,38 @@ function lsPrintTemplateGridItems( $originalCategory, $items, $max = 9999, $excl
 				<ls-templates-container class="<?= ! empty( $category['supports']['collections'] ) ? 'ls-template-collections-target' : '' ?>" data-category="<?= $categoryKey ?>">
 
 					<!-- TAGS -->
-					<ls-tags-holder>
+					<ls-b class="ls--sticky-header">
+						<ls-tags-holder>
+							<?php foreach( $category['tags'] as $handle => $tag ) : ?>
+							<ls-tag class="ls--button <?= $tag['active'] ? 'ls--active' : '' ?>" data-handle="<?= $handle ?>">
+								<?= $tag['icon'] ?>
+								<ls-text><?= $tag['name'] ?></ls-text>
+							</ls-tag>
+							<?php endforeach ?>
+						</ls-tags-holder>
+						<!-- <ls-templates-holder-separator></ls-templates-holder-separator> -->
+					</ls-b>
+
+					<!-- TAG DESCRIPTIONS -->
+					<ls-tag-descriptions-holder data-show-description="all">
 						<?php foreach( $category['tags'] as $handle => $tag ) : ?>
-						<ls-tag class="ls--button <?= $tag['active'] ? 'ls--active' : '' ?>" data-handle="<?= $handle ?>">
-							<?= $tag['icon'] ?>
-							<ls-text><?= $tag['name'] ?></ls-text>
-						</ls-tag>
+						<?php if( ! empty( $tag['description']['text'] ) ) : ?>
+						<ls-tag-description data-handle="<?= $handle ?>">
+
+							<?php if( ! empty( $tag['description']['icon'] ) ) : ?>
+							<ls-block class="ls-icon-holder">
+								<?= $tag['description']['icon'] ?>
+							</ls-block>
+							<?php endif ?>
+							<ls-block class="ls-text-holder">
+								<ls-text><?= $tag['description']['text'] ?></ls-text>
+							</ls-block>
+						</ls-tag-description>
+						<?php endif ?>
 						<?php endforeach ?>
-					</ls-tags-holder>
+					</ls-tag-descriptions-holder>
 
 					<!-- ITEMS -->
-					<ls-templates-holder-separator></ls-templates-holder-separator>
 					<ls-templates-holder class="ls--templates-list">
 						<?php lsPrintTemplateGridItems( $categoryKey, $category['items']) ?>
 					</ls-templates-holder>
@@ -324,6 +383,80 @@ function lsPrintTemplateGridItems( $originalCategory, $items, $max = 9999, $excl
 				<?php endif ?>
 
 			</ls-templates-containers>
+
+			<ls-templates-inspector-overlay></ls-templates-inspector-overlay>
+
+			<!-- <ls-templates-inspector>
+				<ls-block class="lse-scrollbar lse-scrollbar-dark">
+					<ls-templates-inspector-content>
+						<ls-h1>Template Title</ls-h1>
+
+						<ls-themes-preview-container>
+							<video src="http://georges-mini.lan:5757/wp-content/uploads/2024/06/Black-Friday-2020.mp4" poster="https://images.pexels.com/videos/3249935/free-video-3249935.jpg?auto=compress&amp;cs=tinysrgb&amp;w=520&amp;h=300" preload="auto" controlslist="nodownload" controls loop autoplay muted playsinline></video>
+						</ls-themes-preview-container>
+
+						<ls-button-group id="ls-templates-inspector-buttons">
+							<a class="ls--button" href="" id="ls-preview-template">
+								<ls-text><?= __('Live Preview') ?></ls-text>
+							</a>
+							<a class="ls--button" href="" id="ls-download-template">
+								<ls-text><?= __('Download Template') ?></ls-text>
+							</a>
+						</ls-button-group>
+
+						<ls-b id="ls-template-inspector-about">
+							Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos voluptas, iusto tenetur qui exercitationem dolor, ducimus atque aperiam libero voluptatem optio obcaecati voluptatum culpa necessitatibus quae soluta fuga ut cum?
+							Quo provident odit, ipsa assumenda quae accusantium explicabo, perspiciatis excepturi facere repudiandae hic earum ea? Deleniti ducimus doloribus sed nulla natus accusamus, fugit nesciunt error harum aperiam magni dolorem. Ad.
+							Hic sequi voluptatem quod maxime quibusdam illum nam, dignissimos, sed aut facere atque. Eos officiis, tempora sed at magni quaerat reiciendis possimus, molestias suscipit odit dolore expedita dolores, neque veritatis.
+						</ls-b>
+
+						<ls-grid class="ls--h-1 ls--v-1">
+
+							<ls-row class="ls--flex-stretch">
+
+								<ls-col class="ls--col1-2">
+									<ls-box>
+										<ls-box-inner>
+											<ls-h2><?= __('Released', 'LayerSlider') ?></ls-h2>
+											<ls-text id="ls-templates-inspector-released">Jun 24, 2024</ls-text>
+										</ls-box-inner>
+									</ls-box>
+								</ls-col>
+
+								<ls-col class="ls--col1-2">
+									<ls-box>
+										<ls-box-inner>
+											<ls-h2><?= __('Updated', 'LayerSlider') ?></ls-h2>
+											<ls-text id="ls-templates-inspector-updated">Jun 24, 2024</ls-text>
+										</ls-box-inner>
+									</ls-box>
+								</ls-col>
+
+								<ls-col class="ls--col1-2">
+									<ls-box>
+										<ls-box-inner>
+											<ls-h2><?= __('Requires', 'LayerSlider') ?></ls-h2>
+											<ls-text id="ls-templates-inspector-requires">LayerSlider 7.11.1</ls-text>
+										</ls-box-inner>
+									</ls-box>
+								</ls-col>
+
+								<ls-col class="ls--col1-2">
+									<ls-box>
+										<ls-box-inner>
+											<ls-h2><?= __('Status', 'LayerSlider') ?></ls-h2>
+											<ls-text id="ls-templates-inspector-version">Downloadable</ls-text>
+										</ls-box-inner>
+									</ls-box>
+								</ls-col>
+
+							</ls-row>
+
+						</ls-grid>
+					</ls-templates-inspector-content>
+				</ls-block>
+				<?= lsGetSVGIcon('times',false,['class' => 'ls-templates-inspector-close']) ?>
+			</ls-templates-inspector> -->
 
 		</ls-templates>
 

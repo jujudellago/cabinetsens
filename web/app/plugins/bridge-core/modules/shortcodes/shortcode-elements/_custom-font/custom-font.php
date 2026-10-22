@@ -2,27 +2,42 @@
 /* Custom font shortcode */
 if (!function_exists('bridge_core_custom_font')) {
     function bridge_core_custom_font($atts, $content = null) {
-        $args = array(
-            "font_family"       => "",
-            "font_size"         => "",
-            "line_height"       => "",
-            "font_style"        => "",
-            "font_weight"       => "",
-            "color"             => "",
-            "text_decoration"   => "",
-            "text_shadow"       => "",
-            "letter_spacing"    => "",
-            "background_color"  => "",
-            "padding"           => "",
-            "margin"            => "",
-            "border_color"		=> "",
-            "border_width"		=> "",
-            "text_align"        => "left",
-			'type_out_effect'		=> 'no',
-			'type_out_position'		=> '',
-			'typed_color'			=> '',
-			'typed_endings'			=> ''
-        );
+	    $args = array(
+		    "custom_class"      => "",
+		    "font_family"       => "",
+		    "font_size"         => "",
+		    "line_height"       => "",
+		    "font_style"        => "",
+		    "font_weight"       => "",
+		    "color"             => "",
+		    "text_decoration"   => "",
+		    "text_shadow"       => "",
+		    "letter_spacing"    => "",
+		    "background_color"  => "",
+		    "padding"           => "",
+		    "margin"            => "",
+		    "border_color"      => "",
+		    "border_width"      => "",
+		    "text_align"        => "left",
+		    'type_out_effect'   => 'no',
+		    'type_out_position' => '',
+		    'typed_color'       => '',
+		    'typed_endings'     => '',
+		    'font_size_1440'    => '',
+		    'line_height_1440'  => '',
+		    'font_size_1366'    => '',
+		    'line_height_1366'  => '',
+		    'font_size_1280'    => '',
+		    'line_height_1280'  => '',
+		    'font_size_1024'    => '',
+		    'line_height_1024'  => '',
+		    'font_size_768'     => '',
+		    'line_height_768'   => '',
+		    'font_size_680'     => '',
+		    'line_height_680'   => '',
+		    'font_size_480'     => '',
+		    'line_height_480'   => '',
+	    );
 
         $params = shortcode_atts($args, $atts);
         $params['content'] = $content;
@@ -72,15 +87,17 @@ function bridge_core_get_custom_font_modified_title($params, $content ) {
 		if ( $type_out_effect === 'yes' && ! empty( $type_out_position ) ) {
 			$typed_styles   = bridge_core_get_custom_font_typed_styles( $params );
 			$typed_endings = $params['typed_endings'];
-
-			$typed_html = '<span class="qode-cf-typed-wrap" ' . bridge_qode_get_inline_style( $typed_styles ) . '><span class="qode-cf-typed">';
-			if ( is_array($typed_endings) && count($typed_endings) > 0 ) {
-				foreach ($typed_endings as $typed_ending){
-					$typed_html .= '<span class="qode-cf-typed">' . esc_html( $typed_ending['typed_ending'] ) . '</span>';
+			$typed_endings_formatted = array();
+			
+			if( is_array( $typed_endings ) && count($typed_endings) > 0 ) {
+				foreach ( $typed_endings as $typed_ending ) {
+					$typed_endings_formatted[] = ! empty( $typed_ending['typed_ending'] ) ? $typed_ending['typed_ending'] : '';
 				}
 			}
 
-			$typed_html .= '</span></span>';
+			$typed_html = '<span class="qode-cf-typed-wrap" ' . bridge_qode_get_inline_style( $typed_styles ) . ' data-strings=\'' . json_encode( $typed_endings_formatted ) . '\'>';
+			$typed_html .= '<span class="qode-cf-typed"></span>';
+			$typed_html .= '</span>';
 
 			if ( ! empty( $split_title[ $type_out_position - 1 ] ) ) {
 				$split_title[ $type_out_position - 1 ] = $split_title[ $type_out_position - 1 ] . ' ' . $typed_html;

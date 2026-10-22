@@ -1,0 +1,98 @@
+body[class*="page_license"] #TB_window img#TB_Image
+{
+	border: none;
+}
+#wpbody-content .wrap.ql-license-title-section
+{
+	margin: 50px 0 0 0;
+}
+#wpbody-content .wrap.ql-license-title-section.first
+{
+	margin: 15px 0 0 0;
+}
+#wpbody-content .wrap.ql-license-title-section h2
+{
+	margin: 0 0 20px 0;
+	padding: 0;
+}
+.ql-license-hide
+{
+	display: none;
+}
+.ql-license-table.form-table tr
+{
+	border-bottom: 1px solid #EFEFEF;
+}
+.ql-license-table.form-table tr.no-border
+{
+	border-bottom: none;
+}
+.ql-license-table.form-table tr:first-child th,
+.ql-license-table.form-table tr:first-child td
+{
+	padding-top: 0;
+}
+.ql-license-table.form-table td[colspan="3"]
+{
+	padding-left: 0;
+	padding-right: 0;
+}
+.ql-license-table.form-table th,
+.ql-license-table.form-table td
+{
+	vertical-align: middle;
+}
+.ql-license-table.form-table th
+{
+	width: 180px;
+}
+.ql-license-table.form-table .regular-text
+{
+	width: 275px;
+}
+#ql-license
+{
+	margin: 0;
+}
+#ql-license div
+{
+	width: 830px;
+	margin-top: 20px;
+	margin: 0;
+	background: #FFF;
+	padding: 20px 30px;
+}
+#ql-license .button-remove
+{
+	background: #D63638;
+	border-color: #D63638;
+	color: #FFF;
+}
+#ql-license .button-remove:focus
+{
+	box-shadow: 0 0 0 1px #FFF,0 0 0 3px #D63638;
+}
+#ql-license .button-remove:active
+{
+	box-shadow: none;
+}
+#ql-license .ql-spinner
+{
+	float: none;
+	margin-top: 5px;
+}
+#ql-license .button-secondary
+{
+	float: right;
+}
+#ql-license .ql-support-expired,
+#ql-license .ql-support-expired:read-only:focus
+{
+	border-color: #D63638;
+	background-color: #FCE6E3;
+}
+#ql-license input:read-only:focus
+{
+	box-shadow: none;
+	border-color: #8C8F94;
+}

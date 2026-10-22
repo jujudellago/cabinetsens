@@ -10,9 +10,9 @@ $price = qode_lms_calculate_course_price( get_the_ID() );
 		<span class="qode-ci-price-value">
           <?php
             if( function_exists( 'get_woocommerce_currency_symbol' ) ){
-            	echo get_woocommerce_currency_symbol() . esc_html( $price );
+            	echo get_woocommerce_currency_symbol() . wp_kses_post( $price );
             } else {
-	            echo esc_html( $price );
+	            echo wp_kses_post( $price );
             }
           ?>
       </span>

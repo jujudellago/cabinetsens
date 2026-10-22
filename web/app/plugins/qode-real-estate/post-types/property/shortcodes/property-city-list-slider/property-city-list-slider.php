@@ -203,8 +203,8 @@ class PropertyCityListSlider implements Lib\ShortcodeInterface {
 		if ( ! empty( $query ) ) {
 			// get portfolio category
 			$property_city = get_term_by( 'slug', $query, 'property-city' );
-			if ( is_object( $property_city ) ) {
-				
+			
+			if ( ! is_wp_error( $property_city ) && $property_city ) {
 				$portfolio_city_slug  = $property_city->slug;
 				$portfolio_city_title = $property_city->name;
 				

@@ -16,8 +16,12 @@ class BridgeCoreElementorBlogSlider extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode' ];
     }
-
-    protected function register_controls() {
+	
+	public function get_script_depends() {
+		return array( 'carouFredSel', 'touchSwipe', 'qode-blog-slider' );
+	}
+	
+	protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -155,6 +159,7 @@ class BridgeCoreElementorBlogSlider extends \Elementor\Widget_Base{
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'options' => [
                     "" => "",
+                    "2" => "2",
                     "3" => "3",
                     "4" => "4",
                     "5" => "5",

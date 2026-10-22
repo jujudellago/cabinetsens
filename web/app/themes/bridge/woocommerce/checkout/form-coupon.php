@@ -10,18 +10,18 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see https://docs.woocommerce.com/document/template-structure/
- * @package WooCommerce/Templates
- * @version 7.0.1
+ * @see https://woocommerce.com/document/template-structure/
+ * @package WooCommerce\Templates
+ * @version 9.8.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
 if ( ! wc_coupons_enabled() ) { // @codingStandardsIgnoreLine.
-    return;
+	return;
 }
-?>
 
+?>
 <div class="woocommerce-form-coupon-toggle">
     <?php wc_print_notice( apply_filters( 'woocommerce_checkout_coupon_message', esc_html__( 'Have a coupon?', 'bridge' ) . ' <a href="#" class="showcoupon">' . esc_html__( 'Click here to enter your code', 'bridge' ) . '</a>' ), 'notice' ); ?>
 </div>

@@ -28,8 +28,8 @@ if(version_compare(bridge_qode_get_vc_version(), '4.5.9') >= 0) {
 	$output .= "\n\t" . '<div class="' . esc_attr( $css_class ) . '">';
 	$output .= "\n\t\t" . '<div class="wpb_wrapper">';
 	$output .= "\n\t\t\t" . wpb_js_remove_wpautop( $content, true );
-	$output .= "\n\t\t" . '</div> ' . $this->endBlockComment( '.wpb_wrapper' );
-	$output .= "\n\t" . '</div> ' . $this->endBlockComment( $this->getShortcode() );
+	$output .= "\n\t\t" . '</div>';
+	$output .= "\n\t" . '</div>';
 	
 	echo bridge_qode_get_module_part( $output );
 
@@ -50,8 +50,8 @@ if(version_compare(bridge_qode_get_vc_version(), '4.5.9') >= 0) {
 	$output .= "\n\t" . '<div class="' . esc_attr( $css_class ) . '">';
 	$output .= "\n\t\t" . '<div class="wpb_wrapper">';
 	$output .= "\n\t\t\t" . wpb_js_remove_wpautop( $content, true );
-	$output .= "\n\t\t" . '</div> ' . $this->endBlockComment( '.wpb_wrapper' );
-	$output .= "\n\t" . '</div> ' . $this->endBlockComment( '.wpb_text_column' );
+	$output .= "\n\t\t" . '</div>';
+	$output .= "\n\t" . '</div>';
 	
 	echo bridge_qode_get_module_part( $output );
 }

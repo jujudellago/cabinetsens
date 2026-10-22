@@ -54,6 +54,7 @@ class LS_Uninstaller {
 			'ls_use_custom_jquery',
 			'ls_clear_3rd_party_caches',
 			'ls_admin_no_conflict_mode',
+			'ls_fix_optimizer_issues',
 			'ls_rocketscript_ignore',
 			'ls_suppress_debug_info',
 			'ls_tinymce_helper',
@@ -65,7 +66,9 @@ class LS_Uninstaller {
 			'ls_enhanced_lazy_load',
 			'ls_enable_play_by_scroll',
 			'ls_wpml_string_translation',
+			'ls_wpml_link_translation',
 			'ls_wpml_media_translation',
+			'ls_wpml_auto_cleanup',
 
 			// Updates & Services
 			'ls-share-displayed',
@@ -87,15 +90,20 @@ class LS_Uninstaller {
 			'ls-store-last-updated',
 			'ls-important-notice',
 			'ls-release-log-last-updated',
+			'ls-remote-data',
+			'ls-remote-data-updated',
+			'ls-remote-data-v2',
+			'ls-remote-data-v2-updated',
+			'ls-news-feed-data',
+			'ls-news-feed-data-updated',
 			'ls-google-fonts-data',
 			'ls-google-fonts-data-updated',
-			'ls-remote-data-updated',
-			'ls-remote-data',
 			'ls-p-url',
 
 			// GDPR
 			'layerslider-gdpr-consent',
 			'layerslider-google-fonts-enabled',
+			'layerslider-google-fonts-host-locally',
 			'layerslider-aviary-enabled',
 
 			// Revisions
@@ -108,6 +116,26 @@ class LS_Uninstaller {
 
 			// Other
 			'ls-transition-presets',
+
+			// 404
+			'ls-404-addon-enabled',
+			'ls-404-addon-title',
+			'ls-404-addon-type',
+			'ls-404-addon-page',
+			'ls-404-addon-mode',
+			'ls-404-addon-project',
+			'ls-404-addon-background',
+
+			// Maintenance
+			'ls-maintenance-addon-enabled',
+			'ls-maintenance-addon-capability',
+			'ls-maintenance-addon-type',
+			'ls-maintenance-addon-content',
+			'ls-maintenance-addon-project',
+			'ls-maintenance-addon-page',
+			'ls-maintenance-addon-mode',
+			'ls-maintenance-addon-title',
+			'ls-maintenance-addon-background',
 
 			// Legacy
 			'ls-collapsed-boxes',

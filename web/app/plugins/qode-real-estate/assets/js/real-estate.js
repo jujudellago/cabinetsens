@@ -168,6 +168,7 @@
     			var thisDeleteButton = $(this),
     				propertyId = thisDeleteButton.data('property-id'),
     				confirmText = thisDeleteButton.data('confirm-text'),
+    				nonce = thisDeleteButton.data('nonce'),
     				property = thisDeleteButton.parents('.qodef-re-profile-property-item');
 
     			thisDeleteButton.on('click', function(e){
@@ -179,7 +180,8 @@
 
 	    				var dataForm = {
 	    					'action' : 'qodef_re_delete_property',
-	    					'property_id' : propertyId
+	    					'property_id' : propertyId,
+	    					'nonce' : nonce
 	    				}
 
 	    				$.ajax({
@@ -635,7 +637,7 @@
 	function qodeInitElementorPropertyCityListSlider(){
 		$j(window).on('elementor/frontend/init', function () {
 			elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_property_city_list_slider.default', function() {
-				qodeOwlSlider();
+				qode.modules.owlSlider.qodeOwlSlider();
 			} );
 		});
 	}
@@ -665,10 +667,148 @@
 	function qodeInitElementorPropertyLargeSlider(){
 		$j(window).on('elementor/frontend/init', function () {
 			elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_property_large_slider.default', function() {
-				qodeOwlSlider();
+				qode.modules.owlSlider.qodeOwlSlider();
 			} );
 		});
 	}
+
+})(jQuery);
+
+(function($) {
+	'use strict';
+
+	var elementorPropertySearch = {};
+	qode.modules.elementorPropertySearch = elementorPropertySearch;
+
+	elementorPropertySearch.qodeInitElementorPropertySearch = qodeInitElementorPropertySearch;
+
+
+	elementorPropertySearch.qodeOnWindowLoad = qodeOnWindowLoad;
+
+	$(window).on('load', qodeOnWindowLoad);
+
+	/*
+	 ** All functions to be called on $(window).load() should be in this function
+	 */
+	function qodeOnWindowLoad() {
+		qodeInitElementorPropertySearch();
+	}
+
+	function qodeInitElementorPropertySearch(){
+		$j(window).on('elementor/frontend/init', function () {
+			elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_property_search.default', function() {
+				qode.modules.propertySearch.initSearchParams();
+			} );
+		});
+	}
+
+})(jQuery);
+
+(function($) {
+    'use strict';
+
+    var propertySearch = {};
+    qode.modules.propertySearch = propertySearch;
+
+    propertySearch.initSearchParams = initSearchParams;
+    propertySearch.qodefOnDocumentReady = qodefOnDocumentReady;
+    propertySearch.qodefOnWindowLoad = qodefOnWindowLoad;
+    propertySearch.qodefOnWindowResize = qodefOnWindowResize;
+    propertySearch.qodefOnWindowScroll = qodefOnWindowScroll;
+
+    $(document).ready(qodefOnDocumentReady);
+    $(window).on('load', qodefOnWindowLoad);
+    $(window).resize(qodefOnWindowResize);
+    $(window).scroll(qodefOnWindowScroll);
+
+    /*
+     All functions to be called on $(document).ready() should be in this function
+     */
+    function qodefOnDocumentReady() {
+        initSearchParams();
+    }
+
+    /*
+     All functions to be called on $(window).load() should be in this function
+     */
+    function qodefOnWindowLoad() {
+
+    }
+
+    /*
+     All functions to be called on $(window).resize() should be in this function
+     */
+    function qodefOnWindowResize() {
+
+    }
+
+    /*
+     All functions to be called on $(window).scroll() should be in this function
+     */
+    function qodefOnWindowScroll() {
+
+    }
+
+    function initSearchParams() {
+        var searchHolder = $('.qodef-property-search-holder');
+        if(searchHolder.length) {
+            searchHolder.each(function() {
+               var thisSearch = $(this);
+
+                //INIT STATUS FIELD
+                var status = thisSearch.find('.qodef-search-status-section');
+                if(status.length) {
+                    status.each(function() {
+                        var selectStatus = status.find('select');
+                        if(selectStatus.length) {
+                            selectStatus.select2({
+                                minimumResultsForSearch: -1
+                            }).on('select2:select', function (e) {
+
+                            });
+                        }
+                    });
+                }
+
+                //INIT TYPE FIELD
+                var type = thisSearch.find('.qodef-search-type-section');
+                if(type.length) {
+                    type.each(function() {
+                        var thisTypeSection = $(this),
+                            thisTypeInput = thisTypeSection.find('input[name=qodef-search-type]'),
+                            typeItems = thisTypeSection.find('.qodef-ptl-item');
+                        typeItems.on('click', function (e) {
+                            e.preventDefault();
+                            var selectedItem = $(this);
+                            if(selectedItem.hasClass('active')) {
+                                thisTypeInput.val('');
+                                selectedItem.removeClass('active');
+                            } else {
+                                typeItems.removeClass('active');
+                                selectedItem.addClass('active');
+                                thisTypeInput.val(selectedItem.data('id'));
+                            }
+                        })
+                    });
+                }
+
+                //INIT CITY FIELD
+                var city = thisSearch.find('.qodef-search-city-section');
+                if(city.length) {
+                    city.each(function() {
+                        var selectCity = city.find('select');
+                        if (selectCity.length) {
+                            selectCity.select2({
+                                minimumResultsForSearch: -1
+                            }).on('select2:select', function (e) {
+
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    }
 
 })(jQuery);
 
@@ -909,6 +1049,7 @@
         };
 
         var initMainPagFunctionality = function(thisPropertyList, pagedLink) {
+          
             var thisPropertyListInner = thisPropertyList.find('.qodef-pl-inner'),
                 nextPage,
                 maxNumPages;
@@ -931,9 +1072,12 @@
             var loadMoreData = qode.modules.common.getLoadMoreData(thisPropertyList),
                 loadingItem = thisPropertyList.find('.qodef-pl-loading'),
                 filterLoadingItem = thisPropertyList.find('.qodef-pl-filter-loading');
-
+          
             nextPage = loadMoreData.nextPage;
-            if(nextPage <= maxNumPages || maxNumPages == 0){
+            
+            maxNumPages = maxNumPages === undefined ? 0 : maxNumPages;
+            
+            if (nextPage <= maxNumPages || maxNumPages == 0) {
                 if(nextPage == 1) {
                     filterLoadingItem.addClass('qodef-showing');
                 } else {
@@ -1147,6 +1291,7 @@
 
     function qodefInitPropertyListFilter() {
         var filters = $('.qodef-property-list-filter-part');
+      
         if(filters.length) {
             filters.each(function() {
                 var thisFilter = $(this),
@@ -1201,7 +1346,7 @@
                     thisPropertyList.data('property-bedrooms', bedroomsValue);
                     thisPropertyList.data('property-bathrooms', bathroomsValue);
                     thisPropertyList.data('property-features', features);
-
+                 
                     qodefInitPropertyListPagination().getMainPagFunction(thisPropertyList, 1);
                 });
 
@@ -1363,144 +1508,6 @@
 (function($) {
 	'use strict';
 
-	var elementorPropertySearch = {};
-	qode.modules.elementorPropertySearch = elementorPropertySearch;
-
-	elementorPropertySearch.qodeInitElementorPropertySearch = qodeInitElementorPropertySearch;
-
-
-	elementorPropertySearch.qodeOnWindowLoad = qodeOnWindowLoad;
-
-	$(window).on('load', qodeOnWindowLoad);
-
-	/*
-	 ** All functions to be called on $(window).load() should be in this function
-	 */
-	function qodeOnWindowLoad() {
-		qodeInitElementorPropertySearch();
-	}
-
-	function qodeInitElementorPropertySearch(){
-		$j(window).on('elementor/frontend/init', function () {
-			elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_property_search.default', function() {
-				qode.modules.propertySearch.initSearchParams();
-			} );
-		});
-	}
-
-})(jQuery);
-
-(function($) {
-    'use strict';
-
-    var propertySearch = {};
-    qode.modules.propertySearch = propertySearch;
-
-    propertySearch.initSearchParams = initSearchParams;
-    propertySearch.qodefOnDocumentReady = qodefOnDocumentReady;
-    propertySearch.qodefOnWindowLoad = qodefOnWindowLoad;
-    propertySearch.qodefOnWindowResize = qodefOnWindowResize;
-    propertySearch.qodefOnWindowScroll = qodefOnWindowScroll;
-
-    $(document).ready(qodefOnDocumentReady);
-    $(window).on('load', qodefOnWindowLoad);
-    $(window).resize(qodefOnWindowResize);
-    $(window).scroll(qodefOnWindowScroll);
-
-    /*
-     All functions to be called on $(document).ready() should be in this function
-     */
-    function qodefOnDocumentReady() {
-        initSearchParams();
-    }
-
-    /*
-     All functions to be called on $(window).load() should be in this function
-     */
-    function qodefOnWindowLoad() {
-
-    }
-
-    /*
-     All functions to be called on $(window).resize() should be in this function
-     */
-    function qodefOnWindowResize() {
-
-    }
-
-    /*
-     All functions to be called on $(window).scroll() should be in this function
-     */
-    function qodefOnWindowScroll() {
-
-    }
-
-    function initSearchParams() {
-        var searchHolder = $('.qodef-property-search-holder');
-        if(searchHolder.length) {
-            searchHolder.each(function() {
-               var thisSearch = $(this);
-
-                //INIT STATUS FIELD
-                var status = thisSearch.find('.qodef-search-status-section');
-                if(status.length) {
-                    status.each(function() {
-                        var selectStatus = status.find('select');
-                        if(selectStatus.length) {
-                            selectStatus.select2({
-                                minimumResultsForSearch: -1
-                            }).on('select2:select', function (e) {
-
-                            });
-                        }
-                    });
-                }
-
-                //INIT TYPE FIELD
-                var type = thisSearch.find('.qodef-search-type-section');
-                if(type.length) {
-                    type.each(function() {
-                        var thisTypeSection = $(this),
-                            thisTypeInput = thisTypeSection.find('input[name=qodef-search-type]'),
-                            typeItems = thisTypeSection.find('.qodef-ptl-item');
-                        typeItems.on('click', function (e) {
-                            e.preventDefault();
-                            var selectedItem = $(this);
-                            if(selectedItem.hasClass('active')) {
-                                thisTypeInput.val('');
-                                selectedItem.removeClass('active');
-                            } else {
-                                typeItems.removeClass('active');
-                                selectedItem.addClass('active');
-                                thisTypeInput.val(selectedItem.data('id'));
-                            }
-                        })
-                    });
-                }
-
-                //INIT CITY FIELD
-                var city = thisSearch.find('.qodef-search-city-section');
-                if(city.length) {
-                    city.each(function() {
-                        var selectCity = city.find('select');
-                        if (selectCity.length) {
-                            selectCity.select2({
-                                minimumResultsForSearch: -1
-                            }).on('select2:select', function (e) {
-
-                            });
-                        }
-                    });
-                }
-            });
-        }
-    }
-
-})(jQuery);
-
-(function($) {
-	'use strict';
-
 	var elementorPropertySlider = {};
 	qode.modules.elementorPropertySlider = elementorPropertySlider;
 
@@ -1521,8 +1528,7 @@
 	function qodeInitElementorPropertySlider(){
 		$j(window).on('elementor/frontend/init', function () {
 			elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_property_slider.default', function() {
-				console.log('krga');
-				qodeOwlSlider();
+				qode.modules.owlSlider.qodeOwlSlider();
 			} );
 		});
 	}
@@ -1552,8 +1558,7 @@
 	function qodeInitElementorPropertyTypeSlider(){
 		$j(window).on('elementor/frontend/init', function () {
 			elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_property_type_slider.default', function() {
-				console.log('slider');
-				qodeOwlSlider();
+				qode.modules.owlSlider.qodeOwlSlider();
 			} );
 		});
 	}
@@ -1613,6 +1618,60 @@
                 });
             });
         }
+    }
+
+})(jQuery);
+(function($) {
+    "use strict";
+
+    var realEstateReviews = {};
+    qode.modules.realEstateReviews = realEstateReviews;
+    realEstateReviews.qodeInitCommentRating = qodeInitCommentRating;
+
+    $(document).ready(qodefOnDocumentReady);
+    $(window).on('load', qodefOnWindowLoad);
+    $(window).resize(qodefOnWindowResize);
+    $(window).scroll(qodefOnWindowScroll);
+
+    function qodefOnDocumentReady() {
+        qodeInitCommentRating();
+    }
+
+    function qodefOnWindowLoad() {}
+
+    function qodefOnWindowResize() {}
+
+    function qodefOnWindowScroll() {}
+
+
+    function qodeInitCommentRating() {
+        var article = $('.qodef-property-single-holder'),
+            ratingInput = article.find('#qode-rating'),
+            ratingValue = ratingInput.val(),
+            stars = article.find('.qode-star-rating');
+
+        var addActive = function () {
+            for (var i = 0; i < stars.length; i++) {
+                var star = stars[i];
+                if (i < ratingValue) {
+                    $(star).addClass('active');
+                } else {
+                    $(star).removeClass('active');
+                }
+            }
+        };
+
+        addActive();
+
+        stars.click(function () {
+            ratingInput.val($(this).data('value')).trigger('change');
+        });
+
+        ratingInput.change(function () {
+            ratingValue = ratingInput.val();
+            addActive();
+        });
+
     }
 
 })(jQuery);
@@ -3489,60 +3548,6 @@ Cluster.prototype['getMarkers'] = Cluster.prototype.getMarkers;
 ClusterIcon.prototype['onAdd'] = ClusterIcon.prototype.onAdd;
 ClusterIcon.prototype['draw'] = ClusterIcon.prototype.draw;
 ClusterIcon.prototype['onRemove'] = ClusterIcon.prototype.onRemove;
-(function($) {
-    "use strict";
-
-    var realEstateReviews = {};
-    qode.modules.realEstateReviews = realEstateReviews;
-    realEstateReviews.qodeInitCommentRating = qodeInitCommentRating;
-
-    $(document).ready(qodefOnDocumentReady);
-    $(window).on('load', qodefOnWindowLoad);
-    $(window).resize(qodefOnWindowResize);
-    $(window).scroll(qodefOnWindowScroll);
-
-    function qodefOnDocumentReady() {
-        qodeInitCommentRating();
-    }
-
-    function qodefOnWindowLoad() {}
-
-    function qodefOnWindowResize() {}
-
-    function qodefOnWindowScroll() {}
-
-
-    function qodeInitCommentRating() {
-        var article = $('.qodef-property-single-holder'),
-            ratingInput = article.find('#qode-rating'),
-            ratingValue = ratingInput.val(),
-            stars = article.find('.qode-star-rating');
-
-        var addActive = function () {
-            for (var i = 0; i < stars.length; i++) {
-                var star = stars[i];
-                if (i < ratingValue) {
-                    $(star).addClass('active');
-                } else {
-                    $(star).removeClass('active');
-                }
-            }
-        };
-
-        addActive();
-
-        stars.click(function () {
-            ratingInput.val($(this).data('value')).trigger('change');
-        });
-
-        ratingInput.change(function () {
-            ratingValue = ratingInput.val();
-            addActive();
-        });
-
-    }
-
-})(jQuery);
 (function($) {
     'use strict';
 

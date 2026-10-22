@@ -30,7 +30,8 @@ if(!function_exists('bridge_core_button_dynamic_styles')) {
 			.woocommerce table.cart td.actions input[type="submit"],
 			.woocommerce input#place_order,
 			.woocommerce-page input[type="submit"],
-			.woocommerce .button
+			.woocommerce .button,
+		    div.wc-block-components-notice-banner>.wc-block-components-notice-banner__content .button
 			{
 			<?php if (!empty($bridge_qode_options['button_title_color'])) { ?>	color: <?php echo esc_attr($bridge_qode_options['button_title_color']);  ?>; <?php } ?>
 			<?php if($bridge_qode_options['button_title_google_fonts'] != "-1"){ ?>
@@ -53,6 +54,12 @@ if(!function_exists('bridge_core_button_dynamic_styles')) {
 			<?php if(isset($bridge_qode_options['button_border_width']) && $bridge_qode_options['button_border_width'] !== '') { ?> border-width: <?php echo intval($bridge_qode_options['button_border_width']); ?>px;<?php } ?>
 			<?php if (isset($bridge_qode_options['button_padding_leftright']) && $bridge_qode_options['button_padding_leftright'] !== '') { ?>	padding-left: <?php echo intval($bridge_qode_options['button_padding_leftright']);  ?>px; padding-right: <?php echo intval($bridge_qode_options['button_padding_leftright']);?>px; <?php } ?>
 			}
+
+		    div.wc-block-components-notice-banner>.wc-block-components-notice-banner__content .button {
+		    <?php if (!empty($bridge_qode_options['button_title_color'])) { ?>	color: <?php echo esc_attr($bridge_qode_options['button_title_color']);  ?> !important; <?php } ?>
+		    <?php if (!empty($bridge_qode_options['button_backgroundcolor'])) { ?>	background-color: <?php echo esc_attr($bridge_qode_options['button_backgroundcolor']);  ?> !important; <?php } ?>
+		    <?php if (isset($bridge_qode_options['button_padding_leftright']) && $bridge_qode_options['button_padding_leftright'] !== '') { ?>	padding-left: <?php echo intval($bridge_qode_options['button_padding_leftright']);  ?>px !important; padding-right: <?php echo intval($bridge_qode_options['button_padding_leftright']);?>px !important; <?php } ?>
+		    }
 
 			.qode-qbutton-main-color {
 			<?php if($bridge_qode_options['button_title_google_fonts'] != "-1"){ ?>
@@ -82,7 +89,8 @@ if(!function_exists('bridge_core_button_dynamic_styles')) {
 			.woocommerce table.cart td.actions input[type="submit"]:hover,
 			.woocommerce input#place_order:hover,
 			.woocommerce-page input[type="submit"]:hover,
-			.woocommerce .button:hover
+			.woocommerce .button:hover,
+		    div.wc-block-components-notice-banner>.wc-block-components-notice-banner__content .button:hover
 			{
 			<?php if (!empty($bridge_qode_options['button_title_hovercolor'])) { ?> color: <?php echo esc_attr($bridge_qode_options['button_title_hovercolor']);?>; <?php } ?>
 
@@ -105,6 +113,12 @@ if(!function_exists('bridge_core_button_dynamic_styles')) {
 			<?php if (!empty($bridge_qode_options['button_backgroundcolor_hover'])) { ?> background-color: <?php echo esc_attr($bridge_qode_options['button_backgroundcolor_hover']);?>; <?php } ?>
 			}
 		<?php } ?>
+
+	    div.wc-block-components-notice-banner>.wc-block-components-notice-banner__content .button:hover {
+	    <?php if (!empty($bridge_qode_options['button_title_hovercolor'])) { ?>	color: <?php echo esc_attr($bridge_qode_options['button_title_hovercolor']);  ?> !important; <?php } ?>
+	    <?php if (!empty($bridge_qode_options['button_backgroundcolor_hover'])) { ?>	background-color: <?php echo esc_attr($bridge_qode_options['button_backgroundcolor_hover']);  ?> !important; <?php } ?>
+	   }
+
 		<?php if (!empty($bridge_qode_options['small_button_fontsize']) || !empty($bridge_qode_options['small_button_lineheight']) || !empty($bridge_qode_options['small_button_fontweight']) || !empty($bridge_qode_options['small_button_padding']) || (isset($bridge_qode_options['small_button_border_radius']) && $bridge_qode_options['small_button_border_radius'] !== '')) { ?>
 			.qbutton.small{
 

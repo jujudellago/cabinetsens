@@ -33,7 +33,13 @@
 }
 
 .vc_el-clearfix-lg {
-  @media (min-width: @screen-lg-min) {
+  @media (min-width: @screen-lg-min) and (max-width: @screen-lg-max) {
+    clear: both;
+  }
+}
+
+.vc_el-clearfix-xl {
+  @media (min-width: @screen-xl-min) {
     clear: both;
   }
 }

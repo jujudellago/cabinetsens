@@ -1,8 +1,17 @@
 <?php
+/**
+ * Default post type settings template.
+ *
+ * @var string $title
+ * @var array $post_types
+ * @var array $templates
+ * @var string $field_key
+ * @var array $value
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
-
 ?>
 <fieldset>
 	<legend class="screen-reader-text">
@@ -23,19 +32,34 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php echo esc_html( $post_type_object ? $post_type_object->labels->name : $post_type[0] ); ?>
 				</td>
 				<td>
-					<select name="<?php echo esc_attr( $field_key ); ?>[<?php echo esc_attr( $post_type[0] ); ?>]">
-						<option value=""><?php esc_html_e( 'None', 'js_composer' ); ?></option>
-						<?php foreach ( $templates as $templates_category ) : ?>
-							<optgroup label="<?php echo esc_attr( $templates_category['category_name'] ); ?>">
-								<?php foreach ( $templates_category['templates'] as $template ) : ?>
-									<?php
-									$key = $template['type'] . '::' . esc_attr( $template['unique_id'] );
-									?>
-									<option value="<?php echo esc_attr( $key ); ?>"<?php echo isset( $value[ $post_type[0] ] ) && $value[ $post_type[0] ] === $key ? ' selected="true"' : ''; ?>><?php echo esc_html( $template['name'] ); ?></option>
-								<?php endforeach; ?>
-							</optgroup>
-						<?php endforeach; ?>
-					</select>
+					<?php
+					$options = [];
+					$options[] = [
+						'label' => esc_html__( 'None', 'js_composer' ),
+						'value' => '',
+					];
+					foreach ( $templates as $templates_category ) :
+						$group_label = $templates_category['category_name'];
+						$options_list = [];
+						foreach ( $templates_category['templates'] as $template ) :
+							$key = $template['type'] . '::' . $template['unique_id'];
+							$options_list[] = [
+								'value' => $key,
+								'label' => $template['name'],
+								'selected' => isset( $value[ $post_type[0] ] ) && $value[ $post_type[0] ] === $key,
+							];
+						endforeach;
+						$options[] = [
+							'label' => $group_label,
+							'value' => $options_list,
+						];
+					endforeach;
+
+					WPB_Form_Field_Dropdown::render( [
+						'name' => $field_key . '[' . $post_type[0] . ']',
+						'options' => $options,
+					] );
+					?>
 				</td>
 			</tr>
 		<?php endforeach; ?>

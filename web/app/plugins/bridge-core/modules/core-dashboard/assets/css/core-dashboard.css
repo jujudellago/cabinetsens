@@ -121,6 +121,7 @@
 .qodef-core-dashboard .qodef-core-dashboard-column .qodef-core-dashboard-box .qodef-cd-input {
   border: none;
   border-bottom: 1px solid #c2c2c2;
+  background-color: transparent;
   outline: 0;
   width: 50%;
   box-shadow: none;

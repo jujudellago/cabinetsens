@@ -1,5 +1,5 @@
 <?php if ( $enable_title === 'yes' ) {
-	$title_tag    = ! empty( $title_tag ) ? $title_tag : 'h4';
+	$title_tag    = ! empty( $title_tag ) ? qode_lms_sanitize_title_tag( $title_tag, 'h4' ) : 'h4';
 	$title_styles = $this_object->getTitleStyles( $params );
 	?>
 	<<?php echo esc_attr( $title_tag ); ?> itemprop="name" class="qode-cli-title entry-title" <?php bridge_qode_inline_style( $title_styles ); ?>>

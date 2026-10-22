@@ -11,6 +11,12 @@ if (!function_exists('bridge_core_custom_font_vc_map')) {
 			"allowed_container_element" => 'vc_row',
 			"params" => array(
 				array(
+					'type' => 'textfield',
+					'heading' => esc_html__('Custom CSS class', 'bridge-core'),
+					'param_name' => 'custom_class',
+					'admin_label' => true
+				),
+				array(
 					"type" => "textfield",
 					"heading" => esc_html__( "Font family", 'bridge-core' ),
 					"param_name" => "font_family",
@@ -171,7 +177,91 @@ if (!function_exists('bridge_core_custom_font_vc_map')) {
 							'admin_label' => true,
 						)
 					)
-				)
+				),
+				array(
+					"type" => "textfield",
+					"heading" => esc_html__( "Font size 1440", 'bridge-core' ),
+					"param_name" => "font_size_1440",
+					'group'       => esc_html__( 'Responsive Style', 'bridge-core' ),
+				),
+				array(
+					"type" => "textfield",
+					"heading" => esc_html__( "Line height 1440", 'bridge-core' ),
+					"param_name" => "line_height_1440",
+					'group'       => esc_html__( 'Responsive Style', 'bridge-core' ),
+				),
+				array(
+					"type" => "textfield",
+					"heading" => esc_html__( "Font size 1366", 'bridge-core' ),
+					"param_name" => "font_size_1366",
+					'group'       => esc_html__( 'Responsive Style', 'bridge-core' ),
+				),
+				array(
+					"type" => "textfield",
+					"heading" => esc_html__( "Line height 1366", 'bridge-core' ),
+					"param_name" => "line_height_1366",
+					'group'       => esc_html__( 'Responsive Style', 'bridge-core' ),
+				),
+				array(
+					"type" => "textfield",
+					"heading" => esc_html__( "Font size 1280", 'bridge-core' ),
+					"param_name" => "font_size_1280",
+					'group'       => esc_html__( 'Responsive Style', 'bridge-core' ),
+				),
+				array(
+					"type" => "textfield",
+					"heading" => esc_html__( "Line height 1280", 'bridge-core' ),
+					"param_name" => "line_height_1280",
+					'group'       => esc_html__( 'Responsive Style', 'bridge-core' ),
+				),
+				array(
+					"type" => "textfield",
+					"heading" => esc_html__( "Font size 1024", 'bridge-core' ),
+					"param_name" => "font_size_1024",
+					'group'       => esc_html__( 'Responsive Style', 'bridge-core' ),
+				),
+				array(
+					"type" => "textfield",
+					"heading" => esc_html__( "Line height 1024", 'bridge-core' ),
+					"param_name" => "line_height_1024",
+					'group'       => esc_html__( 'Responsive Style', 'bridge-core' ),
+				),
+				array(
+					"type" => "textfield",
+					"heading" => esc_html__( "Font size 768", 'bridge-core' ),
+					"param_name" => "font_size_768",
+					'group'       => esc_html__( 'Responsive Style', 'bridge-core' ),
+				),
+				array(
+					"type" => "textfield",
+					"heading" => esc_html__( "Line height 768", 'bridge-core' ),
+					"param_name" => "line_height_768",
+					'group'       => esc_html__( 'Responsive Style', 'bridge-core' ),
+				),
+				array(
+					"type" => "textfield",
+					"heading" => esc_html__( "Font size 680", 'bridge-core' ),
+					"param_name" => "font_size_680",
+					'group'       => esc_html__( 'Responsive Style', 'bridge-core' ),
+				),
+				array(
+					"type" => "textfield",
+					"heading" => esc_html__( "Line height 680", 'bridge-core' ),
+					"param_name" => "line_height_680",
+					'group'       => esc_html__( 'Responsive Style', 'bridge-core' ),
+				),
+				array(
+					"type" => "textfield",
+					"heading" => esc_html__( "Font size 480", 'bridge-core' ),
+					"param_name" => "font_size_480",
+					'group'       => esc_html__( 'Responsive Style', 'bridge-core' ),
+				),
+				array(
+					"type" => "textfield",
+					"heading" => esc_html__( "Line height 480", 'bridge-core' ),
+					"param_name" => "line_height_480",
+					'group'       => esc_html__( 'Responsive Style', 'bridge-core' ),
+				),
 			)
 		) );
 	}

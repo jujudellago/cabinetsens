@@ -235,6 +235,7 @@
         };
 
         var initMainPagFunctionality = function(thisPropertyList, pagedLink) {
+          
             var thisPropertyListInner = thisPropertyList.find('.qodef-pl-inner'),
                 nextPage,
                 maxNumPages;
@@ -257,9 +258,12 @@
             var loadMoreData = qode.modules.common.getLoadMoreData(thisPropertyList),
                 loadingItem = thisPropertyList.find('.qodef-pl-loading'),
                 filterLoadingItem = thisPropertyList.find('.qodef-pl-filter-loading');
-
+          
             nextPage = loadMoreData.nextPage;
-            if(nextPage <= maxNumPages || maxNumPages == 0){
+            
+            maxNumPages = maxNumPages === undefined ? 0 : maxNumPages;
+            
+            if (nextPage <= maxNumPages || maxNumPages == 0) {
                 if(nextPage == 1) {
                     filterLoadingItem.addClass('qodef-showing');
                 } else {
@@ -473,6 +477,7 @@
 
     function qodefInitPropertyListFilter() {
         var filters = $('.qodef-property-list-filter-part');
+      
         if(filters.length) {
             filters.each(function() {
                 var thisFilter = $(this),
@@ -527,7 +532,7 @@
                     thisPropertyList.data('property-bedrooms', bedroomsValue);
                     thisPropertyList.data('property-bathrooms', bathroomsValue);
                     thisPropertyList.data('property-features', features);
-
+                 
                     qodefInitPropertyListPagination().getMainPagFunction(thisPropertyList, 1);
                 });
 

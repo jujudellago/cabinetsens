@@ -320,15 +320,40 @@
 #ui-datepicker-div .ui-datepicker-next,
 #ui-datepicker-div .ui-datepicker-prev {
   position: absolute;
+}
+
+#ui-datepicker-div .ui-datepicker-next .ui-icon,
+#ui-datepicker-div .ui-datepicker-prev .ui-icon {
+  font-size: 0;
+}
+
+#ui-datepicker-div .ui-datepicker-next .ui-icon:before,
+#ui-datepicker-div .ui-datepicker-prev .ui-icon:before {
   font-size: 14px;
+  font-family: 'ElegantIcons';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
 }
 
 #ui-datepicker-div .ui-datepicker-prev {
   left: 12px;
 }
 
+#ui-datepicker-div .ui-datepicker-prev .ui-icon:before {
+  content: "\34";
+}
+
 #ui-datepicker-div .ui-datepicker-next {
   right: 12px;
+}
+
+#ui-datepicker-div .ui-datepicker-next .ui-icon:before {
+  content: "\35";
 }
 
 #ui-datepicker-div .ui-datepicker-title {

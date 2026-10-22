@@ -2,14 +2,7 @@
 
 $custom_portfolio_link = get_post_meta(get_the_ID(), 'qode_portfolio-external-link', true);
 $portfolio_link = $custom_portfolio_link != "" ? $custom_portfolio_link : get_permalink();
-
-if(get_post_meta(get_the_ID(), 'qode_portfolio-external-link-target', true) != ""){
-    $custom_portfolio_link_target = get_post_meta(get_the_ID(), 'qode_portfolio-external-link-target', true);
-} else {
-    $custom_portfolio_link_target = '_blank';
-}
-
-$target = $custom_portfolio_link != "" ? $custom_portfolio_link_target : '_self';
+$target = bridge_core_generate_portfolio_link_target();
 
 $title_styles = array();
 if($title_color !== '') {

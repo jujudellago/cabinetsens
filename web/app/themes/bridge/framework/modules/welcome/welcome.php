@@ -60,6 +60,12 @@ if ( ! class_exists( 'BridgeQodeWelcomePage' ) ) {
 		 * redirect to welcome page on theme activation
 		 */
 		function welcome_page_redirect() {
+			// fix deprecated notice caused by null $title
+			global $title;
+			if ( empty( $title ) ) {
+				$title = '';
+			}
+			
 			// if no activation redirect, bail
 			if ( ! get_transient( '_bridge_qode_welcome_page_redirect' ) ) {
 				return;

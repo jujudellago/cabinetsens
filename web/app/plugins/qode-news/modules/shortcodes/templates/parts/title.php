@@ -1,5 +1,5 @@
 <?php
-$title_tag = isset($title_tag) ? $title_tag : 'h3';
+$title_tag = isset( $title_tag ) ? qode_news_sanitize_title_tag( $title_tag, 'h3' ) : 'h3';
 ?>
 
 <<?php echo esc_attr($title_tag);?> itemprop="name" class="entry-title qode-post-title">

@@ -12,12 +12,12 @@ $html .=
     '<li>'.
         '<div class="qode-presl-main-item">'.
             '<div class="qode-presl-main-item-inner">'.
-                '<img itemprop="image" src="' . $img_src . '" alt="' . esc_html__('bridge-browser-top', 'bridge-core') . '">'.
-                '<a itemprop="url" class="qode-presl-link main" href="'.esc_attr($link).'" target="'.esc_attr($target).'">'.
-                    wp_get_attachment_image($big_image,'full').
+                '<img itemprop="image" src="' . esc_url( $img_src ) . '" alt="' . esc_html__('bridge-browser-top', 'bridge-core') . '">'.
+                '<a itemprop="url" class="qode-presl-link main" href="' . esc_url( $link ).'" target="' . esc_attr( $target ) .'">'.
+                    wp_get_attachment_image( $big_image,'full' ).
                 '</a>'.
-                '<a itemprop="url" class="qode-presl-link small" href="'.esc_attr($link).'" target="'.esc_attr($target).'">'.
-                    wp_get_attachment_image($small_image,'full').
+                '<a itemprop="url" class="qode-presl-link small" href="' . esc_url( $link ) . '" target="'. esc_attr( $target ).'">'.
+                    wp_get_attachment_image( $small_image,'full' ).
                 '</a>'.
             '</div>'.
         '</div>'.

@@ -58,6 +58,7 @@ if (!function_exists('bridge_core_portfolio_slider_vc_map')) {
 					"param_name" => "number_of_items",
 					"value" => array(
 						"" => "",
+						esc_html__( 'Three', 'bridge-core' ) => "3",
 						esc_html__( 'Four', 'bridge-core' ) => "4",
 						esc_html__( 'Five', 'bridge-core' ) => "5"
 					),
@@ -127,7 +128,18 @@ if (!function_exists('bridge_core_portfolio_slider_vc_map')) {
 					"heading" => esc_html__( "Prev/Next navigation", 'bridge-core' ),
 					"value" => array("Enable prev/next navigation?" => "enable_navigation"),
 					"param_name" => "enable_navigation"
-				)
+				),
+				array(
+					"type" => "dropdown",
+					"holder" => "div",
+					"class" => "",
+					"heading" => esc_html__( "Enable Autoplay", 'bridge-core' ),
+					"param_name" => "enable_autoplay",
+					"value" => array(
+						esc_html__( 'No ( Default )', 'bridge-core' ) => "",
+						esc_html__( 'Yes', 'bridge-core' ) => "yes",
+					)
+				),
 			)
 		) );
 		

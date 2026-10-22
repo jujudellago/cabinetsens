@@ -73,22 +73,16 @@ class BridgeCoreElementorVideoBox extends \Elementor\Widget_Base{
 
     protected function render(){
         $params = $this->get_settings_for_display();
-	    $params['holder_classes']   = $this->getHolderClasses($params);
-	    $params['img_src']          =  $this->getImageSrc($params);
+	    
+		$params['holder_classes']   = $this->getHolderClasses($params);
+	 
+		if( ! empty( $params['video_image'] ) && ! empty( $params['video_image']['id'] ) ) {
+		    $params['video_image'] = $params['video_image']['id'];
+	    }
 
 
 	    echo bridge_core_get_shortcode_template_part('templates/video-box-template', 'video-box', '', $params);
     }
-
-	private function getImageSrc($params){
-
-		if( ! empty( $params['video_image'] ) ) {
-			$params['video_image'] = $params['video_image']['id'];
-		}
-		$image_original = wp_get_attachment_image_src($params['video_image'], 'full');
-		$img_src = $image_original[0];
-		return $img_src;
-	}
 
 	private function getHolderClasses($params){
 		$holderClasses = array();

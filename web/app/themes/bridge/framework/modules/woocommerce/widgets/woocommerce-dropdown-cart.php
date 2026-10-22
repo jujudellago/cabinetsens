@@ -15,6 +15,7 @@ class BridgeQodeWoocommerceDropdownCart extends WP_Widget {
 		global $woocommerce;
 		global $bridge_qode_options;
 		$cart_holder_class = 'header_cart';
+		$cart_type = '';
 
 		if (isset($bridge_qode_options['woo_cart_type'])){
 			$cart_type = $bridge_qode_options['woo_cart_type'];
@@ -28,6 +29,9 @@ class BridgeQodeWoocommerceDropdownCart extends WP_Widget {
 				case 'font-awesome':
 					$cart_holder_class = "header_cart fa fa-shopping-cart";
 					break;
+				case 'svg_path':
+					$cart_holder_class = "header_cart qode-dropdown-cart-svg";
+					break;
 				default:
 					$cart_holder_class = "header_cart";
 					break;
@@ -39,7 +43,12 @@ class BridgeQodeWoocommerceDropdownCart extends WP_Widget {
 		<div class="shopping_cart_outer">
 			<div class="shopping_cart_inner">
 				<div class="shopping_cart_header">
-					<a class="<?php echo esc_attr($cart_holder_class);?>" href="<?php echo wc_get_cart_url(); ?>"><span class="header_cart_span"><?php echo esc_attr( WC()->cart->cart_contents_count ); ?></span></a>
+					<a class="<?php echo esc_attr($cart_holder_class);?>" href="<?php echo wc_get_cart_url(); ?>">
+						<?php if( 'svg_path' === $cart_type && ! empty( $bridge_qode_options['woo_cart_icon_svg_opener'] ) ) {
+							echo bridge_qode_get_module_part( $bridge_qode_options['woo_cart_icon_svg_opener'] );
+						} ?>
+						<span class="header_cart_span"><?php echo esc_attr( WC()->cart->cart_contents_count ); ?></span>
+					</a>
 					<div class="shopping_cart_dropdown">
 						<div class="shopping_cart_dropdown_inner">
 							<?php
@@ -67,6 +76,21 @@ class BridgeQodeWoocommerceDropdownCart extends WP_Widget {
 											?>
 
 											<li>
+												<?php
+												echo apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+													'woocommerce_cart_item_remove_link',
+													sprintf(
+														'<a href="%s" class="remove remove_from_cart_button" aria-label="%s" data-product_id="%s" data-cart_item_key="%s" data-product_sku="%s">&times;</a>',
+														esc_url( wc_get_cart_remove_url( $cart_item_key ) ),
+														/* translators: %s is the product name */
+														esc_attr( sprintf( __( 'Remove %s from cart', 'bridge' ), wp_strip_all_tags( $_product->get_name() ) ) ),
+														esc_attr( $_product->get_id() ),
+														esc_attr( $cart_item_key ),
+														esc_attr( $_product->get_sku() )
+													),
+													$cart_item_key
+												);
+												?>
 												<a itemprop="url" href="<?php echo get_permalink( $cart_item['product_id'] ); ?>">
 
 													<?php echo bridge_qode_get_module_part( $_product->get_image() ); ?>

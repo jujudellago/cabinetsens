@@ -9,21 +9,27 @@ if ($carousel != "") {
     }
 
     $visible_items = "";
-    switch ($number_of_visible_items) {
-        case 'four_items':
-            $visible_items = 4;
-            break;
-        case 'five_items':
-            $visible_items = 5;
-            break;
-        default:
-            $visible_items = "";
-            break;
-    }
+	switch ( $number_of_visible_items ) {
+		case 'four_items':
+			$visible_items = 4;
+			break;
+		case 'five_items':
+			$visible_items = 5;
+			break;
+		default:
+			$visible_items = "";
+			break;
+	}
 
-    $html .= "<div class='qode_carousels_holder clearfix" . $carousel_holder_classes  ."'><div class='qode_carousels' data-number-of-visible-items='".$visible_items."'><ul class='slides'>";
-
-    $q = array('post_type'=> 'carousels', 'carousels_category' => $carousel, 'orderby' => $orderby, 'order' => $order, 'posts_per_page' => '-1');
+    $html .= "<div class='qode_carousels_holder clearfix" . esc_attr( $carousel_holder_classes )  ."'><div class='qode_carousels' data-number-of-visible-items='".esc_attr( $visible_items ) ."'><ul class='slides'>";
+	
+	$q = array(
+		'post_type'          => 'carousels',
+		'carousels_category' => esc_attr( $carousel ),
+		'orderby'            => esc_attr( $orderby ),
+		'order'              => esc_attr( $order ),
+		'posts_per_page'     => '-1'
+	);
 
     $query = new WP_Query( $q );
 
@@ -49,8 +55,8 @@ if ($carousel != "") {
             $link = "";
         }
 
-        if(get_post_meta(get_the_ID(), "qode_carousel-item-target", true) != ""){
-            $target = get_post_meta(get_the_ID(), "qode_carousel-item-target", true);
+        if( get_post_meta( get_the_ID(), "qode_carousel-item-target", true) != "" ){
+            $target = get_post_meta( get_the_ID(), "qode_carousel-item-target", true );
         } else {
             $target = "_self";
         }
@@ -64,52 +70,51 @@ if ($carousel != "") {
             $html .= "<li class='item'>";
         }
         $html .= '<div class="carousel_item_holder">';
-        if($link != ""){
-            $html .= "<a itemprop='url' href='".$link."' target='".$target."'>";
-        }
-
-        $first_image = bridge_qode_get_attachment_id_from_url($image);
-
-        if($image != ""){
-            $html .= "<span class='first_image_holder ".$has_hover_image."'>";
+	    if ( $link != "" ) {
+		    $html .= "<a itemprop='url' href='" . esc_url( $link ) . "' target='" . esc_attr( $target ) . "'>";
+	    }
+	    
+	    $first_image = bridge_qode_get_attachment_id_from_url( $image );
+	    
+	    if ( $image != "" ) {
+	        $html .= "<span class='first_image_holder " . esc_attr( $has_hover_image ) . "'>";
 
             if(is_int($first_image)) {
                 $html .= wp_get_attachment_image($first_image, 'full');
             } else {
-                $html .= '<img itemprop="image" src="'.$image.'" alt="' . esc_html__('carousel image', 'bridge-core') .'" />';
+                $html .= '<img itemprop="image" src="' . esc_url( $image ) . '" alt="' . esc_html__('carousel image', 'bridge-core') .'" />';
             }
 
 
             $html .= "</span>";
         }
 
-        $second_image = bridge_qode_get_attachment_id_from_url($hover_image);
-
-        if($hover_image != ""){
-            $html .= "<span class='second_image_holder ".$has_hover_image."'>";
-
-            if(is_int($second_image)) {
+        $second_image = bridge_qode_get_attachment_id_from_url( $hover_image );
+	    
+	    if ( $hover_image != "" ) {
+	        $html .= "<span class='second_image_holder " . esc_attr( $has_hover_image ) . "'>";
+	        
+	        if ( is_int( $second_image ) ) {
                 $html .= wp_get_attachment_image($second_image, 'full');
             } else {
-                $html .= '<img itemprop="image" src="'.$hover_image.'" alt="' . esc_html__('carousel image', 'bridge-core') .'" />';
+                $html .= '<img itemprop="image" src="' . esc_url( $hover_image ).'" alt="' . esc_html__('carousel image', 'bridge-core') .'" />';
             }
-
-
+			
             $html .= "</span>";
         }
-
-        if($link != ""){
-            $html .= "</a>";
-        }
+	    
+	    if ( $link != "" ) {
+		    $html .= "</a>";
+	    }
 
         $html .= '</div>';
 
         //is current item on even position in array and two rows option is chosen?
-        if($postCount % 2 == 0 && $show_in_two_rows == 'yes') {
-            $html .= "</li>";
-        } elseif($show_in_two_rows == '') {
-            $html .= "</li>";
-        }
+	    if ( $postCount % 2 == 0 && $show_in_two_rows == 'yes' ) {
+		    $html .= "</li>";
+	    } elseif ( $show_in_two_rows == '' ) {
+		    $html .= "</li>";
+	    }
 
         $postCount++;
 

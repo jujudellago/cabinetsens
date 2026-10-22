@@ -88,6 +88,15 @@ if ( ! function_exists('bridge_qode_enqueue_admin_scripts') ) {
 		wp_enqueue_media();
 		wp_enqueue_script('jquery.nouislider.min');
 		wp_enqueue_script('qodef-ui-admin');
+		wp_localize_script(
+			'qodef-ui-admin',
+			'qodefAdminVars',
+			array(
+				'saveSuccess' => esc_html__( 'All your changes are successfully saved', 'bridge' ),
+				'saveError'   => esc_html__( 'Options could not be saved. Please try again.', 'bridge' ),
+				'assetsError' => esc_html__( 'Options were saved, but dynamic CSS/JS files could not be generated. Check writing permissions for wp-content/uploads/bridge.', 'bridge' ),
+			)
+		);
 		wp_enqueue_script('qodef-ui-repeater');
 	}
 }
@@ -191,10 +200,29 @@ if ( ! function_exists('bridge_qode_save_options') ) {
 			}
 			update_option('qode_options_proya', $bridge_qode_options);
 			do_action('bridge_qode_action_after_theme_option_save');
-			echo esc_html__("Saved", "bridge");
 
-			die();
+			$assets_result = function_exists( 'bridge_qode_generate_dynamic_css_and_js' ) ? bridge_qode_generate_dynamic_css_and_js() : array();
+			$assets_ok     = empty( $assets_result['failed'] );
+			$message       = ! empty( $assets_result['message'] ) ? $assets_result['message'] : esc_html__( 'Saved', 'bridge' );
+
+			if ( ob_get_length() ) {
+				ob_clean();
+			}
+
+			wp_send_json_success(
+				array(
+					'message'          => $message,
+					'assets_generated' => $assets_ok,
+					'assets'           => $assets_result,
+				)
+			);
 		}
+
+		wp_send_json_error(
+			array(
+				'message' => esc_html__( 'You do not have permission to save theme options.', 'bridge' ),
+			)
+		);
 	}
 
 	add_action('wp_ajax_bridge_qode_save_options', 'bridge_qode_save_options');

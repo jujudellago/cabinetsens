@@ -1,4 +1,12 @@
 <?php
+/**
+ * Param type 'param_preset'.
+ *
+ * Container param for preset other fields.
+ *
+ * @see https://kb.wpbakery.com/docs/inner-api/vc_map/#vc_map()-ParametersofparamsArray
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
@@ -8,16 +16,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Allows to set list of attributes which will be
  *
- * @param $settings
- * @param $value
+ * @param array $settings
+ * @param string $value
  *
  * @return string - html string.
  * @since 4.4
  */
 function vc_params_preset_form_field( $settings, $value ) {
 	$output = '';
-	$output .= '<select name="' . esc_attr( $settings['param_name'] ) . '" class="wpb_vc_param_value vc_params-preset-select ' . esc_attr( $settings['param_name'] . ' ' . $settings['type'] ) . '">';
-	foreach ( $settings['options'] as $option ) {
+	$output .= '<select name="' . esc_attr( $settings['param_name'] ) . '"' . wpbakery()->editForm()->get_value_control_attr_class( $settings['param_name'], $settings['type'], '', 'vc_params-preset-select' ) . '>';
+	$option_list = isset( $settings['options'] ) ? $settings['options'] : [];
+	foreach ( $option_list as $option ) {
 		$selected = '';
 		if ( isset( $option['value'] ) ) {
 			$option_value_string = (string) $option['value'];

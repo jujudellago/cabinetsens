@@ -18,8 +18,12 @@ class QodeNewsPostSlider1 extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode-news' ];
     }
-
-    private function getPostCategories(){
+	
+	public function get_script_depends() {
+		return array( 'owlCarousel', 'qode-owl-slider' );
+	}
+	
+	private function getPostCategories(){
         $categories_array = array();
         $categories = get_categories();
 

@@ -1,5 +1,5 @@
 <?php
-$title_tag    = isset( $title_tag ) ? $title_tag : 'h2';
+$title_tag    = isset( $title_tag ) ? qode_news_sanitize_title_tag( $title_tag, 'h2' ) : 'h2';
 $title_styles = isset( $this_object ) && isset( $params ) ? $this_object->getTitleStyles( $params ) : array();
 ?>
 

@@ -204,6 +204,19 @@ if(!function_exists('bridge_qode_is_custom_font')) {
 	}
 }
 
+if ( ! function_exists( 'bridge_qode_disable_google_font' ) ) {
+	/**
+	 * Function that remove Google fonts loading
+	 *
+	 * @return bool
+	 */
+	function bridge_qode_disable_google_font() {
+		return 'yes' === bridge_qode_options()->getOptionValue( 'disable_google_fonts' );
+	}
+	
+	add_filter( 'bridge_qode_filter_disable_google_fonts', 'bridge_qode_disable_google_font' );
+}
+
 if(!function_exists('bridge_qode_merge_fonts')) {
     /**
      * Function that merge google and native fonts
@@ -215,6 +228,13 @@ if(!function_exists('bridge_qode_merge_fonts')) {
         global $bridge_qode_font_arrays;
         $native_fonts = bridge_qode_get_native_fonts_array();
         $custom_fonts = bridge_qode_get_custom_fonts_array();
+	    
+	    $is_disabled = apply_filters( 'bridge_qode_filter_disable_google_fonts', false );
+		
+		//clear google fonts array is they are disabled
+		if( $is_disabled ) {
+			$bridge_qode_font_arrays = array();
+		}
 
         if(is_array($native_fonts) && count($native_fonts)){
             $bridge_qode_font_arrays = array_merge($native_fonts, $bridge_qode_font_arrays);
@@ -549,15 +569,35 @@ if(!function_exists('bridge_qode_get_template_part')) {
      * @param string $slug
      * @param array $params array of parameters to pass to template
      */
-    function bridge_qode_get_template_part($template, $slug = '', $params = array(), $plugin = false) {
-        if(is_array($params) && count($params)) {
-            extract($params);
-        }
+    function bridge_qode_get_template_part( $template, $slug = '', $params = array(), $plugin = false ) {
+	    
+	    $available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\\.]/';
+	    
+	    if ( is_scalar( $template ) ) {
+		    $template = preg_replace( $available_characters, '', $template );
+		    if ( strpos( $template, '..' ) !== false ) {
+			    $template = '';
+		    }
+	    } else {
+		    $template = '';
+	    }
+	    if ( is_scalar( $slug ) ) {
+		    $slug = preg_replace( $available_characters, '', $slug );
+		    if ( strpos( $slug, '..' ) !== false ) {
+			    $slug = '';
+		    }
+	    } else {
+		    $slug = '';
+	    }
+		
+		if ( is_array( $params ) && count( $params ) ) {
+		    extract( $params, EXTR_SKIP );
+	    }
 
         $templates = array();
-
-        if($template !== '') {
-            if($slug !== '') {
+	    
+	    if ( $template !== '' ) {
+		    if ( $slug !== '' ) {
                 $templates[] = "{$template}-{$slug}.php";
             }
 
@@ -571,7 +611,7 @@ if(!function_exists('bridge_qode_get_template_part')) {
         }
     }
 }
-if(!function_exists('bridge_qode_get_module_template_part')) {
+if ( ! function_exists( 'bridge_qode_get_module_template_part' ) ) {
 	/**
 	 * Loads module template part.
 	 *
@@ -600,9 +640,29 @@ if(!function_exists('bridge_qode_return_template_part')) {
 	 * @return html
 	 * @see bridge_qode_get_template_part()
 	 */
-	function bridge_qode_return_template_part($template, $slug = '', $params = array()) {
-		if(is_array($params) && count($params)) {
-			extract($params);
+	function bridge_qode_return_template_part( $template, $slug = '', $params = array() ) {
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\\.]/';
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+			if ( strpos( $template, '..' ) !== false ) {
+				$template = '';
+			}
+		} else {
+			$template = '';
+		}
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+			if ( strpos( $slug, '..' ) !== false ) {
+				$slug = '';
+			}
+		} else {
+			$slug = '';
+		}
+		
+		if ( is_array( $params ) && count( $params ) ) {
+			extract( $params, EXTR_SKIP );
 		}
 		$html          = '';
 		$templates = array();
@@ -616,10 +676,10 @@ if(!function_exists('bridge_qode_return_template_part')) {
 		}
 
 		$located = bridge_qode_find_template_path($templates);
-
-		if($located) {
+		
+		if ( $located ) {
 			ob_start();
-			include($located);
+			include( $located );
 			$html = ob_get_clean();
 		}
 
@@ -656,8 +716,37 @@ if(!function_exists('bridge_qode_get_shortcode_template_part')) {
      * @return html
      * @see bridge_qode_get_template_part()
      */
-    function bridge_qode_get_shortcode_template_part($template, $shortcode, $slug = '', $params = array()) {
-
+    function bridge_qode_get_shortcode_template_part( $template, $shortcode, $slug = '', $params = array() ) {
+	    
+	    $available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\\.]/';
+	    
+	    if ( is_scalar( $template ) ) {
+		    $template = preg_replace( $available_characters, '', $template );
+		    if ( strpos( $template, '..' ) !== false ) {
+			    $template = '';
+		    }
+	    } else {
+		    $template = '';
+	    }
+	    
+	    if ( is_scalar( $shortcode ) ) {
+		    $shortcode = preg_replace( $available_characters, '', $shortcode );
+		    if ( strpos( $shortcode, '..' ) !== false ) {
+			    $shortcode = '';
+		    }
+	    } else {
+		    $shortcode = '';
+	    }
+		
+	    if ( is_scalar( $slug ) ) {
+		    $slug = preg_replace( $available_characters, '', $slug );
+		    if ( strpos( $slug, '..' ) !== false ) {
+			    $slug = '';
+		    }
+	    } else {
+		    $slug = '';
+	    }
+		
         //HTML Content from template
         $html          = '';
         $template_path = 'includes/shortcodes/shortcode-elements/'.$shortcode;
@@ -665,30 +754,62 @@ if(!function_exists('bridge_qode_get_shortcode_template_part')) {
         $temp = $template_path.'/'.$template;
 
         if(is_array($params) && count($params)) {
-            extract($params);
+            extract( $params, EXTR_SKIP );
         }
 
         $templates = array();
-
-        if($temp !== '') {
-            if($slug !== '') {
-                $templates[] = "{$temp}-{$slug}.php";
-            }
-
-            $templates[] = $temp.'.php';
-        }
+	    
+	    if ( $temp !== '' ) {
+		    if ( $slug !== '' ) {
+			    $templates[] = "{$temp}-{$slug}.php";
+		    }
+		    
+		    $templates[] = $temp . '.php';
+	    }
         $located = bridge_qode_find_template_path($templates);
-        if($located) {
-            ob_start();
-            include($located);
-            $html = ob_get_clean();
-        }
+	    if ( $located ) {
+		    ob_start();
+		    include( $located );
+		    $html = ob_get_clean();
+	    }
 
         return $html;
     }
 }
 
-if(!function_exists('bridge_qode_find_template_path')) {
+if ( ! function_exists( 'bridge_qode_is_path_inside_directory' ) ) {
+	/**
+	 * Confirm a resolved filesystem path stays inside an allowed directory.
+	 *
+	 * @param string $path
+	 * @param string $directory
+	 *
+	 * @return bool
+	 */
+	function bridge_qode_is_path_inside_directory( $path, $directory ) {
+		if ( ! is_string( $path ) || ! is_string( $directory ) || $path === '' || $directory === '' ) {
+			return false;
+		}
+
+		if ( strpos( $path, '://' ) !== false || strpos( $directory, '://' ) !== false ) {
+			return false;
+		}
+
+		$real_path = realpath( $path );
+		$real_dir  = realpath( $directory );
+
+		if ( false === $real_path || false === $real_dir ) {
+			return false;
+		}
+
+		$real_path = wp_normalize_path( $real_path );
+		$real_dir  = trailingslashit( wp_normalize_path( $real_dir ) );
+
+		return substr( $real_path, 0, strlen( $real_dir ) ) === $real_dir;
+	}
+}
+
+if ( ! function_exists( 'bridge_qode_find_template_path' ) ) {
     /**
      * Find template path and return it
      *
@@ -696,69 +817,121 @@ if(!function_exists('bridge_qode_find_template_path')) {
      *
      * @return string
      */
-    function bridge_qode_find_template_path($template_names, $plugin = false) {
+	function bridge_qode_find_template_path( $template_names, $plugin = false ) {
         $located = '';
+		$theme_directories = array_unique(
+			array(
+				get_stylesheet_directory(),
+				get_template_directory(),
+			)
+		);
+		$plugin_directories = array();
+
+		if ( $plugin ) {
+			if ( defined( 'BRIDGE_CORE_ABS_PATH' ) ) {
+				$plugin_directories[] = BRIDGE_CORE_ABS_PATH;
+			}
+
+			$plugin_directories = apply_filters( 'bridge_qode_filter_allowed_plugin_template_directories', $plugin_directories );
+		}
+
         foreach((array) $template_names as $template_name) {
+	        
+	        if ( ! $template_name || ! is_string( $template_name ) ) {
+		        continue;
+	        }
 
-            if(!$template_name) {
-                continue;
-            }
-            if(file_exists(get_stylesheet_directory().'/'.$template_name)) {
-                $located = get_stylesheet_directory().'/'.$template_name;
-                break;
-            } elseif(file_exists(get_template_directory().'/'.$template_name)) {
-                $located = get_template_directory().'/'.$template_name;
-                break;
-            }elseif ( $plugin && file_exists( $template_name ) ) {
+			if ( strpos( $template_name, '://' ) !== false ) {
+				continue;
+			}
 
-				$located = $template_name;
-				break;
+			foreach ( $theme_directories as $theme_directory ) {
+				$candidate = $theme_directory . '/' . ltrim( $template_name, '/\\' );
+				if ( file_exists( $candidate ) && bridge_qode_is_path_inside_directory( $candidate, $theme_directory ) ) {
+					$located = realpath( $candidate );
+					break 2;
+				}
+			}
+
+			if ( $plugin ) {
+				foreach ( $plugin_directories as $plugin_directory ) {
+					if ( file_exists( $template_name ) && bridge_qode_is_path_inside_directory( $template_name, $plugin_directory ) ) {
+						$located = realpath( $template_name );
+						break 2;
+					}
+				}
 			}
         }
 
-        return $located;
-
-
-
+        return $located ? $located : '';
     }
 }
 
-if(!function_exists('bridge_qode_dynamic_css')) {
-    /**
-     * Generates css based on selector and rules that are provided
-     *
-     * @param array|string $selector selector for which to generate styles
-     * @param array $rules associative array of rules.
-     *
-     * Example of usage: if you want to generate this css:
-     *      header { width: 100%; }
-     * function call should look like this: qode_dynamic_css('header', array('width' => '100%'));
-     *
-     * @return string
-     */
-    function bridge_qode_dynamic_css($selector, $rules) {
-        $output = '';
-        //check if selector and rules are valid data
-        if(!empty($selector) && (is_array($rules) && count($rules))) {
+if ( ! function_exists( 'bridge_qode_dynamic_css' ) ) {
+	/**
+	 * Generates css based on selector and rules that are provided
+	 *
+	 * @param array|string $selector selector for which to generate styles
+	 * @param array        $rules associative array of rules.
+	 *
+	 * Example of usage: if you want to generate this css:
+	 *      header { width: 100%; }
+	 * function call should look like this: qode_dynamic_css('header', array('width' => '100%'));
+	 *
+	 * @return string
+	 */
+	function bridge_qode_dynamic_css( $selector, $rules ) {
+		$output = '';
+		//check if selector and rules are valid data
+		if ( ! empty( $selector ) && ( is_array( $rules ) && count( $rules ) ) ) {
+			
+			if ( is_array( $selector ) && count( $selector ) ) {
+				$output .= implode(
+					', ',
+					$selector
+				);
+			} else {
+				$output .= $selector;
+			}
+			
+			$output .= ' { ';
+			foreach ( $rules as $prop => $value ) {
+				if ( $prop !== '' ) {
+					$output .= $prop . ': ' . esc_attr( $value ) . ';';
+				}
+			}
+			
+			$output .= '}' . "\n\n";
+		}
+		
+		return $output;
+	}
+}
 
-            if(is_array($selector) && count($selector)) {
-                $output .= implode(', ', $selector);
-            } else {
-                $output .= $selector;
-            }
-
-            $output .= ' { ';
-            foreach($rules as $prop => $value) {
-                if($prop !== '') {
-                    $output .= $prop.': '.esc_attr($value).';';
-                }
-            }
-
-            $output .= '}'."\n\n";
-        }
-
-        return $output;
-    }
+if ( ! function_exists( 'bridge_qode_dynamic_responsive_css' ) ) {
+	function bridge_qode_dynamic_responsive_css( $selector, $properties, $min_width = '', $max_width = '' ) {
+		$output = '';
+		//check if min width or max width is set
+		if ( ! empty( $min_width ) || ! empty( $max_width ) ) {
+			$output .= '@media only screen';
+			
+			if ( ! empty( $min_width ) ) {
+				$output .= ' and (min-width: ' . $min_width . 'px)';
+			}
+			
+			if ( ! empty( $max_width ) ) {
+				$output .= ' and (max-width: ' . $max_width . 'px)';
+			}
+			
+			$output .= ' { ';
+			
+			$output .= bridge_qode_dynamic_css( $selector, $properties );
+			
+			$output .= '}';
+		}
+		
+		return $output;
+	}
 }
 
 if(!function_exists('bridge_qode_execute_shortcode')) {
@@ -992,14 +1165,6 @@ if ( ! function_exists('bridge_qode_add_custom_upload_mimes') ) {
 	add_filter('upload_mimes', 'bridge_qode_add_custom_upload_mimes');
 }
 
-if ( ! function_exists( 'bridge_qode_return_global_options' ) ) {
-	function bridge_qode_return_global_options() {
-		global $bridge_qode_options;
-
-		return $bridge_qode_options;
-	}
-}
-
 if ( ! function_exists( 'bridge_qode_get_search_page_template' ) ) {
     function bridge_qode_get_search_page_template( $template, $module, $slug = '', $params = array(), $plugin = false ) {
         $root          = $plugin ? apply_filters( 'bridge_qode_filter_edit_module_template_path', $root = 'framework/modules/' ) : 'framework/modules/';
@@ -1007,4 +1172,38 @@ if ( ! function_exists( 'bridge_qode_get_search_page_template' ) ) {
 
         bridge_qode_get_template_part( $template_path . '/' . $template, $slug, $params, $plugin );
     }
+}
+
+if ( ! function_exists( 'bridge_qode_get_escape_title_tag' ) ) {
+	/**
+	 * Function that escape title tag variable for modules
+	 *
+	 * @param string $title_tag
+	 *
+	 * @return string
+	 */
+	function bridge_qode_get_escape_title_tag( $title_tag ) {
+		$allowed_tags = array(
+			'h1',
+			'h2',
+			'h3',
+			'h4',
+			'h5',
+			'h6',
+			'p',
+			'span',
+			'ul',
+			'ol',
+			'div',
+		);
+		
+		$escaped_title_tag = '';
+		$title_tag         = strtolower( sanitize_key( $title_tag ) );
+		
+		if ( in_array( $title_tag, $allowed_tags, true ) ) {
+			$escaped_title_tag = $title_tag;
+		}
+		
+		return $escaped_title_tag;
+	}
 }

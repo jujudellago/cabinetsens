@@ -1,57 +1,41 @@
 <?php
+/**
+ * Edit element panel template.
+ *
+ * @var array $controls
+ * @var Vc_Shortcode_Edit_Form $box
+ * @var string $id
+ * @var string $inner_classes
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
+vc_include_template( 'editors/popups/partials/modal-wrapper-start.php', [
+	'id' => $id,
+	'inner_classes' => $inner_classes,
+] );
+
+vc_include_template( 'editors/popups/vc_ui-header.tpl.php', [
+	'id' => $id,
+	'title' => esc_html__( 'Edit element', 'js_composer' ),
+	'controls' => $controls,
+	'header_css_class' => 'vc_ui-post-settings-header-container',
+	'content_template' => '',
+	'box' => $box,
+] );
 ?>
-<div class="vc_ui-font-open-sans vc_ui-panel-window vc_media-xs vc_ui-panel"
-	data-vc-panel=".vc_ui-panel-header-header" data-vc-ui-element="panel-edit-element" id="vc_ui-panel-edit-element">
-	<div class="vc_ui-panel-window-inner">
-		<?php
-		$controls = array(
-			'minimize',
-			'close',
-		);
 
-		if ( vc_user_access()->part( 'presets' )->checkStateAny( true, null )->get() || vc_user_access()->part( 'templates' )->checkStateAny( true, null )->get() ) {
-			$controls = array_merge( array(
-				'settings' => array(
-					'template' => 'editors/partials/vc_ui-settings-dropdown.tpl.php',
-				),
-			), $controls );
-		}
+<!-- param window footer-->
+<div class="vc_ui-panel-content-container">
+	<div class="vc_ui-panel-content vc_properties-list vc_edit_form_elements">
 
-		vc_include_template( 'editors/popups/vc_ui-header.tpl.php', array(
-			'title' => esc_html__( 'Page settings', 'js_composer' ),
-			'controls' => $controls,
-			'header_css_class' => 'vc_ui-post-settings-header-container',
-			'content_template' => '',
-		) );
-		?>
-
-		<!-- param window footer-->
-		<div class="vc_ui-panel-content-container">
-			<div class="vc_ui-panel-content vc_properties-list vc_edit_form_elements">
-
-				<!--/ temp content -->
-			</div>
-		</div>
-		<!-- param window footer-->
-		<?php
-		vc_include_template( 'editors/popups/vc_ui-footer.tpl.php', array(
-			'controls' => array(
-				array(
-					'name' => 'close',
-					'label' => esc_html__( 'Close', 'js_composer' ),
-					'css_classes' => 'vc_ui-button-fw',
-				),
-				array(
-					'name' => 'save',
-					'label' => esc_html__( 'Save changes', 'js_composer' ),
-					'css_classes' => 'vc_ui-button-fw',
-					'style' => 'action',
-				),
-			),
-		) );
-		?>
+		<!--/ temp content -->
 	</div>
 </div>
+<!-- param window footer-->
+
+<?php
+do_action( 'wpb_add_element_controls' );
+
+vc_include_template( 'editors/popups/partials/modal-wrapper-end.php' );

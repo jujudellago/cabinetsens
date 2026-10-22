@@ -49,42 +49,42 @@ if ( class_exists( 'BridgeCoreSubPage' ) ) {
 					'title'    => esc_html__( 'PHP Memory Limit', 'bridge-core' ),
 					'value'    => size_format( wp_convert_hr_to_bytes( @ini_get( 'memory_limit' ) ) ),
 					'required' => '128',
-					'pass'     => ( wp_convert_hr_to_bytes( @ini_get( 'memory_limit' ) ) >= 134217728 ) ? true : false,
-					'notice'   => esc_html__( 'The current value is insufficient to properly support the theme. Please adjust this value to 128 in order to meet the theme requirements. ', 'bridge-core' )
+					'pass'     => wp_convert_hr_to_bytes( @ini_get( 'memory_limit' ) ) >= 134217728,
+					'notice'   => esc_html__( 'While the current value should be sufficient to support the theme, please consider adjusting this value to 128 in order to ensure proper theme functioning and meet the requirements. ', 'bridge-core' )
 				),
 				'php_version'        => array(
 					'title'    => esc_html__( 'PHP Version', 'bridge-core' ),
 					'value'    => phpversion(),
 					'required' => '5.6',
-					'pass'     => version_compare( PHP_VERSION, '5.6.0' ) >= 0 ? true : false
+					'pass'     => version_compare( PHP_VERSION, '5.6.0' ) >= 0
 				),
 				'php_post_max_size'  => array(
 					'title'    => esc_html__( 'PHP Post Max Size', 'bridge-core' ),
 					'value'    => ini_get( 'post_max_size' ),
-					'required' => '256',
-					'pass'     => ( ini_get( 'post_max_size' ) >= 256 ) ? true : false,
-					'notice'   => esc_html__( 'The current value is insufficient to properly support the theme. Please adjust this value to 256 in order to meet the theme requirements. ', 'bridge-core' )
+					'required' => '64',
+					'pass'     => wp_convert_hr_to_bytes( ini_get( 'post_max_size' ) ) >= 67108864,
+					'notice'   => esc_html__( 'While the current value should be sufficient to support the theme, please consider adjusting this value to 64 in order to ensure proper theme functioning and meet the requirements. ', 'bridge-core' )
 				),
 				'php_time_limit'     => array(
 					'title'    => esc_html__( 'PHP Time Limit', 'bridge-core' ),
 					'value'    => ini_get( 'max_execution_time' ),
 					'required' => '300',
-					'pass'     => ( ini_get( 'max_execution_time' ) >= 300 ) ? true : false,
-					'notice'   => esc_html__( 'The current value is insufficient to properly support the theme. Please adjust this value to 300 in order to meet the theme requirements. ', 'bridge-core' )
+					'pass'     => ini_get( 'max_execution_time' ) >= 300,
+					'notice'   => esc_html__( 'While the current value should be sufficient to support the theme, please consider adjusting this value to 300 in order to ensure proper theme functioning and meet the requirements. ', 'bridge-core' )
 				),
 				'php_max_input_vars' => array(
 					'title'    => esc_html__( 'PHP Max Input Vars', 'bridge-core' ),
 					'value'    => ini_get( 'max_input_vars' ),
-					'required' => '5000',
-					'pass'     => ( ini_get( 'max_input_vars' ) >= 5000 ) ? true : false,
-					'notice'   => esc_html__( 'The current value is insufficient to properly support the theme. Please adjust this value to 5000 in order to meet the theme requirements. ', 'bridge-core' )
+					'required' => '3000',
+					'pass'     => ini_get( 'max_input_vars' ) >= 3000,
+					'notice'   => esc_html__( 'While the current value should be sufficient to support the theme, please consider adjusting this value to 3000 in order to ensure proper theme functioning and meet the requirements. ', 'bridge-core' )
 				),
 				'max_upload_size'    => array(
 					'title'    => esc_html__( 'Max Upload Size', 'bridge-core' ),
 					'value'    => size_format( wp_max_upload_size() ),
-					'required' => '128',
-					'pass'     => ( wp_max_upload_size() >= 134217728 ) ? true : false,
-					'notice'   => esc_html__( 'The current value is insufficient to properly support the theme. Please adjust this value to 128 in order to meet the theme requirements. ', 'bridge-core' )
+					'required' => '64',
+					'pass'     => wp_max_upload_size() >= 67108864,
+					'notice'   => esc_html__( 'While the current value should be sufficient to support the theme, please consider adjusting this value to 64 in order to ensure proper theme functioning and meet the requirements. ', 'bridge-core' )
 				),
 				'suhosin_installed'  => array(
 					'title'    => esc_html__( 'SUHOSIN Installed', 'bridge-core' ),

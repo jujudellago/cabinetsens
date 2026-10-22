@@ -242,8 +242,8 @@
     
     function qodeToursReInitGoogleMap(){
 
-        if(typeof qode !== 'undefined'){
-            showGoogleMap();
+        if( 'object' === typeof qode && 'object' === typeof qode.modules.googleMap ){
+	        qode.modules.googleMap.showGoogleMap();
         }
     }
 
@@ -616,7 +616,7 @@
     function qodeInitElementorTopReviewsCarousel(){
         $j(window).on('elementor/frontend/init', function () {
             elementorFrontend.hooks.addAction( 'frontend/element_ready/qode_top_reviews_carousel.default', function() {
-	            qodeOwlSlider();
+                qode.modules.owlSlider.qodeOwlSlider();
             } );
         });
     }
@@ -645,7 +645,7 @@
     function qodeInitElementorToursCarousel(){
         $j(window).on('elementor/frontend/init', function () {
             elementorFrontend.hooks.addAction( 'frontend/element_ready/qode_tours_carousel.default', function() {
-	            qodeOwlSlider();
+                qode.modules.owlSlider.qodeOwlSlider();
             } );
         });
     }
@@ -782,7 +782,8 @@
             var fetchData = function(callback) {
                 var data = {
                     action: 'qode_tours_list_ajax_pagination',
-                    fields: paginationDataHolder.find('input').serialize()
+                    fields: paginationDataHolder.find('input').serialize(),
+                    nonce: paginationDataHolder.find('[name="nonce"]').val()
                 };
 
                 $.ajax({

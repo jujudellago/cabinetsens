@@ -1,5 +1,5 @@
 @ui-resizable-handle-size: 9px;
-@ui-resizable-handle-corner-size: @ui-resizable-handle-size * 1.7;
+@ui-resizable-handle-corner-size: (@ui-resizable-handle-size * 1.7);
 
 .ui-resizable-handle {
   position: absolute;
@@ -49,6 +49,7 @@
   right: -2px;
   bottom: -2px;
   transform: translate(10%, 10%);
+  background: none !important; // overwrite default background to prevent the icon from appearing
 }
 
 .ui-resizable-sw {

@@ -1,4 +1,8 @@
 <?php
+/**
+ * Settings image block template.
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
@@ -6,10 +10,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 $custom_tag = 'script';
 ?>
 <<?php echo esc_attr( $custom_tag ); ?> type="text/html" id="vc_settings-image-block">
-	<li class="added">
-		<div class="inner" style="width: 80px; height: 80px; overflow: hidden;text-align: center;">
-			<img rel="{{ id }}" src="<# if(obj.sizes && obj.sizes.thumbnail) { #>{{ sizes.thumbnail.url }}<# } else {#>{{ url }}<# } #>"/>
-		</div>
-		<a href="#" class="vc_icon-remove"><i class="vc-composer-icon vc-c-icon-close"></i></a>
-	</li>
+	<?php
+	vc_include_template('form-fields/attach_image/attach_images_single_image.php', [
+		'is_template' => true,
+		'is_link_icon' => false,
+	] )
+	?>
 </<?php echo esc_attr( $custom_tag ); ?>>

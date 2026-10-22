@@ -55,12 +55,12 @@
   // Common styles for all sizes of grid columns, widths 1-12
   .vc_col(@index) when (@index = 1) {
     // initial
-    @item: ~".vc_col-xs-@{index}, .vc_col-sm-@{index}, .vc_col-md-@{index}, .vc_col-lg-@{index}";
+    @item: ~".vc_col-xs-@{index}, .vc_col-sm-@{index}, .vc_col-md-@{index}, .vc_col-lg-@{index}, .vc_col-xl-@{index}";
     .vc_col((@index + 1), @item);
   }
   .vc_col(@index, @list) when (@index =< @grid-columns) {
     // general; "=<" isn't a typo
-    @item: ~".vc_col-xs-@{index}, .vc_col-sm-@{index}, .vc_col-md-@{index}, .vc_col-lg-@{index}";
+    @item: ~".vc_col-xs-@{index}, .vc_col-sm-@{index}, .vc_col-md-@{index}, .vc_col-lg-@{index}, .vc_col-xl-@{index}";
     .vc_col((@index + 1), ~"@{list}, @{item}");
   }
   .vc_col(@index, @list) when (@index > @grid-columns) {
@@ -205,6 +205,15 @@
 @media (min-width: @screen-lg-min) {
   .vc_make-grid(lg);
   @import "grid-5-cols-lg";
+}
+
+// Extra large grid
+//
+// Columns, offsets, pushes, and pulls for the extra large desktop device range.
+
+@media (min-width: @screen-xl-min) {
+  .vc_make-grid(xl);
+  @import "grid-5-cols-xl";
 }
 
 @import "grid-5-cols-xs.less";

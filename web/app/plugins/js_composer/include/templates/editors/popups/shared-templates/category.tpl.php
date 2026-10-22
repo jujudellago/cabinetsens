@@ -1,171 +1,158 @@
 <?php
-/** @var Vc_Shared_Templates $controller
- * @package WPBakeryPageBuilder
+/**
+ * Category template for shared templates.
+ *
+ * @var Vc_Shared_Templates $controller
+ * @var array $templates
+ *
+ * phpcs:ignoreFile:Generic.PHP.DisallowAlternativePHPTags.MaybeASPShortOpenTagFound
  */
 
-/** @var array $templates */
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
+
+$is_license_active = vc_license()->isActivated();
+$has_downloaded = ! empty( $templates );
 $custom_tag = 'script';
 ?>
 
 <<?php echo esc_attr( $custom_tag ); ?>>
 	window.vcTemplatesLibraryData = {
-		templates: <?php echo wp_json_encode( $templates ); ?>
+		templates: <?php echo wp_json_encode( $templates ); ?>,
+		licenseActive: <?php echo wp_json_encode( $is_license_active ); ?>
 	};
 </<?php echo esc_attr( $custom_tag ); ?>>
-<div class="vc_ui-panel-popup vc_ui-hidden">
-	<div class="vc_ui-panel-template-content vc_ui-panel-popup-item vc_ui-hidden">
-		<button type="button" class="vc_general vc_ui-control-button vc_ui-panel-close-button">
-			<i class="vc-composer-icon vc-c-icon-arrow_back"></i>
-			<span class="vc_ui-control-button-text"><?php esc_html_e( 'Exit Template Library', 'js_composer' ); ?></span>
-		</button>
-		<?php
-		if ( ! vc_license()->isActivated() ) :
-			?>
-			<div class="vc_ui-panel-message">
-				<h3 class="vc_ui-panel-title"><?php esc_html_e( 'Activate WPBakery Page Builder', 'js_composer' ); ?></h3>
-				<p class="vc_description"><?php esc_html_e( 'WPBakery Page Builder Template Library downloads are available for activated	versions only. Activate WPBakery Page Builder direct license to access Template Library and receive other benefits.', 'js_composer' ); ?></p>
-				<a href="<?php echo esc_url( admin_url( 'admin.php?page=vc-updater' ) ); ?>" target="_blank" class="vc_general vc_ui-button vc_ui-button-size-sm vc_ui-button-shape-rounded vc_ui-button-action">
-					<?php esc_html_e( 'Activate License', 'js_composer' ); ?>
-				</a>
-			</div>
-		<?php endif; ?>
-		<div class="vc_ui-panel-message vc_ui-panel-message--error vc_ui-hidden" id="vc_template-library-panel-error-message"></div>
-		<div class="vc_ui-search-box vc_ui-panel-search-box">
-			<div class="vc_ui-search-box-input vc_ui-panel-search">
-				<input type="search" id="vc_template_lib_name_filter" data-vc-template-lib-name-filter="" placeholder="<?php esc_attr_e( 'Search template by name', 'js_composer' ); ?>">
-				<label for="vc_template_lib_name_filter"><i class="vc-composer-icon vc-c-icon-search"></i></label>
-			</div>
-		</div>
-		<div class="vc_ui-panel-template-grid" id="vc_template-library-template-grid">
-
-		</div>
-	</div>
-	<div class="vc_ui-panel-template-preview vc_ui-panel-popup-item vc_ui-hidden">
-		<div class="vc_ui-panel-template-preview-inner">
-			<button type="button" class="vc_general vc_ui-control-button vc_ui-panel-back-button">
-				<i class="vc-composer-icon vc-c-icon-arrow_back"></i>
-			</button>
-			<h3 class="vc_ui-panel-title"></h3>
-			<?php if ( vc_license()->isActivated() ) : ?>
-				<div class="vc_ui-panel-template-download vc_ui-hidden" id="vc_template-library-download">
-					<button id="vc_template-library-download-btn" class="vc_general vc_ui-button vc_ui-button-size-sm vc_ui-button-shape-rounded vc_ui-button-action">
-						<?php esc_html_e( 'Download Template', 'js_composer' ); ?>
-					</button>
-				</div>
-			<?php endif; ?>
-		</div>
-		<div class="vc_ui-panel-preview-content">
-			<img class="vc_ui-panel-preview-image" src="" alt="">
-		</div>
-	</div>
-	<div class="vc_ui-panel-download vc_ui-panel-popup-item vc_ui-hidden">
-		<div class="vc_ui-panel-loading-content">
-			<div class="vc_preloader-box"></div>
-			<h3 class="vc_ui-panel-title"><?php esc_html_e( 'Downloading template ... please wait!', 'js_composer' ); ?></h3>
-			<p class="vc_description">
-				<?php
-				esc_html_e( 'Don\'t close this window until download is complete - you will be redirected back to Template Library automatically.', 'js_composer' );
-				?>
-			</p>
-		</div>
-	</div>
-</div>
 
 <div class="vc_ui-panel-loading vc_ui-hidden">
 	<div class="vc_preloader-box"></div>
 </div>
-<div class="vc_ui-templates-content">
-	<?php
-	if ( vc_user_access()->part( 'templates' )->checkStateAny( true, null )->get() ) :
-		?>
-		<div class="vc_column vc_col-sm-12 vc_access-library-col">
-			<h3 class="vc_ui-panel-title"><?php esc_html_e( 'Download Templates', 'js_composer' ); ?></h3>
-			<p class="vc_description">
-				<?php
-				esc_html_e( 'Access WPBakery Page Builder Template Library for unique layout
-		templates. Download chosen templates and discover new layouts with regular template
-		updates from WPBakery Page Builder team.', 'js_composer' );
-				?>
-			</p>
-			<button class="vc_general vc_ui-button vc_ui-button-size-md vc_ui-button-shape-rounded vc_ui-button-action vc_ui-access-library-btn">
-				<?php esc_html_e( 'Access Library', 'js_composer' ); ?>
-			</button>
-		</div>
-		<?php
-	else :
-		?>
-		<div class="vc_column vc_col-sm-12 vc_access-library-col">
-			<h3 class="vc_ui-panel-title"><?php esc_html_e( 'Template library', 'js_composer' ); ?></h3>
-		</div>
-		<?php
-	endif;
-	?>
 
-	<div class="vc_column vc_col-sm-12">
-		<div class="vc_ui-template-list vc_templates-list-shared_templates vc_ui-list-bar" id="vc_template-library-shared_templates">
-		</div>
+<div class="vc_ui-panel-download vc_ui-hidden">
+	<div class="vc_ui-panel-loading-content">
+		<div class="vc_preloader-box"></div>
+		<h3 class="vc_ui-panel-title"><?php esc_html_e( 'Downloading template ... please wait!', 'js_composer' ); ?></h3>
+		<p class="vc_description">
+			<?php esc_html_e( 'Don\'t close this window until download is complete - you will be redirected back to Template Library automatically.', 'js_composer' ); ?>
+		</p>
 	</div>
 </div>
 
-<<?php echo esc_attr( $custom_tag ); ?> type="text/html" id="vc_template-item">
-	<div class="vc_ui-template vc_templates-template-type-shared_templates"
-			data-template_id="<%- post_id %>"
-			data-template_name="<%- title %>"
-			data-category="shared_templates"
-			data-template_type="shared_templates"
-			data-template_action="vc_delete_template"
-			data-vc-content=".vc_ui-template-content">
-		<div class="vc_ui-list-bar-item">
-			<button type="button" class="vc_ui-list-bar-item-trigger" data-template-handler data-vc-ui-element="template-title" title="<?php esc_attr_e( 'Add template', 'js_composer' ); ?>"><%- title %></button>
-			<div class="vc_ui-list-bar-item-actions">
-				<button type="button" class="vc_general vc_ui-control-button" data-template-handler title="<?php esc_attr_e( 'Add template', 'js_composer' ); ?>">
-					<i class="vc-composer-icon vc-c-icon-add"></i>
-				</button>
-				<?php
-				if ( vc_user_access()->part( 'templates' )->checkStateAny( true, null )->get() ) :
-					?>
-					<button type="button" class="vc_general vc_ui-control-button" data-vc-ui-delete="template-title" title="<?php esc_attr_e( 'Delete template', 'js_composer' ); ?>">
-						<i class="vc-composer-icon vc-c-icon-delete_empty"></i>
-					</button>
-					<?php
-				endif;
-				?>
-				<button type="button" class="vc_general vc_ui-control-button" data-vc-preview-handler data-vc-container=".vc_ui-list-bar" data-vc-target="[data-template_id=&quot;<%- post_id %>&quot;]" title="<?php esc_attr_e( 'Preview template', 'js_composer' ); ?>">
-					<i class="vc-composer-icon vc-c-icon-arrow_drop_down"></i>
-				</button>
-			</div>
+<div class="vc_ui-templates-content">
+	<?php if ( ! $is_license_active ) : ?>
+		<div class="vc_ui-template-library-cta">
+			<h3 class="vc_ui-panel-title"><?php esc_html_e( 'Template library', 'js_composer' ); ?></h3>
+			<p class="vc_description">
+				<?php esc_html_e( 'Template library is our curated collection of templates you can download from the WPBakery cloud. This module is available only to the direct WPBakery license owners with valid support period.', 'js_composer' ); ?>
+			</p>
+			<a href="<?php echo esc_url( 'https://wpbakery.com/?utm_source=wpb-plugin&utm_medium=template-window&utm_campaign=info&utm_content=button' ); ?>"
+				target="_blank" rel="noopener noreferrer"
+				title="<?php esc_attr_e( 'Get WPBakery', 'js_composer' ); ?>"
+				class="vc_general vc_ui-button vc_ui-button-size-md vc_ui-button-shape-rounded vc_ui-template-library-cta-btn">
+				<?php esc_html_e( 'Get WPBakery', 'js_composer' ); ?>
+			</a>
 		</div>
-		<div class="vc_ui-template-content" data-js-content>
-		</div>
-	</div>
-</<?php echo esc_attr( $custom_tag ); ?>>
+	<?php endif; ?>
 
-<<?php echo esc_attr( $custom_tag ); ?> type="text/html" id="vc_template-grid-item">
-	<div class="vc_ui-panel-template-item vc_ui-visible" data-template-id="<%- id %>">
-		<span class="vc_ui-panel-template-item-content">
-			<img src="<%- thumbnailUrl %>" alt=""/>
-			<span class="vc_ui-panel-template-item-overlay">
-				<a href="javascript:" class="vc_ui-panel-template-item-overlay-button vc_ui-panel-template-preview-button"
-						data-preview-url="<%- previewUrl %>" data-title="<%- title %>" data-template-id="<%- id %>" data-template-version="<%- version %>"><i class="vc-composer-icon vc-c-icon-search"></i></a>
-				<?php if ( vc_license()->isActivated() ) : ?>
-					<% if (!downloaded) { %>
-					<a href="javascript:" class="vc_ui-panel-template-item-overlay-button vc_ui-panel-template-download-button">
-					<i class="vc-composer-icon vc-c-icon-arrow_downward"></i>
-					</a>
-					<% } else if (downloaded && downloaded.version < version) { %>
-					<a href="javascript:" class="vc_ui-panel-template-item-overlay-button vc_ui-panel-template-update-button">
-					<i class="vc-composer-icon vc-c-icon-sync"></i>
-					</a>
-					<% } %>
+	<?php
+	$show_downloaded_section = $is_license_active || $has_downloaded;
+	if ( $show_downloaded_section ) :
+		?>
+		<section class="vc_ui-template-section" data-section="downloaded">
+			<h3 class="vc_ui-template-section-title"><?php esc_html_e( 'Downloaded', 'js_composer' ); ?></h3>
+			<div class="vc_ui-template-card-grid vc_templates-list-shared_templates"
+				id="vc_template-library-downloaded"
+				data-vc-grid="downloaded"></div>
+			<p class="vc_ui-template-grid-empty" data-vc-grid-empty="downloaded">
+				<?php esc_html_e( 'You don\'t have any templates downloaded yet.', 'js_composer' ); ?>
+			</p>
+		</section>
+	<?php endif; ?>
+
+	<section class="vc_ui-template-section" data-section="library">
+		<h3 class="vc_ui-template-section-title"><?php esc_html_e( 'Template library', 'js_composer' ); ?></h3>
+		<div class="vc_ui-template-card-grid"
+			id="vc_template-library-grid"
+			data-vc-grid="library"
+			role="listbox"></div>
+		<p class="vc_ui-template-grid-empty vc_ui-hidden"
+			data-vc-grid-empty="library">
+			<?php esc_html_e( 'No templates found.', 'js_composer' ); ?>
+		</p>
+	</section>
+</div>
+
+<<?php echo esc_attr( $custom_tag ); ?> type="text/html" id="vc_template-downloaded-card">
+	<div class="vc_ui-template-card vc_templates-template-type-shared_templates"
+			data-template_id="<%- post_id %>"
+			data-template_unique_id="<%- post_id %>"
+			data-template_id_hash="<%- post_id %>"
+			data-template_name="<%- _.escape(vc_slugify(title)) %>"
+			data-template_type="shared_templates"
+			data-category="shared_templates"
+			data-template_action="vc_delete_template">
+		<span class="vc_ui-template-card-thumb">
+			<% if (thumbnailUrl) { %><img src="<%- thumbnailUrl %>" alt=""><% } %>
+			<span class="vc_ui-template-card-overlay">
+				<button type="button"
+					class="vc_ui-template-card-action"
+					data-template-handler
+					title="<?php esc_attr_e( 'Add template', 'js_composer' ); ?>"
+					aria-label="<?php esc_attr_e( 'Add template', 'js_composer' ); ?>">
+					<i class="vc-composer-icon vc-c-add-circle" aria-hidden="true"></i>
+				</button>
+				<?php if ( vc_user_access()->part( 'templates' )->checkStateAny( true, null )->get() ) : ?>
+					<button type="button"
+						class="vc_ui-template-card-action"
+						data-vc-ui-delete="template-title"
+						title="<?php esc_attr_e( 'Delete template', 'js_composer' ); ?>"
+						aria-label="<?php esc_attr_e( 'Delete template', 'js_composer' ); ?>">
+						<i class="vc-composer-icon vc-c-trash" aria-hidden="true"></i>
+					</button>
 				<?php endif; ?>
 			</span>
 		</span>
-		<span class="vc_ui-panel-template-item-name">
-			<span><%- title %></span>
+		<span class="vc_ui-template-card-name" data-vc-ui-element="template-title" title="<%- title %>"><%- title %></span>
+	</div>
+</<?php echo esc_attr( $custom_tag ); ?>>
+
+<<?php echo esc_attr( $custom_tag ); ?> type="text/html" id="vc_template-library-card">
+	<div class="vc_ui-template-card vc_ui-template-card-library<%- locked ? ' vc_ui-template-card--locked' : '' %>"
+			data-template-id="<%- id %>"
+			data-template-version="<%- version %>"
+			data-template-downloaded="<%- downloaded ? 'true' : 'false' %>"
+			data-template-update-available="<%- updateAvailable ? 'true' : 'false' %>"
+			data-template_name="<%- _.escape(vc_slugify(title)) %>">
+		<span class="vc_ui-template-card-thumb">
+			<% if (thumbnailUrl) { %><img src="<%- thumbnailUrl %>" alt="" loading="lazy"><% } %>
+			<% if (locked) { %>
+				<span class="vc_ui-template-card-overlay">
+					<span class="vc_ui-template-card-action vc_ui-template-card-action--static"
+						title="<?php esc_attr_e( 'License required', 'js_composer' ); ?>"
+						aria-label="<?php esc_attr_e( 'License required', 'js_composer' ); ?>">
+						<i class="vc-composer-icon vc-c-locked" aria-hidden="true"></i>
+					</span>
+				</span>
+			<% } else if (updateAvailable) { %>
+				<span class="vc_ui-template-card-overlay">
+					<a href="javascript:" role="option"
+						class="vc_ui-template-card-action vc_ui-template-card-update-btn"
+						title="<?php esc_attr_e( 'Update template', 'js_composer' ); ?>"
+						aria-label="<?php esc_attr_e( 'Update template', 'js_composer' ); ?>">
+						<i class="vc-composer-icon vc-c-icon-sync" aria-hidden="true"></i>
+					</a>
+				</span>
+			<% } else if (!downloaded) { %>
+				<span class="vc_ui-template-card-overlay">
+					<a href="javascript:" role="option"
+						class="vc_ui-template-card-action vc_ui-template-card-download-btn"
+						title="<?php esc_attr_e( 'Download template', 'js_composer' ); ?>"
+						aria-label="<?php esc_attr_e( 'Download template', 'js_composer' ); ?>">
+						<i class="vc-composer-icon vc-c-download" aria-hidden="true"></i>
+					</a>
+				</span>
+			<% } %>
 		</span>
-		<%= status %>
+		<span class="vc_ui-template-card-name" title="<%- title %>"><%- title %></span>
 	</div>
 </<?php echo esc_attr( $custom_tag ); ?>>

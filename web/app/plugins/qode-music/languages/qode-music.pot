@@ -1,21 +1,21 @@
-# Copyright (C) 2020 Qode Themes
+# Copyright (C) 2023 Qode Themes
 # This file is distributed under the same license as the Qode Music plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Qode Music 2.1\n"
+"Project-Id-Version: Qode Music 2.1.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/qode-music\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-09-18T12:43:51+02:00\n"
+"POT-Creation-Date: 2023-09-27T14:54:37+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.3.0\n"
+"X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: qode-music\n"
 
 #. Plugin Name of the plugin
-#: helpers.php:288
+#: helpers.php:298
 msgid "Qode Music"
 msgstr ""
 
@@ -210,7 +210,7 @@ msgstr ""
 
 #: post-types/albums/admin/options/albums-options-map.php:8
 #: post-types/albums/admin/options/albums-options-map.php:13
-#: post-types/albums/albums-register.php:71
+#: post-types/albums/albums-register.php:74
 msgid "Albums"
 msgstr ""
 
@@ -235,7 +235,7 @@ msgstr ""
 msgid "Show Social Share for Album Items"
 msgstr ""
 
-#: post-types/albums/albums-register.php:72
+#: post-types/albums/albums-register.php:75
 #: post-types/albums/shortcodes/album-player.php:60
 #: post-types/albums/shortcodes/album.php:41
 #: post-types/albums/shortcodes/album.php:49
@@ -245,126 +245,126 @@ msgstr ""
 msgid "Album"
 msgstr ""
 
-#: post-types/albums/albums-register.php:73
+#: post-types/albums/albums-register.php:76
 msgid "New Album"
 msgstr ""
 
-#: post-types/albums/albums-register.php:74
+#: post-types/albums/albums-register.php:77
 msgid "Add New Album"
 msgstr ""
 
-#: post-types/albums/albums-register.php:75
+#: post-types/albums/albums-register.php:78
 msgid "Edit Album"
 msgstr ""
 
-#: post-types/albums/albums-register.php:93
-#: post-types/albums/albums-register.php:103
+#: post-types/albums/albums-register.php:96
+#: post-types/albums/albums-register.php:106
 msgid "Labels"
 msgstr ""
 
-#: post-types/albums/albums-register.php:94
+#: post-types/albums/albums-register.php:97
 msgid "Label"
 msgstr ""
 
-#: post-types/albums/albums-register.php:95
+#: post-types/albums/albums-register.php:98
 msgid "Search Labels"
 msgstr ""
 
-#: post-types/albums/albums-register.php:96
+#: post-types/albums/albums-register.php:99
 msgid "All Labels"
 msgstr ""
 
-#: post-types/albums/albums-register.php:97
+#: post-types/albums/albums-register.php:100
 msgid "Parent Label"
 msgstr ""
 
-#: post-types/albums/albums-register.php:98
+#: post-types/albums/albums-register.php:101
 msgid "Parent Label:"
 msgstr ""
 
-#: post-types/albums/albums-register.php:99
+#: post-types/albums/albums-register.php:102
 msgid "Edit Label"
 msgstr ""
 
-#: post-types/albums/albums-register.php:100
+#: post-types/albums/albums-register.php:103
 msgid "Update Label"
 msgstr ""
 
-#: post-types/albums/albums-register.php:101
+#: post-types/albums/albums-register.php:104
 msgid "Add New Label"
 msgstr ""
 
-#: post-types/albums/albums-register.php:102
+#: post-types/albums/albums-register.php:105
 msgid "New Label Name"
 msgstr ""
 
-#: post-types/albums/albums-register.php:115
-#: post-types/albums/albums-register.php:117
 #: post-types/albums/albums-register.php:118
-#: post-types/albums/albums-register.php:125
+#: post-types/albums/albums-register.php:120
+#: post-types/albums/albums-register.php:121
+#: post-types/albums/albums-register.php:128
 msgid "Genres"
 msgstr ""
 
-#: post-types/albums/albums-register.php:116
+#: post-types/albums/albums-register.php:119
 msgid "Genre"
 msgstr ""
 
-#: post-types/albums/albums-register.php:119
+#: post-types/albums/albums-register.php:122
 msgid "Parent Genre"
 msgstr ""
 
-#: post-types/albums/albums-register.php:120
+#: post-types/albums/albums-register.php:123
 msgid "Parent Genres:"
 msgstr ""
 
-#: post-types/albums/albums-register.php:121
+#: post-types/albums/albums-register.php:124
 msgid "Edit Genre"
 msgstr ""
 
-#: post-types/albums/albums-register.php:122
+#: post-types/albums/albums-register.php:125
 msgid "Update Genre"
 msgstr ""
 
-#: post-types/albums/albums-register.php:123
+#: post-types/albums/albums-register.php:126
 msgid "Add New Genre"
 msgstr ""
 
-#: post-types/albums/albums-register.php:124
+#: post-types/albums/albums-register.php:127
 msgid "New Genre"
 msgstr ""
 
-#: post-types/albums/albums-register.php:137
-#: post-types/albums/albums-register.php:139
 #: post-types/albums/albums-register.php:140
-#: post-types/albums/albums-register.php:147
+#: post-types/albums/albums-register.php:142
+#: post-types/albums/albums-register.php:143
+#: post-types/albums/albums-register.php:150
 msgid "Artists"
 msgstr ""
 
-#: post-types/albums/albums-register.php:138
+#: post-types/albums/albums-register.php:141
 msgid "Artist"
 msgstr ""
 
-#: post-types/albums/albums-register.php:141
+#: post-types/albums/albums-register.php:144
 msgid "Parent Artist"
 msgstr ""
 
-#: post-types/albums/albums-register.php:142
+#: post-types/albums/albums-register.php:145
 msgid "Parent Artists:"
 msgstr ""
 
-#: post-types/albums/albums-register.php:143
+#: post-types/albums/albums-register.php:146
 msgid "Edit Artist"
 msgstr ""
 
-#: post-types/albums/albums-register.php:144
+#: post-types/albums/albums-register.php:147
 msgid "Update Artist"
 msgstr ""
 
-#: post-types/albums/albums-register.php:145
+#: post-types/albums/albums-register.php:148
 msgid "Add New Artist"
 msgstr ""
 
-#: post-types/albums/albums-register.php:146
+#: post-types/albums/albums-register.php:149
 msgid "New Artist Name"
 msgstr ""
 
@@ -744,11 +744,11 @@ msgstr ""
 msgid "Tracklist"
 msgstr ""
 
-#: post-types/albums/templates/single/parts/tracks.php:22
+#: post-types/albums/templates/single/parts/tracks.php:23
 msgid "buy track"
 msgstr ""
 
-#: post-types/albums/templates/single/parts/tracks.php:28
+#: post-types/albums/templates/single/parts/tracks.php:29
 msgid "download"
 msgstr ""
 
@@ -765,12 +765,12 @@ msgid "Light Skin"
 msgstr ""
 
 #: post-types/events/admin/options/events-options-map.php:8
-#: post-types/events/events-register.php:77
+#: post-types/events/events-register.php:78
 msgid "Events"
 msgstr ""
 
 #: post-types/events/admin/options/events-options-map.php:13
-#: post-types/events/events-register.php:78
+#: post-types/events/events-register.php:79
 msgid "Event"
 msgstr ""
 
@@ -802,56 +802,56 @@ msgstr ""
 msgid "Insert map style json"
 msgstr ""
 
-#: post-types/events/events-register.php:79
+#: post-types/events/events-register.php:80
 msgid "New Event"
 msgstr ""
 
-#: post-types/events/events-register.php:80
+#: post-types/events/events-register.php:81
 msgid "Add New Event"
 msgstr ""
 
-#: post-types/events/events-register.php:81
+#: post-types/events/events-register.php:82
 msgid "Edit Event"
 msgstr ""
 
-#: post-types/events/events-register.php:99
-#: post-types/events/events-register.php:109
+#: post-types/events/events-register.php:100
+#: post-types/events/events-register.php:110
 msgid "Event Types"
 msgstr ""
 
-#: post-types/events/events-register.php:100
+#: post-types/events/events-register.php:101
 msgid "Event Type"
 msgstr ""
 
-#: post-types/events/events-register.php:101
+#: post-types/events/events-register.php:102
 msgid "Search Event Types"
 msgstr ""
 
-#: post-types/events/events-register.php:102
+#: post-types/events/events-register.php:103
 msgid "All Event Types"
 msgstr ""
 
-#: post-types/events/events-register.php:103
+#: post-types/events/events-register.php:104
 msgid "Parent Event Type"
 msgstr ""
 
-#: post-types/events/events-register.php:104
+#: post-types/events/events-register.php:105
 msgid "Parent Event Type:"
 msgstr ""
 
-#: post-types/events/events-register.php:105
+#: post-types/events/events-register.php:106
 msgid "Edit Event Type"
 msgstr ""
 
-#: post-types/events/events-register.php:106
+#: post-types/events/events-register.php:107
 msgid "Update Event Type"
 msgstr ""
 
-#: post-types/events/events-register.php:107
+#: post-types/events/events-register.php:108
 msgid "Add New Event Type"
 msgstr ""
 
-#: post-types/events/events-register.php:108
+#: post-types/events/events-register.php:109
 msgid "New Event Type Name"
 msgstr ""
 

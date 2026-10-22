@@ -83,12 +83,13 @@
 				<input type="submit" name="qode_tours_search_submit" value="<?php esc_attr_e('Search', 'qode-tours') ?>" class="qode-btn qode-btn-medium qode-btn-solid" data-searching-label="<?php esc_attr_e('Searching...', 'qode-tours'); ?>">
 			<?php endif; ?>
 			
-			<?php if(qode_tours_is_wpml_installed()) { ?>
+			<?php if ( qode_tours_is_wpml_installed() ) { ?>
 				<?php
 					$lang = ICL_LANGUAGE_CODE;
 				?>
 				<input type="hidden" name="lang" value="<?php echo esc_attr($lang); ?>">
 			<?php } ?>
 		</div>
+		<?php wp_nonce_field( 'qode_tours_search_form', 'qode_tours_search_form_nonce' ); ?>
 	</form>
 </div>

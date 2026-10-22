@@ -285,9 +285,72 @@ if(!function_exists('bridge_qode_haeder_options_map')) {
 
         $search_cover_only_bottom_yesno = new BridgeQodeField("yesno", "search_cover_only_bottom_yesno", "no", esc_html__( 'Cover Only Header Bottom', 'bridge'), esc_html__( 'Enable this option to make search cover only header bottom','bridge'));
         $search_cover_header_container->addChild("search_cover_only_bottom_yesno", $search_cover_only_bottom_yesno);
-
-        $search_icon_pack = new BridgeQodeField('iconpack', 'search_icon_pack', 'font_awesome', esc_html__( 'Icon Pack', 'bridge'), esc_html__( 'Choose icon pack for search icon', 'bridge'));
+	    
+	    //init icon pack hide and show array. It will be populated dinamically from collections array
+	    $search_icon_pack_hide_array = array();
+	    $search_icon_pack_show_array = array();
+	    
+	    //do we have some collection added in collections array?
+	    if (is_array(bridge_qode_icon_collections()->iconCollections) && count(bridge_qode_icon_collections()->iconCollections)) {
+		    //get collections params array. It will contain values of 'param' property for each collection
+		    $search_icon_collections_params = bridge_qode_icon_collections()->getIconCollectionsParams();
+		    
+		    //foreach collection generate hide and show array
+		    foreach (bridge_qode_icon_collections()->iconCollections as $dep_collection_key => $dep_collection_object) {
+			    $search_icon_pack_hide_array[$dep_collection_key] = '';
+			    
+			    //we need to include only current collection in show string as it is the only one that needs to show
+			    $search_icon_pack_show_array[$dep_collection_key] = '#qodef_search_icon_' . $dep_collection_object->param . '_container';
+			    
+			    //for all collections param generate hide string
+			    foreach ($search_icon_collections_params as $search_icon_collections_param) {
+				    //we don't need to include current one, because it needs to be shown, not hidden
+				    if ($search_icon_collections_param !== $dep_collection_object->param) {
+					    $search_icon_pack_hide_array[$dep_collection_key] .= '#qodef_search_icon_' . $search_icon_collections_param . '_container,';
+					    $search_icon_pack_hide_array[$dep_collection_key] .= '#qodef_search_icon_svg_container,';
+				    }
+			    }
+			    
+			    //remove remaining ',' character
+			    $search_icon_pack_hide_array[$dep_collection_key] = rtrim($search_icon_pack_hide_array[$dep_collection_key], ',');
+		    }
+		    
+		    $search_icon_pack_show_array['svg_path'] = '#qodef_search_icon_svg_container';
+		    
+		    $search_icon_pack_hide_array['svg_path'] = '';
+		    
+		    foreach ($search_icon_collections_params as $search_icon_collections_param) {
+			    $search_icon_pack_hide_array['svg_path'] .= '#qodef_search_icon_' . $search_icon_collections_param . '_container,';
+		    }
+		    
+		    //remove remaining ',' character
+		    $search_icon_pack_hide_array['svg_path'] = rtrim($search_icon_pack_hide_array['svg_path'], ',');
+		    
+	    }
+		
+	    $search_icon_pack_options = array_merge(bridge_qode_icon_collections()->getIconCollections(), array('svg_path' => esc_html__('SVG Path', 'bridge')));
+        $search_icon_pack = new BridgeQodeField(
+			'select',
+			'search_icon_pack',
+			'font_awesome',
+			esc_html__( 'Icon Pack', 'bridge'),
+			esc_html__( 'Choose icon pack for search icon', 'bridge'),
+			$search_icon_pack_options,
+			array(
+				"dependence" => true,
+				"hide" => $search_icon_pack_hide_array,
+				"show" => $search_icon_pack_show_array
+			)
+		);
         $enable_search_container->addChild('search_icon_pack', $search_icon_pack);
+	    
+	    $icon_collections_keys = bridge_qode_icon_collections()->getIconCollectionsKeys();
+		$search_icon_svg_container = new BridgeQodeContainer("search_icon_svg_container","search_icon_pack", "", $icon_collections_keys);
+		$search_icon_svg_opener = new BridgeQodeField("textarea", "search_icon_svg_opener", "", esc_html__('Search Opener SVG Path', 'bridge'), esc_html__('Enter your search icon SVG path here. Please remove version and id attributes from your SVG path because of HTML validation', 'bridge'), "", array("col_width" => 3));
+		$search_icon_svg_container->addChild("search_icon_svg_opener", $search_icon_svg_opener);
+	    $search_icon_svg_closer = new BridgeQodeField("textarea", "search_icon_svg_closer", "", esc_html__('Search Close SVG Path', 'bridge'), esc_html__('Enter your search close icon SVG path here. Please remove version and id attributes from your SVG path because of HTML validation', 'bridge'), "", array("col_width" => 3));
+	    $search_icon_svg_container->addChild("search_icon_svg_closer", $search_icon_svg_closer);
+	    $enable_search_container->addChild("search_icon_svg_container", $search_icon_svg_container);
 
         $search_background_color = new BridgeQodeField("color", "search_background_color", "", esc_html__( 'Search Background Color', 'bridge'), esc_html__( 'Choose a background color for Qode search bar', 'bridge'));
         $enable_search_container->addChild("search_background_color", $search_background_color);
@@ -452,7 +515,7 @@ if(!function_exists('bridge_qode_haeder_options_map')) {
 
         }
 
-        $side_area_icon_pack_options = array_merge(bridge_qode_icon_collections()->getIconCollections(), ['svg_path' => esc_html__('SVG Path', 'bridge')]);
+        $side_area_icon_pack_options = array_merge(bridge_qode_icon_collections()->getIconCollections(), array( 'svg_path' => esc_html__('SVG Path', 'bridge')));
 
         $side_area_button_icon_pack = new BridgeQodeField(
             "select",
@@ -496,17 +559,16 @@ if(!function_exists('bridge_qode_haeder_options_map')) {
 
         }
 
-        //sidearea svg options map start
+        //side area svg options map start
 
         $icon_collections_keys = bridge_qode_icon_collections()->getIconCollectionsKeys();
 
         $side_area_icon_svg_container = new BridgeQodeContainer("side_area_icon_svg_container","side_area_button_icon_pack", "", $icon_collections_keys);
-
-        $side_area_button_icon_svg_opener = new BridgeQodeField("textarea", "side_area_icon_svg_opener", "", esc_html__('Side Area SVG Opener Path', 'bridge'), esc_html__('Enter your Side Area icon SVG path here. Please remove version and id attributes from your SVG path because of HTML validation', 'bridge'), "", array("col_width" => 3));
-
-        $side_area_icon_svg_container->addChild("side_area_icon_svg_opener", $side_area_button_icon_svg_opener);
-
-        $enable_side_area_container->addChild("side_area_icon_svg_opener", $side_area_icon_svg_container);
+		$side_area_button_icon_svg_opener = new BridgeQodeField("textarea", "side_area_icon_svg_opener", "", esc_html__('Side Area SVG Opener Path', 'bridge'), esc_html__('Enter your Side Area icon SVG path here. Please remove version and id attributes from your SVG path because of HTML validation', 'bridge'), "", array("col_width" => 3));
+		$side_area_icon_svg_container->addChild("side_area_icon_svg_opener", $side_area_button_icon_svg_opener);
+		$side_area_button_icon_svg_closer = new BridgeQodeField("textarea", "side_area_icon_svg_closer", "", esc_html__('Side Area SVG Closer Path', 'bridge'), esc_html__('Enter your Side Area close icon SVG path here. Please remove version and id attributes from your SVG path because of HTML validation', 'bridge'), "", array("col_width" => 3));
+		$side_area_icon_svg_container->addChild("side_area_button_icon_svg_closer", $side_area_button_icon_svg_closer);
+		$enable_side_area_container->addChild("side_area_icon_svg_opener", $side_area_icon_svg_container);
 
         //sidearea svg options map end
 
@@ -999,14 +1061,28 @@ if(!function_exists('bridge_qode_haeder_options_map')) {
                     //we don't need to include current one, because it needs to be shown, not hidden
                     if ($mobile_menu_icon_collections_param !== $dep_collection_object->param) {
                         $mobile_menu_icon_pack_hide_array[$dep_collection_key] .= '#qodef_mobile_menu_icon_' . $mobile_menu_icon_collections_param . '_container,';
+	                    $mobile_menu_icon_pack_hide_array[$dep_collection_key] .= '#qodef_mobile_menu_icon_svg_container,';
                     }
                 }
 
                 //remove remaining ',' character
                 $mobile_menu_icon_pack_hide_array[$dep_collection_key] = rtrim($mobile_menu_icon_pack_hide_array[$dep_collection_key], ',');
             }
+	        
+	        $mobile_menu_icon_pack_show_array['svg_path'] = '#qodef_mobile_menu_icon_svg_container';
+	        
+	        $mobile_menu_icon_pack_hide_array['svg_path'] = '';
+	        
+	        foreach ($mobile_menu_icon_collections_params as $mobile_menu_icon_collections_param) {
+		        $mobile_menu_icon_pack_hide_array['svg_path'] .= '#qodef_mobile_menu_icon_' . $mobile_menu_icon_collections_param . '_container,';
+	        }
+	        
+	        //remove remaining ',' character
+	        $mobile_menu_icon_pack_hide_array['svg_path'] = rtrim($mobile_menu_icon_pack_hide_array['svg_path'], ',');
 
         }
+	    
+	    $mobile_menu_icon_pack_options = array_merge(bridge_qode_icon_collections()->getIconCollections(), array( 'svg_path' => esc_html__('SVG Path', 'bridge')));
 
         $mobile_menu_button_icon_pack = new BridgeQodeField(
             "select",
@@ -1014,7 +1090,7 @@ if(!function_exists('bridge_qode_haeder_options_map')) {
             "font_awesome",
             esc_html__('Mobile Menu Button Icon Pack', 'bridge'),
             esc_html__('Choose icon pack for Mobile Menu button', 'bridge'),
-            bridge_qode_icon_collections()->getIconCollections(),
+            $mobile_menu_icon_pack_options,
             array(
                 "dependence" => true,
                 "hide" => $mobile_menu_icon_pack_hide_array,
@@ -1040,6 +1116,7 @@ if(!function_exists('bridge_qode_haeder_options_map')) {
                 unset($icon_collections_keys[array_search($collection_key, $icon_collections_keys)]);
 
                 $mobile_menu_icon_hide_values = $icon_collections_keys;
+	            $mobile_menu_icon_hide_values[] = 'svg_path';
                 $mobile_menu_icon_container = new BridgeQodeContainer("mobile_menu_icon_" . $collection_object->param . "_container", "mobile_menu_button_icon_pack", "", $mobile_menu_icon_hide_values);
                 $mobile_menu_button_icon = new BridgeQodeField("select", "mobile_menu_icon_" . $collection_object->param, "fa-bars", esc_html__('Mobile Menu Icon', 'bridge'), esc_html__('Choose Mobile Menu Icon', 'bridge'), $icons_array, array("col_width" => 3));
                 $mobile_menu_icon_container->addChild("mobile_menu_icon_" . $collection_object->param, $mobile_menu_button_icon);
@@ -1048,6 +1125,17 @@ if(!function_exists('bridge_qode_haeder_options_map')) {
             }
 
         }
+	    
+	    //mobile menu svg options map start
+	    
+	    $icon_collections_keys = bridge_qode_icon_collections()->getIconCollectionsKeys();
+	    
+	    $mobile_menu_icon_svg_container = new BridgeQodeContainer("mobile_menu_icon_svg_container","mobile_menu_button_icon_pack", "", $icon_collections_keys);
+	    $mobile_menu_button_icon_svg_opener = new BridgeQodeField("textarea", "mobile_menu_icon_svg_opener", "", esc_html__('Side Area SVG Opener Path', 'bridge'), esc_html__('Enter your Side Area icon SVG path here. Please remove version and id attributes from your SVG path because of HTML validation', 'bridge'), "", array("col_width" => 3));
+	    $mobile_menu_icon_svg_container->addChild("mobile_menu_icon_svg_opener", $mobile_menu_button_icon_svg_opener);
+	    $panel20->addChild("mobile_menu_icon_svg_opener", $mobile_menu_icon_svg_container);
+	    
+	    //mobile menu svg options map end
 
 
         $panel9 = new BridgeQodePanel(esc_html__('Header Button Icons', 'bridge'), "header_buttons_panel");

@@ -16,8 +16,12 @@ class BridgeCoreElementorPortfolioSlider extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode' ];
     }
-
-    protected function register_controls() {
+	
+	public function get_script_depends() {
+		return array( 'carouFredSel', 'touchSwipe', 'qode-portfolio-slider' );
+	}
+	
+	protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -91,6 +95,7 @@ class BridgeCoreElementorPortfolioSlider extends \Elementor\Widget_Base{
                 "description" => esc_html__( " Number of items that are showing at the same time in full width (on smaller screens/sizes, due to responsiveness, there will be less items shown)", 'bridge-core' ),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'options' => [
+                    '3' => esc_html__( 'Three', 'bridge-core' ),
                     '4' => esc_html__( 'Four', 'bridge-core' ),
                     '5' => esc_html__( 'Five', 'bridge-core' ),
                 ],
@@ -166,6 +171,19 @@ class BridgeCoreElementorPortfolioSlider extends \Elementor\Widget_Base{
                 'label' => esc_html__( "Prev/Next navigation", 'bridge-core' ),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'default' => 'portfolio-square'
+            ]
+        );
+		
+		$this->add_control(
+            'enable_autoplay',
+            [
+                'label' => esc_html__( "Enable Autoplay", 'bridge-core' ),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'options' => [
+	                '' => esc_html__( 'No ( Default )', 'bridge-core' ),
+	                'yes' => esc_html__( 'Yes', 'bridge-core' ),
+                ],
+                'default' => ''
             ]
         );
 

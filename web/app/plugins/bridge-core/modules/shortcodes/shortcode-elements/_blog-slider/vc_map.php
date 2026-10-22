@@ -104,6 +104,7 @@ if (!function_exists('bridge_core_blog_slider_vc_map')) {
 					"param_name" => "blogs_shown",
 					"value" => array(
 						"" => "",
+						"2" => "2",
 						"3" => "3",
 						"4" => "4",
 						"5" => "5",

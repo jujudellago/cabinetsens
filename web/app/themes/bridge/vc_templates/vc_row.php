@@ -87,7 +87,7 @@ if($in_content_menu == "in_content_menu"){
 }
 
 $_image ="";
-if($background_image != '' || $background_image != ' ') { 
+if ( ! empty( $background_image ) ) {
 	$_image = wp_get_attachment_image_src( $background_image, 'full');
 }
 
@@ -271,7 +271,7 @@ if($row_type == 'row') {
 }else if($row_type == 'parallax'){
     $output .='<section '.$row_id.' '.$anchor_id.' '.$menu_title.' '.$menu_icon.' '.$header_style_data.' data-speed="'. $parallax_speed .'" class="parallax_section_holder '.$el_class.' '.$parallax_section_classes.$css_class_in_content_menu.'" style = "';
     $output .= ($section_height !='' || $section_height!=' ') ? ' height:' . $section_height . 'px;' : '';
-    $output .= ($background_image !== '' || $background_image !== ' ') ? " background-image:url('" . $_image[0] . "');" : "";
+    $output .= ( ! empty( $background_image ) ) ? " background-image:url('" . $_image[0] . "');" : "";
     $output .= '"';
     $output .= '>';
     $output .= $after_wrapper_open;
@@ -350,14 +350,14 @@ if($row_type == 'row') {
 		$output .= '</svg>';
 	}
 
-	$output .= '</div>'.$this->endBlockComment('row');
+	$output .= '</div>';
 }elseif($row_type == 'parallax'){
 	$output .= '</div></div>';
     $output .= $before_wrapper_close;
-    $output .= '</section>'.$this->endBlockComment('row');
+    $output .= '</section>';
 	
 }elseif($row_type == 'expandable'){
-	$output .= '</div></div></div></div></div>'.$this->endBlockComment('row');
+	$output .= '</div></div></div></div></div>';
 }else if($row_type == 'content_menu'){
 	$output .= '</nav>';
 }

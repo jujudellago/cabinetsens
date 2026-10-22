@@ -10,7 +10,7 @@ defined( 'LS_ROOT_FILE' ) || exit;
  * @package LS_ImportUtil
  * @since 5.0.3
  * @author John Gera
- * @copyright Copyright (c) 2023  John Gera, George Krupa, and Kreatura Media Kft.
+ * @copyright Copyright (c) 2026  John Gera, George Krupa, and Kreatura Media Kft.
  */
 
 class LS_ImportUtil {
@@ -28,15 +28,18 @@ class LS_ImportUtil {
 
 
 	// Target folders
-	private $uploadsDir, $uploadsURL, $tmpDir;
+	private $uploadsDir, $uploadsURL, $unpackDir;
 
 
 	// Imported images
 	private $imported = [];
+	private $importedLottie = [];
+
+	private $isTemplate = false;
 
 
 	// Accepts $_FILES
-	public function __construct( $archive, $name = null, $groupName = null ) {
+	public function __construct( $archive, $name = null, $groupName = null, $isTemplate = false ) {
 
 		// Attempt to workaround memory limit & execution time issues
 		@ini_set( 'max_execution_time', 0 );
@@ -57,7 +60,8 @@ class LS_ImportUtil {
 		// Get target folders
 		$this->uploadsDir 	= $uploads['basedir'];
 		$this->uploadsURL 	= $uploads['baseurl'];
-		$this->tmpDir 		= $uploads['basedir'].'/layerslider/tmp';
+		$this->unpackDir 	= LS_FileSystem::createUniqueTmpFolder( pathinfo( $name, PATHINFO_FILENAME ).'_template' );
+		$this->isTemplate 	= $isTemplate;
 
 		$type = wp_check_filetype( basename( $name ), [
 			'zip' => 'application/zip',
@@ -72,12 +76,17 @@ class LS_ImportUtil {
 			$this->cleanup();
 
 			// Extract ZIP
-			if( $this->unpack( $archive) ) {
+			if( $this->unpack( $archive ) ) {
+
+				// Make sure all imported items have the same creation date for sorting purposes
+				$addProperties['date_c'] = time();
 
 				// Uploaded folders
-				$folders = glob( $this->tmpDir.'/*', GLOB_ONLYDIR );
-
+				$folders = glob( $this->unpackDir.'/*', GLOB_ONLYDIR );
 				$folders = $this->reduceSliders( $folders );
+
+				// Sort projects by name
+				natsort( $folders );
 
 				$groupId = NULL;
 				if( ! empty( $groupName ) && count( $folders ) > 1 ) {
@@ -91,10 +100,15 @@ class LS_ImportUtil {
 					if( ! isset( $_POST['skip_images'] ) ) {
 						$this->uploadMedia( $dir, 'uploads' );
 						$this->uploadMedia( $dir, 'assets' );
+						$this->uploadLottie( $dir );
 					}
 
 					if( file_exists($dir.'/settings.json') ) {
-						$this->lastImportId = $this->addSlider($dir.'/settings.json', $groupId);
+						$this->lastImportId = $this->addSlider(
+							$dir.'/settings.json',
+							$groupId,
+							$addProperties
+						);
 					}
 				}
 
@@ -149,7 +163,7 @@ class LS_ImportUtil {
 	public function unpack( $archive ) {
 
 		if( LS_FileSystem::createUploadDirs() ) {
-			return LS_FileSystem::unzip( $archive, $this->tmpDir );
+			return LS_FileSystem::unzip( $archive, $this->unpackDir );
 		}
 
 		return false;
@@ -236,9 +250,73 @@ class LS_ImportUtil {
 	}
 
 
+	public function uploadLottie( $dir = null ) {
+
+		// Check provided data
+		if ( empty( $dir ) || ! is_string( $dir ) || ! file_exists( $dir ) ) {
+			return false;
+		}
+
+		$baseDir = $this->uploadsDir . '/layerslider/lottiefiles/imported';
+		LS_FileSystem::createUploadDirs();
+
+		// Iterate through directory
+		foreach ( glob( "$dir/lottiefiles/*" ) as $lottiePath ) {
+
+			// Sanitize and extract file information
+			$originalBaseName = basename( $lottiePath );
+			$fileName = sanitize_file_name( $originalBaseName );
+			$fileExtension = strtolower( pathinfo( $fileName, PATHINFO_EXTENSION ) );
+			$fileNameWithoutExt = pathinfo( $fileName, PATHINFO_FILENAME );
+
+			if ( empty( $fileExtension ) || ! in_array( $fileExtension, [ 'lottie', 'json' ] ) ) {
+				continue;
+			}
+
+			$filePath = $baseDir . '/' . $fileName;
+			$isDuplicate = false;
+			$i = 0;
+
+			do {
+
+				// Check if the existing file is identical
+				if( file_exists( $filePath ) ) {
+					if( hash_file( 'md5', $filePath ) === md5_file( $lottiePath ) ) {
+						$this->importedLottie[ $originalBaseName ] = [
+							'url' => 'imported/' . $fileName
+						];
+						$isDuplicate = true;
+						break;
+					}
+
+					// Increment the file name for the next iteration
+					$i++;
+					$fileName = sanitize_file_name( $fileNameWithoutExt . '-' . $i . '.' . $fileExtension );
+					$filePath = $baseDir . '/' . $fileName;
+
+				// No more files to check
+				} else {
+					break;
+				}
+			} while( true );
+
+			// Skip processing if the file is identical
+			if( $isDuplicate ) {
+				continue;
+			}
+
+			// Move item to the unique path
+			rename( $lottiePath, $filePath );
+
+			// Save the imported file's URL
+			$this->importedLottie[ $originalBaseName ] = [
+				'url' => 'imported/' . $fileName
+			];
+		}
+	}
 
 
-	public function addSlider( $file, $groupId = NULL ) {
+	public function addSlider( $file, $groupId = NULL, $addProperties = [] ) {
 
 		// Increment the slider counter
 		$this->sliderCount++;
@@ -306,11 +384,22 @@ class LS_ImportUtil {
 					$layer['layerBackgroundId'] = $this->attachIDForImage($layer['layerBackground']);
 					$layer['layerBackground'] = $this->attachURLForImage($layer['layerBackground']);
 				}
+
+				if( ! empty( $layer['mediaAttachments'] ) ) {
+					foreach( $layer['mediaAttachments'] as $mediaKey => $media ) {
+						$layer['mediaAttachments'][$mediaKey]['id'] = $this->attachIDForImage( $media['url'] );
+						$layer['mediaAttachments'][$mediaKey]['url'] = $this->attachURLForImage( $media['url'] );
+					}
+				}
+
+				if( ! empty( $layer['lottie']['src'] ) && substr( $layer['lottie']['src'], 0, 4 ) !== 'http' ) {
+					$layer['lottie']['src'] = $this->URLForLottie( $layer['lottie']['src'] );
+				}
 			}}
 		}}
 
 		// Add slider
-		return LS_Sliders::add( $title, $data, $slug, $groupId );
+		return LS_Sliders::add( $title, $data, $slug, $groupId, $addProperties );
 	}
 
 
@@ -365,6 +454,18 @@ class LS_ImportUtil {
 	}
 
 
+	public function URLForLottie($file = '') {
+
+		$file = sanitize_file_name( basename( $file ) );
+
+		if( isset($this->importedLottie[ $file ]) ) {
+			return $this->importedLottie[ $file ]['url'];
+		}
+
+		return $file;
+	}
+
+
 	public function attachIDForImage( $file = '' ) {
 
 		$file = sanitize_file_name( basename($file) );
@@ -401,7 +502,8 @@ class LS_ImportUtil {
 	}
 
 	public function cleanup() {
-		LS_FileSystem::emptyDir( $this->tmpDir );
+		LS_FileSystem::deleteDir( $this->unpackDir );
+		LS_FileSystem::cleanupTmpFiles();
 	}
 }
 ?>

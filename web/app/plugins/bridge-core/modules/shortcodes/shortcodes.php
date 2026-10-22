@@ -206,12 +206,13 @@ if( ! function_exists('bridge_core_map_section_anchor_option') ){
     }
 
     add_action('elementor/element/section/_section_responsive/after_section_end', 'bridge_core_map_section_anchor_option', 10, 2);
+    add_action('elementor/element/container/_section_responsive/after_section_end', 'bridge_core_map_section_anchor_option', 10, 2);
 }
 
 //function that renders "Anchor" option for section
 if( ! function_exists('bridge_core_render_section_anchor_option') ) {
     function bridge_core_render_section_anchor_option( $element )   {
-        if( 'section' !== $element->get_name() ) {
+	    if( ! in_array( $element->get_name(), array( 'section', 'container' ) ) ) {
             return;
         }
 
@@ -223,6 +224,7 @@ if( ! function_exists('bridge_core_render_section_anchor_option') ) {
     }
 
     add_action( 'elementor/frontend/section/before_render', 'bridge_core_render_section_anchor_option');
+    add_action( 'elementor/frontend/container/before_render', 'bridge_core_render_section_anchor_option');
 }
 
 
@@ -282,12 +284,13 @@ if( ! function_exists('bridge_core_map_section_parallax_option') ){
     }
 
     add_action('elementor/element/section/_section_responsive/after_section_end', 'bridge_core_map_section_parallax_option', 10, 2);
+    add_action('elementor/element/container/_section_responsive/after_section_end', 'bridge_core_map_section_parallax_option', 10, 2);
 }
 
 //function that renders "Anchor" option for section
 if( ! function_exists('bridge_core_render_section_parallax_option') ) {
     function bridge_core_render_section_parallax_option( $element )   {
-        if( 'section' !== $element->get_name() ) {
+        if( ! in_array( $element->get_name(), array( 'section', 'container' ) ) ) {
             return;
         }
 
@@ -304,12 +307,13 @@ if( ! function_exists('bridge_core_render_section_parallax_option') ) {
     }
 
     add_action( 'elementor/frontend/section/before_render', 'bridge_core_render_section_parallax_option');
+    add_action( 'elementor/frontend/container/before_render', 'bridge_core_render_section_parallax_option');
 }
 
 //function that renders helper hidden input for parallax data attribute section
 if( ! function_exists('bridge_core_generate_parallax_helper') ){
     function bridge_core_generate_parallax_helper( $template, $widget ){
-        if ( 'section' === $widget->get_name() ) {
+        if ( in_array( $widget->get_name(), array( 'section', 'container' ) ) ) {
             $template_preceding = "
             <# if( settings.qode_enable_parallax == 'holder' ){
 		        let parallaxSpeed = settings.qode_parallax_speed !== '' ? settings.qode_parallax_speed : '0'; #>
@@ -322,6 +326,7 @@ if( ! function_exists('bridge_core_generate_parallax_helper') ){
     }
 
     add_action( 'elementor/section/print_template', 'bridge_core_generate_parallax_helper', 10, 2 );
+    add_action( 'elementor/container/print_template', 'bridge_core_generate_parallax_helper', 10, 2 );
 }
 
 //function that maps "Full Screen Sections" option for section
@@ -353,6 +358,7 @@ if( ! function_exists('bridge_core_map_bridge_grid_option') ){
     }
 
     add_action('elementor/element/section/_section_responsive/after_section_end', 'bridge_core_map_bridge_grid_option', 10, 2);
+    add_action('elementor/element/container/_section_responsive/after_section_end', 'bridge_core_map_bridge_grid_option', 10, 2);
 }
 
 if( ! function_exists('bridge_core_elementor_icons_style') ){
@@ -361,4 +367,48 @@ if( ! function_exists('bridge_core_elementor_icons_style') ){
     }
 
 	add_action( 'elementor/editor/before_enqueue_scripts', 'bridge_core_elementor_icons_style' );
+}
+
+if( ! function_exists( 'bridge_core_add_partial_scripts' ) ) {
+	function bridge_core_add_partial_scripts( $shortcodes_scripts ) {
+		
+		$addition_shortcodes_scripts = array(
+			'qode-comparison-slider' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/comparison-slider-part.min.js',
+			'qode-custom-font' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/custom-font-part.min.js',
+			'qode-image-slider-no-space' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/image-slider-no-space-part.min.js',
+			'qode-interest-rate-calculator' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/interest-rate-calculator-part.min.js',
+			'qode-countdown' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/countdown-part.min.js',
+			'qode-vertical-split-slider' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/vertical-split-slider-part.min.js',
+			'qode-text-marquee' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/text-marquee-part.min.js',
+			'qode-pie-chart-full' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/pie-chart-full-part.min.js',
+			'qode-pie-chart-doughnut' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/pie-chart-doughnut-part.min.js',
+			'qode-line-graph' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/line-graph-part.min.js',
+			'qode-pie-chart' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/pie-chart-part.min.js',
+			'qode-pie-chart-with-icon' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/pie-chart-with-icon-part.min.js',
+			'qode-progress-bar' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/progress-bar-part.min.js',
+			'qode-progress-bar-vertical' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/progress-bar-vertical-part.min.js',
+			'qode-progress-bar-icon' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/progress-bar-icon-part.min.js',
+			'qode-counter' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/counter-part.min.js',
+			'qode-inverted-portfolio-slider' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/inverted-portfolio-slider-part.min.js',
+			'qode-numbered-carousel' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/numbered-carousel-part.min.js',
+			'qode-portfolio-carousel' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/portfolio-carousel-part.min.js',
+			'qode-portfolio-project-slider' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/portfolio-project-slider-part.min.js',
+			'qode-vertical-portfolio-slider' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/vertical-portfolio-slider-part.min.js',
+			'qode-blog-carousel-titled' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/blog-carousel-titled-part.min.js',
+			'qode-portfolio-slider' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/portfolio-slider-part.min.js',
+			'qode-blog-slider' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/blog-slider-part.min.js',
+			'qode-carousel' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/carousel-part.min.js',
+			'qode-owl-slider' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/owl-slider-part.min.js',
+			'qode-portfolio-list' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/portfolio-list-part.min.js',
+			'qode-multi-device-showcase' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/multi-device-showcase-part.min.js',
+			'qode-slider' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/qode-slider-part.min.js',
+			'qode-google-map' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/google-map-part.min.js',
+			'qode-sticky-widget' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/sticky-widget-part.min.js',
+			'qode-nice-scroll' => BRIDGE_CORE_MODULES_URL_PATH . '/shortcodes/assets/js/nice-scroll-part.min.js',
+		);
+		
+		return array_merge( $addition_shortcodes_scripts, $shortcodes_scripts );
+	}
+	
+	add_filter( 'bridge_qode_filter_partial_scripts', 'bridge_core_add_partial_scripts' );
 }

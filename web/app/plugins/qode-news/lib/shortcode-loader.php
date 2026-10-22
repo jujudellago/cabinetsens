@@ -36,10 +36,25 @@ class ShortcodeLoader {
      */
     public static function getInstance() {
         if(self::$instance == null) {
-            return new self;
+            self::$instance = new self;
         }
 
         return self::$instance;
+    }
+
+    /**
+     * Returns a registered shortcode by its base, if it exists.
+     *
+     * @param string $base
+     *
+     * @return NewsShortcodes|null
+     */
+    public function getShortcode( $base ) {
+        if ( isset( $this->loadedShortcodes[ $base ] ) && $this->loadedShortcodes[ $base ] instanceof NewsShortcodes ) {
+            return $this->loadedShortcodes[ $base ];
+        }
+
+        return null;
     }
 
     /**

@@ -24,7 +24,6 @@ if(!function_exists('bridge_qode_admin_map_init')) {
 		require_once(QODE_ROOT_DIR . '/framework/admin/options/contentbottom/map.php');
 		require_once(QODE_ROOT_DIR . '/framework/admin/options/importexport/map.php');
         require_once(QODE_ROOT_DIR . '/framework/admin/options/panel-area/map.php');
-        require_once(QODE_ROOT_DIR . '/framework/admin/options/performance/map.php');
 		if (bridge_qode_visual_composer_installed() && version_compare(bridge_qode_get_vc_version(), '4.4.2') >= 0) {
 			require_once(QODE_ROOT_DIR . '/framework/admin/options/visualcomposer/map.php');
 		} else {

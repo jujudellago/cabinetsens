@@ -435,7 +435,7 @@ jQuery(document).ready(function($){
 			$.ajax({
 					url: ajaxurl,
 					type: 'post',
-					data: "action=timetable_get_font_subsets&font=" + $(this).val(),
+					data: "action=timetable_get_font_subsets&font=" + $(this).val() + "&timetable_ajax_nonce=" + config.timetable_ajax_nonce,
 					success: function(data){
 						data = $.trim(data);
 						var indexStart = data.indexOf("timetable_start")+15;
@@ -469,7 +469,7 @@ jQuery(document).ready(function($){
 		$.ajax({
 				url: ajaxurl,
 				type: "post",
-				data: "action=timetable_import_dummy",
+				data: "action=timetable_import_dummy&timetable_ajax_nonce=" + config.timetable_ajax_nonce,
 				success: function(json){
 					json = $.trim(json);
 					var indexStart = json.indexOf("dummy_import_start")+18;
@@ -555,7 +555,8 @@ jQuery(document).ready(function($){
 			});
 			var data = {
 				'action': "timetable_get_shortcode",
-				'timetable_shortcode_id': shortcodeId
+				'timetable_shortcode_id': shortcodeId,
+				'timetable_ajax_nonce': config.timetable_ajax_nonce
 			};
 			$.ajax({
 				url: ajaxurl,
@@ -565,7 +566,7 @@ jQuery(document).ready(function($){
 				success: function(data){
 					//data returns the generated ID of saved shortcode
 					//check if list includes the shortcode ID, if yes the edit it, otherwise create new row
-					if(data!==0)
+					if(data!=0)
 					{
 						data = $.trim(data);
 						var indexStart = data.indexOf("timetable_start")+15;
@@ -638,7 +639,8 @@ jQuery(document).ready(function($){
 		var data = {
 			'action': "timetable_save_shortcode",
 			'timetable_shortcode_id': shortcodeId,
-			'timetable_shortcode': shortcode
+			'timetable_shortcode': shortcode,
+			'timetable_ajax_nonce': config.timetable_ajax_nonce
 		};
 		$("#shortcode_delete").css("display", "none");
 		spinner.css({
@@ -657,7 +659,7 @@ jQuery(document).ready(function($){
 				var indexStart = data.indexOf("timetable_start")+15;
 				var indexEnd = data.indexOf("timetable_end")-indexStart;
 				data = data.substr(indexStart, indexEnd);
-				if(data!==0)
+				if(data!=0)
 				{
 					spinner.css({
 						"display": "none",
@@ -671,7 +673,11 @@ jQuery(document).ready(function($){
 					$("#edit_timetable_shortcode_id").val(shortcodeId).trigger("change");
 					$(".shortcode_info").css("display", "inline-block").html("Timetable shortcode saved.").fadeOut(3000);
 				} else {
-					console.log("error occured");
+					spinner.css({
+						"display": "none",
+						"visibility": "hidden",
+					});
+					$(".shortcode_info").css("display", "inline-block").html("Error while saving the shortcode.").fadeOut(3000);
 				}			
 			}
 		});
@@ -699,7 +705,8 @@ jQuery(document).ready(function($){
 		});
 		var data = {
 			'action': "timetable_delete_shortcode",
-			'timetable_shortcode_id': shortcodeId
+			'timetable_shortcode_id': shortcodeId,
+			'timetable_ajax_nonce': config.timetable_ajax_nonce
 		};
 		//delete shortcode
 		$.ajax({
@@ -709,7 +716,7 @@ jQuery(document).ready(function($){
 			success: function(data){
 				//data returns the generated ID of saved shortcode
 				//check if list includes the shortcode ID, if yes the edit it, otherwise create new row
-				if(data!==0)
+				if(data!=0)
 				{
 					spinner.css({
 						"display": "none",

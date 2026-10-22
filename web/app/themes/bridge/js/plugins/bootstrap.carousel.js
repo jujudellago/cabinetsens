@@ -134,7 +134,9 @@
             
             
             timer = setTimeout(function(){
-                checkSliderForHeaderStyle($next, $this);
+                if( 'object' === typeof qode.modules.qodeSlider ) {
+                    qode.modules.qodeSlider.checkSliderForHeaderStyle($next, $this);
+                }
                 $next.addClass(type)
                 $next[0].offsetWidth // force reflow
                 $active.addClass(direction)

@@ -10,37 +10,52 @@ if ( ! function_exists( 'qodef_re_get_module_template_part' ) ) {
      * @return string
      */
     function qodef_re_get_module_template_part( $template, $slug = '', $params = array() ) {
-        //HTML Content from template
-        $html          = '';
-        $template_path = QODE_RE_MODULE_PATH;
-
-        $temp = $template_path . '/' . $template;
-
-        if ( is_array( $params ) && count( $params ) ) {
-            extract( $params );
-        }
-
-        $template = '';
-
-        if ( ! empty( $temp ) ) {
-            if ( ! empty( $slug ) ) {
-                $template = "{$temp}-{$slug}.php";
-
-                if ( ! file_exists( $template ) ) {
-                    $template = $temp . '.php';
-                }
-            } else {
-                $template = $temp . '.php';
-            }
-        }
-
-        if ( ! empty( $template ) ) {
-            ob_start();
-            include( $template );
-            $html = ob_get_clean();
-        }
-
-        return $html;
+	    
+	    $available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+	    
+	    if ( is_scalar( $template ) ) {
+		    $template = preg_replace( $available_characters, '', $template );
+	    } else {
+		    $template = '';
+	    }
+	    
+	    if ( is_scalar( $slug ) ) {
+		    $slug = preg_replace( $available_characters, '', $slug );
+	    } else {
+		    $slug = '';
+	    }
+	    
+	    //HTML Content from template
+	    $html          = '';
+	    $template_path = QODE_RE_MODULE_PATH;
+	    
+	    $temp = $template_path . '/' . $template;
+	    
+	    if ( is_array( $params ) && count( $params ) ) {
+		    extract( $params );
+	    }
+	    
+	    $template = '';
+	    
+	    if ( ! empty( $temp ) ) {
+		    if ( ! empty( $slug ) ) {
+			    $template = "{$temp}-{$slug}.php";
+			    
+			    if ( ! file_exists( $template ) ) {
+				    $template = $temp . '.php';
+			    }
+		    } else {
+			    $template = $temp . '.php';
+		    }
+	    }
+	    
+	    if ( ! empty( $template ) ) {
+		    ob_start();
+		    include( $template );
+		    $html = ob_get_clean();
+	    }
+	    
+	    return $html;
     }
 }
 
@@ -57,38 +72,64 @@ if(!function_exists('qodef_re_get_cpt_shortcode_module_template_part')) {
 	 *
 	 * @return html
 	 */
-	function qodef_re_get_cpt_shortcode_module_template_part($post_type, $shortcode, $template, $slug = '', $params = array(), $additional_params = array()) {
+	function qodef_re_get_cpt_shortcode_module_template_part( $post_type, $shortcode, $template, $slug = '', $params = array(), $additional_params = array() ) {
 		
-		//HTML Content from template
-		$html = '';
-		$template_path = QODE_RE_CPT_PATH.'/'.$post_type.'/shortcodes/'.$shortcode.'/'.'templates';
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
 		
-		$temp = $template_path.'/'.$template;
-		if(is_array($params) && count($params)) {
-			extract($params);
+		if ( is_scalar( $post_type ) ) {
+			$post_type = preg_replace( $available_characters, '', $post_type );
+		} else {
+			$post_type = '';
 		}
 		
-		if(is_array($additional_params) && count($additional_params)) {
-			extract($additional_params);
+		if ( is_scalar( $shortcode ) ) {
+			$shortcode = preg_replace( $available_characters, '', $shortcode );
+		} else {
+			$shortcode = '';
+		}
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
+		}
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
+		//HTML Content from template
+		$html          = '';
+		$template_path = QODE_RE_CPT_PATH . '/' . $post_type . '/shortcodes/' . $shortcode . '/' . 'templates';
+		
+		$temp = $template_path . '/' . $template;
+		if ( is_array( $params ) && count( $params ) ) {
+			extract( $params );
+		}
+		
+		if ( is_array( $additional_params ) && count( $additional_params ) ) {
+			extract( $additional_params );
 		}
 		
 		$template = '';
 		
-		if (!empty($temp)) {
-			if (!empty($slug)) {
+		if ( ! empty( $temp ) ) {
+			if ( ! empty( $slug ) ) {
 				$template = "{$temp}-{$slug}.php";
 				
-				if(!file_exists($template)) {
-					$template = $temp.'.php';
+				if ( ! file_exists( $template ) ) {
+					$template = $temp . '.php';
 				}
 			} else {
-				$template = $temp.'.php';
+				$template = $temp . '.php';
 			}
 		}
 		
-		if ($template) {
+		if ( $template ) {
 			ob_start();
-			include($template);
+			include( $template );
 			$html = ob_get_clean();
 		}
 		
@@ -108,6 +149,27 @@ if ( ! function_exists( 'qodef_re_cpt_single_module_template_part' ) ) {
      * @return html
      */
     function qodef_re_cpt_single_module_template_part( $template, $cpt_name, $slug = '', $params = array() ) {
+	    
+	    $available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+	    if ( is_scalar( $cpt_name ) ) {
+		    $cpt_name = preg_replace( $available_characters, '', $cpt_name );
+	    } else {
+		    $cpt_name = '';
+	    }
+	    
+	    if ( is_scalar( $template ) ) {
+		    $template = preg_replace( $available_characters, '', $template );
+	    } else {
+		    $template = '';
+	    }
+	    
+	    if ( is_scalar( $slug ) ) {
+		    $slug = preg_replace( $available_characters, '', $slug );
+	    } else {
+		    $slug = '';
+	    }
+		
         //HTML Content from template
         $html          = '';
         $template_path = QODE_RE_CPT_PATH . '/' . $cpt_name;
@@ -142,7 +204,7 @@ if ( ! function_exists( 'qodef_re_cpt_single_module_template_part' ) ) {
     }
 }
 
-if(!function_exists('qodef_re_get_cpt_single_module_template_part')) {
+if ( ! function_exists( 'qodef_re_get_cpt_single_module_template_part' ) ) {
 	/**
 	 * Loads module template part.
 	 *
@@ -153,39 +215,59 @@ if(!function_exists('qodef_re_get_cpt_single_module_template_part')) {
 	 *
 	 * @return html
 	 */
-	function qodef_re_get_cpt_single_module_template_part($template, $cpt_name, $slug = '', $params = array()) {
+	function qodef_re_get_cpt_single_module_template_part( $template, $cpt_name, $slug = '', $params = array() ) {
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
+		}
+		
+		if ( is_scalar( $cpt_name ) ) {
+			$cpt_name = preg_replace( $available_characters, '', $cpt_name );
+		} else {
+			$cpt_name = '';
+		}
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
 		
 		//HTML Content from template
-		$html = '';
-		$template_path = QODE_RE_CPT_PATH.'/'.$cpt_name;
+		$html          = '';
+		$template_path = QODE_RE_CPT_PATH . '/' . $cpt_name;
 		
-		$temp = $template_path.'/'.$template;
+		$temp = $template_path . '/' . $template;
 		
-		if(is_array($params) && count($params)) {
-			extract($params);
+		if ( is_array( $params ) && count( $params ) ) {
+			extract( $params );
 		}
 		
 		$template = '';
 		
-		if (!empty($temp)) {
-			if (!empty($slug)) {
+		if ( ! empty( $temp ) ) {
+			if ( ! empty( $slug ) ) {
 				$template = "{$temp}-{$slug}.php";
 				
-				if(!file_exists($template)) {
-					$template = $temp.'.php';
+				if ( ! file_exists( $template ) ) {
+					$template = $temp . '.php';
 				}
 			} else {
-				$template = $temp.'.php';
+				$template = $temp . '.php';
 			}
 		}
 		
-		if (!empty($template)) {
+		if ( ! empty( $template ) ) {
 			ob_start();
-			include($template);
+			include( $template );
 			$html = ob_get_clean();
 		}
 		
-		print bridge_qode_get_module_part($html);
+		print bridge_qode_get_module_part( $html );
 	}
 }
 
@@ -202,33 +284,53 @@ if(!function_exists('qodef_re_get_shortcode_module_template_part')) {
 	 */
 	function qodef_re_get_shortcode_module_template_part($template, $shortcode, $slug = '', $params = array()) {
 		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
+		}
+		
+		if ( is_scalar( $shortcode ) ) {
+			$shortcode = preg_replace( $available_characters, '', $shortcode );
+		} else {
+			$shortcode = '';
+		}
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
 		//HTML Content from template
 		$html          = '';
-		$template_path = QODE_RE_SHORTCODES_PATH.'/'.$shortcode;
+		$template_path = QODE_RE_SHORTCODES_PATH . '/' . $shortcode;
 		
-		$temp = $template_path.'/'.$template;
+		$temp = $template_path . '/' . $template;
 		
-		if(is_array($params) && count($params)) {
-			extract($params);
+		if ( is_array( $params ) && count( $params ) ) {
+			extract( $params );
 		}
 		
 		$template = '';
 		
-		if (!empty($temp)) {
-			if (!empty($slug)) {
+		if ( ! empty( $temp ) ) {
+			if ( ! empty( $slug ) ) {
 				$template = "{$temp}-{$slug}.php";
 				
-				if(!file_exists($template)) {
-					$template = $temp.'.php';
+				if ( ! file_exists( $template ) ) {
+					$template = $temp . '.php';
 				}
 			} else {
-				$template = $temp.'.php';
+				$template = $temp . '.php';
 			}
 		}
 		
-		if ($template) {
+		if ( $template ) {
 			ob_start();
-			include($template);
+			include( $template );
 			$html = ob_get_clean();
 		}
 		
@@ -251,6 +353,23 @@ if( ! function_exists( 'qodef_re_ajax_status' ) ) {
 		$output = json_encode($response);
 
 		exit($output);
+	}
+}
+
+if ( ! function_exists( 'qodef_re_sanitize_mail_header_text' ) ) {
+	/**
+	 * Strip CR/LF and control chars so user input cannot inject extra mail headers.
+	 *
+	 * @param string $value
+	 *
+	 * @return string
+	 */
+	function qodef_re_sanitize_mail_header_text( $value ) {
+		$value = wp_strip_all_tags( (string) $value );
+		$value = str_replace( array( "\r", "\n", "\0", "\t" ), '', $value );
+		$value = str_replace( array( '<', '>', ':' ), '', $value );
+
+		return trim( $value );
 	}
 }
 
@@ -538,7 +657,7 @@ if ( ! function_exists( 'qodef_re_get_taxonomy_list' ) ) {
 
             $property_taxonomies = get_terms($args);
 
-            if (is_array($property_taxonomies) && count($property_taxonomies)) {
+            if ( ! is_wp_error( $property_taxonomies ) && is_array($property_taxonomies) && count($property_taxonomies)) {
                 if ($first_empty) {
                     $property_taxonomy_array['key_value'][''] = '';
                 }
@@ -560,7 +679,9 @@ if ( ! function_exists( 'qodef_re_get_taxonomy_name_from_id' ) ) {
     function qodef_re_get_taxonomy_name_from_id($term_id) {
         if(!empty ($term_id)) {
             $term = get_term($term_id);
-            return $term->name;
+            if ( $term && ! is_wp_error( $term ) && ! empty( $term->name ) ) {
+                return $term->name;
+            }
         }
         return "";
     }
@@ -571,9 +692,12 @@ if ( ! function_exists( 'qodef_re_get_taxonomy_icon' ) ) {
 
         if($image_field_name !== '') {
             $taxonomy_image_id = get_term_meta($id, $image_field_name, true);
+            $type_image = '';
 
-            $image_original = wp_get_attachment_image_src($taxonomy_image_id, 'full');
-            $type_image = $image_original[0];
+            if ( ! empty( $taxonomy_image_id ) ) {
+                $image_original = wp_get_attachment_image_src($taxonomy_image_id, 'full');
+                $type_image = ( is_array( $image_original ) && ! empty( $image_original[0] ) ) ? $image_original[0] : '';
+            }
 
             if (!empty($type_image)) {
                 $html = '<span class="qodef-taxonomy-image">';
@@ -611,9 +735,12 @@ if ( ! function_exists( 'qodef_re_get_taxonomy_featured_image' ) ) {
 
         if($image_field_name !== '') {
             $taxonomy_image_id = get_term_meta($id, $image_field_name, true);
+            $type_image = '';
 
-            $image_original = wp_get_attachment_image_src($taxonomy_image_id, $thumb_size);
-            $type_image = $image_original[0];
+            if ( ! empty( $taxonomy_image_id ) ) {
+                $image_original = wp_get_attachment_image_src($taxonomy_image_id, $thumb_size);
+                $type_image = ( is_array( $image_original ) && ! empty( $image_original[0] ) ) ? $image_original[0] : '';
+            }
 
             if (!empty($type_image)) {
                 if($return_type === 'html') {
@@ -674,8 +801,8 @@ if ( ! function_exists( 'qodef_re_get_assets_icon_src' ) ) {
 
 if (!function_exists('qodef_re_get_author_image')) {
 	function qodef_re_get_author_image($author_id, $author_roles, $size = '', $avatar_size = '') {
-		$role = $author_roles[0];
-		$author_image = get_user_meta($author_id, 'qodef_'.$role.'_profile_image', true);
+		$role = ( is_array( $author_roles ) && ! empty( $author_roles[0] ) ) ? $author_roles[0] : '';
+		$author_image = $role !== '' ? get_user_meta($author_id, 'qodef_'.$role.'_profile_image', true) : '';
 		$profile_image			= get_user_meta($author_id, 'social_profile_image', true);
 		
 		$size = ($size == '') ? 'thumbnail' : $size;
@@ -713,10 +840,12 @@ if ( ! function_exists( 'qode_re_get_holder_data_for_cpt' ) ) {
         }
 
         foreach ( $params as $key => $value ) {
-            if ( ! is_array( $value ) && $value !== '' ) {
+			
+            if ( ! is_array( $value ) && ! empty( $value ) ) {
                 $new_key = str_replace( '_', '-', $key );
-
-                $dataString .= ' data-' . $new_key . '=' . esc_attr( str_replace( ' ', '', $value ) );
+				
+				$value = ! is_null( $value ) ? str_replace( ' ', '', $value ) : 's';
+                $dataString .= ' data-' . $new_key . '=' . esc_attr( $value );
             }
         }
 

@@ -30,7 +30,7 @@ if( bridge_core_is_installed('contact-form-7') ){
             $this->add_control(
                 'cf7',
                 [
-                    'label' => esc_html__( 'Select Contact Form', 'void' ),
+                    'label' => esc_html__( 'Select Contact Form', 'bridge-core' ),
                     'description' => esc_html__('You need to install and activate Contact Form 7 plugin','bridge-core'),
                     'type' => \Elementor\Controls_Manager::SELECT2,
                     'multiple' => false,
@@ -42,8 +42,8 @@ if( bridge_core_is_installed('contact-form-7') ){
             $this->add_control(
                 'html_class',
                 [
-                    'label' => esc_html__( 'Select Contact Form Style', 'void' ),
-                    'description' => esc_html__('Contact form 7 - plugin must be installed and there must be some contact forms made with the contact form 7','void'),
+                    'label' => esc_html__( 'Select Contact Form Style', 'bridge-core' ),
+                    'description' => esc_html__('Contact form 7 - plugin must be installed and there must be some contact forms made with the contact form 7','bridge-core'),
                     'type' => \Elementor\Controls_Manager::SELECT,
                     'options' => [
                         'default' => esc_html__('Default', 'bridge-core'),
@@ -82,7 +82,7 @@ if( bridge_core_is_installed('contact-form-7') ){
                     (int)$category_list[$category->ID] = $category->post_title;
                 }
             } else {
-                (int)$category_list['0'] = esc_html__('No contect From 7 form found', 'void');
+                (int)$category_list['0'] = esc_html__('No Contact From 7 form found', 'bridge-core');
             }
             return $category_list;
         }

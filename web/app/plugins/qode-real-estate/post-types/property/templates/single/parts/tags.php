@@ -1,5 +1,7 @@
 <?php
 $tags = qodef_re_get_property_taxonomy('property-tag');
+
+if ( is_array( $tags ) && ! empty( $tags ) ) {
 ?>
 <div class="qodef-property-tags qodef-property-label-items-holder">
     <div class="qodef-property-tags-label qodef-property-label-style">
@@ -17,3 +19,4 @@ $tags = qodef_re_get_property_taxonomy('property-tag');
         <?php } ?>
     </div>
 </div>
+<?php } ?>

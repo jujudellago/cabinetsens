@@ -11,7 +11,27 @@ if(!function_exists('qode_listing_get_listing_module_template_part')) {
 	 * @return html
 	 */
 	function qode_listing_get_listing_module_template_part($module, $template, $slug = '', $params = array()) {
-
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $module ) ) {
+			$module = preg_replace( $available_characters, '', $module );
+		} else {
+			$module = '';
+		}
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
+		}
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
 		//HTML Content from template
 		$html = '';
 		$template_path = QODE_LISTING_ABS_PATH.'/'.$module.'/templates';
@@ -35,17 +55,17 @@ if(!function_exists('qode_listing_get_listing_module_template_part')) {
 				$template = $temp.'.php';
 			}
 		}
-
-		if (!empty($template)) {
+		
+		if ( ! empty( $template ) ) {
 			ob_start();
-			include($template);
+			include( $template );
 			$html = ob_get_clean();
 		}
 
 		return $html;
 	}
 }
-if(!function_exists('qode_listing_single_template_part')) {
+if ( ! function_exists( 'qode_listing_single_template_part' ) ) {
 	/**
 	 * Loads module template part.
 	 *
@@ -55,35 +75,49 @@ if(!function_exists('qode_listing_single_template_part')) {
 	 *
 	 * @return html
 	 */
-	function qode_listing_single_template_part($template, $slug = '', $params = array()) {
-
+	function qode_listing_single_template_part( $template, $slug = '', $params = array() ) {
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
+		}
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
 		//HTML Content from template
 		$html = '';
 		$template_path = QODE_LISTING_ABS_PATH.'/modules/single/templates';
 
 		$temp = $template_path.'/'.$template;
-
-		if(is_array($params) && count($params)) {
-			extract($params);
+		
+		if ( is_array( $params ) && count( $params ) ) {
+			extract( $params );
 		}
 
 		$template = '';
-
-		if (!empty($temp)) {
-			if (!empty($slug)) {
+		
+		if ( ! empty( $temp ) ) {
+			if ( ! empty( $slug ) ) {
 				$template = "{$temp}-{$slug}.php";
-
-				if(!file_exists($template)) {
-					$template = $temp.'.php';
+				
+				if ( ! file_exists( $template ) ) {
+					$template = $temp . '.php';
 				}
 			} else {
-				$template = $temp.'.php';
+				$template = $temp . '.php';
 			}
 		}
-
-		if (!empty($template)) {
+		
+		if ( ! empty( $template ) ) {
 			ob_start();
-			include($template);
+			include( $template );
 			$html = ob_get_clean();
 		}
 
@@ -102,38 +136,52 @@ if(!function_exists('qode_listing_get_archive_module_template_part')) {
 	 *
 	 * @return html
 	 */
-	function qode_listing_get_archive_module_template_part($template, $slug = '', $params = array()) {
-
-		//HTML Content from template
-		$html = '';
-		$template_path = QODE_LISTING_ABS_PATH.'/modules/archive/templates';
-
-		$temp = $template_path.'/'.$template;
-
-		if(is_array($params) && count($params)) {
-			extract($params);
+	function qode_listing_get_archive_module_template_part( $template, $slug = '', $params = array() ) {
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
 		}
-
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
+		//HTML Content from template
+		$html          = '';
+		$template_path = QODE_LISTING_ABS_PATH . '/modules/archive/templates';
+		
+		$temp = $template_path . '/' . $template;
+		
+		if ( is_array( $params ) && count( $params ) ) {
+			extract( $params );
+		}
+		
 		$template = '';
-
-		if (!empty($temp)) {
-			if (!empty($slug)) {
+		
+		if ( ! empty( $temp ) ) {
+			if ( ! empty( $slug ) ) {
 				$template = "{$temp}-{$slug}.php";
-
-				if(!file_exists($template)) {
-					$template = $temp.'.php';
+				
+				if ( ! file_exists( $template ) ) {
+					$template = $temp . '.php';
 				}
 			} else {
-				$template = $temp.'.php';
+				$template = $temp . '.php';
 			}
 		}
-
-		if (!empty($template)) {
+		
+		if ( ! empty( $template ) ) {
 			ob_start();
-			include($template);
+			include( $template );
 			$html = ob_get_clean();
 		}
-
+		
 		print $html;
 	}
 }
@@ -149,48 +197,68 @@ if(!function_exists('qode_listing_get_shortcode_module_template_part')) {
 	 *
 	 * @return html
 	 */
-	function qode_listing_get_shortcode_module_template_part($template, $shortcode, $slug = '', $params = array()) {
-
+	function qode_listing_get_shortcode_module_template_part( $template, $shortcode, $slug = '', $params = array() ) {
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
+		}
+		
+		if ( is_scalar( $shortcode ) ) {
+			$shortcode = preg_replace( $available_characters, '', $shortcode );
+		} else {
+			$shortcode = '';
+		}
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
 		//HTML Content from template
 		$html          = '';
-		$template_path = QODE_LISTING_ABS_PATH.'/modules/shortcodes/'.$shortcode;
-
-		$temp = $template_path.'/'.$template;
-
-		if(is_array($params) && count($params)) {
-			extract($params);
+		$template_path = QODE_LISTING_ABS_PATH . '/modules/shortcodes/' . $shortcode;
+		
+		$temp = $template_path . '/' . $template;
+		
+		if ( is_array( $params ) && count( $params ) ) {
+			extract( $params );
 		}
-
+		
 		$template = '';
-
-		if (!empty($temp)) {
-			if (!empty($slug)) {
+		
+		if ( ! empty( $temp ) ) {
+			if ( ! empty( $slug ) ) {
 				$template = "{$temp}-{$slug}.php";
-
-				if(!file_exists($template)) {
-					$template = $temp.'.php';
+				
+				if ( ! file_exists( $template ) ) {
+					$template = $temp . '.php';
 				}
 			} else {
-				$template = $temp.'.php';
+				$template = $temp . '.php';
 			}
 		}
-
-		if ($template) {
+		
+		if ( $template ) {
 			ob_start();
-			include($template);
+			include( $template );
 			$html = ob_get_clean();
 		}
-
+		
 		return $html;
 	}
 }
 
-if(!function_exists('qode_listing_include_shortcodes_file')) {
+if ( ! function_exists( 'qode_listing_include_shortcodes_file' ) ) {
 	/**
 	 * Loades all shortcodes by going through all folders that are placed directly in shortcodes folder
 	 */
 	function qode_listing_include_shortcodes_file() {
-		foreach(glob(QODE_LISTING_ABS_PATH.'/modules/shortcodes/*/load.php') as $shortcode_load) {
+		foreach ( glob( QODE_LISTING_ABS_PATH . '/modules/shortcodes/*/load.php' ) as $shortcode_load ) {
 			include_once $shortcode_load;
 		}
 

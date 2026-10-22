@@ -14,6 +14,8 @@ var importModalWindowTimeline = null,
 
 	projectRenameTimeout = 0;
 
+var LS_importQueue = [];
+
 
 // Stores the lastly selected slider item
 // foe which the context menu was opened.
@@ -34,10 +36,18 @@ jQuery(function($) {
 		$(this).closest('#ls-slider-filters').submit();
 	});
 
-	$('#ls-plugin-settings-tabs input[name="ls_gdpr_goole_fonts"]').on('change', function() {
+	$('#ls-plugin-settings-tabs input[name="ls_google_fonts_status"]').on('change', function() {
 
 		var $checkbox 	= $( this ),
 			$wrapper 	= $('.ls-show-if-google-fonts-enabled');
+
+		$wrapper[ $checkbox.prop('checked') ? 'removeClass' : 'addClass' ]('ls-hidden');
+	}).change();
+
+	$('#ls-plugin-settings-tabs input[name="wpml_string_translation"]').on('change', function() {
+
+		var $checkbox 	= $( this ),
+			$wrapper 	= $('.ls-show-if-string-translation-enabled');
 
 		$wrapper[ $checkbox.prop('checked') ? 'removeClass' : 'addClass' ]('ls-hidden');
 	}).change();
@@ -101,7 +111,15 @@ jQuery(function($) {
 	});
 
 
-	$( document ).on('click', '#ls-plugin-settings-content input', function( event ) {
+	$(document).on('change', '#ls-plugin-settings-content select[name="ls_custom_locale"]', function( event ) {
+
+		lsCommon.smartAlert.confirm( $( this ).data('confirm'), () => {
+			window.location.reload( true );
+		});
+
+	});
+
+	$( document ).on('click', '#ls-plugin-settings-content input, #ls-addons-modal-sidebar input', function( event ) {
 
 		const 	$checkbox 	= $( this ),
 				checked 	= $checkbox.prop('checked');
@@ -147,6 +165,7 @@ jQuery(function($) {
 		}, 500 );
 	});
 
+
 	$( document ).on('click', '.ls-show-canceled-activation-modal', function() {
 		kmw.modal.open({
 			content: '#tmpl-canceled-activation-modal',
@@ -155,27 +174,6 @@ jQuery(function($) {
 			maxWidth: 960,
 		});
 	});
-
-	// Twitter feed
-	window.lsTwitterFeedInterval = setInterval( function() {
-
-		let $iframe 	= $('#ls--box-twitter-feed iframe'),
-			$contents 	= $iframe.contents(),
-			$header 	= $contents.find('.timeline-Header');
-
-		if( $header.length ) {
-
-			$contents.find('head').append('<link rel="stylesheet" href="'+LS_pageMeta.assetsPath+'/static/admin/css/twitter.css" type="text/css" />');
-			clearInterval( window.lsTwitterFeedInterval );
-		}
-
-
-	}, 200 );
-
-	// Fallback Twitter feed
-	setTimeout( function() {
-		clearInterval( window.lsTwitterFeedInterval );
-	}, 5000 );
 
 
 	$('#ls-notification-clear-button').click( function() {
@@ -318,9 +316,7 @@ jQuery(function($) {
 			animationIn: 'scale',
 			overlaySettings: {
 				animationIn: 'fade',
-				customStyle: {
-					backgroundColor: 'rgba( 225, 225, 225, 0.95 )'
-				}
+				customClasses: 'ls-project-group-modal-overlay'
 			},
 			onBeforeOpen: function() {
 				jQuery('#ls-slider-selection-bar-placeholder').show();
@@ -340,8 +336,14 @@ jQuery(function($) {
 
 	});
 
+	// Prevent form submission when pressing Enter
+	$( document ).on('keydown', '.ls-slider-group-modal-window .kmw-modal-title input', function( event ) {
 
-	$( document ).on('input', '.ls-slider-group-modal-window .kmw-modal-title input', function() {
+		if( event.keyCode === 13 ) {
+			event.preventDefault();
+		}
+
+	}).on('input', '.ls-slider-group-modal-window .kmw-modal-title input', function() {
 
 		$this = $( this );
 
@@ -350,6 +352,7 @@ jQuery(function($) {
 
 			$.get( ajaxurl, {
 				action: 'ls_rename_slider_group',
+				nonce: LS_pageMeta.dashboardNonce,
 				groupId: $lastOpenedGroup.data('id'),
 				name: $this.val()
 			});
@@ -369,6 +372,7 @@ jQuery(function($) {
 
 			$.get( ajaxurl, {
 				action: 'ls_delete_slider_group',
+				nonce: LS_pageMeta.dashboardNonce,
 				groupId: $lastOpenedGroup.data('id'),
 			});
 
@@ -413,20 +417,6 @@ jQuery(function($) {
 				$('#add-new-slider-modal input').focus();
 			}
 
-		});
-	});
-
-	jQuery('#ls-addons-button').click( function( e ) {
-		e.preventDefault();
-
-		kmw.modal.open({
-			id: 'ls-premium-benefits-modal',
-			content: '<iframe src="https://layerslider.com/premium-embed/" frameborder="0" allowtransparency="true" allowfullscreen="true"></iframe>',
-			maxWidth: 1280,
-			maxHeight: '100%',
-			padding: 0,
-			spacing: 20,
-			closeButton: true
 		});
 	});
 
@@ -648,14 +638,33 @@ jQuery(function($) {
 		$('#ls-add-slider-button').click();
 
 	}).on('click', '.ls-open-template-store', function(e) {
-
 		e.preventDefault();
-
 		kmw.modal.close();
 
-		setTimeout(function() {
+		let delay 		= $(this).data('delay') || 0,
+			category 	= $(this).data('category'),
+			collection 	= $(this).data('collection');
+
+		setTimeout( function() {
 			$('#ls-browse-templates-button').click();
-		}, $(this).data('delay') || 0);
+
+			if( category ) {
+				setTimeout( function() {
+					$('#ls-import-modal-window ls-templates-nav ls-li[data-show-category="'+category+'"]').click();
+					$( '#ls-import-modal-window ls-templates-container.ls--active ls-tag' ).first().click();
+				}, 100 );
+			}
+
+			if( collection ) {
+				setTimeout( function() {
+					$('#ls-import-modal-window ls-templates-nav ls-li[data-show-category="collections"]').click();
+					$('#ls-import-modal-window ls-templates-holder.ls--collections-list ls-template[data-handle="'+collection+'"]').click();
+				}, 100 );
+			}
+		}, delay );
+	}).on('click', '.ls-open-maintenance-addon', function(e) {
+		e.preventDefault();
+		lsShowAddOn({ handle: 'maintenance'});
 	});
 
 	$('#ls--release-channel select').change( function() {
@@ -715,10 +724,18 @@ jQuery(function($) {
 
 		var $curTag = $(this),
 			handle = $curTag.attr( 'data-handle' ),
-			$templatesHolder = $curTag.closest( 'ls-templates-container' ).find( 'ls-templates-holder' ),
+			$templatesContainer = $curTag.closest( 'ls-templates-container' ),
+			$templatesHolder = $templatesContainer.find( 'ls-templates-holder' ),
 			$allTemplates = $templatesHolder.find( 'ls-template' ),
 			$filteredTemplates = $templatesHolder.find( 'ls-template[data-groups*="'+handle+'"]' ),
-			$allButFilteredTemplates = $templatesHolder.find( 'ls-template:not([data-groups*="'+handle+'"])' );
+			$allButFilteredTemplates = $templatesHolder.find( 'ls-template:not([data-groups*="'+handle+'"])' ),
+			$descHolder = $templatesContainer.find( 'ls-tag-descriptions-holder' ),
+			$allDesc = $descHolder.find('ls-tag-description');
+
+			$( 'ls-templates-containers' ).scrollTop(0);
+
+			$allDesc.hide();
+			$allDesc.filter('[data-handle="' + handle + '"]').css('display','flex');
 
 			$curTag.addClass('ls--active').siblings().removeClass('ls--active');
 			$allTemplates.show();
@@ -799,6 +816,17 @@ jQuery(function($) {
 			}
 		}
 	};
+
+	// Templates Store: Template Inspector
+	$( document ).on( 'click', '.ls-open-inspector-button', function( e ){
+		e.preventDefault();
+		$( 'div#ls-import-modal-window' ).addClass( 'ls-show-templates-inspector' );
+	});
+
+	$( document ).on( 'click', 'ls-templates-inspector-overlay, .ls-templates-inspector-close', function( e ){
+		e.preventDefault();
+		$( 'div#ls-import-modal-window' ).removeClass( 'ls-show-templates-inspector' );
+	});
 
 
 
@@ -887,7 +915,11 @@ jQuery(function($) {
 
 		var $form = $(this).closest('form');
 
-		$.get( ajaxurl, $.param({ action: 'ls_deauthorize_site' }), function(data) {
+		$.get( ajaxurl, $.param({
+			action: 'ls_deauthorize_site',
+			_wpnonce: $form.find('input[name="_wpnonce"]').val(),
+			_wp_http_referer: $form.find('input[name="_wp_http_referer"]').val()
+		}), function(data) {
 
 			// Parse response and set message
 			var data = $.parseJSON(data);
@@ -1069,14 +1101,28 @@ jQuery(function($) {
 				data = data ? JSON.parse( data ) : {};
 
 				if( data.success ) {
-					document.location.href = data.url;
+
+					if( LS_importQueue && LS_importQueue.length > 0 ) {
+						kmw.modal.close();
+						lsDownloadNextTemplate();
+						return;
+
+					} else {
+						document.location.href = data.url;
+					}
 
 				} else {
 
 					kmw.modal.close();
 
 					if( data.reload ) {
-						window.location.reload( true );
+						if( LS_importQueue && LS_importQueue.length > 0 ) {
+							lsDownloadNextTemplate();
+
+						} else {
+							window.location.reload( true );
+						}
+
 						return;
 					}
 
@@ -1135,6 +1181,18 @@ jQuery(function($) {
 	} else if( document.location.hash === '#open-addons' ) {
 		setTimeout( function() {
 			$('#ls-addons-button').click();
+		}, 500);
+
+	} else if( document.location.hash.includes('#download-template=' ) ) {
+		setTimeout( function() {
+			let handle = document.location.hash.split('#download-template=')[1];
+			lsDownloadTemplateByHandle( handle );
+		}, 500);
+
+	} else if( document.location.hash === '#open-maintenance-addon' ) {
+		document.location.hash = '';
+		setTimeout( function() {
+			lsShowAddOn({ handle: 'maintenance'});
 		}, 500);
 	}
 
@@ -1319,13 +1377,17 @@ jQuery(function($) {
 
 					$.getJSON( ajaxurl, {
 						action: 'ls_create_slider_group',
+						nonce: LS_pageMeta.dashboardNonce,
 						items: [
 							$( targetSliderItem ).data('id'),
 							$( draggedSliderItem ).data('id')
 						]
 
 					}, function( data ) {
-						$group.data('id', data.groupId );
+
+						if( data.success && data.groupId ) {
+							$group.data('id', data.groupId );
+						}
 					});
 				}
 			}
@@ -1349,6 +1411,7 @@ jQuery(function($) {
 		if( ! withoutXHR ) {
 			$.get( ajaxurl, {
 				action: 'ls_add_slider_to_group',
+				nonce: LS_pageMeta.dashboardNonce,
 				sliderId: $slider.data('id'),
 				groupId: $group.data('id')
 			});
@@ -1399,6 +1462,7 @@ jQuery(function($) {
 		if( ! withoutXHR ) {
 			$.get( ajaxurl, {
 				action: 'ls_remove_slider_from_group',
+				nonce: LS_pageMeta.dashboardNonce,
 				sliderId: $slider.data('id'),
 				groupId: $group.data('id')
 			});
@@ -1537,13 +1601,6 @@ jQuery(function($) {
 			case 'export':
 				$bulkSelect.val('export');
 				$form.submit();
-				break;
-
-			case 'export-html':
-				if( exportSliderAsHTML() ) {
-					$bulkSelect.val('export-html');
-					$form.submit();
-				}
 				break;
 
 			case 'duplicate':
@@ -1728,14 +1785,6 @@ jQuery(function($) {
 	removeSliderFromGroupDraggable();
 	removeSliderFromGroupDroppable();
 
-	var LS__setRegistered = function( registered){
-		if( registered ){
-			$('#ls--admin-boxes, #ls--projects-list').removeClass('ls--not-registered').addClass('ls--registered');
-		}else{
-			$('#ls--admin-boxes, #ls--projects-list').removeClass('ls--registered').addClass('ls--not-registered');
-		}
-
-	};
 
 	// Initialize sliders on the main admin page
 	$( '#ls--license-slider' ).layerSlider({
@@ -1757,3 +1806,355 @@ jQuery(function($) {
 		skinsPath: LS_pageMeta.skinsPath
 	});
 });
+
+var LS__setRegistered = function( registered ){
+	if( registered ){
+		jQuery('#ls--admin-boxes, #ls--projects-list, #ls-addons-modal-window').removeClass('ls--not-registered').addClass('ls--registered');
+	}else{
+		jQuery('#ls--admin-boxes, #ls--projects-list, #ls-addons-modal-window').removeClass('ls--registered').addClass('ls--not-registered');
+	}
+};
+
+
+// Add-Ons
+var LS_Addons = {
+
+	initialized: false,
+	$modal: null,
+
+	init: function(){
+
+		jQuery('#ls-addons-button' ).on( 'click', function(e){
+			e.preventDefault();
+			kmw.modal.close();
+			LS_Addons.openModal();
+		});
+	},
+
+	attachEvents: function(){
+
+		// ----- Addon modal -----
+		jQuery(document).on( 'mouseenter', '#ls-addons-modal-window .ls--video', function(e){
+			jQuery( this ).attr( 'loop', '' );
+			this.play();
+
+		}).on( 'mouseleave', '#ls-addons-modal-window ls-col:not(".kmw-active") .ls--video', function(e){
+			jQuery( this ).removeAttr( 'loop' );
+			if( jQuery( this ).is( '.ls--allowstop') ){
+				this.pause();
+			}
+
+		}).on('click', '#ls-addons-grid .kmw-menuitem', function(e) {
+			LS_Addons.openAddon( jQuery( this ) );
+			jQuery( '#ls-addons-grid .kmw-menuitem .ls--video' ).trigger( 'mouseleave' );
+
+
+		// ----- Addon settings -----
+		}).on( 'click', '#ls-addons-modal-window input[name="enabled"]', function( event ) {
+
+			const checked = jQuery(this).prop('checked');
+
+			if( checked && ! LS_slidersMeta.isActivatedSite ) {
+				lsDisplayActivationWindow();
+				event.preventDefault();
+			}
+
+		}).on( 'change', '#ls-addons-modal-window input[name="enabled"]', function() {
+
+			const $this = jQuery(this),
+				checked = $this.prop('checked');
+
+			// Update UI
+			$this.closest('.ls--addon-settings').attr('data-enabled', checked ? 'true' : 'false');
+
+			// Save changes
+			if( ! checked ) {
+				LS_Addons.saveAddonSettings();
+			}
+
+		}).on( 'click', '#ls-addons-modal-window .ls-addon-save-button', function() {
+			LS_Addons.saveAddonSettings();
+		});
+
+	},
+
+	openModal: function(){
+
+		if( jQuery('#ls-addons-button').hasClass('has-updates') ) {
+			jQuery.getJSON( ajaxurl, {
+				action: 'ls_addons_opened',
+				nonce: LS_pageMeta.dashboardNonce,
+			});
+		}
+
+		kmw.modal.open({
+			id: 'ls-addons-modal-window',
+			content: jQuery('#ls-addons-modal-content'),
+			maxWidth: 1200,
+			overlaySettings: {
+				customClasses: 'ls--dark-overlay'
+			},
+			sidebar: {
+				right: {
+					title: ' ', // Important for having the kmw-sidebar-title element in place
+					width: 400,
+					content: jQuery('#ls-addons-modal-sidebar')
+				}
+			},
+			onBeforeOpen: function() {
+
+				LS_Addons.$modal = jQuery('#ls-addons-modal-window');
+
+				if( ! LS_Addons.initialized ) {
+					LS_Addons.initialized = true;
+					LS_Addons.attachEvents();
+				}
+
+				LS_Addons.maintainSidebarTitle();
+				LS__setRegistered( LS_slidersMeta.isActivatedSite );
+			},
+			onOpen: function() {
+				jQuery( '#ls-addons-modal-content .kmw-menuitem.kmw-active .ls--video' ).trigger( 'mouseenter' );
+			}
+		});
+	},
+
+	closeModal: function(){
+		kmw.modal.close();
+	},
+
+	maintainSidebarTitle: function() {
+
+		var $menuItems = jQuery('#ls-addons-grid .kmw-menuitem'),
+			$activeItem = $menuItems.filter('.kmw-active');
+
+			if( $activeItem.length ) {
+				$activeItem.click();
+			 } else {
+				$menuItems.first().click();
+			 }
+	},
+
+	openAddon: function( $tab ) {
+
+		var title = $tab.find('.ls--title').text(),
+			$sidebarTitle = LS_Addons.$modal.find('.kmw-sidebar-title');
+			$sidebarTitle.text( title );
+
+			LS_Addons.setInitialPrevAddonData();
+	},
+
+	getAddonSettings: function( $wrapper ) {
+
+		const addonData = {};
+
+		$wrapper = $wrapper || LS_Addons.getAddonWrapper();
+		$wrapper.find(':input').each( function() {
+			let $input = jQuery(this);
+
+			if( $input.is(':checkbox') ) {
+				addonData[ $input.attr('name') ] = $input.prop('checked') ? 1 : '';
+			} else {
+				addonData[ $input.attr('name') ] = $input.val();
+			}
+		});
+
+		return addonData;
+	},
+
+	getAddonWrapper: function() {
+		return jQuery('#ls-addons-modal-window .ls--addon-settings:visible');
+	},
+
+	getPrevAddonData: function( $wrapper ) {
+		$wrapper = $wrapper || LS_Addons.getAddonWrapper();
+		return $wrapper.data('prevData') || {};
+
+	},
+
+	setPrevAddonData: function( $wrapper, data ) {
+
+		$wrapper = $wrapper || LS_Addons.getAddonWrapper();
+		data = data || LS_Addons.getAddonSettings( $wrapper );
+		$wrapper.data('prevData', data );
+	},
+
+	setInitialPrevAddonData: function( $wrapper ) {
+
+		$wrapper = $wrapper || LS_Addons.getAddonWrapper();
+		const data = $wrapper.data('prevData');
+
+		if( typeof data === 'undefined' ) {
+			LS_Addons.setPrevAddonData( $wrapper );
+		}
+	},
+
+	saveAddonSettings: function( forceActivate = false) {
+
+		const addonData 	= LS_Addons.getAddonSettings();
+		const $addonWrapper = LS_Addons.getAddonWrapper();
+		const $button 		= $addonWrapper.find('.ls-addon-save-button');
+		const prevAddonData = LS_Addons.getPrevAddonData() || {};
+
+		if( ! forceActivate ) {
+
+			if( ! prevAddonData.enabled && addonData.enabled && $button.data('beforePublishConfirmation') ) {
+				lsCommon.smartAlert.open({
+					type: 'confirm',
+					width: 650,
+					title: $button.data('beforePublishTitle'),
+					text: $button.data('beforePublishText'),
+					'buttons': {
+						ok: {
+							label: $button.data('beforePublishButton')
+						}
+					},
+					onConfirm: function() {
+						LS_Addons.saveAddonSettings( true );
+					}
+				});
+
+				return;
+			}
+		}
+
+		$button.attr({
+			'disabled': 'disabled',
+			'data-state': 'saving'
+		});
+
+		jQuery.ajax({
+			url: LS_AddonsMeta.ajaxurl,
+			type: 'POST',
+			data: addonData,
+			dataType: 'json',
+			complete: function( jqXHR ) {
+
+				const data = jqXHR.responseJSON;
+
+				// Error handling
+				if( ! data || ! data.success ) {
+					kmUI.notify.show({
+						iconColor: "#ff2323",
+						icon: 'error',
+						text: LS_AddonsMeta.settingsError,
+						timeout: 3000
+					});
+					$button.removeAttr('disabled').attr('data-state', '');
+					return;
+				}
+
+				$button.removeAttr('disabled').attr('data-state', '');
+				$addonWrapper.attr( 'data-published', addonData.enabled ? 'true' : 'false' );
+
+				// Bail out without showing a notification if the enable switch
+				// was toggled back and forth without any saved changes.
+				if( ! prevAddonData.enabled && ! addonData.enabled ) {
+					return;
+				}
+
+				// Default saved message
+				let message = LS_AddonsMeta.settingsSaved;
+
+				// Show a different message if the addon was disabled
+				if( ! addonData.enabled && prevAddonData.enabled ) {
+					message = LS_AddonsMeta.addonDisabled;
+				}
+
+				// Update data with the new settings to compare with next time
+				LS_Addons.setPrevAddonData();
+
+				kmUI.notify.show({
+					iconColor: "#8BC34A",
+					icon: 'success',
+					text: message,
+					timeout: 2000
+				});
+
+			}
+		});
+	}
+};
+
+LS_Addons.init();
+
+var lsDownloadAllTemplates = function() {
+
+	lsCommon.smartAlert.confirm( 'Import all templates? This will take a long time.', () => {
+
+		LS_importQueue = [];
+		jQuery('#ls-browse-templates-button').click();
+
+		setTimeout( () => {
+
+			jQuery('ls-templates-container').filter('[data-category="sliders"],[data-category="kreatura-popups"],[data-category="webshopworks-popups"]').find('ls-template').each( function() {
+
+				LS_importQueue.push({
+					isPending: true,
+					element: this
+				});
+			});
+
+			lsDownloadNextTemplate();
+		}, 2000 );
+	});
+};
+
+var lsDownloadNextTemplate = function() {
+
+	// Exit early if the queue is empty
+	if( ! LS_importQueue || ! LS_importQueue.length ) {
+		return;
+	}
+
+	var template, templateIndex;
+
+	// Find the next unprocessed item from the queue
+	for( var c = 0; c < LS_importQueue.length; c++ ) {
+		if( LS_importQueue[c].isPending ) {
+			template = LS_importQueue[c];
+			templateIndex = c;
+			break;
+		}
+	}
+
+	// Did not find unprocessed items, empty the queue and exit
+	if( ! template ) {
+		LS_importQueue = [];
+		return;
+	}
+
+	// Otherwise, mark the item as processed
+	template.isPending = false;
+
+	// Gather template data
+	var $item = jQuery( template.element ),
+		projectName = $item.find('ls-template-name').text();
+
+	// Start importing
+	console.log('Downloading Template ('+(templateIndex+1)+'/'+(LS_importQueue.length)+'): ' + projectName );
+	$item.find('.ls--import-template-button').click();
+};
+
+var lsDownloadTemplateByHandle = function( handle ) {
+
+	jQuery('#ls-browse-templates-button').click();
+
+	setTimeout( () => {
+		jQuery('.ls--import-template-button[data-handle="'+handle+'"]').first().click();
+	}, 1500 );
+};
+
+var lsShowAddOn = function( properties ) {
+	properties = properties || {};
+	setTimeout( () => {
+
+		if( ! jQuery('#ls-addons-modal-window:visible').length ) {
+			LS_Addons.openModal();
+		}
+
+		if( properties.handle ) {
+			jQuery('#ls-addons-grid [data-tab-target="'+properties.handle+'"]').click();
+		}
+	}, properties.delay || 0 );
+};

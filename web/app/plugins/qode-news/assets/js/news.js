@@ -134,6 +134,7 @@
 					loadingItem.addClass('qode-showing');
 				}
 				var ajaxData = qode.modules.common.setLoadMoreAjaxData(loadMoreDatta, 'qode_news_shortcodes_load_more');
+				ajaxData.nonce = thisHolder.data('nonce');
 				
 				$.ajax({
 					type: 'POST',
@@ -146,7 +147,7 @@
 						
 						thisHolder.data('next-page', nextPage);
 						
-						var response = $.parseJSON(data),
+						var response = (typeof data === 'object') ? data : $.parseJSON(data),
 							responseHtml =  response.html;
 						
 						if(thisHolder.hasClass('qode-news-pag-standard')) {
@@ -270,6 +271,7 @@
 						}
 						
 						var ajaxData = qode.modules.common.setLoadMoreAjaxData(loadMoreData, 'qode_news_shortcodes_filter');
+						ajaxData.nonce = thisHolder.data('nonce');
 						
 						$.ajax({
 							type: 'POST',
@@ -277,7 +279,7 @@
 							url: QodeAdminAjax.ajaxurl,
 							success: function (data) {
 								
-								var response = $.parseJSON(data),
+								var response = (typeof data === 'object') ? data : $.parseJSON(data),
 									responseHtml =  response.html,
 									newQueryParams =  response.newQueryParams;
 
@@ -622,6 +624,35 @@
 (function($) {
     'use strict';
 
+    var elementorQodeNewsPostCarousel1 = {};
+    qode.modules.elementorQodeNewsPostCarousel1 = elementorQodeNewsPostCarousel1;
+
+    elementorQodeNewsPostCarousel1.qodeInitElementorQodeNewsPostCarousel1 = qodeInitElementorQodeNewsPostCarousel1;
+
+
+    elementorQodeNewsPostCarousel1.qodeOnWindowLoad = qodeOnWindowLoad;
+
+    $(window).on('load', qodeOnWindowLoad);
+
+    /*
+     ** All functions to be called on $(window).load() should be in this function
+     */
+    function qodeOnWindowLoad() {
+        qodeInitElementorQodeNewsPostCarousel1();
+    }
+
+    function qodeInitElementorQodeNewsPostCarousel1(){
+        $j(window).on('elementor/frontend/init', function () {
+            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_post_carousel1.default', function() {
+                qode.modules.owlSlider.qodeOwlSlider();
+            } );
+        });
+    }
+
+})(jQuery);
+(function($) {
+    'use strict';
+
     var elementorQodeNewsLayout3 = {};
     qode.modules.elementorQodeNewsLayout3 = elementorQodeNewsLayout3;
 
@@ -652,35 +683,6 @@
                 qode.modules.news.qodeInitSelfHostedVideoAudioPlayer();
                 qode.modules.news.qodeSelfHostedVideoSize();
                 qode.modules.news.qodeInitNewsShortcodesPagination().init();
-            } );
-        });
-    }
-
-})(jQuery);
-(function($) {
-    'use strict';
-
-    var elementorQodeNewsPostCarousel1 = {};
-    qode.modules.elementorQodeNewsPostCarousel1 = elementorQodeNewsPostCarousel1;
-
-    elementorQodeNewsPostCarousel1.qodeInitElementorQodeNewsPostCarousel1 = qodeInitElementorQodeNewsPostCarousel1;
-
-
-    elementorQodeNewsPostCarousel1.qodeOnWindowLoad = qodeOnWindowLoad;
-
-    $(window).on('load', qodeOnWindowLoad);
-
-    /*
-     ** All functions to be called on $(window).load() should be in this function
-     */
-    function qodeOnWindowLoad() {
-        qodeInitElementorQodeNewsPostCarousel1();
-    }
-
-    function qodeInitElementorQodeNewsPostCarousel1(){
-        $j(window).on('elementor/frontend/init', function () {
-            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_post_carousel1.default', function() {
-                qodeOwlSlider();
             } );
         });
     }
@@ -896,45 +898,6 @@
 })(jQuery);
 (function($) {
     'use strict';
-
-    var elementorQodeNewsVideoLayout2 = {};
-    qode.modules.elementorQodeNewsVideoLayout2 = elementorQodeNewsVideoLayout2;
-
-    elementorQodeNewsVideoLayout2.qodeInitElementorQodeNewsVideoLayout2 = qodeInitElementorQodeNewsVideoLayout2;
-
-
-    elementorQodeNewsVideoLayout2.qodeOnWindowLoad = qodeOnWindowLoad;
-
-    $(window).on('load', qodeOnWindowLoad);
-    $(window).scroll(qodeOnWindowScroll);
-
-    /*
-     ** All functions to be called on $(window).load() should be in this function
-     */
-    function qodeOnWindowLoad() {
-        qodeInitElementorQodeNewsVideoLayout2();
-    }
-
-    function qodeOnWindowScroll() {
-        qode.modules.news.qodeInitNewsShortcodesPagination().scroll();
-    }
-
-    function qodeInitElementorQodeNewsVideoLayout2(){
-        $j(window).on('elementor/frontend/init', function () {
-            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_video_layout2.default', function() {
-                qode.modules.news.qodeInitNewsShortcodesFilter();
-                qode.modules.news.qodeNewsInitFitVids();
-                qode.modules.news.qodeInitSelfHostedVideoAudioPlayer();
-                qode.modules.news.qodeSelfHostedVideoSize();
-                qode.modules.news.qodeInitNewsShortcodesPagination().init();
-                prettyPhoto();
-            } );
-        });
-    }
-
-})(jQuery);
-(function($) {
-    'use strict';
 	
 	var blogCategoriesReactionsWidget = {};
 	qode.modules.blogCategoriesReactionsWidget = blogCategoriesReactionsWidget;
@@ -975,5 +938,44 @@
 			});
 		}
 	}
+
+})(jQuery);
+(function($) {
+    'use strict';
+
+    var elementorQodeNewsVideoLayout2 = {};
+    qode.modules.elementorQodeNewsVideoLayout2 = elementorQodeNewsVideoLayout2;
+
+    elementorQodeNewsVideoLayout2.qodeInitElementorQodeNewsVideoLayout2 = qodeInitElementorQodeNewsVideoLayout2;
+
+
+    elementorQodeNewsVideoLayout2.qodeOnWindowLoad = qodeOnWindowLoad;
+
+    $(window).on('load', qodeOnWindowLoad);
+    $(window).scroll(qodeOnWindowScroll);
+
+    /*
+     ** All functions to be called on $(window).load() should be in this function
+     */
+    function qodeOnWindowLoad() {
+        qodeInitElementorQodeNewsVideoLayout2();
+    }
+
+    function qodeOnWindowScroll() {
+        qode.modules.news.qodeInitNewsShortcodesPagination().scroll();
+    }
+
+    function qodeInitElementorQodeNewsVideoLayout2(){
+        $j(window).on('elementor/frontend/init', function () {
+            elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_video_layout2.default', function() {
+                qode.modules.news.qodeInitNewsShortcodesFilter();
+                qode.modules.news.qodeNewsInitFitVids();
+                qode.modules.news.qodeInitSelfHostedVideoAudioPlayer();
+                qode.modules.news.qodeSelfHostedVideoSize();
+                qode.modules.news.qodeInitNewsShortcodesPagination().init();
+                prettyPhoto();
+            } );
+        });
+    }
 
 })(jQuery);

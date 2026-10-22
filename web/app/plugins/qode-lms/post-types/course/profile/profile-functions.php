@@ -121,3 +121,15 @@ if ( ! function_exists( 'qode_lms_get_user_profile_course_items' ) ) {
 		return $formatted_orders;
 	}
 }
+
+if( ! function_exists( 'qode_lms_change_login_redirect_url' ) ) {
+	function qode_lms_change_login_redirect_url( $redirect_url ) {
+		if( is_singular( 'course' ) ) {
+			$redirect_url = esc_url( get_the_permalink() );
+		}
+		
+		return $redirect_url;
+	}
+	
+	add_filter( 'qode_membership_filter_login_redirect_uri', 'qode_lms_change_login_redirect_url' );
+}

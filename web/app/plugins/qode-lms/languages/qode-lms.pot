@@ -1,17 +1,17 @@
-# Copyright (C) 2020 Qode Themes
+# Copyright (C) 2023 Qode Themes
 # This file is distributed under the same license as the Qode LMS plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Qode LMS 3.0\n"
+"Project-Id-Version: Qode LMS 3.0.9\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/qode-lms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-09-18T12:43:50+02:00\n"
+"POT-Creation-Date: 2023-11-03T13:23:19+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.3.0\n"
+"X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: qode-lms\n"
 
 #. Plugin Name of the plugin
@@ -78,12 +78,12 @@ msgstr ""
 #: post-types/course/shortcodes/course-slider.php:60
 #: post-types/course/shortcodes/course-slider.php:239
 #: post-types/course/shortcodes/course-slider.php:259
-#: post-types/course/shortcodes/elementor-course-list.php:87
+#: post-types/course/shortcodes/elementor-course-list.php:91
 #: post-types/course/shortcodes/elementor-course-search.php:101
-#: post-types/course/shortcodes/elementor-course-slider.php:97
-#: post-types/course/shortcodes/elementor-course-slider.php:394
-#: post-types/course/shortcodes/elementor-course-slider.php:421
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:68
+#: post-types/course/shortcodes/elementor-course-slider.php:101
+#: post-types/course/shortcodes/elementor-course-slider.php:398
+#: post-types/course/shortcodes/elementor-course-slider.php:425
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:72
 #: post-types/instructor/shortcodes/instructor-list.php:54
 #: post-types/lesson/admin/meta-boxes/lesson-meta-boxes.php:49
 msgid "Default"
@@ -227,9 +227,9 @@ msgstr ""
 #: post-types/course/admin/options/course-options-map.php:39
 #: post-types/course/shortcodes/course-list.php:50
 #: post-types/course/shortcodes/course-slider.php:58
-#: post-types/course/shortcodes/elementor-course-list.php:83
-#: post-types/course/shortcodes/elementor-course-slider.php:93
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:65
+#: post-types/course/shortcodes/elementor-course-list.php:87
+#: post-types/course/shortcodes/elementor-course-slider.php:97
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:69
 #: post-types/instructor/shortcodes/instructor-list.php:52
 msgid "Number of Columns"
 msgstr ""
@@ -265,8 +265,8 @@ msgstr ""
 #: post-types/course/admin/options/course-options-map.php:68
 #: post-types/course/shortcodes/course-list.php:85
 #: post-types/course/shortcodes/course-slider.php:81
-#: post-types/course/shortcodes/elementor-course-list.php:131
-#: post-types/course/shortcodes/elementor-course-slider.php:121
+#: post-types/course/shortcodes/elementor-course-list.php:135
+#: post-types/course/shortcodes/elementor-course-slider.php:125
 msgid "Image Proportions"
 msgstr ""
 
@@ -277,32 +277,32 @@ msgstr ""
 #: post-types/course/admin/options/course-options-map.php:73
 #: post-types/course/shortcodes/course-list.php:87
 #: post-types/course/shortcodes/course-slider.php:83
-#: post-types/course/shortcodes/elementor-course-list.php:135
-#: post-types/course/shortcodes/elementor-course-slider.php:125
+#: post-types/course/shortcodes/elementor-course-list.php:139
+#: post-types/course/shortcodes/elementor-course-slider.php:129
 msgid "Original"
 msgstr ""
 
 #: post-types/course/admin/options/course-options-map.php:74
 #: post-types/course/shortcodes/course-list.php:89
 #: post-types/course/shortcodes/course-slider.php:85
-#: post-types/course/shortcodes/elementor-course-list.php:137
-#: post-types/course/shortcodes/elementor-course-slider.php:127
+#: post-types/course/shortcodes/elementor-course-list.php:141
+#: post-types/course/shortcodes/elementor-course-slider.php:131
 msgid "Landscape"
 msgstr ""
 
 #: post-types/course/admin/options/course-options-map.php:75
 #: post-types/course/shortcodes/course-list.php:90
 #: post-types/course/shortcodes/course-slider.php:86
-#: post-types/course/shortcodes/elementor-course-list.php:138
-#: post-types/course/shortcodes/elementor-course-slider.php:128
+#: post-types/course/shortcodes/elementor-course-list.php:142
+#: post-types/course/shortcodes/elementor-course-slider.php:132
 msgid "Portrait"
 msgstr ""
 
 #: post-types/course/admin/options/course-options-map.php:76
 #: post-types/course/shortcodes/course-list.php:88
 #: post-types/course/shortcodes/course-slider.php:84
-#: post-types/course/shortcodes/elementor-course-list.php:136
-#: post-types/course/shortcodes/elementor-course-slider.php:126
+#: post-types/course/shortcodes/elementor-course-list.php:140
+#: post-types/course/shortcodes/elementor-course-slider.php:130
 msgid "Square"
 msgstr ""
 
@@ -533,24 +533,28 @@ msgstr ""
 msgid "readings"
 msgstr ""
 
-#: post-types/course/helper-functions.php:503
+#: post-types/course/helper-functions.php:504
 msgid "Buy Course"
 msgstr ""
 
-#: post-types/course/helper-functions.php:515
-#: post-types/course/helper-functions.php:918
-msgid "Add to Wishlist"
+#: post-types/course/helper-functions.php:507
+msgid "Login / Register"
 msgstr ""
 
 #: post-types/course/helper-functions.php:518
-#: post-types/course/helper-functions.php:923
+#: post-types/course/helper-functions.php:921
+msgid "Add to Wishlist"
+msgstr ""
+
+#: post-types/course/helper-functions.php:521
+#: post-types/course/helper-functions.php:926
 msgid "Remove from Wishlist"
 msgstr ""
 
-#: post-types/course/helper-functions.php:592
-#: post-types/course/helper-functions.php:834
-#: post-types/course/helper-functions.php:906
-#: post-types/course/helper-functions.php:1097
+#: post-types/course/helper-functions.php:595
+#: post-types/course/helper-functions.php:837
+#: post-types/course/helper-functions.php:909
+#: post-types/course/helper-functions.php:1100
 #: post-types/question/helper-functions.php:41
 #: post-types/question/helper-functions.php:86
 #: post-types/question/helper-functions.php:199
@@ -561,59 +565,23 @@ msgstr ""
 msgid "All fields are empty"
 msgstr ""
 
-#: post-types/course/helper-functions.php:628
-#: post-types/course/helper-functions.php:1265
+#: post-types/course/helper-functions.php:631
+#: post-types/course/helper-functions.php:1268
 #: post-types/course/templates/single/parts/completed.php:3
 #: post-types/course/templates/single/parts/completed.php:7
 msgid "Completed"
 msgstr ""
 
-#: post-types/course/helper-functions.php:638
+#: post-types/course/helper-functions.php:641
 msgid "Item finished successfully"
 msgstr ""
 
-#: post-types/course/helper-functions.php:865
+#: post-types/course/helper-functions.php:868
 msgid "Course Retaken"
 msgstr ""
 
-#: post-types/course/helper-functions.php:1083
+#: post-types/course/helper-functions.php:1086
 msgid "List of filtered courses"
-msgstr ""
-
-#: post-types/course/payment/class-wc-product-course.php:746
-msgid "Invalid catalog visibility option."
-msgstr ""
-
-#: post-types/course/payment/class-wc-product-course.php:783
-msgid "Invalid or duplicated SKU."
-msgstr ""
-
-#: post-types/course/payment/class-wc-product-course.php:869
-msgid "Invalid product tax status."
-msgstr ""
-
-#: post-types/course/payment/class-wc-product-course.php:1149
-msgid "The downloadable file %1$s cannot be used as it does not have an allowed file type. Allowed types include: %2$s"
-msgstr ""
-
-#: post-types/course/payment/class-wc-product-course.php:1155
-msgid "The downloadable file %s cannot be used as it does not exist on the server."
-msgstr ""
-
-#: post-types/course/payment/class-wc-product-course.php:1731
-msgid "Add to cart"
-msgstr ""
-
-#: post-types/course/payment/class-wc-product-course.php:1742
-msgid "Read more"
-msgstr ""
-
-#: post-types/course/payment/class-wc-product-course.php:1895
-msgid "Out of stock"
-msgstr ""
-
-#: post-types/course/payment/class-wc-product-course.php:1897
-msgid "Available on backorder"
 msgstr ""
 
 #: post-types/course/profile/profile-functions.php:8
@@ -684,31 +652,31 @@ msgstr ""
 
 #: post-types/course/shortcodes/course-features.php:48
 #: post-types/course/shortcodes/elementor-course-features.php:61
-#: widgets/course-features-widget/course-features.php:32
+#: widgets/course-features-widget/course-features.php:47
 msgid "Show Course Duration"
 msgstr ""
 
 #: post-types/course/shortcodes/course-features.php:55
 #: post-types/course/shortcodes/elementor-course-features.php:72
-#: widgets/course-features-widget/course-features.php:38
+#: widgets/course-features-widget/course-features.php:59
 msgid "Show Course Units"
 msgstr ""
 
 #: post-types/course/shortcodes/course-features.php:62
 #: post-types/course/shortcodes/elementor-course-features.php:82
-#: widgets/course-features-widget/course-features.php:44
+#: widgets/course-features-widget/course-features.php:71
 msgid "Show Course Students"
 msgstr ""
 
 #: post-types/course/shortcodes/course-features.php:69
 #: post-types/course/shortcodes/elementor-course-features.php:92
-#: widgets/course-features-widget/course-features.php:50
+#: widgets/course-features-widget/course-features.php:83
 msgid "Show Course Passing Percentage"
 msgstr ""
 
 #: post-types/course/shortcodes/course-features.php:76
 #: post-types/course/shortcodes/elementor-course-features.php:102
-#: widgets/course-features-widget/course-features.php:56
+#: widgets/course-features-widget/course-features.php:95
 msgid "Show Course Maximum Retakes"
 msgstr ""
 
@@ -751,8 +719,8 @@ msgstr ""
 #: post-types/course/shortcodes/course-slider.php:470
 #: post-types/course/shortcodes/course-table.php:284
 #: post-types/course/shortcodes/course-table.php:315
-#: post-types/instructor/shortcodes/instructor-list.php:405
-#: post-types/instructor/shortcodes/instructor-list.php:436
+#: post-types/instructor/shortcodes/instructor-list.php:415
+#: post-types/instructor/shortcodes/instructor-list.php:446
 #: post-types/instructor/shortcodes/instructor-slider.php:240
 #: post-types/instructor/shortcodes/instructor-slider.php:271
 #: post-types/instructor/shortcodes/instructor.php:132
@@ -769,8 +737,8 @@ msgstr ""
 #: post-types/course/shortcodes/course-table.php:284
 #: post-types/course/shortcodes/course-table.php:312
 #: post-types/instructor/admin/meta-boxes/instructor-meta-boxes.php:18
-#: post-types/instructor/shortcodes/instructor-list.php:405
-#: post-types/instructor/shortcodes/instructor-list.php:433
+#: post-types/instructor/shortcodes/instructor-list.php:415
+#: post-types/instructor/shortcodes/instructor-list.php:443
 #: post-types/instructor/shortcodes/instructor-slider.php:240
 #: post-types/instructor/shortcodes/instructor-slider.php:268
 #: post-types/instructor/shortcodes/instructor.php:132
@@ -785,28 +753,28 @@ msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:53
 #: post-types/course/shortcodes/course-slider.php:61
-#: post-types/course/shortcodes/elementor-course-list.php:88
-#: post-types/course/shortcodes/elementor-course-slider.php:98
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:69
+#: post-types/course/shortcodes/elementor-course-list.php:92
+#: post-types/course/shortcodes/elementor-course-slider.php:102
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:73
 #: post-types/instructor/shortcodes/instructor-list.php:55
 msgid "One"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:54
 #: post-types/course/shortcodes/course-slider.php:62
-#: post-types/course/shortcodes/elementor-course-list.php:89
-#: post-types/course/shortcodes/elementor-course-slider.php:99
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:70
+#: post-types/course/shortcodes/elementor-course-list.php:93
+#: post-types/course/shortcodes/elementor-course-slider.php:103
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:74
 #: post-types/instructor/shortcodes/instructor-list.php:56
 msgid "Two"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:55
 #: post-types/course/shortcodes/course-slider.php:63
-#: post-types/course/shortcodes/elementor-course-list.php:90
-#: post-types/course/shortcodes/elementor-course-slider.php:100
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:71
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:68
+#: post-types/course/shortcodes/elementor-course-list.php:94
+#: post-types/course/shortcodes/elementor-course-slider.php:104
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:75
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:72
 #: post-types/instructor/shortcodes/instructor-list.php:57
 #: post-types/instructor/shortcodes/instructor-slider.php:47
 msgid "Three"
@@ -814,10 +782,10 @@ msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:56
 #: post-types/course/shortcodes/course-slider.php:64
-#: post-types/course/shortcodes/elementor-course-list.php:91
-#: post-types/course/shortcodes/elementor-course-slider.php:101
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:72
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:69
+#: post-types/course/shortcodes/elementor-course-list.php:95
+#: post-types/course/shortcodes/elementor-course-slider.php:105
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:76
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:73
 #: post-types/instructor/shortcodes/instructor-list.php:58
 #: post-types/instructor/shortcodes/instructor-slider.php:48
 msgid "Four"
@@ -825,94 +793,94 @@ msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:57
 #: post-types/course/shortcodes/course-slider.php:65
-#: post-types/course/shortcodes/elementor-course-list.php:92
-#: post-types/course/shortcodes/elementor-course-slider.php:102
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:73
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:70
+#: post-types/course/shortcodes/elementor-course-list.php:96
+#: post-types/course/shortcodes/elementor-course-slider.php:106
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:77
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:74
 #: post-types/instructor/shortcodes/instructor-list.php:59
 #: post-types/instructor/shortcodes/instructor-slider.php:49
 msgid "Five"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:59
-#: post-types/course/shortcodes/elementor-course-list.php:84
+#: post-types/course/shortcodes/elementor-course-list.php:88
 #: post-types/instructor/shortcodes/instructor-list.php:61
 msgid "Default value is Three"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:65
-#: post-types/course/shortcodes/elementor-course-list.php:101
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:82
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:80
+#: post-types/course/shortcodes/elementor-course-list.php:105
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:86
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:84
 msgid "Space Between Courses"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:72
-#: post-types/course/shortcodes/elementor-course-list.php:111
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:92
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:90
+#: post-types/course/shortcodes/elementor-course-list.php:115
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:96
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:94
 msgid "Number of Courses Per Page"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:73
-#: post-types/course/shortcodes/elementor-course-list.php:112
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:93
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:91
+#: post-types/course/shortcodes/elementor-course-list.php:116
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:97
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:95
 msgid "Set number of items for your course list. Enter -1 to show all."
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:79
-#: post-types/course/shortcodes/elementor-course-list.php:121
+#: post-types/course/shortcodes/elementor-course-list.php:125
 msgid "Enable Image"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:91
-#: post-types/course/shortcodes/elementor-course-list.php:139
+#: post-types/course/shortcodes/elementor-course-list.php:143
 msgid "Thumbnail"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:92
 #: post-types/course/shortcodes/course-search.php:79
 #: post-types/course/shortcodes/course-slider.php:87
-#: post-types/course/shortcodes/elementor-course-list.php:140
+#: post-types/course/shortcodes/elementor-course-list.php:144
 #: post-types/course/shortcodes/elementor-course-search.php:103
-#: post-types/course/shortcodes/elementor-course-slider.php:129
+#: post-types/course/shortcodes/elementor-course-slider.php:133
 msgid "Medium"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:93
 #: post-types/course/shortcodes/course-search.php:80
 #: post-types/course/shortcodes/course-slider.php:88
-#: post-types/course/shortcodes/elementor-course-list.php:141
+#: post-types/course/shortcodes/elementor-course-list.php:145
 #: post-types/course/shortcodes/elementor-course-search.php:104
-#: post-types/course/shortcodes/elementor-course-slider.php:130
+#: post-types/course/shortcodes/elementor-course-slider.php:134
 msgid "Large"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:95
-#: post-types/course/shortcodes/elementor-course-list.php:132
+#: post-types/course/shortcodes/elementor-course-list.php:136
 msgid "Set image proportions for your courses list."
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:101
 #: post-types/course/shortcodes/course-slider.php:96
 #: post-types/course/shortcodes/course-table.php:50
-#: post-types/course/shortcodes/elementor-course-list.php:153
-#: post-types/course/shortcodes/elementor-course-slider.php:139
+#: post-types/course/shortcodes/elementor-course-list.php:157
+#: post-types/course/shortcodes/elementor-course-slider.php:143
 #: post-types/course/shortcodes/elementor-course-table.php:83
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:102
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:100
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:106
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:104
 msgid "One-Category Course List"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:102
 #: post-types/course/shortcodes/course-slider.php:97
 #: post-types/course/shortcodes/course-table.php:51
-#: post-types/course/shortcodes/elementor-course-list.php:154
-#: post-types/course/shortcodes/elementor-course-slider.php:140
+#: post-types/course/shortcodes/elementor-course-list.php:158
+#: post-types/course/shortcodes/elementor-course-slider.php:144
 #: post-types/course/shortcodes/elementor-course-table.php:84
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:103
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:101
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:107
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:105
 #: post-types/instructor/shortcodes/instructor-list.php:81
 #: post-types/instructor/shortcodes/instructor-slider.php:72
 msgid "Enter one category slug (leave empty for showing all categories)"
@@ -934,8 +902,8 @@ msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:118
 #: post-types/course/shortcodes/course-table.php:67
-#: post-types/course/shortcodes/elementor-course-list.php:175
-#: post-types/course/shortcodes/elementor-course-slider.php:161
+#: post-types/course/shortcodes/elementor-course-list.php:179
+#: post-types/course/shortcodes/elementor-course-slider.php:165
 #: post-types/course/shortcodes/elementor-course-table.php:105
 msgid "One-Tag Courses List"
 msgstr ""
@@ -943,8 +911,8 @@ msgstr ""
 #: post-types/course/shortcodes/course-list.php:119
 #: post-types/course/shortcodes/course-slider.php:114
 #: post-types/course/shortcodes/course-table.php:68
-#: post-types/course/shortcodes/elementor-course-list.php:176
-#: post-types/course/shortcodes/elementor-course-slider.php:162
+#: post-types/course/shortcodes/elementor-course-list.php:180
+#: post-types/course/shortcodes/elementor-course-slider.php:166
 #: post-types/course/shortcodes/elementor-course-table.php:106
 msgid "Enter one tag slug (leave empty for showing all tags)"
 msgstr ""
@@ -952,48 +920,48 @@ msgstr ""
 #: post-types/course/shortcodes/course-list.php:124
 #: post-types/course/shortcodes/course-slider.php:119
 #: post-types/course/shortcodes/course-table.php:73
-#: post-types/course/shortcodes/elementor-course-list.php:185
-#: post-types/course/shortcodes/elementor-course-slider.php:171
+#: post-types/course/shortcodes/elementor-course-list.php:189
+#: post-types/course/shortcodes/elementor-course-slider.php:175
 #: post-types/course/shortcodes/elementor-course-table.php:115
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:124
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:122
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:128
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:126
 #: post-types/instructor/shortcodes/instructor-list.php:97
 #: post-types/instructor/shortcodes/instructor-slider.php:88
-#: widgets/course-categories-widget/course-categories.php:38
-#: widgets/course-list-widget/course-list.php:38
+#: widgets/course-categories-widget/course-categories.php:39
+#: widgets/course-list-widget/course-list.php:59
 msgid "Order By"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:131
 #: post-types/course/shortcodes/course-slider.php:126
 #: post-types/course/shortcodes/course-table.php:80
-#: post-types/course/shortcodes/elementor-course-list.php:195
-#: post-types/course/shortcodes/elementor-course-slider.php:181
+#: post-types/course/shortcodes/elementor-course-list.php:199
+#: post-types/course/shortcodes/elementor-course-slider.php:185
 #: post-types/course/shortcodes/elementor-course-table.php:125
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:134
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:132
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:138
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:136
 #: post-types/instructor/shortcodes/instructor-list.php:104
 #: post-types/instructor/shortcodes/instructor-slider.php:95
-#: widgets/course-categories-widget/course-categories.php:48
-#: widgets/course-list-widget/course-list.php:44
+#: widgets/course-categories-widget/course-categories.php:49
+#: widgets/course-list-widget/course-list.php:68
 msgid "Order"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:138
-#: post-types/course/shortcodes/elementor-course-list.php:215
-#: post-types/course/shortcodes/elementor-course-slider.php:201
+#: post-types/course/shortcodes/elementor-course-list.php:219
+#: post-types/course/shortcodes/elementor-course-slider.php:205
 msgid "Item Style"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:140
-#: post-types/course/shortcodes/elementor-course-list.php:218
-#: post-types/course/shortcodes/elementor-course-slider.php:204
+#: post-types/course/shortcodes/elementor-course-list.php:222
+#: post-types/course/shortcodes/elementor-course-slider.php:208
 msgid "Standard "
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:141
-#: post-types/course/shortcodes/elementor-course-list.php:219
-#: post-types/course/shortcodes/elementor-course-slider.php:205
+#: post-types/course/shortcodes/elementor-course-list.php:223
+#: post-types/course/shortcodes/elementor-course-slider.php:209
 msgid "Minimal "
 msgstr ""
 
@@ -1020,38 +988,39 @@ msgstr ""
 #: post-types/course/shortcodes/course-table.php:96
 #: post-types/course/shortcodes/course-table.php:103
 #: post-types/course/shortcodes/course-table.php:110
-#: post-types/course/shortcodes/elementor-course-list.php:207
-#: post-types/course/shortcodes/elementor-course-slider.php:193
+#: post-types/course/shortcodes/elementor-course-list.php:211
+#: post-types/course/shortcodes/elementor-course-slider.php:197
 #: post-types/course/shortcodes/elementor-course-table.php:137
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:146
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:150
 #: post-types/instructor/shortcodes/instructor-list.php:119
 #: post-types/instructor/shortcodes/instructor-list.php:136
 #: post-types/instructor/shortcodes/instructor-list.php:153
+#: post-types/instructor/shortcodes/instructor-list.php:162
 #: post-types/instructor/shortcodes/instructor-slider.php:110
 msgid "Content Layout"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:148
 #: post-types/course/shortcodes/course-slider.php:133
-#: post-types/course/shortcodes/elementor-course-list.php:228
-#: post-types/course/shortcodes/elementor-course-slider.php:214
+#: post-types/course/shortcodes/elementor-course-list.php:232
+#: post-types/course/shortcodes/elementor-course-slider.php:218
 msgid "Enable Title"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:156
 #: post-types/course/shortcodes/course-slider.php:140
-#: post-types/course/shortcodes/elementor-course-list.php:241
-#: post-types/course/shortcodes/elementor-course-slider.php:227
-#: widgets/course-categories-widget/course-categories.php:54
-#: widgets/course-list-widget/course-list.php:50
+#: post-types/course/shortcodes/elementor-course-list.php:245
+#: post-types/course/shortcodes/elementor-course-slider.php:231
+#: widgets/course-categories-widget/course-categories.php:55
+#: widgets/course-list-widget/course-list.php:77
 msgid "Title Tag"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:164
 #: post-types/course/shortcodes/course-slider.php:148
-#: post-types/course/shortcodes/elementor-course-list.php:254
-#: post-types/course/shortcodes/elementor-course-slider.php:240
-#: widgets/course-list-widget/course-list.php:56
+#: post-types/course/shortcodes/elementor-course-list.php:258
+#: post-types/course/shortcodes/elementor-course-slider.php:244
+#: widgets/course-list-widget/course-list.php:86
 msgid "Title Text Transform"
 msgstr ""
 
@@ -1059,9 +1028,9 @@ msgstr ""
 #: post-types/course/shortcodes/course-search.php:40
 #: post-types/course/shortcodes/course-slider.php:156
 #: post-types/course/shortcodes/course-table.php:87
-#: post-types/course/shortcodes/elementor-course-list.php:267
+#: post-types/course/shortcodes/elementor-course-list.php:271
 #: post-types/course/shortcodes/elementor-course-search.php:44
-#: post-types/course/shortcodes/elementor-course-slider.php:253
+#: post-types/course/shortcodes/elementor-course-slider.php:257
 #: post-types/course/shortcodes/elementor-course-table.php:145
 msgid "Enable Instructor"
 msgstr ""
@@ -1070,39 +1039,41 @@ msgstr ""
 #: post-types/course/shortcodes/course-search.php:48
 #: post-types/course/shortcodes/course-slider.php:163
 #: post-types/course/shortcodes/course-table.php:94
-#: post-types/course/shortcodes/elementor-course-list.php:280
+#: post-types/course/shortcodes/elementor-course-list.php:284
 #: post-types/course/shortcodes/elementor-course-search.php:55
-#: post-types/course/shortcodes/elementor-course-slider.php:266
+#: post-types/course/shortcodes/elementor-course-slider.php:270
 #: post-types/course/shortcodes/elementor-course-table.php:155
 msgid "Enable Price"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:188
 #: post-types/course/shortcodes/course-slider.php:170
-#: post-types/course/shortcodes/elementor-course-list.php:293
-#: post-types/course/shortcodes/elementor-course-slider.php:279
+#: post-types/course/shortcodes/elementor-course-list.php:297
+#: post-types/course/shortcodes/elementor-course-slider.php:283
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:199
+#: post-types/instructor/shortcodes/instructor-list.php:158
 msgid "Enable Excerpt"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:196
 #: post-types/course/shortcodes/course-slider.php:177
-#: post-types/course/shortcodes/elementor-course-list.php:306
-#: post-types/course/shortcodes/elementor-course-slider.php:292
+#: post-types/course/shortcodes/elementor-course-list.php:310
+#: post-types/course/shortcodes/elementor-course-slider.php:296
 msgid "Excerpt Length"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:197
 #: post-types/course/shortcodes/course-slider.php:178
-#: post-types/course/shortcodes/elementor-course-list.php:307
-#: post-types/course/shortcodes/elementor-course-slider.php:293
+#: post-types/course/shortcodes/elementor-course-list.php:311
+#: post-types/course/shortcodes/elementor-course-slider.php:297
 msgid "Number of characters"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:204
 #: post-types/course/shortcodes/course-slider.php:185
 #: post-types/course/shortcodes/course-table.php:101
-#: post-types/course/shortcodes/elementor-course-list.php:319
-#: post-types/course/shortcodes/elementor-course-slider.php:305
+#: post-types/course/shortcodes/elementor-course-list.php:323
+#: post-types/course/shortcodes/elementor-course-slider.php:309
 #: post-types/course/shortcodes/elementor-course-table.php:165
 msgid "Enable Students"
 msgstr ""
@@ -1111,35 +1082,35 @@ msgstr ""
 #: post-types/course/shortcodes/course-search.php:32
 #: post-types/course/shortcodes/course-slider.php:192
 #: post-types/course/shortcodes/course-table.php:108
-#: post-types/course/shortcodes/elementor-course-list.php:332
+#: post-types/course/shortcodes/elementor-course-list.php:336
 #: post-types/course/shortcodes/elementor-course-search.php:33
-#: post-types/course/shortcodes/elementor-course-slider.php:318
+#: post-types/course/shortcodes/elementor-course-slider.php:322
 #: post-types/course/shortcodes/elementor-course-table.php:175
 msgid "Enable Category"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:220
-#: post-types/course/shortcodes/elementor-course-list.php:355
+#: post-types/course/shortcodes/elementor-course-list.php:359
 msgid "Pagination Type"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:222
-#: post-types/course/shortcodes/elementor-course-list.php:358
+#: post-types/course/shortcodes/elementor-course-list.php:362
 msgid "None"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:223
-#: post-types/course/shortcodes/elementor-course-list.php:359
+#: post-types/course/shortcodes/elementor-course-list.php:363
 msgid "Standard"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:224
-#: post-types/course/shortcodes/elementor-course-list.php:360
+#: post-types/course/shortcodes/elementor-course-list.php:364
 msgid "Load More"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:225
-#: post-types/course/shortcodes/elementor-course-list.php:361
+#: post-types/course/shortcodes/elementor-course-list.php:365
 msgid "Infinite Scroll"
 msgstr ""
 
@@ -1147,27 +1118,27 @@ msgstr ""
 #: post-types/course/shortcodes/course-list.php:234
 #: post-types/course/shortcodes/course-list.php:241
 #: post-types/course/shortcodes/course-list.php:250
-#: post-types/course/shortcodes/elementor-course-list.php:347
+#: post-types/course/shortcodes/elementor-course-list.php:351
 msgid "Additional Features"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:232
-#: post-types/course/shortcodes/elementor-course-list.php:370
+#: post-types/course/shortcodes/elementor-course-list.php:374
 msgid "Load More Top Margin (px or %)"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:239
-#: post-types/course/shortcodes/elementor-course-list.php:381
+#: post-types/course/shortcodes/elementor-course-list.php:385
 msgid "Enable Filter"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:246
-#: post-types/course/shortcodes/elementor-course-list.php:391
+#: post-types/course/shortcodes/elementor-course-list.php:395
 msgid "Enable Article Animation"
 msgstr ""
 
 #: post-types/course/shortcodes/course-list.php:247
-#: post-types/course/shortcodes/elementor-course-list.php:392
+#: post-types/course/shortcodes/elementor-course-list.php:396
 msgid "Enabling this option you will enable appears animation for your course list items"
 msgstr ""
 
@@ -1178,8 +1149,8 @@ msgstr ""
 #: post-types/course/shortcodes/course-table.php:221
 #: post-types/course/shortcodes/course-table.php:249
 #: post-types/course/shortcodes/templates/parts/table-h.php:8
-#: post-types/instructor/shortcodes/instructor-list.php:342
-#: post-types/instructor/shortcodes/instructor-list.php:370
+#: post-types/instructor/shortcodes/instructor-list.php:352
+#: post-types/instructor/shortcodes/instructor-list.php:380
 #: post-types/instructor/shortcodes/instructor-slider.php:177
 #: post-types/instructor/shortcodes/instructor-slider.php:205
 msgid "Category"
@@ -1318,27 +1289,27 @@ msgid "Course Slider"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:51
-#: post-types/course/shortcodes/elementor-course-slider.php:83
+#: post-types/course/shortcodes/elementor-course-slider.php:87
 msgid "Number of Course Items"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:53
-#: post-types/course/shortcodes/elementor-course-slider.php:84
+#: post-types/course/shortcodes/elementor-course-slider.php:88
 msgid "Set number of items for your course slider. Enter -1 to show all"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:67
-#: post-types/course/shortcodes/elementor-course-slider.php:94
+#: post-types/course/shortcodes/elementor-course-slider.php:98
 msgid "Number of courses that are showing at the same time in slider (on smaller screens is responsive so there will be less items shown). Default value is Four"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:74
-#: post-types/course/shortcodes/elementor-course-slider.php:111
+#: post-types/course/shortcodes/elementor-course-slider.php:115
 msgid "Space Between Course Items"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:90
-#: post-types/course/shortcodes/elementor-course-slider.php:122
+#: post-types/course/shortcodes/elementor-course-slider.php:126
 msgid "Set image proportions for your course slider."
 msgstr ""
 
@@ -1347,7 +1318,7 @@ msgid "One-Tag Course List"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:199
-#: post-types/course/shortcodes/elementor-course-slider.php:341
+#: post-types/course/shortcodes/elementor-course-slider.php:345
 msgid "Enable Slider Loop"
 msgstr ""
 
@@ -1360,85 +1331,85 @@ msgstr ""
 #: post-types/course/shortcodes/course-slider.php:252
 #: post-types/course/shortcodes/course-slider.php:264
 #: post-types/course/shortcodes/course-slider.php:276
-#: post-types/course/shortcodes/elementor-course-slider.php:333
+#: post-types/course/shortcodes/elementor-course-slider.php:337
 msgid "Slider Settings"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:207
-#: post-types/course/shortcodes/elementor-course-slider.php:351
+#: post-types/course/shortcodes/elementor-course-slider.php:355
 msgid "Enable Slider Autoplay"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:215
-#: post-types/course/shortcodes/elementor-course-slider.php:361
+#: post-types/course/shortcodes/elementor-course-slider.php:365
 msgid "Slide Duration"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:216
-#: post-types/course/shortcodes/elementor-course-slider.php:362
+#: post-types/course/shortcodes/elementor-course-slider.php:366
 msgid "Default value is 5000 (ms)"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:222
-#: post-types/course/shortcodes/elementor-course-slider.php:371
+#: post-types/course/shortcodes/elementor-course-slider.php:375
 msgid "Slide Animation Duration"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:223
-#: post-types/course/shortcodes/elementor-course-slider.php:372
+#: post-types/course/shortcodes/elementor-course-slider.php:376
 msgid "Speed of slide animation in milliseconds. Default value is 600."
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:229
-#: post-types/course/shortcodes/elementor-course-slider.php:381
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:157
+#: post-types/course/shortcodes/elementor-course-slider.php:385
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:161
 #: post-types/instructor/shortcodes/instructor-slider.php:115
 msgid "Enable Slider Navigation Arrows"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:237
-#: post-types/course/shortcodes/elementor-course-slider.php:391
+#: post-types/course/shortcodes/elementor-course-slider.php:395
 msgid "Navigation Skin"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:240
 #: post-types/course/shortcodes/course-slider.php:260
-#: post-types/course/shortcodes/elementor-course-slider.php:395
-#: post-types/course/shortcodes/elementor-course-slider.php:422
+#: post-types/course/shortcodes/elementor-course-slider.php:399
+#: post-types/course/shortcodes/elementor-course-slider.php:426
 msgid "Light"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:241
 #: post-types/course/shortcodes/course-slider.php:261
-#: post-types/course/shortcodes/elementor-course-slider.php:396
-#: post-types/course/shortcodes/elementor-course-slider.php:423
+#: post-types/course/shortcodes/elementor-course-slider.php:400
+#: post-types/course/shortcodes/elementor-course-slider.php:427
 msgid "Dark"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:249
-#: post-types/course/shortcodes/elementor-course-slider.php:408
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:167
+#: post-types/course/shortcodes/elementor-course-slider.php:412
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:171
 #: post-types/instructor/shortcodes/instructor-slider.php:122
 msgid "Enable Slider Pagination"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:257
-#: post-types/course/shortcodes/elementor-course-slider.php:418
+#: post-types/course/shortcodes/elementor-course-slider.php:422
 msgid "Pagination Skin"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:269
-#: post-types/course/shortcodes/elementor-course-slider.php:435
+#: post-types/course/shortcodes/elementor-course-slider.php:439
 msgid "Pagination Position"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:271
-#: post-types/course/shortcodes/elementor-course-slider.php:438
+#: post-types/course/shortcodes/elementor-course-slider.php:442
 msgid "Below Slider"
 msgstr ""
 
 #: post-types/course/shortcodes/course-slider.php:272
-#: post-types/course/shortcodes/elementor-course-slider.php:439
+#: post-types/course/shortcodes/elementor-course-slider.php:443
 msgid "On Slider"
 msgstr ""
 
@@ -1448,29 +1419,29 @@ msgid "Course Table"
 msgstr ""
 
 #: post-types/course/shortcodes/elementor-course-features.php:41
-#: post-types/course/shortcodes/elementor-course-list.php:75
+#: post-types/course/shortcodes/elementor-course-list.php:79
 #: post-types/course/shortcodes/elementor-course-search.php:25
-#: post-types/course/shortcodes/elementor-course-slider.php:75
+#: post-types/course/shortcodes/elementor-course-slider.php:79
 #: post-types/course/shortcodes/elementor-course-table.php:75
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:57
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:57
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:61
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:61
 #: post-types/instructor/shortcodes/elementor-instructor.php:42
 msgid "General"
 msgstr ""
 
-#: post-types/course/shortcodes/elementor-course-list.php:164
-#: post-types/course/shortcodes/elementor-course-slider.php:150
+#: post-types/course/shortcodes/elementor-course-list.php:168
+#: post-types/course/shortcodes/elementor-course-slider.php:154
 #: post-types/course/shortcodes/elementor-course-table.php:94
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:113
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:111
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:117
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:115
 msgid "Show Only Selected Courses"
 msgstr ""
 
-#: post-types/course/shortcodes/elementor-course-list.php:165
-#: post-types/course/shortcodes/elementor-course-slider.php:151
+#: post-types/course/shortcodes/elementor-course-list.php:169
+#: post-types/course/shortcodes/elementor-course-slider.php:155
 #: post-types/course/shortcodes/elementor-course-table.php:95
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:114
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:112
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:118
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:116
 msgid "Leave empty for all"
 msgstr ""
 
@@ -1785,8 +1756,8 @@ msgstr ""
 msgid "Instructor List"
 msgstr ""
 
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:154
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:142
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:158
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:146
 #: post-types/instructor/shortcodes/elementor-instructor.php:50
 #: post-types/instructor/shortcodes/instructor-list.php:111
 #: post-types/instructor/shortcodes/instructor-slider.php:102
@@ -1794,8 +1765,8 @@ msgstr ""
 msgid "Instructor Layout"
 msgstr ""
 
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:157
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:145
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:161
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:149
 #: post-types/instructor/shortcodes/elementor-instructor.php:53
 #: post-types/instructor/shortcodes/instructor-list.php:113
 #: post-types/instructor/shortcodes/instructor-slider.php:104
@@ -1803,8 +1774,8 @@ msgstr ""
 msgid "Info Bellow"
 msgstr ""
 
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:158
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:146
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:162
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:150
 #: post-types/instructor/shortcodes/elementor-instructor.php:54
 #: post-types/instructor/shortcodes/instructor-list.php:114
 #: post-types/instructor/shortcodes/instructor-slider.php:105
@@ -1812,8 +1783,8 @@ msgstr ""
 msgid "Info on Hover"
 msgstr ""
 
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:159
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:147
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:163
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:151
 #: post-types/instructor/shortcodes/elementor-instructor.php:55
 #: post-types/instructor/shortcodes/instructor-list.php:115
 #: post-types/instructor/shortcodes/instructor-slider.php:106
@@ -1821,8 +1792,8 @@ msgstr ""
 msgid "Simple"
 msgstr ""
 
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:160
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:148
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:164
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:152
 #: post-types/instructor/shortcodes/elementor-instructor.php:56
 #: post-types/instructor/shortcodes/instructor-list.php:116
 #: post-types/instructor/shortcodes/instructor-slider.php:107
@@ -1830,12 +1801,12 @@ msgstr ""
 msgid "Minimal"
 msgstr ""
 
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:169
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:173
 #: post-types/instructor/shortcodes/instructor-list.php:124
 msgid "Name Title Tag"
 msgstr ""
 
-#: post-types/instructor/shortcodes/elementor-instructor-list.php:182
+#: post-types/instructor/shortcodes/elementor-instructor-list.php:186
 #: post-types/instructor/shortcodes/instructor-list.php:141
 msgid "Position Title Tag"
 msgstr ""
@@ -1845,12 +1816,12 @@ msgstr ""
 msgid "Instructor Slider"
 msgstr ""
 
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:65
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:69
 #: post-types/instructor/shortcodes/instructor-slider.php:45
 msgid "Number of Columns in Row"
 msgstr ""
 
-#: post-types/instructor/shortcodes/elementor-instructor-slider.php:71
+#: post-types/instructor/shortcodes/elementor-instructor-slider.php:75
 #: post-types/instructor/shortcodes/instructor-slider.php:50
 msgid "Six"
 msgstr ""
@@ -2409,84 +2380,84 @@ msgstr ""
 msgid "Next Post"
 msgstr ""
 
-#: widgets/course-categories-widget/course-categories.php:7
+#: widgets/course-categories-widget/course-categories.php:8
 msgid "Qode Course Categories Widget"
 msgstr ""
 
-#: widgets/course-categories-widget/course-categories.php:8
+#: widgets/course-categories-widget/course-categories.php:9
 msgid "Display list of your course categories"
 msgstr ""
 
-#: widgets/course-categories-widget/course-categories.php:22
-#: widgets/course-features-widget/course-features.php:22
-#: widgets/course-list-widget/course-list.php:22
+#: widgets/course-categories-widget/course-categories.php:23
+#: widgets/course-features-widget/course-features.php:31
+#: widgets/course-list-widget/course-list.php:31
 msgid "Widget Title"
 msgstr ""
 
-#: widgets/course-categories-widget/course-categories.php:27
+#: widgets/course-categories-widget/course-categories.php:28
 msgid "Number of Categories"
 msgstr ""
 
-#: widgets/course-categories-widget/course-categories.php:32
+#: widgets/course-categories-widget/course-categories.php:33
 msgid "Parent Category"
 msgstr ""
 
-#: widgets/course-categories-widget/course-categories.php:33
+#: widgets/course-categories-widget/course-categories.php:34
 msgid "Leave empty for all or fill in parent category slug"
 msgstr ""
 
-#: widgets/course-categories-widget/course-categories.php:40
+#: widgets/course-categories-widget/course-categories.php:41
 msgid "Name"
 msgstr ""
 
-#: widgets/course-categories-widget/course-categories.php:41
+#: widgets/course-categories-widget/course-categories.php:42
 msgid "Slug"
 msgstr ""
 
-#: widgets/course-categories-widget/course-categories.php:42
+#: widgets/course-categories-widget/course-categories.php:43
 msgid "ID"
 msgstr ""
 
-#: widgets/course-features-widget/course-features.php:7
+#: widgets/course-features-widget/course-features.php:8
 msgid "Qode Course Features Widget"
 msgstr ""
 
-#: widgets/course-features-widget/course-features.php:8
+#: widgets/course-features-widget/course-features.php:13
 msgid "Display your course features"
 msgstr ""
 
-#: widgets/course-features-widget/course-features.php:27
+#: widgets/course-features-widget/course-features.php:39
 msgid "Course ID. If empty, current page ID will be used"
 msgstr ""
 
-#: widgets/course-list-widget/course-list.php:7
+#: widgets/course-list-widget/course-list.php:8
 msgid "Qode Course List Widget"
 msgstr ""
 
-#: widgets/course-list-widget/course-list.php:8
+#: widgets/course-list-widget/course-list.php:13
 msgid "Display list of your course"
 msgstr ""
 
-#: widgets/course-list-widget/course-list.php:27
+#: widgets/course-list-widget/course-list.php:39
 msgid "Number of Posts"
 msgstr ""
 
-#: widgets/course-list-widget/course-list.php:32
+#: widgets/course-list-widget/course-list.php:47
 msgid "Category Slug"
 msgstr ""
 
-#: widgets/course-list-widget/course-list.php:33
+#: widgets/course-list-widget/course-list.php:51
 msgid "Leave empty for all or use comma for list"
 msgstr ""
 
-#: widgets/course-list-widget/course-list.php:62
+#: widgets/course-list-widget/course-list.php:95
 msgid "Show Course Instructor"
 msgstr ""
 
-#: widgets/course-list-widget/course-list.php:68
+#: widgets/course-list-widget/course-list.php:107
 msgid "Show Course Price"
 msgstr ""
 
-#: widgets/course-list-widget/course-list.php:74
+#: widgets/course-list-widget/course-list.php:119
 msgid "Show Course Featured Image"
 msgstr ""

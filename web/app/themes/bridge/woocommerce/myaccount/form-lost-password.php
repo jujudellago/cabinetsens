@@ -10,9 +10,9 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see https://docs.woocommerce.com/document/template-structure/
- * @package WooCommerce/Templates
- * @version 7.0.1
+ * @see https://woocommerce.com/document/template-structure/
+ * @package WooCommerce\Templates
+ * @version 9.2.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -26,7 +26,7 @@ wc_print_notices(); ?>
 	<p><?php echo apply_filters( 'woocommerce_lost_password_message', esc_html__( 'Lost your password? Please enter your username or email address. You will receive a link to create a new password via email.', 'bridge' ) ); ?></p>
 	
 	<p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
-		<input class="woocommerce-Input woocommerce-Input--text input-text placeholder" placeholder="<?php esc_html_e('Username or email', 'bridge'); ?>" type="text" name="user_login" id="user_login" />
+		<input class="woocommerce-Input woocommerce-Input--text input-text placeholder" placeholder="<?php esc_html_e('Username or email', 'bridge'); ?>" type="text" name="user_login" id="user_login" aria-required="true" />
 	</p>
 	
 	<div class="clear"></div>

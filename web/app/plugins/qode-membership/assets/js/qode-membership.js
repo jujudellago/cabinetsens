@@ -39,7 +39,6 @@ if (facebookAppId) {
     socialLogin.qodeUserLostPassword = qodeUserLostPassword;
     socialLogin.qodeInitLoginWidgetModal = qodeInitLoginWidgetModal;
     socialLogin.qodeInitFacebookLogin = qodeInitFacebookLogin;
-    socialLogin.qodeInitGooglePlusLogin = qodeInitGooglePlusLogin;
     socialLogin.qodeUpdateUserProfile = qodeUpdateUserProfile;
 
     $(document).ready(qodeOnDocumentReady);
@@ -61,7 +60,6 @@ if (facebookAppId) {
 
     function qodeOnWindowLoad() {
         qodeInitFacebookLogin();
-        qodeInitGooglePlusLogin();
     }
 
     /**
@@ -75,27 +73,50 @@ if (facebookAppId) {
      */
     function qodeOnWindowScroll() {
     }
+    
+    $( document.body ).on(
+        'qode_membership_trigger_login_modal',
+        function () {
+            qodeOpenModal();
+        }
+    );
 
     /**
      * Initialize login widget modal
      */
     function qodeInitLoginWidgetModal() {
 
-        var modalOpener = $('.qode-login-opener'),
-            modalCloser = $('.qode-membership-close-modal .icon_close'),
-            modalHolder = $('.qode-login-register-holder');
+        var modalOpener = $('.qode-login-opener');
 
         if (modalOpener) {
-            var tabsHolder = $('.qode-login-register-content');
-
             //Init opening login modal
             modalOpener.click(function (e) {
                 e.preventDefault();
-                modalHolder.fadeIn(300);
-                modalHolder.addClass('opened');
+                qodeOpenModal();
             });
-
-            //Init closing login modal
+            
+            qodeInitCloseModal();
+        }
+    }
+    
+    function qodeOpenModal() {
+        var modalHolder = $('.qode-login-register-holder'),
+            tabsHolder = $('.qode-login-register-content');
+        
+        if( modalHolder.length ) {
+            modalHolder.fadeIn(300);
+            modalHolder.addClass('opened');
+        }
+        
+        //Init tabs
+        tabsHolder.tabs();
+    }
+    
+    function qodeInitCloseModal() {
+        var modalHolder = $('.qode-login-register-holder'),
+            modalCloser = $('.qode-membership-close-modal .icon_close')
+            
+        if( modalHolder.length ) {
             modalHolder.click(function (e) {
                 if (modalHolder.hasClass('opened')) {
                     modalHolder.fadeOut(300);
@@ -105,7 +126,7 @@ if (facebookAppId) {
             $('.qode-login-register-content').click(function (e) {
                 e.stopPropagation();
             });
-
+            
             //Closing of modal when X is pressed
             modalCloser.click(function (e) {
                 e.preventDefault();
@@ -114,7 +135,7 @@ if (facebookAppId) {
                     modalHolder.removeClass('opened');
                 }
             });
-
+            
             // on esc too
             $(window).on('keyup', function (e) {
                 if (modalHolder.hasClass('opened') && e.keyCode == 27) {
@@ -122,9 +143,6 @@ if (facebookAppId) {
                     modalHolder.removeClass('opened');
                 }
             });
-
-            //Init tabs
-            tabsHolder.tabs();
         }
     }
 
@@ -172,7 +190,9 @@ if (facebookAppId) {
 
                     qodeRenderAjaxResponseMessage(response);
                     if (response.status == 'success') {
-                        window.location = response.redirect;
+                        setTimeout( function() {
+                            window.location = response.redirect;
+                        }, 1000 );
                     }
                 }
 
@@ -224,6 +244,7 @@ if (facebookAppId) {
             e.preventDefault();
             var data = {
                 action: 'qode_membership_user_lost_password',
+                security: lostPassForm.find('#qode-reset-security').val(),
                 user_login: lostPassForm.find('#user_reset_password_login').val()
             };
             $.ajax({
@@ -288,7 +309,7 @@ if (facebookAppId) {
     function qodeFacebookCheckStatus(response) {
         if (response.status === 'connected') {
             // Logged into your app and Facebook.
-            qodeGetFacebookUserData();
+            qodeGetFacebookUserData( response.authResponse.accessToken );
         } else if (response.status === 'not_authorized') {
             // The person is logged into Facebook, but not your app.
             console.log('Please log into this app');
@@ -302,12 +323,14 @@ if (facebookAppId) {
     /**
      * Get user data from Facebook and login user
      */
-    function qodeGetFacebookUserData() {
+    function qodeGetFacebookUserData( accessToken ) {
         console.log('Welcome! Fetching information from Facebook...');
         FB.api('/me', 'GET', {'fields': 'id, name, email, link, picture'}, function (response) {
             var nonce = $('.qode-facebook-login-holder [name^=qode_nonce_facebook_login]').val();
             response.nonce = nonce;
             response.image = response.picture.data.url;
+            response.accessToken = accessToken;
+            
             var data = {
                 action: 'qode_membership_check_facebook_user',
                 response: response
@@ -328,82 +351,6 @@ if (facebookAppId) {
             });
 
         });
-    }
-
-    /**
-     * Google Login
-     */
-    function qodeInitGooglePlusLogin() {
-
-        if (typeof qodeSocialLoginVars !== 'undefined') {
-            var clientId = qodeSocialLoginVars.social.googleClientId;
-        }
-        if (clientId) {
-            gapi.load('auth2', function () {
-                window.auth2 = gapi.auth2.init({
-                    client_id: clientId
-                });
-                qodeInitGooglePlusLoginButton();
-            });
-        } else {
-            var loginForm = $('.qode-google-login-holder');
-            loginForm.submit(function (e) {
-                e.preventDefault();
-            });
-        }
-
-    }
-
-    /**
-     * Initialize login button for Google Login
-     */
-    function qodeInitGooglePlusLoginButton() {
-
-        var loginForm = $('.qode-google-login-holder');
-        loginForm.submit(function (e) {
-            e.preventDefault();
-            window.auth2.signIn();
-            qodeSignInCallback();
-        });
-
-    }
-
-    /**
-     * Get user data from Google and login user
-     */
-    function qodeSignInCallback() {
-        var signedIn = window.auth2.isSignedIn.get();
-        if (signedIn) {
-            var currentUser = window.auth2.currentUser.get(),
-                profile = currentUser.getBasicProfile(),
-                nonce = $('.qode-google-login-holder [name^=qode_nonce_google_login]').val(),
-                userData = {
-                    id: profile.getId(),
-                    name: profile.getName(),
-                    email: profile.getEmail(),
-                    image: profile.getImageUrl(),
-                    link: 'https://plus.google.com/' + profile.getId(),
-                    nonce: nonce
-                },
-                data = {
-                    action: 'qode_membership_check_google_user',
-                    response: userData
-                };
-            $.ajax({
-                type: 'POST',
-                data: data,
-                url: QodeAdminAjax.ajaxurl,
-                success: function (data) {
-                    var response;
-                    response = JSON.parse(data);
-
-                    qodeRenderAjaxResponseMessage(response);
-                    if (response.status == 'success') {
-                        window.location = response.redirect;
-                    }
-                }
-            });
-        }
     }
 
     /**

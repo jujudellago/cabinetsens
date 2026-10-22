@@ -5,7 +5,6 @@ defined( 'LS_ROOT_FILE' ) || exit;
 
 $GLOBALS['lsLoadPlugins'] 	= [];
 $GLOBALS['lsLoadIcons'] 	= [];
-$GLOBALS['lsLoadedFonts'] 	= [];
 
 function layerslider( $id = 0, $filters = '', $options = [] ) {
 
@@ -85,6 +84,15 @@ class LS_Shortcode {
 
 			if( $item['data'] ) {
 				$output .= self::processShortcode( $item['data'], $atts );
+
+				if( ! empty( $GLOBALS['lsRemainingPerSlideEmbeds'] ) && is_array( $GLOBALS['lsRemainingPerSlideEmbeds'] ) ) {
+					foreach( $GLOBALS['lsRemainingPerSlideEmbeds'] as $slideKey ) {
+						$altAttrs = $atts;
+						$altAttrs['firstslide'] = $slideKey;
+						$output .= self::processShortcode( $item['data'], $altAttrs );
+					}
+					unset( $GLOBALS['lsRemainingPerSlideEmbeds'], $GLOBALS['lsSceneEmbedsGroup'] );
+				}
 			}
 
 			return $output;
@@ -304,7 +312,7 @@ class LS_Shortcode {
 
 		// Override firstSlide if it is specified in embed params
 		if( ! empty( $embed['firstslide'] ) ) {
-			$output['init'] = str_replace('[firstSlide]', $embed['firstslide'], $output['init']);
+			$output['init'] = str_replace('[firstSlide]', esc_js( $embed['firstslide'] ), $output['init']);
 		}
 
 		// Filter to override the printed JavaScript init code
@@ -350,9 +358,10 @@ class LS_Shortcode {
 		}
 
 		// Slider and markup data
-		$id 			= $slider['id'];
-		$sliderID 		= 'layerslider_'.$id;
-		$slides 		= $slider['data'];
+		$projectId 		= $slider['id'];
+		$projectSlug 	= $slider['slug'];
+		$projectInitId 	= 'layerslider_'.$projectId;
+		$projectData 	= &$slider['data'];
 
 		// Store generated output
 		$lsInit 		= [];
@@ -362,7 +371,7 @@ class LS_Shortcode {
 		$lsFonts 		= [];
 
 		// Include slider file
-		if( is_array( $slides ) ) {
+		if( is_array( $projectData ) ) {
 
 			// Get DOM utils
 			if( ! class_exists('\LayerSlider\DOM') ) {
@@ -457,3 +466,23 @@ class LS_Shortcode {
 				</div>';
 	}
 }
+
+
+add_action('init', function() {
+	if( ! shortcode_exists('ls_search_form')) {
+		add_shortcode('ls_search_form', function( $args = [] ) {
+
+			$args['reader'] 		= ! empty( $args['reader'] ) ? esc_html( $args['reader'] ) : _x( 'Search for:', 'label' );
+			$args['placeholder'] 	= ! empty( $args['placeholder'] ) ? esc_attr( $args['placeholder'] ) : esc_attr_x('Search &hellip;', 'Search form input placeholder text', 'LayerSlider');
+			$args['button'] 		= ! empty( $args['button'] ) ? esc_attr( $args['button'] ) : esc_attr_x( 'Search', 'submit button' );
+
+			return '<form role="search" method="get" id="searchform" class="search-form ls-search-form" action="'.esc_url( home_url( '/' ) ).'">
+				<label>
+					<span class="screen-reader-text">'.$args['reader'].'</span>
+					<input type="search" class="search-field" placeholder="'.$args['placeholder'].'" value="'.get_search_query().'" name="s" />
+				</label>
+				<input type="submit" class="search-submit" value="'.$args['button'].'">
+			</form>';
+		});
+	}
+});

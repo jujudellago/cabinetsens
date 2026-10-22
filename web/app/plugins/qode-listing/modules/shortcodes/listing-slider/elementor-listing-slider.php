@@ -85,8 +85,12 @@ class QodeListingElementorListingSlider extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode-listing' ];
     }
-
-    protected function register_controls() {
+	
+	public function get_script_depends() {
+		return array( 'owlCarousel', 'qode-owl-slider' );
+	}
+	
+	protected function register_controls() {
 
         $this->start_controls_section(
             'general',

@@ -3,7 +3,7 @@
 Plugin Name: Qode Restaurant
 Description: Plugin that adds features to our theme
 Author: Qode Themes
-Version: 3.0.2
+Version: 3.0.5.1
 */
 
 include_once 'load.php';

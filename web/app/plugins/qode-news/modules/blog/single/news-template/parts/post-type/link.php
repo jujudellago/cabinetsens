@@ -1,5 +1,5 @@
 <?php
-$title_tag = isset($link_tag) ? $link_tag : 'h2';
+$title_tag = isset( $link_tag ) ? qode_news_sanitize_title_tag( $link_tag, 'h2' ) : 'h2';
 $post_link_meta = get_post_meta(get_the_ID(), "title_link", true );
 
 if(!empty($post_link_meta)) {

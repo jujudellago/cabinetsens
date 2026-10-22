@@ -1,17 +1,17 @@
-# Copyright (C) 2020 Qode Themes
+# Copyright (C) 2023 Qode Themes
 # This file is distributed under the same license as the Qode News plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Qode News 3.0.1\n"
+"Project-Id-Version: Qode News 3.0.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/qode-news\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-09-18T12:43:52+02:00\n"
+"POT-Creation-Date: 2023-09-27T14:55:49+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.3.0\n"
+"X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: qode-news\n"
 
 #. Plugin Name of the plugin
@@ -47,8 +47,8 @@ msgstr ""
 #: modules/shortcodes/layout2/elementor-layout2.php:287
 #: modules/shortcodes/layout3/elementor-layout3.php:155
 #: modules/shortcodes/layout3/elementor-layout3.php:287
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:155
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:125
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:159
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:129
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:155
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:287
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:155
@@ -66,8 +66,8 @@ msgstr ""
 #: modules/shortcodes/layout2/elementor-layout2.php:288
 #: modules/shortcodes/layout3/elementor-layout3.php:179
 #: modules/shortcodes/layout3/elementor-layout3.php:288
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:179
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:149
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:183
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:153
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:179
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:288
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:179
@@ -81,8 +81,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:238
 #: modules/shortcodes/layout2/elementor-layout2.php:238
 #: modules/shortcodes/layout3/elementor-layout3.php:238
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:238
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:208
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:242
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:212
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:238
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:238
 msgid "Reaction"
@@ -94,8 +94,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:167
 #: modules/shortcodes/layout2/elementor-layout2.php:167
 #: modules/shortcodes/layout3/elementor-layout3.php:167
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:167
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:137
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:171
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:141
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:167
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:167
 msgid "Author"
@@ -110,8 +110,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:224
 #: modules/shortcodes/layout2/elementor-layout2.php:224
 #: modules/shortcodes/layout3/elementor-layout3.php:224
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:224
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:194
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:228
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:198
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:224
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:224
 #: modules/widgets/blog-categories-reactions/blog-categories-reactions.php:22
@@ -127,8 +127,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:108
 #: modules/shortcodes/layout2/elementor-layout2.php:108
 #: modules/shortcodes/layout3/elementor-layout3.php:108
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:108
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:108
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:112
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:112
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:108
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:108
 msgid "Extra Class Name"
@@ -155,8 +155,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:100
 #: modules/shortcodes/layout2/elementor-layout2.php:100
 #: modules/shortcodes/layout3/elementor-layout3.php:100
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:100
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:100
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:104
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:104
 #: modules/shortcodes/post-slider1/post-slider1.php:184
 #: modules/shortcodes/post-slider1/post-slider1.php:195
 #: modules/shortcodes/post-slider1/post-slider1.php:202
@@ -169,8 +169,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:116
 #: modules/shortcodes/layout2/elementor-layout2.php:116
 #: modules/shortcodes/layout3/elementor-layout3.php:116
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:116
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:116
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:120
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:120
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:116
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:116
 msgid "Number of Posts"
@@ -180,7 +180,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:125
 #: modules/shortcodes/layout2/elementor-layout2.php:125
 #: modules/shortcodes/layout3/elementor-layout3.php:125
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:125
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:129
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:125
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:125
 msgid "Number of Columns"
@@ -190,7 +190,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:128
 #: modules/shortcodes/layout2/elementor-layout2.php:128
 #: modules/shortcodes/layout3/elementor-layout3.php:128
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:128
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:132
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:128
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:128
 msgid "One"
@@ -200,7 +200,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:129
 #: modules/shortcodes/layout2/elementor-layout2.php:129
 #: modules/shortcodes/layout3/elementor-layout3.php:129
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:129
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:133
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:129
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:129
 msgid "Two"
@@ -210,7 +210,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:130
 #: modules/shortcodes/layout2/elementor-layout2.php:130
 #: modules/shortcodes/layout3/elementor-layout3.php:130
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:130
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:134
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:130
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:130
 msgid "Three"
@@ -220,7 +220,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:131
 #: modules/shortcodes/layout2/elementor-layout2.php:131
 #: modules/shortcodes/layout3/elementor-layout3.php:131
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:131
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:135
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:131
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:131
 msgid "Four"
@@ -234,7 +234,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:140
 #: modules/shortcodes/layout2/elementor-layout2.php:140
 #: modules/shortcodes/layout3/elementor-layout3.php:140
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:140
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:144
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:140
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:140
 msgid "Space Between Items"
@@ -249,9 +249,9 @@ msgstr ""
 #: modules/shortcodes/layout2/elementor-layout2.php:343
 #: modules/shortcodes/layout3/elementor-layout3.php:143
 #: modules/shortcodes/layout3/elementor-layout3.php:343
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:143
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:317
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:303
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:147
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:321
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:307
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:143
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:143
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:343
@@ -262,7 +262,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:144
 #: modules/shortcodes/layout2/elementor-layout2.php:144
 #: modules/shortcodes/layout3/elementor-layout3.php:144
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:144
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:148
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:144
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:144
 msgid "Small"
@@ -272,7 +272,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:145
 #: modules/shortcodes/layout2/elementor-layout2.php:145
 #: modules/shortcodes/layout3/elementor-layout3.php:145
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:145
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:149
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:145
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:145
 msgid "Tiny"
@@ -282,7 +282,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:146
 #: modules/shortcodes/layout2/elementor-layout2.php:146
 #: modules/shortcodes/layout3/elementor-layout3.php:146
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:146
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:150
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:146
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:146
 msgid "None"
@@ -292,8 +292,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:156
 #: modules/shortcodes/layout2/elementor-layout2.php:156
 #: modules/shortcodes/layout3/elementor-layout3.php:156
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:156
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:126
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:160
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:130
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:156
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:156
 msgid "Enter the categories of the posts you want to display (leave empty for showing all categories)"
@@ -303,8 +303,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:168
 #: modules/shortcodes/layout2/elementor-layout2.php:168
 #: modules/shortcodes/layout3/elementor-layout3.php:168
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:168
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:138
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:172
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:142
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:168
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:168
 msgid "Enter the authors of the posts you want to display (leave empty for showing all authors)"
@@ -314,8 +314,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:180
 #: modules/shortcodes/layout2/elementor-layout2.php:180
 #: modules/shortcodes/layout3/elementor-layout3.php:180
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:180
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:150
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:184
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:154
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:180
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:180
 msgid "Enter the tags of the posts you want to display (leave empty for showing all tags)"
@@ -325,8 +325,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:191
 #: modules/shortcodes/layout2/elementor-layout2.php:191
 #: modules/shortcodes/layout3/elementor-layout3.php:191
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:191
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:161
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:195
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:165
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:191
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:191
 msgid "Include Posts"
@@ -336,8 +336,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:192
 #: modules/shortcodes/layout2/elementor-layout2.php:192
 #: modules/shortcodes/layout3/elementor-layout3.php:192
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:192
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:162
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:196
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:166
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:192
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:192
 msgid "Enter the IDs or Titles of the posts you want to display"
@@ -347,8 +347,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:203
 #: modules/shortcodes/layout2/elementor-layout2.php:203
 #: modules/shortcodes/layout3/elementor-layout3.php:203
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:203
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:173
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:207
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:177
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:203
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:203
 msgid "Exclude Posts"
@@ -358,8 +358,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:204
 #: modules/shortcodes/layout2/elementor-layout2.php:204
 #: modules/shortcodes/layout3/elementor-layout3.php:204
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:204
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:174
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:208
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:178
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:204
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:204
 msgid "Enter the IDs or Titles of the posts you want to exclude"
@@ -369,8 +369,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:215
 #: modules/shortcodes/layout2/elementor-layout2.php:215
 #: modules/shortcodes/layout3/elementor-layout3.php:215
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:215
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:185
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:219
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:189
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:215
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:215
 msgid "Sort"
@@ -380,8 +380,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:219
 #: modules/shortcodes/layout2/elementor-layout2.php:219
 #: modules/shortcodes/layout3/elementor-layout3.php:219
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:219
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:189
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:223
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:193
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:219
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:219
 msgid "Latest"
@@ -391,8 +391,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:220
 #: modules/shortcodes/layout2/elementor-layout2.php:220
 #: modules/shortcodes/layout3/elementor-layout3.php:220
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:220
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:190
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:224
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:194
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:220
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:220
 msgid "Random"
@@ -402,8 +402,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:221
 #: modules/shortcodes/layout2/elementor-layout2.php:221
 #: modules/shortcodes/layout3/elementor-layout3.php:221
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:221
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:191
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:225
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:195
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:221
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:221
 msgid "Random Posts Today"
@@ -413,8 +413,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:222
 #: modules/shortcodes/layout2/elementor-layout2.php:222
 #: modules/shortcodes/layout3/elementor-layout3.php:222
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:222
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:192
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:226
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:196
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:222
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:222
 msgid "Random in Last 7 Days"
@@ -424,8 +424,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:223
 #: modules/shortcodes/layout2/elementor-layout2.php:223
 #: modules/shortcodes/layout3/elementor-layout3.php:223
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:223
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:193
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:227
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:197
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:223
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:223
 msgid "Most Commented"
@@ -435,8 +435,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:225
 #: modules/shortcodes/layout2/elementor-layout2.php:225
 #: modules/shortcodes/layout3/elementor-layout3.php:225
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:225
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:195
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:229
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:199
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:225
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:225
 msgid "Popular"
@@ -446,8 +446,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:226
 #: modules/shortcodes/layout2/elementor-layout2.php:226
 #: modules/shortcodes/layout3/elementor-layout3.php:226
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:226
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:196
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:230
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:200
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:226
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:226
 msgid "Featured Posts First"
@@ -457,8 +457,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:227
 #: modules/shortcodes/layout2/elementor-layout2.php:227
 #: modules/shortcodes/layout3/elementor-layout3.php:227
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:227
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:197
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:231
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:201
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:227
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:227
 msgid "Trending Posts First"
@@ -468,8 +468,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:228
 #: modules/shortcodes/layout2/elementor-layout2.php:228
 #: modules/shortcodes/layout3/elementor-layout3.php:228
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:228
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:198
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:232
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:202
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:228
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:228
 msgid "Hot Posts First"
@@ -479,8 +479,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:229
 #: modules/shortcodes/layout2/elementor-layout2.php:229
 #: modules/shortcodes/layout3/elementor-layout3.php:229
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:229
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:199
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:233
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:203
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:229
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:229
 msgid "By Reaction"
@@ -493,10 +493,10 @@ msgstr ""
 #: modules/shortcodes/layout2/elementor-layout2.php:253
 #: modules/shortcodes/layout3/elementor-layout3.php:239
 #: modules/shortcodes/layout3/elementor-layout3.php:253
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:239
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:253
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:209
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:223
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:243
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:257
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:213
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:227
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:239
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:253
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:239
@@ -508,8 +508,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:252
 #: modules/shortcodes/layout2/elementor-layout2.php:252
 #: modules/shortcodes/layout3/elementor-layout3.php:252
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:252
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:222
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:256
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:226
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:252
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:252
 msgid "Order"
@@ -519,8 +519,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:266
 #: modules/shortcodes/layout2/elementor-layout2.php:266
 #: modules/shortcodes/layout3/elementor-layout3.php:266
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:266
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:236
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:270
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:240
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:266
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:266
 msgid "Offset"
@@ -548,7 +548,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:300
 #: modules/shortcodes/layout2/elementor-layout2.php:300
 #: modules/shortcodes/layout3/elementor-layout3.php:300
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:274
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:278
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:300
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:300
 msgid "Layout Title"
@@ -558,7 +558,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:308
 #: modules/shortcodes/layout2/elementor-layout2.php:308
 #: modules/shortcodes/layout3/elementor-layout3.php:308
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:282
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:286
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:308
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:308
 msgid "Layout Title Tag"
@@ -569,8 +569,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:328
 #: modules/shortcodes/layout2/elementor-layout2.php:328
 #: modules/shortcodes/layout3/elementor-layout3.php:328
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:302
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:288
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:306
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:292
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:328
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:328
 #: modules/widgets/blog-categories-reactions/blog-categories-reactions.php:27
@@ -598,8 +598,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:338
 #: modules/shortcodes/layout2/elementor-layout2.php:338
 #: modules/shortcodes/layout3/elementor-layout3.php:338
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:312
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:298
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:316
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:302
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:338
 msgid "Image Size"
 msgstr ""
@@ -613,9 +613,9 @@ msgstr ""
 #: modules/shortcodes/layout2/elementor-layout2.php:427
 #: modules/shortcodes/layout3/elementor-layout3.php:427
 #: modules/shortcodes/layout3/widget/layout3.php:42
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:401
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:247
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:374
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:405
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:251
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:378
 #: modules/shortcodes/post-slider1/post-slider1.php:179
 #: modules/shortcodes/post-slider1/post-slider1.php:191
 #: modules/shortcodes/post-slider1/post-slider1.php:219
@@ -627,8 +627,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:342
 #: modules/shortcodes/layout2/elementor-layout2.php:342
 #: modules/shortcodes/layout3/elementor-layout3.php:342
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:316
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:302
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:320
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:306
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:342
 msgid "Thumbnail"
 msgstr ""
@@ -638,8 +638,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:344
 #: modules/shortcodes/layout2/elementor-layout2.php:344
 #: modules/shortcodes/layout3/elementor-layout3.php:344
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:318
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:304
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:322
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:308
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:344
 msgid "Large"
 msgstr ""
@@ -649,9 +649,9 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:345
 #: modules/shortcodes/layout2/elementor-layout2.php:345
 #: modules/shortcodes/layout3/elementor-layout3.php:345
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:319
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:248
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:305
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:323
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:252
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:309
 #: modules/shortcodes/post-slider1/post-slider1.php:180
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:345
 msgid "Landscape"
@@ -662,8 +662,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:346
 #: modules/shortcodes/layout2/elementor-layout2.php:346
 #: modules/shortcodes/layout3/elementor-layout3.php:346
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:320
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:306
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:324
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:310
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:346
 msgid "Portrait"
 msgstr ""
@@ -673,9 +673,9 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:347
 #: modules/shortcodes/layout2/elementor-layout2.php:347
 #: modules/shortcodes/layout3/elementor-layout3.php:347
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:321
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:249
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:307
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:325
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:253
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:311
 #: modules/shortcodes/post-slider1/post-slider1.php:181
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:347
 msgid "Square"
@@ -686,8 +686,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:348
 #: modules/shortcodes/layout2/elementor-layout2.php:348
 #: modules/shortcodes/layout3/elementor-layout3.php:348
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:322
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:308
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:326
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:312
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:348
 msgid "Full"
 msgstr ""
@@ -697,8 +697,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:349
 #: modules/shortcodes/layout2/elementor-layout2.php:349
 #: modules/shortcodes/layout3/elementor-layout3.php:349
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:323
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:309
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:327
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:313
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:349
 msgid "Custom"
 msgstr ""
@@ -708,8 +708,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:339
 #: modules/shortcodes/layout2/elementor-layout2.php:339
 #: modules/shortcodes/layout3/elementor-layout3.php:339
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:313
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:299
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:317
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:303
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:339
 msgid "Choose image size"
 msgstr ""
@@ -719,7 +719,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:358
 #: modules/shortcodes/layout2/elementor-layout2.php:358
 #: modules/shortcodes/layout3/elementor-layout3.php:358
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:332
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:336
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:358
 msgid "Custom Image Width"
 msgstr ""
@@ -729,7 +729,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:359
 #: modules/shortcodes/layout2/elementor-layout2.php:359
 #: modules/shortcodes/layout3/elementor-layout3.php:359
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:333
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:337
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:359
 msgid "Enter image width in px"
 msgstr ""
@@ -739,7 +739,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:370
 #: modules/shortcodes/layout2/elementor-layout2.php:370
 #: modules/shortcodes/layout3/elementor-layout3.php:370
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:344
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:348
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:370
 msgid "Custom Image Height"
 msgstr ""
@@ -749,7 +749,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:371
 #: modules/shortcodes/layout2/elementor-layout2.php:371
 #: modules/shortcodes/layout3/elementor-layout3.php:371
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:345
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:349
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:371
 msgid "Enter image height in px"
 msgstr ""
@@ -759,8 +759,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:382
 #: modules/shortcodes/layout2/elementor-layout2.php:382
 #: modules/shortcodes/layout3/elementor-layout3.php:382
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:356
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:318
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:360
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:322
 msgid "Display Categories"
 msgstr ""
 
@@ -769,8 +769,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:392
 #: modules/shortcodes/layout2/elementor-layout2.php:392
 #: modules/shortcodes/layout3/elementor-layout3.php:392
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:366
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:328
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:370
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:332
 msgid "Display Excerpt"
 msgstr ""
 
@@ -779,8 +779,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:402
 #: modules/shortcodes/layout2/elementor-layout2.php:402
 #: modules/shortcodes/layout3/elementor-layout3.php:402
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:376
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:338
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:380
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:342
 msgid "Max. Excerpt Length"
 msgstr ""
 
@@ -789,8 +789,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:403
 #: modules/shortcodes/layout2/elementor-layout2.php:403
 #: modules/shortcodes/layout3/elementor-layout3.php:403
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:377
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:339
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:381
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:343
 msgid "Enter max of words that can be shown for excerpt"
 msgstr ""
 
@@ -799,7 +799,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:414
 #: modules/shortcodes/layout2/elementor-layout2.php:414
 #: modules/shortcodes/layout3/elementor-layout3.php:414
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:388
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:392
 msgid "Display Date"
 msgstr ""
 
@@ -808,8 +808,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:424
 #: modules/shortcodes/layout2/elementor-layout2.php:424
 #: modules/shortcodes/layout3/elementor-layout3.php:424
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:398
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:370
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:402
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:374
 #: modules/shortcodes/post-slider1/post-slider1.php:216
 msgid "Publication Date Format"
 msgstr ""
@@ -819,8 +819,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:428
 #: modules/shortcodes/layout2/elementor-layout2.php:428
 #: modules/shortcodes/layout3/elementor-layout3.php:428
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:402
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:375
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:406
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:379
 #: modules/shortcodes/post-slider1/post-slider1.php:220
 msgid "Time from Publication"
 msgstr ""
@@ -830,8 +830,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:429
 #: modules/shortcodes/layout2/elementor-layout2.php:429
 #: modules/shortcodes/layout3/elementor-layout3.php:429
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:403
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:376
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:407
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:380
 #: modules/shortcodes/post-slider1/post-slider1.php:221
 msgid "Date of Publication"
 msgstr ""
@@ -841,7 +841,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:441
 #: modules/shortcodes/layout2/elementor-layout2.php:441
 #: modules/shortcodes/layout3/elementor-layout3.php:441
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:415
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:419
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:338
 msgid "Display Author"
 msgstr ""
@@ -855,8 +855,8 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:451
 #: modules/shortcodes/layout2/elementor-layout2.php:451
 #: modules/shortcodes/layout3/elementor-layout3.php:451
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:425
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:350
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:429
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:354
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:348
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:382
 msgid "Display Share"
@@ -867,7 +867,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:461
 #: modules/shortcodes/layout2/elementor-layout2.php:461
 #: modules/shortcodes/layout3/elementor-layout3.php:461
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:435
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:439
 msgid "Display Hot/Trending Icons"
 msgstr ""
 
@@ -888,8 +888,8 @@ msgstr ""
 #: modules/shortcodes/layout3/elementor-layout3.php:320
 #: modules/shortcodes/layout3/layout3.php:98
 #: modules/shortcodes/layout3/layout3.php:105
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:294
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:280
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:298
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:284
 #: modules/shortcodes/post-slider1/post-slider1.php:212
 #: modules/shortcodes/post-slider1/post-slider1.php:223
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:320
@@ -934,7 +934,7 @@ msgstr ""
 #: modules/shortcodes/layout1/elementor-layout1.php:473
 #: modules/shortcodes/layout2/elementor-layout2.php:473
 #: modules/shortcodes/layout3/elementor-layout3.php:493
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:447
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:451
 #: modules/shortcodes/video-layout1/elementor-video-layout1.php:360
 #: modules/shortcodes/video-layout2/elementor-video-layout2.php:394
 msgid "Pagination"
@@ -995,7 +995,7 @@ msgid "Enter a number that will limit pagination numbers amount"
 msgstr ""
 
 #: lib/shortcode-params-functions.php:669
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:455
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:459
 msgid "Display Navigation"
 msgstr ""
 
@@ -1005,7 +1005,7 @@ msgid "Navigation"
 msgstr ""
 
 #: lib/shortcode-params-functions.php:677
-#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:465
+#: modules/shortcodes/post-carousel1/elementor-post-carousel1.php:469
 msgid "Display Paging"
 msgstr ""
 
@@ -1262,7 +1262,7 @@ msgstr ""
 
 #: modules/shortcodes/layout3/elementor-layout3.php:471
 #: modules/shortcodes/layout3/layout3.php:96
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:360
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:364
 #: modules/shortcodes/post-slider1/post-slider1.php:210
 msgid "Display 'Read More' Button"
 msgstr ""
@@ -1274,6 +1274,7 @@ msgid "Display Review"
 msgstr ""
 
 #: modules/shortcodes/layout3/templates/layout3-template.php:15
+#: modules/shortcodes/post-slider1/templates/slider1-template.php:24
 msgid "Read More"
 msgstr ""
 
@@ -1295,27 +1296,27 @@ msgstr ""
 msgid "Post Slider 1"
 msgstr ""
 
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:244
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:248
 #: modules/shortcodes/post-slider1/post-slider1.php:176
 msgid "Slider Size"
 msgstr ""
 
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:250
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:254
 #: modules/shortcodes/post-slider1/post-slider1.php:182
 msgid "Full Screen"
 msgstr ""
 
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:259
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:263
 #: modules/shortcodes/post-slider1/post-slider1.php:188
 msgid "Content in Grid"
 msgstr ""
 
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:269
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:273
 #: modules/shortcodes/post-slider1/post-slider1.php:199
 msgid "Content Padding"
 msgstr ""
 
-#: modules/shortcodes/post-slider1/elementor-post-slider1.php:270
+#: modules/shortcodes/post-slider1/elementor-post-slider1.php:274
 #: modules/shortcodes/post-slider1/post-slider1.php:201
 msgid "Insert content padding in (0px 5px 0px 5px) form"
 msgstr ""

@@ -47,7 +47,30 @@ if (!function_exists('bridge_core_image_with_text_vc_map')) {
 					"param_name" => "content",
 					"value" => "<p>".esc_html__( 'I am test text for Image with text shortcode.', 'bridge-core' )."</p>",
 					'admin_label' => true
-				)
+				),
+				array(
+					"type" => "textfield",
+					"heading" => esc_html__( "Link", 'bridge-core' ),
+					"param_name" => "link",
+				),
+				array(
+					"type" => "dropdown",
+					"heading" => esc_html__( "Link Target", 'bridge-core' ),
+					"param_name" => "link_target",
+					"value" => array(
+						esc_html__( 'Self', 'bridge-core' ) => '_self',
+						esc_html__( 'Blank', 'bridge-core' ) => '_blank'
+					)
+				),
+				array(
+					"type" => "dropdown",
+					"heading" => esc_html__( "Link Position", 'bridge-core' ),
+					"param_name" => "link_position",
+					"value" => array(
+						esc_html__( 'Overlay', 'bridge-core' ) => 'overlay',
+						esc_html__( 'Image and Title', 'bridge-core' ) => 'image_title'
+					)
+				),
 			)
 		) );
 

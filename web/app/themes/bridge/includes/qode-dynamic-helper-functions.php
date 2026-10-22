@@ -118,6 +118,7 @@ if ( ! function_exists( 'bridge_qode_add_style_dynamic' ) ) {
 				.select2-container--default.select2-container--open .select2-selection--single,
 				.select2-container--default .select2-results__option[aria-selected=true],
 				.select2-container--default .select2-results__option--highlighted[aria-selected],
+				.wp-block-woocommerce-filter-wrapper .wc-block-components-price-slider__range-input-progress,
 			<?php } ?>
 			.q_team .q_team_social_holder .q_social_icon_holder:hover .simple_social,
 			.portfolio_template_8 .portfolio_detail .info .category,
@@ -192,7 +193,8 @@ if ( ! function_exists( 'bridge_qode_add_style_dynamic' ) ) {
 			.qode-blog-carousel-titled .qode-bct-post .qode-bct-post-date,
 			.qode-showcase-icon .qode-icon-holder.qode-icon-circle .qode-icon-element,
 			.qode-horizontal-timeline .qode-timeline-navigation a.qode-prev,
-			.qode-horizontal-timeline .qode-timeline-navigation a.qode-next
+			.qode-horizontal-timeline .qode-timeline-navigation a.qode-next,
+			.side_menu a.close_side_menu.qode-side-menu-close-svg:hover
 			{
 
 			color: <?php echo esc_attr($bridge_qode_options['first_color']); ?>;
@@ -227,6 +229,8 @@ if ( ! function_exists( 'bridge_qode_add_style_dynamic' ) ) {
 				.woocommerce ul.products li.product a.qbutton:hover,
 				.woocommerce-page ul.products li.product a.qbutton:hover,
 				.woocommerce ul.products li.product .added_to_cart:hover,
+				.wp-block-woocommerce-filter-wrapper .wc-block-components-price-slider__actions button:hover,
+				.wp-block-woocommerce-filter-wrapper .wc-block-components-price-slider__actions button[type=submit]:not(.wp-block-search__button).wc-block-components-filter-submit-button:hover,
 			<?php } ?>
 			input.wpcf7-form-control.wpcf7-submit:not([disabled]):hover,
 			.portfolio_main_holder .item_holder.image_subtle_rotate_zoom_hover .icons_holder a:hover,
@@ -304,6 +308,8 @@ if ( ! function_exists( 'bridge_qode_add_style_dynamic' ) ) {
 				.woocommerce-page #content .quantity .plus:hover,
 				.woocommerce .widget_price_filter .ui-slider-horizontal .ui-slider-range,
 				.woocommerce-page .widget_price_filter .ui-slider-horizontal .ui-slider-range,
+				.wp-block-woocommerce-filter-wrapper .wc-block-components-price-slider__actions button:hover,
+				.wp-block-woocommerce-filter-wrapper .wc-block-components-price-slider__actions button[type=submit]:not(.wp-block-search__button).wc-block-components-filter-submit-button:hover,
 			<?php } ?>
 			.q_circles_holder .q_circle_inner2:hover,
 			input.wpcf7-form-control.wpcf7-submit:not([disabled]):hover,
@@ -1195,7 +1201,7 @@ if ( ! function_exists( 'bridge_qode_add_style_dynamic' ) ) {
 			$parallax_onoff = $bridge_qode_options['parallax_onoff'];
 		if ($parallax_onoff == "off"){
 			?>
-			.touchevents section.parallax_section_holder{
+			.touchevents .parallax_section_holder{
 			height: auto !important;
 			min-height: 300px;
 			background-position: center top !important;
@@ -3300,14 +3306,14 @@ if ( ! function_exists( 'bridge_qode_add_style_dynamic' ) ) {
 		<?php if($blog_large_image_title_styles !== ""){ ?>
 			.blog_holder.blog_large_image h2,
 			.blog_holder.blog_large_image h2 a,
-			.blog_holder.blog_single article h2
+			.blog_holder.blog_single article h2.entry_title
 			{
 			<?php echo esc_attr($blog_large_image_title_styles); ?>
 			}
 		<?php } ?>
 		<?php if(isset($bridge_qode_options['blog_large_image_title_color']) && $bridge_qode_options['blog_large_image_title_color'] !== '') { ?>
 			.blog_large_image h2 a,
-			.blog_holder.blog_single article h2
+			.blog_holder.blog_single article h2.entry_title
 			{
 			color:<?php echo esc_attr($bridge_qode_options['blog_large_image_title_color']); ?>;
 			}
@@ -5181,7 +5187,7 @@ if ( ! function_exists( 'bridge_qode_add_style_dynamic' ) ) {
 		<?php }
 
 		if(isset($bridge_qode_options['blog_single_title_margin_bottom']) && $bridge_qode_options['blog_single_title_margin_bottom'] !== ''){ ?>
-			.blog_holder.blog_single article h2{
+			.blog_holder.blog_single article h2.entry_title {
 			margin-bottom: <?php echo intval($bridge_qode_options['blog_single_title_margin_bottom']);?>px;
 			}
 		<?php }
@@ -7629,7 +7635,7 @@ if ( ! function_exists( 'bridge_qode_add_style_dynamic' ) ) {
 			$qs_button1_styles .= 'border-color: '.$bridge_qode_options['qs_button_border_color'].' !important;';
 		}
 
-		if(isset($bridge_qode_options['qs_button_border_width']) && $bridge_qode_options['qs_button_border_width']) {
+		if(isset($bridge_qode_options['qs_button_border_width'])) {
 			$qs_button1_styles .= 'border-width: '.$bridge_qode_options['qs_button_border_width'].'px !important;';
 		}
 
@@ -7673,7 +7679,7 @@ if ( ! function_exists( 'bridge_qode_add_style_dynamic' ) ) {
 			$qs_button2_styles .= 'border-color: '.$bridge_qode_options['qs_button2_border_color'].' !important;';
 		}
 
-		if(isset($bridge_qode_options['qs_button2_border_width']) && $bridge_qode_options['qs_button2_border_width']) {
+		if(isset($bridge_qode_options['qs_button2_border_width'])) {
 			$qs_button2_styles .= 'border-width: '.$bridge_qode_options['qs_button2_border_width'].'px !important;';
 		}
 
@@ -8297,10 +8303,22 @@ if ( ! function_exists( 'bridge_qode_add_style_dynamic' ) ) {
 			.woocommerce .qbutton.add-to-cart-button,
 			.woocommerce .single_add_to_cart_button,
 			.woocommerce .woocommerce-message a.button,
-			.woocommerce ul.products li.product .added_to_cart {
+			.woocommerce ul.products li.product .added_to_cart,
+			.qwfw-wishlist-table.qwfw-layout--table .shop_table tbody tr td.product-add-to-cart .qwfw-e-add-to-cart {
 			<?php echo implode(';', $products_add_to_cart_styles); ?>
 			}
 		<?php }
+
+		if(is_array($products_add_to_cart_styles) && count($products_add_to_cart_styles)) {
+			$important_products_add_to_cart_styles = array();
+			foreach( $products_add_to_cart_styles as $key => $value ) {
+				$important_products_add_to_cart_styles[] = $value . ' !important';
+			} ?>
+			body div.wc-block-components-notice-banner>.wc-block-components-notice-banner__content .button {
+			<?php echo implode(';', $important_products_add_to_cart_styles); ?>
+			}
+		<?php }
+
 		$products_add_to_cart_hover_styles = array();
 
 		if(isset($bridge_qode_options['woo_products_add_to_cart_background_hover_color']) && $bridge_qode_options['woo_products_add_to_cart_background_hover_color'] !== '') {
@@ -8322,13 +8340,25 @@ if ( ! function_exists( 'bridge_qode_add_style_dynamic' ) ) {
 			.woocommerce ul.products li.product .added_to_cart:hover {
 			<?php echo implode(';', $products_add_to_cart_hover_styles); ?>
 			}
-		<?php } ?>
+		<?php }
 
-		<?php
+		if(is_array($products_add_to_cart_hover_styles) && count($products_add_to_cart_hover_styles)) {
+			$important_products_add_to_cart_hover_styles = array();
+			foreach( $products_add_to_cart_hover_styles as $key => $value ) {
+				$important_products_add_to_cart_hover_styles[] = $value . ' !important';
+			} ?>
+			body div.wc-block-components-notice-banner>.wc-block-components-notice-banner__content .button:hover {
+			<?php echo implode(';', $important_products_add_to_cart_hover_styles); ?>
+			}
+		<?php }
 
 		if (isset($bridge_qode_options['woo_products_add_to_cart_hover_type']) && $bridge_qode_options['woo_products_add_to_cart_hover_type'] == 'enlarge'){ ?>
 			.woocommerce .woocommerce-message a.button:hover{
 			padding: 0 27px;
+			}
+
+			body div.wc-block-components-notice-banner>.wc-block-components-notice-banner__content .button:hover {
+			padding: 0 27px !important;
 			}
 
 			.woocommerce ul.products li.product .added_to_cart:hover{
@@ -9861,7 +9891,9 @@ if ( ! function_exists( 'bridge_qode_add_style_dynamic' ) ) {
             .elementor-widget.elementor-widget-sidebar .widget.widget_product_tag_cloud .tagcloud a,
 			.widget .tagcloud a,
 			.widget.widget_tag_cloud .tagcloud a,
-			.widget.widget_product_tag_cloud .tagcloud a{
+			.widget.widget_product_tag_cloud .tagcloud a,
+			.widget .wp-block-tag-cloud a,
+			aside.sidebar .widget.widget_block .wp-block-tag-cloud a {
 			<?php echo esc_attr(implode(';', $tags_styles)); ?>
 			}
 
@@ -9885,7 +9917,8 @@ if ( ! function_exists( 'bridge_qode_add_style_dynamic' ) ) {
 			aside.sidebar .widget.widget_tag_cloud .tagcloud a:hover,
 			.wpb_widgetised_column .widget.widget_tag_cloud .tagcloud a:hover,
             .elementor-widget.elementor-widget-sidebar .widget.widget_tag_cloud .tagcloud a:hover,
-			.widget .tagcloud a:hover{
+			.widget .tagcloud a:hover,
+			aside.sidebar .widget.widget_block .wp-block-tag-cloud a:hover{
 			<?php echo esc_attr(implode(';', $tags_hover_styles)); ?>
 			}
 		<?php } ?>
@@ -10091,7 +10124,8 @@ if ( ! function_exists( 'bridge_qode_add_style_dynamic' ) ) {
 			aside .widget h5:not(.latest_post_title),
 			.wpb_widgetised_column .widget h5:not(.latest_post_title),
             .elementor-widget.elementor-widget-sidebar .widget h5:not(.latest_post_title),
-            .elementor-widget.elementor-widget-sidebar .widget h5:not(.qode-post-title) {
+            .elementor-widget.elementor-widget-sidebar .widget h5:not(.qode-post-title),
+			aside .widget .wp-block-heading {
 			<?php echo esc_attr($sidebar_title_styles); ?>
 			}
 		<?php } ?>
@@ -10508,23 +10542,7 @@ if ( ! function_exists( 'bridge_qode_add_default_dynamic' ) ) {
 		global $bridge_qode_options;
 		
 		?>
-		function bridgeQodeAjaxSubmitCommentForm(){
-		"use strict";
-
-		var options = {
-		success: function(){
-		$j("#commentform textarea").val("");
-		$j("#commentform .success p").text("<?php esc_html_e('Comment has been sent!','bridge'); ?>");
-		}
-		};
-
-		$j('#commentform').submit(function() {
-		$j(this).find('input[type="submit"]').next('.success').remove();
-		$j(this).find('input[type="submit"]').after('<div class="success"><p></p></div>');
-		$j(this).ajaxSubmit(options);
-		return false;
-		});
-		}
+		
 		var header_height = 100;
 		var min_header_height_scroll = 57;
 		var min_header_height_fixed_hidden = 50;

@@ -13,6 +13,11 @@
         background-color: #ffe0e0;
       }
     }
+    .vc_row_layouts.vc_control {
+      // Push subsequent controls to the right so the drag handle stays on the left
+      // and any future controls between get whatever space they need.
+      margin-right: auto;
+    }
     .vc_row_layouts {
       background: #ffffff;
     }
@@ -28,7 +33,7 @@
 }
 
 .wpb_row_container {
-  > .wpb_vc_gitem_col {
+  > .wpb_vc_gitem_col.wpb_vc_column {
     > .vc_controls, > .wpb_element_wrapper {
       background-color: #ffffff;
     }

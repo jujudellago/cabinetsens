@@ -10,10 +10,9 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see 	https://docs.woocommerce.com/document/template-structure/
- * @author  WooThemes
- * @package WooCommerce/Templates
- * @version 3.8.0
+ * @see     https://woocommerce.com/document/template-structure/
+ * @package WooCommerce\Templates
+ * @version 9.8.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -24,22 +23,24 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Filter tabs and allow third parties to add their own.
  *
  * Each tab is an array containing title, callback and priority.
+ *
  * @see woocommerce_default_product_tabs()
  */
 $product_tabs = apply_filters( 'woocommerce_product_tabs', array() );
+
 $single_type = bridge_qode_woocommerce_single_type();
 $tabs_position_class = 'left';
-if($single_type == 'tabs-on-bottom'){
+if ( $single_type == 'tabs-on-bottom' ) {
 	$tabs_position_class = 'center';
 }
 
 if ( ! empty( $product_tabs ) ) : ?>
-	<?php if($single_type != '') { ?>
-		<div class="q_tabs horizontal <?php echo esc_attr($tabs_position_class);?>">
+	<?php if ( $single_type != '' ) { ?>
+		<div class="q_tabs horizontal <?php echo esc_attr( $tabs_position_class ); ?>">
 			<ul class="tabs-nav">
 				<?php foreach ( $product_tabs as $key => $product_tab ) : ?>
-					<li class="<?php echo esc_attr( $key ); ?>_tab">
-						<a href="#tab-<?php echo esc_attr( $key ); ?>"><?php echo apply_filters( 'woocommerce_product_' . $key . '_tab_title', esc_html( $product_tab['title'] ), $key ); ?></a>
+					<li role="presentation" class="<?php echo esc_attr( $key ); ?>_tab">
+						<a href="#tab-<?php echo esc_attr( $key ); ?>" role="tab" aria-controls="tab-<?php echo esc_attr( $key ); ?>"><?php echo apply_filters( 'woocommerce_product_' . $key . '_tab_title', esc_html( $product_tab['title'] ), $key ); ?></a>
 					</li>
 				<?php endforeach; ?>
 			</ul>

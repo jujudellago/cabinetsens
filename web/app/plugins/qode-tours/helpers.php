@@ -39,37 +39,63 @@ if(!function_exists('qode_tours_get_shortcode_module_template_part')) {
 	 *
 	 * @return string
 	 */
-	function qode_tours_get_tour_module_template_part($template, $module, $part, $slug = '', $params = array()) {
-
+	function qode_tours_get_tour_module_template_part( $template, $module, $part, $slug = '', $params = array() ) {
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
+		}
+		
+		if ( is_scalar( $module ) ) {
+			$module = preg_replace( $available_characters, '', $module );
+		} else {
+			$module = '';
+		}
+		
+		if ( is_scalar( $part ) ) {
+			$part = preg_replace( $available_characters, '', $part );
+		} else {
+			$part = '';
+		}
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
 		//HTML Content from template
 		$html          = '';
-		$template_path = QODE_TOURS_CPT_PATH.'/'.$module.'/'.$part;
-
-		$temp = $template_path.'/'.$template;
-		if(is_array($params) && count($params)) {
-			extract($params);
+		$template_path = QODE_TOURS_CPT_PATH . '/' . $module . '/' . $part;
+		
+		$temp = $template_path . '/' . $template;
+		if ( is_array( $params ) && count( $params ) ) {
+			extract( $params );
 		}
-
+		
 		$template = '';
 		
-		if (!empty($temp)) {
-			if (!empty($slug)) {
+		if ( ! empty( $temp ) ) {
+			if ( ! empty( $slug ) ) {
 				$template = "{$temp}-{$slug}.php";
 				
-				if(!file_exists($template)) {
-					$template = $temp.'.php';
+				if ( ! file_exists( $template ) ) {
+					$template = $temp . '.php';
 				}
 			} else {
-				$template = $temp.'.php';
+				$template = $temp . '.php';
 			}
 		}
 		
-		if($template) {
+		if ( $template ) {
 			ob_start();
-			include($template);
+			include( $template );
 			$html = ob_get_clean();
 		}
-
+		
 		return $html;
 	}
 }
@@ -662,4 +688,31 @@ if(!function_exists('qode_tours_get_paypal_currency')) {
 
 	    return $option;
     }
+}
+
+if ( ! function_exists( 'qode_tours_get_allowed_title_tags' ) ) {
+	/**
+	 * HTML tags allowed in title-tag position.
+	 *
+	 * @return string[]
+	 */
+	function qode_tours_get_allowed_title_tags() {
+		return array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'div' );
+	}
+}
+
+if ( ! function_exists( 'qode_tours_sanitize_title_tag' ) ) {
+	/**
+	 * Constrains a title tag name to an allow-list. esc_attr() is not safe in tag-name position.
+	 *
+	 * @param mixed  $title_tag
+	 * @param string $default
+	 *
+	 * @return string
+	 */
+	function qode_tours_sanitize_title_tag( $title_tag, $default = 'h4' ) {
+		$title_tag = is_string( $title_tag ) ? strtolower( trim( $title_tag ) ) : '';
+
+		return in_array( $title_tag, qode_tours_get_allowed_title_tags(), true ) ? $title_tag : $default;
+	}
 }

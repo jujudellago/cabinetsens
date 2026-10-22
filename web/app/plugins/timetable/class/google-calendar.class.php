@@ -140,6 +140,12 @@ class TT_Google_Calendar
 			}
 			
 			$eventHourDetails = $this->prepareEventHourDetails($event, $item, $weekdays);
+			if(!isset($this->events_mapping[$this->id]))
+			{
+				if(!is_array($this->events_mapping))
+					$this->events_mapping = array();
+				$this->events_mapping[$this->id] = array();
+			}
 			$eventHourId = array_search($item->id, $this->events_mapping[$this->id]);
 			if($eventHourId && TT_Event_Hour::Exists($eventHourId))
 			{

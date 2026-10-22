@@ -1,11 +1,17 @@
 <?php
+/**
+ * Backend shortcodes template.
+ *
+ * phpcs:ignoreFile:Generic.PHP.DisallowAlternativePHPTags.MaybeASPShortOpenTagFound
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 
 global $current_user;
 wp_get_current_user();
-require_once vc_path_dir( 'AUTOLOAD_DIR', 'class-vc-settings-presets.php' );
+require_once vc_path_dir( 'CORE_DIR', 'presets/class-vc-settings-presets.php' );
 
 if ( vc_user_access()->part( 'presets' )->can()->get() ) {
 	$vc_vendor_settings_presets = Vc_Settings_Preset::listDefaultVendorSettingsPresets();
@@ -14,10 +20,9 @@ if ( vc_user_access()->part( 'presets' )->can()->get() ) {
 	$vc_vendor_settings_presets = array();
 	$vc_all_presets = array();
 }
-$custom_tag = 'script'; // TODO: Use HTML Shadow dom or ajax response for templates
+$custom_tag = 'script'; // TODO: Use HTML Shadow dom or ajax response for templates.
 ?>
 <<?php echo esc_attr( $custom_tag ); ?>>
-	var vc_user_mapper = <?php echo wp_json_encode( WPBMap::getUserShortCodes() ); ?>,
 		vc_mapper = <?php echo wp_json_encode( WPBMap::getShortCodes() ); ?>,
 		vc_vendor_settings_presets = <?php echo wp_json_encode( $vc_vendor_settings_presets ); ?>,
 		vc_roles = [],
@@ -28,6 +33,7 @@ $custom_tag = 'script'; // TODO: Use HTML Shadow dom or ajax response for templa
 </<?php echo esc_attr( $custom_tag ); ?>>
 
 <?php vc_include_template( 'editors/partials/vc_settings-image-block.tpl.php' ); ?>
+<?php vc_include_template( 'editors/partials/vc_settings-single-image-block.tpl.php' ); ?>
 
 <?php foreach ( WPBMap::getShortCodes() as $sc_base => $el ) : ?>
 	<<?php echo esc_attr( $custom_tag ); ?> type="text/html" id="vc_shortcode-template-<?php echo esc_attr( $sc_base ); ?>">

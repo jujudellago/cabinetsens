@@ -3,7 +3,7 @@
 Plugin Name: Qode Music
 Description: Plugin that adds music features to our theme
 Author: Qode Themes
-Version: 2.1.4
+Version: 2.1.8.2
 */
 
 include_once 'load.php';

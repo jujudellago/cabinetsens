@@ -45,3 +45,13 @@ if( !function_exists('qode_listing_set_ls_slider_icon_class_name_for_vc_shortcod
 
 	add_filter('qode_core_filter_add_vc_shortcodes_custom_icon_class', 'qode_listing_set_ls_slider_icon_class_name_for_vc_shortcodes');
 }
+
+if( ! function_exists( 'qode_listing_include_listing_slider_shortcode_for_owl_carousel' ) ) {
+	function qode_listing_include_listing_slider_shortcode_for_owl_carousel( $shortcodes_to_check ) {
+		$shortcodes_to_check[] = 'qode_listing_slider';
+		
+		return $shortcodes_to_check;
+	}
+	
+	add_filter( 'bridge_qode_filter_owl_carousel_shortcodes', 'qode_listing_include_listing_slider_shortcode_for_owl_carousel' );
+}

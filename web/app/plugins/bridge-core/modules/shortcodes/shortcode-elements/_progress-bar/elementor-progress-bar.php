@@ -16,8 +16,12 @@ class BridgeCoreElementorProgressBar extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode' ];
     }
-
-    protected function register_controls() {
+	
+	public function get_script_depends() {
+		return array( 'countTo', 'qode-progress-bar' );
+	}
+	
+	protected function register_controls() {
 
 	   $this->start_controls_section(
             'general',

@@ -177,6 +177,13 @@ position: absolute;
     padding-left: 12px;
 }
 
+.qodef-page .qodef-page-section-additional-subtitle {
+	margin: 19px 0 15px;
+	font-size: 14px;
+	font-weight: 400;
+	position: relative;
+}
+
 .qodef-page .qodef-page-section-subtitle:before {
     /*content: '';*/
     /*position: absolute;*/

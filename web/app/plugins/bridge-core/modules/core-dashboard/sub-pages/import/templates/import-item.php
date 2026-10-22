@@ -26,6 +26,7 @@
                                 </div>
                                 <div class="qodef-popup-required-plugins-holder">
                                     <?php echo wp_kses_post( $required_plugins_html ); ?>
+	                                <?php wp_nonce_field( "qodef_cd_install_plugins_nonce", "qodef_cd_install_plugins_nonce" ); ?>
                                 </div>
                             </div>
 						</div>

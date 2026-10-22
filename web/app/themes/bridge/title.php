@@ -1,7 +1,7 @@
 <?php 
 $bridge_qode_options = bridge_qode_return_global_options();
 /* Set id on -1 beacause archive page id can have same id as some post and settings is not good */
-if(is_category() || is_tag() || is_author()){
+if(is_category() || is_tag() || is_author() || is_tax('portfolio_category') || is_tax('portfolio_tag') || is_post_type_archive('portfolio_page')){
 	$bridge_qode_archive_id = $id;
 	$id = -1;
 }
@@ -78,7 +78,7 @@ $bridge_qode_header_top = 0;
 if(isset($bridge_qode_options['header_top_area']) && $bridge_qode_options['header_top_area'] == "yes"){
 	$bridge_qode_header_top = 33;
 }
-$bridge_qode_header_height_padding = $bridge_qode_header_height + $bridge_qode_menu_bottom + $bridge_qode_header_top;
+$bridge_qode_header_height_padding = intval( $bridge_qode_header_height ) + intval( $bridge_qode_menu_bottom ) + $bridge_qode_header_top;
 if ((isset($bridge_qode_options['center_logo_image']) && $bridge_qode_options['center_logo_image'] == "yes") || bridge_qode_options()->getOptionValue('header_bottom_appearance') == 'fixed_hiding') {
     if(isset($bridge_qode_options['logo_image'])){
                 $bridge_qode_logo_width = 0;
@@ -92,11 +92,11 @@ if ((isset($bridge_qode_options['center_logo_image']) && $bridge_qode_options['c
                 }
             }
     if($bridge_qode_options['header_bottom_appearance'] == 'stick menu_bottom'){
-        $bridge_qode_header_height_padding = $bridge_qode_logo_height + 30 + $bridge_qode_menu_bottom + $bridge_qode_header_top; // 30 is top and bottom margin of centered logo
+        $bridge_qode_header_height_padding = intval( $bridge_qode_logo_height ) + 30 + intval( $bridge_qode_menu_bottom ) + $bridge_qode_header_top; // 30 is top and bottom margin of centered logo
     } else if($bridge_qode_options['header_bottom_appearance'] == 'fixed_hiding'){
-        $bridge_qode_header_height_padding = $bridge_qode_logo_height/2 + 40 + $bridge_qode_header_height + $bridge_qode_header_top; // 40 is top and bottom margin of centered logo
+        $bridge_qode_header_height_padding = intval( $bridge_qode_logo_height )/2 + 40 + intval( $bridge_qode_header_height ) + $bridge_qode_header_top; // 40 is top and bottom margin of centered logo
     } else {
-        $bridge_qode_header_height_padding = $bridge_qode_logo_height + 30 + $bridge_qode_header_height + $bridge_qode_header_top; // 30 is top and bottom margin of centered logo
+        $bridge_qode_header_height_padding = intval( $bridge_qode_logo_height ) + 30 + intval( $bridge_qode_header_height ) + $bridge_qode_header_top; // 30 is top and bottom margin of centered logo
     }
 }
 
@@ -118,13 +118,13 @@ if(bridge_qode_options()->getOptionValue('header_bottom_appearance') == 'fixed_t
 	}else {
 		if (isset($bridge_qode_options['center_logo_image']) && $bridge_qode_options['center_logo_image'] == "yes") {
 			if($bridge_qode_options['header_bottom_appearance'] == 'stick menu_bottom'){
-				$bridge_qode_title_height = $bridge_qode_title_height + $bridge_qode_logo_height + 30 + $bridge_qode_menu_bottom + $bridge_qode_header_top; // 30 is top and bottom margin of centered logo
+				$bridge_qode_title_height = $bridge_qode_title_height + intval( $bridge_qode_logo_height ) + 30 + intval( $bridge_qode_menu_bottom ) + $bridge_qode_header_top; // 30 is top and bottom margin of centered logo
 			} else {
-				$bridge_qode_title_height = $bridge_qode_header_height + $bridge_qode_title_height + $bridge_qode_logo_height + 30 + $bridge_qode_header_top; // 30 is top and bottom margin of centered logo
+				$bridge_qode_title_height = intval( $bridge_qode_header_height ) + $bridge_qode_title_height + intval( $bridge_qode_logo_height ) + 30 + $bridge_qode_header_top; // 30 is top and bottom margin of centered logo
 			}
 			
 		} else {
-			$bridge_qode_title_height = $bridge_qode_title_height + $bridge_qode_header_height + $bridge_qode_menu_bottom + $bridge_qode_header_top;
+			$bridge_qode_title_height = $bridge_qode_title_height + intval( $bridge_qode_header_height ) + intval( $bridge_qode_menu_bottom ) + $bridge_qode_header_top;
 
 		 }
 	}
@@ -596,6 +596,16 @@ if($bridge_qode_title_content_animation == 'yes' || $bridge_qode_title_animation
 	$bridge_qode_animation = 'data-animation="yes"';
 }
 
+$title_holder_classes = array(
+	'title_holder'
+);
+
+$show_only_breadcrumbs = false;
+if( 'yes' === bridge_qode_get_meta_field_intersect( 'show_only_breadcrumbs', $id ) && "yes" === $bridge_qode_enable_breadcrumbs ) {
+	$show_only_breadcrumbs = true;
+	$title_holder_classes[] = 'qode-only-breadcrumbs-title';
+}
+
 if(!bridge_qode_is_title_hidden()) { ?>
 	<div class="title_outer <?php echo bridge_qode_get_module_part( $bridge_qode_animate_title_class.$bridge_qode_title_text_shadow ); if($bridge_qode_responsive_title_image == 'yes' && $bridge_qode_show_title_image == true){ echo ' with_image'; }?>"  <?php print bridge_qode_get_module_part( $bridge_qode_animation ); ?>  <?php echo 'data-height="'.$bridge_qode_title_height.'"'; if($bridge_qode_title_height != '' && $bridge_qode_animate_title_area == 'area_top_bottom'){ echo 'style="opacity:0;height:' . $bridge_qode_header_height_padding .'px;"'; } ?>>
 		<div class="title <?php echo bridge_qode_get_module_part( $bridge_qode_page_title_fontsize . " " . $bridge_qode_page_title_position . " " . $bridge_qode_page_title_border_bottom_in_grid_class ); if($bridge_qode_responsive_title_image == 'no' && $bridge_qode_title_image != "" && ($bridge_qode_fixed_title_image == "yes" || $bridge_qode_fixed_title_image == "yes_zoom") && $bridge_qode_show_title_image == true){ echo ' has_fixed_background '; if($bridge_qode_fixed_title_image == "yes_zoom"){ echo 'zoom_out '; } } if($bridge_qode_responsive_title_image == 'no' && $bridge_qode_title_image != "" && $bridge_qode_fixed_title_image == "no" && $bridge_qode_show_title_image == true){ echo ' has_background'; }  ?>" style="<?php if($bridge_qode_responsive_title_image == 'no' && $bridge_qode_title_image != "" && $bridge_qode_show_title_image == true){ if($bridge_qode_title_image_width != ''){ echo 'background-size:'.$bridge_qode_title_image_width.'px auto;'; } echo 'background-image:url('.$bridge_qode_title_image.');';  } if($bridge_qode_title_height != ''){ echo 'height:'.$bridge_qode_title_height.'px;'; } if($bridge_qode_title_background_color != ''){ echo 'background-color:'.$bridge_qode_title_background_color.';'; } ?>">
@@ -604,7 +614,7 @@ if(!bridge_qode_is_title_hidden()) { ?>
 				<div class="title_overlay" style="background-image:url('<?php echo esc_url( $bridge_qode_title_overlay_image ); ?>');"></div>
 			<?php } ?>
 			<?php if(!bridge_qode_is_title_text_hidden()) { ?>
-				<div class="title_holder" <?php print bridge_qode_get_module_part( $bridge_qode_page_title_content_animation_data ); ?> <?php if($bridge_qode_responsive_title_image != 'yes' && get_post_meta($id, "qode_show-page-title-image", true) == ""){ echo bridge_qode_get_module_part( $bridge_qode_title_holder_height ); }?>>
+				<div <?php bridge_qode_class_attribute( implode( ' ', $title_holder_classes ) ); ?> <?php print bridge_qode_get_module_part( $bridge_qode_page_title_content_animation_data ); ?> <?php if($bridge_qode_responsive_title_image != 'yes' && get_post_meta($id, "qode_show-page-title-image", true) == ""){ echo bridge_qode_get_module_part( $bridge_qode_title_holder_height ); }?>>
 					<div class="container">
 						<div class="container_inner clearfix">
 								<div class="title_subtitle_holder" <?php if($bridge_qode_responsive_title_image == 'yes' && $bridge_qode_show_title_image == true){ echo bridge_qode_get_module_part( $bridge_qode_title_subtitle_padding ); }?>>
@@ -612,23 +622,29 @@ if(!bridge_qode_is_title_hidden()) { ?>
                                 <?php if(($bridge_qode_responsive_title_image == 'yes' && $bridge_qode_show_title_image == true) || ($bridge_qode_fixed_title_image == "yes" || $bridge_qode_fixed_title_image == "yes_zoom") || ($bridge_qode_responsive_title_image == 'no' && $bridge_qode_title_image != "" && $bridge_qode_fixed_title_image == "no" && $bridge_qode_show_title_image == true)){ ?>
 									<div class="title_subtitle_holder_inner">
 								<?php } ?>
-									<?php if(get_post_meta($id, "qode_page_text_above_title", true) != ""){ ?>
-										<span class="text_above_title" <?php echo bridge_qode_get_inline_style($bridge_qode_text_above_title_color); ?>><?php echo get_post_meta($id, "qode_page_text_above_title", true); ?></span>
-									<?php } ?>
-									<h1 <?php print bridge_qode_get_module_part( $bridge_qode_page_title_animation_data ); if(get_post_meta($id, "qode_page-title-color", true)) { ?> style="color:<?php echo get_post_meta($id, "qode_page-title-color", true) ?>" <?php } ?>><span><?php bridge_qode_title_text(); ?></span></h1>
-									<?php if($bridge_qode_title_separator == "yes"){ ?>
-										<span <?php bridge_qode_class_attribute(implode(' ', $bridge_qode_separator_classes)) ?> <?php echo bridge_qode_get_module_part( $bridge_qode_separator_color ); ?> <?php print bridge_qode_get_module_part( $bridge_qode_page_title_separator_animation_data ); ?>></span>
-									<?php } ?>
-								
-									<?php if(get_post_meta($id, "qode_page_subtitle", true) != ""){ ?>
-										<?php if(get_post_meta($id, "qode_page_title_font_size", true) == "large") { ?>
-											<h4 class="subtitle" <?php print bridge_qode_get_module_part( $bridge_qode_page_subtitle_animation_data ); ?> <?php echo bridge_qode_get_module_part( $bridge_qode_subtitle_color ); ?>><?php echo get_post_meta($id, "qode_page_subtitle", true); ?></h4>
-										<?php } else { ?>
-											<span class="subtitle" <?php print bridge_qode_get_module_part( $bridge_qode_page_subtitle_animation_data ); ?> <?php echo bridge_qode_get_module_part( $bridge_qode_subtitle_color ); ?>><?php echo get_post_meta($id, "qode_page_subtitle", true); ?></span>
+									<?php if( $show_only_breadcrumbs ) { ?>
+										<?php if (function_exists('bridge_qode_custom_breadcrumbs') && $bridge_qode_enable_breadcrumbs == "yes") { ?>
+											<div class="breadcrumb" <?php print bridge_qode_get_module_part( $bridge_qode_page_title_breadcrumbs_animation_data ); ?>> <?php bridge_qode_custom_breadcrumbs(); ?></div>
 										<?php } ?>
-									<?php } ?>
-									<?php if (function_exists('bridge_qode_custom_breadcrumbs') && $bridge_qode_enable_breadcrumbs == "yes") { ?>
-										<div class="breadcrumb" <?php print bridge_qode_get_module_part( $bridge_qode_page_title_breadcrumbs_animation_data ); ?>> <?php bridge_qode_custom_breadcrumbs(); ?></div>
+									<?php } else { ?>
+										<?php if(get_post_meta($id, "qode_page_text_above_title", true) != ""){ ?>
+											<span class="text_above_title" <?php echo bridge_qode_get_inline_style($bridge_qode_text_above_title_color); ?>><?php echo get_post_meta($id, "qode_page_text_above_title", true); ?></span>
+										<?php } ?>
+										<h1 <?php print bridge_qode_get_module_part( $bridge_qode_page_title_animation_data ); if(get_post_meta($id, "qode_page-title-color", true)) { ?> style="color:<?php echo get_post_meta($id, "qode_page-title-color", true) ?>" <?php } ?>><span><?php bridge_qode_title_text(); ?></span></h1>
+										<?php if($bridge_qode_title_separator == "yes"){ ?>
+											<span <?php bridge_qode_class_attribute(implode(' ', $bridge_qode_separator_classes)) ?> <?php echo bridge_qode_get_module_part( $bridge_qode_separator_color ); ?> <?php print bridge_qode_get_module_part( $bridge_qode_page_title_separator_animation_data ); ?>></span>
+										<?php } ?>
+										
+										<?php if(get_post_meta($id, "qode_page_subtitle", true) != ""){ ?>
+											<?php if(get_post_meta($id, "qode_page_title_font_size", true) == "large") { ?>
+												<h4 class="subtitle" <?php print bridge_qode_get_module_part( $bridge_qode_page_subtitle_animation_data ); ?> <?php echo bridge_qode_get_module_part( $bridge_qode_subtitle_color ); ?>><?php echo get_post_meta($id, "qode_page_subtitle", true); ?></h4>
+											<?php } else { ?>
+												<span class="subtitle" <?php print bridge_qode_get_module_part( $bridge_qode_page_subtitle_animation_data ); ?> <?php echo bridge_qode_get_module_part( $bridge_qode_subtitle_color ); ?>><?php echo get_post_meta($id, "qode_page_subtitle", true); ?></span>
+											<?php } ?>
+										<?php } ?>
+										<?php if (function_exists('bridge_qode_custom_breadcrumbs') && $bridge_qode_enable_breadcrumbs == "yes") { ?>
+											<div class="breadcrumb" <?php print bridge_qode_get_module_part( $bridge_qode_page_title_breadcrumbs_animation_data ); ?>> <?php bridge_qode_custom_breadcrumbs(); ?></div>
+										<?php } ?>
 									<?php } ?>
 								<?php if(($bridge_qode_responsive_title_image == 'yes' && $bridge_qode_show_title_image == true)  || ($bridge_qode_fixed_title_image == "yes" || $bridge_qode_fixed_title_image == "yes_zoom") || ($bridge_qode_responsive_title_image == 'no' && $bridge_qode_title_image != "" && $bridge_qode_fixed_title_image == "no" && $bridge_qode_show_title_image == true)){ ?>
 									</div>
@@ -657,7 +673,7 @@ if(!bridge_qode_is_title_hidden()) { ?>
 <?php } ?>
 <?php
 	/* Return id for archive pages */
-	if(is_category() || is_tag() || is_author()){
+	if(is_category() || is_tag() || is_author() || is_tax('portfolio_category') || is_tax('portfolio_tag') || is_post_type_archive('portfolio_page')){
 		$id = $bridge_qode_archive_id;
 	}
 ?>

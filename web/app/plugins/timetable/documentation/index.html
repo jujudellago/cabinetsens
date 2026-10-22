@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
-        <title>Timetable - Responsive Schedule for WordPress - Documentation</title>
+        <title>Timetable - Booking Schedule for WordPress - Documentation</title>
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
         
         <link rel="stylesheet" type="text/css" href="style/jquery-ui/smoothness/jquery-ui.css"/> 
@@ -22,15 +22,15 @@
             <div class="header clear-fix overflow-fix">
                 
                 <div class="layout-50-left">
-                    <a href="https://1.envato.market/quanticalabs-codecanyon" class="header-logo"></a>
+                    <a href="https://quanticalabs.com/" class="header-logo"></a>
                 </div>
                 
                 <div class="layout-50-right">
                     
                     <ul class="no-list header-menu">
-                        <li><a href="https://1.envato.market/quanticalabs-profile-contact-form-codecanyon" class="header-menu-contact-us">Contact us</a></li>
+                        <li><a href="https://quanticalabs.com/contact/" class="header-menu-contact-us">Contact us</a></li>
                         <li><a href="https://twitter.com/QuanticaLabs" class="header-menu-twitter"></a></li>
-                        <li><a href="https://1.envato.market/quanticalabs-codecanyon" class="header-menu-envato"></a></li>
+                        <li><a href="https://quanticalabs.com/" class="header-menu-envato"></a></li>
                     </ul>
                     
                 </div>
@@ -48,7 +48,7 @@
                         <li><a href="#tab-4">CSS Styles</a></li>
 						<li><a href="#tab-5">Upcoming Events widget</a></li>
 						<li><a href="#tab-6">Credits</a></li>
-						<li><a href="#tab-7">Changelog</a></li>
+						<li><a href="#tab-changelog">Changelog</a></li>
                         <li><a href="#tab-8">Support</a></li>
                     </ul>
                     
@@ -56,9 +56,9 @@
                     
                     <div id="tab-1">
                         
-                        <h1>Timetable Responsive Schedule for WordPress</h1>      
+                        <h1>Timetable Booking Schedule for WordPress</h1>      
                         
-						<p><strong><a href="https://1.envato.market/timetable-responsive-schedule-for-wordpress">Timetable Responsive Schedule for WordPress</a></strong> is a powerful and easy-to-use schedule plugin for WordPress. It will help you to create a timetable view of your events in minutes. It is perfect for gym classes, school or kindergarten classes, medical departments, nightclubs, lesson plans, meal plans etc. It comes with Events Manager, Event Occurrences Shortcode, Timetable Shortcode Generator and Upcoming Events Widget.</p>
+						<p><strong><a href="https://quanticalabs.com/wordpress-plugins/timetable-booking-schedule-for-wordpress/">Timetable Booking Schedule for WordPress</a></strong> is a powerful and easy-to-use schedule plugin for WordPress. It will help you to create a timetable view of your events in minutes. It is perfect for gym classes, school or kindergarten classes, medical departments, nightclubs, lesson plans, meal plans etc. It comes with Events Manager, Event Occurrences Shortcode, Timetable Shortcode Generator and Upcoming Events Widget.</p>
 						
 						<p><b>Full List Of Features</b></p>
                         
@@ -455,16 +455,91 @@
                     
                     <!-- #### -->
 					
-					<div id="tab-7">
+					<div id="tab-changelog">
 						<h1>Changelog</h1>
-						<p><b>30 March 2023</b>, ver. 7.2</p>
-						<ul class="documentation">
+						<strong>8 September 2026</strong> - v8.0
+						<ul>
+							<li>Security improvements.</li>
+							<li>Minor code improvements.</li>
+						</ul>
+						<pre>admin-page.php
+timetable.php
+admin/js/timetable_admin.js</pre>
+						<strong>9 July 2026</strong> - v7.9
+						<ul>
+							<li>Admin area notice improvement.</li>
+						</ul>
+						<pre>admin-page-import-dummy-data.php
+timetable.php</pre>
+						<strong>1 July 2026</strong> - v7.8
+						<ul>
+							<li>Minor code improvements.</li>
+						</ul>
+						<pre>admin-page-import-dummy-data.php
+timetable.php
+admin/purchase_verification/class/QL_License.php
+--- new directories ---
+vendor/</pre>
+						<strong>14 April 2026</strong> - v7.7
+						<ul>
+							<li>Fix for 'Filter control background color' option.</li>
+							<li>License verification added.</li>
+						</ul>
+						<pre>admin-page-google-calendar.php
+admin-page-import-dummy-data.php
+shortcode-timetable.php
+timetable.php
+admin/style/style.css
+languages/timetable-cs_CZ.mo
+languages/timetable-cs_CZ.po
+languages/timetable-de_DE.mo
+languages/timetable-de_DE.po
+languages/timetable-default.mo
+languages/timetable-default.po
+languages/timetable-fr_FR.mo
+languages/timetable-fr_FR.po
+languages/timetable-nl_BE.mo
+languages/timetable-nl_BE.po
+langauges/timetable-nl_NL.mo
+langauges/timetable-nl_NL.po
+--- new directory ---
+admin/purchase-verification/</pre>
+						<strong>8 October 2025</strong> - v7.6
+						<ul>
+							<li>Fix for event hours saving and removing issue.</li>
+						</ul>
+						<pre>post-type-events.php</pre>
+						<strong>23 May 2025</strong> - v7.5
+						<ul>
+							<li>Optimized loading of the Google Fonts array.</li>
+							<li>Minor code fixes.</li>
+						</ul>
+						<pre>post-type-events.php
+shortcode-timetable.php
+timetable.php</pre>
+						<strong>2 October 2024</strong> - v7.4
+						<ul>
+							<li>Compatibility improvements for plugin database tables.</li>
+						</ul>
+						<pre>post-type-events.php
+class/bookings-list.class.php</pre>
+						<strong>29 May 2024</strong> - v7.3
+						<ul>
+							<li>Compatibility improvements with current WordPress version.</li>
+							<li>Minor code improvements.</li>
+						</ul>
+						<pre>shortcode-timetable.php
+timetable.php
+class/google-calendar.class.php
+class/sp-bookings.class.php</pre>
+						<strong>30 March 2023</strong> - v7.2
+						<ul>
 							<li>Fix for SQL query error under WordPress 6.2.</li>
 						</ul>
 						<pre>class/db.class.php
 class/event-hour.class.php</pre>
-						<p><b>27 February 2023</b>, ver. 7.1</p>
-						<ul class="documentation">
+						<strong>27 February 2023</strong> - v7.1
+						<ul>
 							<li>Yoast SEO icons available on events list view in admin area.</li>
 							<li>Fix for conflict with Divi theme.</li>
 							<li>Fix for fonts list loading issue in admin area.</li>
@@ -473,13 +548,13 @@ class/event-hour.class.php</pre>
 shortcode-timetable.php
 timetable.php
 widget-upcoming-events.php</pre>
-						<p><b>22 December 2021</b>, ver. 7.0</p>
-						<ul class="documentation">
+						<strong>22 December 2021</strong> - v7.0
+						<ul>
 							<li>Fix for js conflict in admin area.</li>
 						</ul>
 						<pre>admin/js/timetable_admin.js</pre>
-						<p><b>09 December 2021</b>, ver. 6.9</p>
-						<ul class="documentation">
+						<strong>9 December 2021</strong> - v6.9
+						<ul>
 							<li>Fix for dummy content import issue on PHP8.</li>
 							<li>Minor code improvements.</li>
 						</ul>
@@ -501,8 +576,8 @@ langauges/timetable-nl_NL.po
 --- new files ---
 langauges/timetable-it_IT.mo
 langauges/timetable-it_IT.po</pre>
-						<p><b>03 September 2021</b>, ver. 6.8</p>
-						<ul class="documentation">
+						<strong>3 September 2021</strong> - v6.8
+						<ul>
 							<li>New 'Send From' option added under email config.</li>
 							<li>Minor code improvements.</li>
 						</ul>
@@ -522,8 +597,8 @@ languages/timetable-nl_BE.mo
 languages/timetable-nl_BE.po
 langauges/timetable-nl_NL.mo
 langauges/timetable-nl_NL.po</pre>
-						<p><b>27 May 2021</b>, ver. 6.7</p>
-						<ul class="documentation">
+						<strong>27 May 2021</strong> - v6.7
+						<ul>
 							<li>Dompdf library update.</li>
 							<li>Security improvements.</li>
 						</ul>
@@ -561,42 +636,42 @@ langauges/timetable-nl_NL.po
 libraries/dompdf/ directory
 --- removed directory ---
 fonts/</pre>
-						<p><b>29 March 2021</b>, ver. 6.6</p>
-						<ul class="documentation">
+						<strong>29 March 2021</strong> - v6.6
+						<ul>
 							<li>Unnecessary Dompdf library cache files removed.</li>
 						</ul>
 						<pre>libraries/dompdf/lib/fonts/ directory</pre>
-						<p><b>16 March 2021</b>, ver. 6.5</p>
-						<ul class="documentation">
+						<strong>16 March 2021</strong> - v6.5
+						<ul>
 							<li>Dompdf library update.</li>
 							<li>Fix for 'Syntax error, unrecognised expression: #' js error.</li>
 						</ul>
 						<pre>timetable.php
 js/timetable.js
 libraries/dompdf/ directory</pre>
-						<p><b>16 March 2021</b>, ver. 6.5</p>
-						<ul class="documentation">
+						<strong>16 March 2021</strong> - v6.5
+						<ul>
 							<li>Dompdf library update.</li>
 							<li>Fix for 'Syntax error, unrecognised expression: #' js error.</li>
 						</ul>
 						<pre>timetable.php
 js/timetable.js
 libraries/dompdf/ directory</pre>
-						<p><b>20 October 2020</b>, ver. 6.4</p>
-						<ul class="documentation">
+						<strong>20 October 2020</strong> - v6.4
+						<ul>
 							<li>Minor code improvements.</li>
 						</ul>
 						<pre>post-type-event.php
 google-calendar.class.php</pre>
-						<p><b>04 September 2020</b>, ver. 6.3</p>
-						<ul class="documentation">
+						<strong>4 September 2020</strong> - v6.3
+						<ul>
 							<li>Minor code improvements.</li>
 						</ul>
 						<pre>shortcode-timetable.php
 admin/js/timetable_admin.js
 style/style.css</pre>
-						<p><b>14 August 2020</b>, ver. 6.2</p>
-						<ul class="documentation">
+						<strong>14 August 2020</strong> - v6.2
+						<ul>
 							<li>Compatibility with WordPress 5.5 added.</li>
 							<li>Minor code improvements.</li>
 						</ul>
@@ -607,8 +682,8 @@ langauges/timetable-nl_NL.mo
 langauges/timetable-nl_NL.po
 style/jquery.qtip.css
 style/style.css</pre>
-						<p><b>06 August 2020</b>, ver. 6.1</p>
-						<ul class="documentation">
+						<strong>6 August 2020</strong> - v6.1
+						<ul>
 							<li>Fix for shortcode generator issues.</li>
 							<li>Minor code improvements.</li>
 						</ul>
@@ -620,8 +695,8 @@ style/style.css
 --- new files ---
 langauges/timetable-nl_NL.mo
 langauges/timetable-nl_NL.po</pre>
-						<p><b>30 January 2020</b>, ver. 6.0</p>
-						<ul class="documentation">
+						<strong>30 January 2020</strong> - v6.0
+						<ul>
 							<li>Event filter by category in admin area events list added.</li>
 							<li>Issue with hover shortcode colors fixed (<a href='https://support.quanticalabs.com/forum/topic/30862/shortcode-colors-not-working-for-hovers/'>Forum topic</a>).</li>
 							<li>Issue with pdf file generation fixed.</li>
@@ -647,8 +722,8 @@ languages/timetable-fr_FR.mo
 languages/timetable-fr_FR.po
 languages/timetable-nl_BE.mo
 languages/timetable-nl_BE.po</pre>
-						<p><b>01 April 2019</b>, ver. 5.9</p>
-						<ul class="documentation">
+						<strong>1 April 2019</strong> - v5.9
+						<ul>
 							<li>Fix for guest booking fields configuration options.</li>
 							<li>Minor code improvements.</li>
 						</ul>
@@ -668,8 +743,8 @@ languages/timetable-fr_FR.mo
 languages/timetable-fr_FR.po
 style/event_template.css
 style/superfish.css</pre>
-						<p><b>15 January 2019</b>, ver. 5.8</p>
-						<ul class="documentation">
+						<strong>15 January 2019</strong> - v5.8
+						<ul>
 							<li>Fix for loading plugin scripts in WordPress dashboard.</li>
 						</ul>
 						<pre>timetable.php
@@ -681,8 +756,8 @@ languages/timetable-default.mo
 languages/timetable-default.po
 languages/timetable-fr_FR.mo
 languages/timetable-fr_FR.po</pre>
-						<p><b>09 January 2019</b>, ver. 5.7</p>
-						<ul class="documentation">
+						<strong>9 January 2019</strong> - v5.7
+						<ul>
 							<li>Admin will now receive email notification, when client cancels booking.</li>
 							<li>Fix for dummy data import issue in WP 5.0.</li>
 							<li>Fix for button 'Generated PDF' custom colors issue.</li>
@@ -698,8 +773,8 @@ languages/timetable-default.mo
 languages/timetable-default.po
 languages/timetable-fr_FR.mo
 languages/timetable-fr_FR.po</pre>
-						<p><b>06 December 2018</b>, ver. 5.6</p>
-						<ul class="documentation">
+						<strong>6 December 2018</strong> - v5.6
+						<ul>
 							<li>New feature allows to export event hours to Google Calendar.</li>
 							<li>New feature allows to export bookings to CSV file.</li>
 							<li>New option 'Allow user booking' in timetable shortcode.</li>
@@ -752,8 +827,8 @@ booking.class.php
 bookings-list.class.php
 sp-bookings.class.php
 tt-db.class.php</pre>
-						<p><b>05 July 2018</b>, ver. 5.5</p>
-						<ul class="documentation">
+						<strong>6 July 2018</strong> - v5.5
+						<ul>
 							<li>New 'Timetable Bookings' panel that displays a list of all bookings.</li>
 							<li>New option that allows guests to make a booking.</li>
 							<li>New option 'Slots per user' allows to specify how many slots user can book.</li>
@@ -787,8 +862,8 @@ sp-bookings.class.php
 tt-db.class.php
 js\jquery.qtip.min.js
 style\jquery.qtip.css</pre>
-						<p><b>30 March 2018</b>, ver. 5.4</p>
-						<ul class="documentation">
+						<strong>30 March 2018</strong> - v5.4
+						<ul>
 							<li>Update of plugin dummy data content.</li>
 							<li>Minor code fixes.</li>
 						</ul>
@@ -799,8 +874,8 @@ admin/js/timetable_admin.js
 dummy-content-files/dummy-timetable.xml
 dummy-content-files/event_hours.sql
 style/event_template.css</pre>
-						<p><b>09 February 2018</b>, ver. 5.3</p>
-						<ul class="documentation">
+						<strong>9 February 2018</strong> - v5.3
+						<ul>
 							<li>New option allows to display timetable list view in desktop mode.</li>
 							<li>New options allows to configure labels for 'Available slots' information.</li>
 							<li>New options allows to configure colors for 'Generate PDF' button.</li>
@@ -836,16 +911,16 @@ admin/js/ZeroClipboard.min.js
 admin/js/ZeroClipboard.swf
 --- replaced directories ---
 libraries/dompdf/</pre>
-						<p><b>23 December 2017</b>, ver. 5.2</p>
-						<ul class="documentation">
+						<strong>23 December 2017</strong> - v5.2
+						<ul>
 							<li>Fix for booking popup bug occuring on Android devices.</li>
 							<li>Minor code and style fixes.</li>
 						</ul>
 						<pre>js/timetable.js
 style/responsive.css
 style/style.css</pre>
-						<p><b>21 December 2017</b>, ver. 5.1</p>
-						<ul class="documentation">
+						<strong>21 December 2017</strong> - v5.1
+						<ul>
 							<li>Fix for incorrect PDF rendering.</li>
 							<li>Minor code fixes.</li>
 						</ul>
@@ -857,8 +932,8 @@ style/style.css
 --- removed files ---
 libraries/dompdf/lib/fonts/ all files with .ttf, .ufm and ufm.php extensions
 libraries/dompdf/lib/fonts/dompdf_font_family_cache.php</pre>
-						<p><b>20 December 2017</b>, ver. 5.0</p>
-						<ul class="documentation">
+						<strong>20 December 2017</strong> - v5.0
+						<ul>
 							<li>New feature allows to book events.</li>
 							<li>New feature allows to export timetable as PDF file.</li>
 							<li>New option allows to use colors in responsive mode.</li>				
@@ -889,8 +964,8 @@ shortcode-timetable.php
 --- new folders ---
 fonts/
 libraries/</pre>
-						<p><b>09 August 2017</b>, ver. 4.0</p>
-						<ul class="documentation">
+						<strong>9 August 2017</strong> - v4.0
+						<ul>
 							<li>Single pages for "Timetable column" are disabled.</li>
 							<li>Fix for conflict with Visual Composer plugin.</li>
 							<li>Fix for XSS vulnerability.</li>
@@ -898,13 +973,13 @@ libraries/</pre>
 						<pre>post-type-weekdays.php
 timetable.php
 js/timetable.js</pre>
-						<p><b>06 February 2017</b>, ver. 3.9</p>
-						<ul class="documentation">
+						<strong>6 February 2017</strong> - v3.9
+						<ul>
 							<li>Fix for 'Cannot redeclare class upcoming_events_widget' error.</li>
 						</ul>
 						<pre>widget-upcoming-events.php</pre>
-						<p><b>02 September 2016</b>, ver. 3.8</p>
-						<ul class="documentation">
+						<strong>2 September 2016</strong> - v3.8
+						<ul>
 							<li>New 'shortcode_id' parameter supported by [tt_timetable] shortcode.</li>
 							<li>Several bug fixes.</li>
 						</ul>
@@ -921,8 +996,8 @@ languages/timetable-default.po
 --- new files ---
 languages/timetable-cs_CZ.mo
 languages/timetable-cs_CZ.po</pre>
-						<p><b>20 January 2016</b>, ver. 3.7</p>
-						<ul class="documentation">
+						<strong>20 January 2016</strong> - v3.7
+						<ul>
 							<li>New feature allows to save shortcodes for later use.</li>
 							<li>Events post type can now be configured (e.g. different slug).</li>
 							<li>Mobile mode allows to display Description 1 and 2 fields.</li>
@@ -944,21 +1019,21 @@ style/responsive.css
 style/style.css
 --- new files ---
 admin/js/timetable_vc.js</pre>
-						<p><b>29 October 2015</b>, ver. 3.6</p>
-						<ul class="documentation">
+						<strong>29 October 2015</strong> - v3.6
+						<ul>
 							<li>Bug fix: wrong events displayed in 'Upcoming Events' widget when 'Display settings' option is set to 'all upcoming'.</li>							
 						</ul>
 						<pre>widget-upcoming-events.php</pre>
-						<p><b>28 October 2015</b>, ver. 3.5</p>
-						<ul class="documentation">
+						<strong>28 October 2015</strong> - v3.5
+						<ul>
 							<li>Visual Composer v4.8 compatibility added.</li>
 							<li>Minor code fixes.</li>							
 						</ul>
 						<pre>timetable.php
 widget-upcoming-events.php
 event_template.css</pre>
-						<p><b>16 July 2015</b>, ver. 3.4</p>
-						<ul class="documentation">
+						<strong>16 July 2015</strong> - v3.4
+						<ul>
 							<li>Filter kind option now allows to filter both by event and event category</li>
 							<li>New option 'Event featured image' in 'Upcoming Events' widget</li>
 							<li>Fix for Google Fonts issue in Timetable shortcode generator panel</li>
@@ -977,8 +1052,8 @@ languages/timetable-default.po
 style/event_template.css
 style/responsive.css
 style/style.css</pre>
-						<p><b>28 April 2015</b>, ver. 3.3</p>
-						<ul class="documentation">
+						<strong>28 April 2015</strong> - v3.3
+						<ul>
 							<li>New 'Hour categories' parameter for 'Upcoming Events' widget</li>
 							<li>Support for Visual Composer editor</li>
 							<li>Small code improvements</li>
@@ -994,15 +1069,15 @@ languages/timetable-default.mo
 languages/timetable-default.po
 --- new files ---
 admin/images/timetable.png</pre>						
-						<p><b>01 April 2015</b>, ver. 3.2</p>
-						<ul class="documentation">
+						<strong>1 April 2015</strong> - v3.2
+						<ul>
 							<li>Fix for 'Call to undefined function get_current_screen()' error</li>
 							<li>Fix for wrong event hours order in some cases</li>
 						</ul>
 						<pre>post-type-weekdays.php
 timetable.php</pre>
-						<p><b>06 February 2015</b>, ver. 3.1</p>
-						<ul class="documentation">
+						<strong>6 February 2015</strong> - v3.1
+						<ul>
 							<li>New option: Hide 'All Events' view</li>
 							<li>Auto-generated order value for new columns</li>
 						</ul>
@@ -1012,8 +1087,8 @@ admin/js/timetable_admin.js
 languages/timetable-default.po
 languages/timetable-default.mo
 style/style.css</pre>
-						<p><b>29 December 2014</b>, ver. 3.0</p>
-						<ul class="documentation">
+						<strong>29 December 2014</strong> - v3.0
+						<ul>
 							<li>Support for RTL mode added.</li>
 						</ul>
 						<pre>event-template.php
@@ -1027,16 +1102,16 @@ languages/timetable-default.mo
 style/event_template.css
 style/responsive.css
 style/style.css</pre>
-						<p><b>17 October 2014</b>, ver. 2.8</p>
-						<ul class="documentation">
+						<strong>17 October 2014</strong> - v2.8
+						<ul>
 							<li>Themes compatibility improvements</li>
 							<li>Code improvements</li>
 						</ul>
 						<pre>post-type-events.php
 timetable.php
 js/timetable.js</pre>
-						<p><b>03 October 2014</b>, ver. 2.7</p>
-						<ul class="documentation">
+						<strong>3 October 2014</strong> - v2.7
+						<ul>
 							<li>Bug fix (some hours has not been visible in the timetable)</li>
 							<li>Small code and css improvements</li>
 						</ul>
@@ -1044,32 +1119,32 @@ js/timetable.js</pre>
 timetable.php
 style/event_template.css
 style/style.css</pre>
-						<p><b>19 August 2014</b>, ver. 2.6</p>
-						<ul class="documentation">
+						<strong>19 August 2014</strong> - v2.6
+						<ul>
 							<li>'Current events' option added to upcoming events widget</li>
 							<li>Small code and css improvements</li>
 						</ul>
 						<pre>timetable.php
 widget-upcoming-events.php
 style/style.css</pre>
-						<p><b>30 July 2014</b>, ver. 2.5</p>
-						<ul class="documentation">
+						<strong>30 July 2014</strong> - v2.5
+						<ul>
 							<li>Small code and css improvements</li>
 						</ul>
 						<pre>post-type-events.php
 timetable.php
 style/style.css
 style/superfish.css</pre>
-						<p><b>03 July 2014</b>, ver. 2.4</p>
-						<ul class="documentation">
+						<strong>3 July 2014</strong> - v2.4
+						<ul>
 							<li>New event block layout added (without hours)</li>
 							<li>Bug fixes and small code improvments</li>
 						</ul>
 						<pre>post-type-events.php
 timetable.php
 style/style.css</pre>
-						<p><b>10 June 2014</b>, ver. 2.3</p>
-						<ul class="documentation">
+						<strong>10 June 2014</strong> - v2.3
+						<ul>
 							<li>Few small code improvements</li>
 						</ul>
 						<pre>post-type-events.php
@@ -1078,8 +1153,8 @@ widget-upcoming-events.php
 js/timetable.js
 style/event_template.css
 style/style.css</pre>
-						<p><b>10 April 2014</b>, ver. 2.2</p>
-						<ul class="documentation">
+						<strong>10 April 2014</strong> - v2.2
+						<ul>
 							<li>Compatibility with MediCenter and GymBase themes, now plugin can be installed without conflicts (<em>[timetable]</em> shortcode changed to <em>[tt_timetable]</em>)</li>
 							<li>Weekdays changed to Timetable columns in admin area (<em>weekday</em> parameter changed to <em>columns</em> parameter)</li>
 							<li>New sample tables can be imported</li>
@@ -1093,8 +1168,8 @@ admin/js/timetable_admin.js
 style/event_template.css
 style/responsive.css
 style/style.css</pre>
-						<p><b>08 April 2014</b>, ver. 2.1</p>
-						<ul class="documentation">
+						<strong>8 April 2014</strong> - v2.1
+						<ul>
 							<li>New event block layout (which is displaying only start hour in timetable)</li>
 							<li>Logic change for weekdays order parameter (from now Monday: order 1, Tuesday: order 2, Sunday: order 7) (was: Monday: order 2, Tuesday: order 3, Sunday: order 1)</li>
 							<li>Bug fix: missing events when using event categories filter kind</li>
@@ -1104,8 +1179,8 @@ shortcodes.php
 timetable.php
 widget-upcoming-events.php
 style/style.css</pre>
-						<p><b>02 April 2014</b>, ver. 2.0</p>
-						<ul class="documentation">
+						<strong>2 April 2014</strong> - v2.0
+						<ul>
 							<li>Measure parameter added. You can choose between: Hour (1h), half hour (30min) and quarter hour (15min) measure</li>
 							<li>Event categories parameter added</li>
 							<li>Filter kind parameter added. You can filter timetable by event or event category now</li>
@@ -1114,8 +1189,8 @@ style/style.css</pre>
 admin/js/timetable_admin.js
 languages/timetable-default.po
 style/style.css</pre>
-						<p><b>25 March 2014</b>, ver. 1.5</p>
-						<ul class="documentation">
+						<strong>25 March 2014</strong> - v1.5
+						<ul>
 							<li>Fix for event link settings in responsive timetable mode</li>
 							<li>Style improvements for Upcoming Events widget</li>
 							<li>New carousel plugin version for Upcoming Events widget</li>
@@ -1128,26 +1203,26 @@ style/responsive.css
 jquery.carouFredSel-6.2.1-packed
 --- removed files ---
 jquery.carouFredSel-5.6.4-packed</pre>
-						<p><b>17 March 2014</b>, ver. 1.4</p>
-						<ul class="documentation">
+						<strong>17 March 2014</strong> - v1.4
+						<ul>
 							<li>Localization issue fix</li>
 						</ul>
 						<pre>timetable.php</pre>
-						<p><b>14 March 2014</b>, ver. 1.3</p>
-						<ul class="documentation">
+						<strong>14 March 2014</strong> - v1.3
+						<ul>
 							<li>Localization issue fix</li>
 						</ul>
 						<pre>timetable.php</pre>
-						<p><b>12 March 2014</b>, ver. 1.2</p>
-						<ul class="documentation">
+						<strong>12 March 2014</strong> - v1.2
+						<ul>
 							<li>Small fix for hours box background color</li>
 							<li>'Custom event url' from event settings is now respected in Upcoming Events widget</li>
 						</ul>
 						<pre>timetable.php
 widget-upcoming-events.php
 style/event_template.css</pre>
-						<p><b>06 March 2014</b>, ver. 1.1</p>
-						<ul class="documentation">
+						<strong>6 March 2014</strong> - v1.1
+						<ul>
 							<li>Fix for bootstrap conflict on tooltip</li>
 							<li>'Custom event url' and 'Disable event url' options added to Upcoming Events widget</li>
 						</ul>
@@ -1156,8 +1231,8 @@ widget-upcoming-events.php
 js/timetable.js
 style/responsive.css
 style/style.css</pre>
-						<p><b>03 March 2014</b>, ver. 1.0</p>
-						<ul class="documentation">
+						<strong>3 March 2014</strong> - v1.0
+						<ul>
 							<li>First release</li>
 						</ul>
 					</div>
@@ -1179,7 +1254,7 @@ style/style.css</pre>
             </div>
             
             <div class="footer">
-                <a href="https://1.envato.market/quanticalabs-codecanyon">&copy; 2023 QuanticaLabs</a>
+                <a href="https://quanticalabs.com/">&copy; 2026 QuanticaLabs</a>
             </div>
             
         </div>

@@ -16,7 +16,15 @@
 
     function qodefOnDocumentReady() {}
 
+    function qodefIsGoogleMapsAvailable() {
+        return typeof google === 'object' && typeof google.maps === 'object';
+    }
+
     function qodefOnWindowLoad() {
+        if ( ! qodefIsGoogleMapsAvailable() ) {
+            return;
+        }
+
         qodefInitSingleRealEstateMap();
         qodefInitMultipleRealEstateMap();
         qodefInitMobileMap();
@@ -384,6 +392,9 @@
     };
 
     function qodefInitMobileMap() {
+        if ( ! qodefIsGoogleMapsAvailable() ) {
+            return;
+        }
 
         var mapOpener = $('.qodef-re-view-larger-map a'),
             mapOpenerIcon = mapOpener.children('i'),
@@ -406,6 +417,9 @@
     }
 
     function qodefReinitMultipleGoogleMaps(addresses, action){
+        if ( ! qodefIsGoogleMapsAvailable() ) {
+            return;
+        }
 
         if(action === 'append'){
 

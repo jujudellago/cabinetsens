@@ -36,7 +36,6 @@ class BookingSubmenuPage {
 	 * Private constuct because of Singletone
 	 */
 	private function __construct() {
-		$this->page_title  = esc_html__( 'Booking', 'qode-tours' );
 		$this->menu        = 'edit.php?post_type=tour-item';
 		$this->permissions = 'manage_options';
 		$this->page_slug   = 'qode-tours-booking';
@@ -76,8 +75,8 @@ class BookingSubmenuPage {
 
 		add_submenu_page(
 			$this->menu,
-			$this->page_title,
-			$this->page_title,
+			esc_html__( 'Booking', 'qode-tours' ),
+			esc_html__( 'Booking', 'qode-tours' ),
 			$this->permissions,
 			$this->page_slug,
 			array( $this, 'renderSubmenuPage' )

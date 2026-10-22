@@ -1,18 +1,27 @@
 <?php
+/**
+ * The template for displaying [vc_button].
+ *
+ * This template can be overridden by copying it to yourtheme/vc_templates/vc_button.php.
+ *
+ * @see https://kb.wpbakery.com/docs/developers-how-tos/change-shortcodes-html-output
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 
 /**
  * Shortcode attributes
- * @var $atts
- * @var $color
- * @var $size
- * @var $icon
- * @var $target
- * @var $href
- * @var $el_class
- * @var $title
+ *
+ * @var array $atts
+ * @var string $color
+ * @var string $size
+ * @var string $icon
+ * @var string $target
+ * @var string $href
+ * @var string $el_class
+ * @var string $title
  * Shortcode class
  * @var WPBakeryShortCode_Vc_Button $this
  */
@@ -47,13 +56,13 @@ $icon = ( '' !== $icon && 'none' !== $icon ) ? ' ' . $icon : '';
 $i_icon = ( '' !== $icon ) ? ' <i class="icon"> </i>' : '';
 $el_class = $this->getExtraClass( $el_class );
 
-$css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, 'wpb_button ' . $color . $size . $icon . $el_class, $this->settings['base'], $atts );
+$css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, 'wpb_button ' . $color . $size . $icon . $el_class, $this->getSettings()['base'], $atts );
 
 if ( '' !== $href ) {
-	$output .= '<span class="' . esc_attr( $css_class ) . '">' . $title . $i_icon . '</span>';
+	$output .= '<span class="' . esc_attr( $css_class ) . '">' . esc_html( $title ) . $i_icon . '</span>';
 	$output = '<a class="wpb_button_a' . esc_attr( $a_class ) . '" title="' . esc_attr( $title ) . '" href="' . esc_url( $href ) . '"' . $target . '>' . $output . '</a>';
 } else {
-	$output .= '<button class="' . esc_attr( $css_class ) . '">' . $title . $i_icon . '</button>';
+	$output .= '<button class="' . esc_attr( $css_class ) . '">' . esc_html( $title ) . $i_icon . '</button>';
 
 }
 

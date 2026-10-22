@@ -17,7 +17,13 @@
 }
 
 .vc_hidden-lg {
-  @media (min-width: @screen-lg-min) {
+  @media (min-width: @screen-lg-min) and (max-width: @screen-lg-max) {
+    .responsive-invisibility();
+  }
+}
+
+.vc_hidden-xl {
+  @media (min-width: @screen-xl-min) {
     .responsive-invisibility();
   }
 }

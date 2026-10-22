@@ -5,7 +5,7 @@
  * This file is used to markup the admin-facing aspects of the plugin.
  * @author    ThemePunch <info@themepunch.com>
  * @link      https://www.themepunch.com/
- * @copyright 2022 ThemePunch
+ * @copyright 2024 ThemePunch
  */
 if(!defined('ABSPATH')) exit();
 ?>
@@ -36,6 +36,7 @@ if(!defined('ABSPATH')) exit();
 			--><div id="gst_layer_5" class="callEvent layer_submodule_trigger openmodaltrigger" data-evt="openLayerActions"><i class="material-icons">touch_app</i><span class="gso_title">Actions</span></div><!--
 			--><div id="gst_layer_13" data-select="#gst_layer_13" data-unselect=".layer_submodule_trigger" class="layer_submodule_trigger opensettingstrigger" data-collapse="true" data-forms='["#form_layer_visibility"]'><i class="material-icons">photo_size_select_large</i><span data-stickycolor="blue"  class="gso_title"><?php _e('Visibility', 'revslider');?></span></div><!--
 			--><div id="gst_layer_11" data-select="#gst_layer_11" data-unselect=".layer_submodule_trigger" class="layer_submodule_trigger opensettingstrigger callEvent" data-collapse="true" data-forms='["#form_layer_attributes"]'><i class="material-icons">description</i><span data-stickycolor="blue"  class="gso_title"><?php _e('Attributes', 'revslider');?></span></div><!--
+			--><div id="gst_layer_16" data-select="#gst_layer_16" data-unselect=".layer_submodule_trigger" class="layer_submodule_trigger opensettingstrigger callEvent" data-collapse="true" data-forms='["#form_layer_acc"]'><i class="material-icons">accessibility</i><span data-stickycolor="blue"  class="gso_title"><?php _e('Accessibility', 'revslider');?></span></div><!--
 			--><div id="gst_layer_7" data-select="#gst_layer_7" data-unselect=".layer_submodule_trigger" class="layer_submodule_trigger opensettingstrigger callEvent" data-evt="updateCustomCSSLayerInput" data-collapse="true" data-forms='["#form_layer_customcss"]'><i class="material-icons">code</i><span data-stickycolor="blue"  class="gso_title"><?php _e('Custom CSS', 'revslider');?></span></div><!--
 			--><div id="gst_layer_14" data-select="#gst_layer_14" data-unselect=".layer_submodule_trigger" class="layer_submodule_trigger opensettingstrigger" data-collapse="true" data-forms='["#form_layer_static"]'><i class="material-icons">album</i><span data-stickycolor="blue"  class="gso_title"><?php _e('Static', 'revslider');?></span></div>
 		</div>
@@ -146,7 +147,7 @@ if(!defined('ABSPATH')) exit();
 						<oneshort><div id="minilayerprevimage_wrap" class="miniprevimage_wrap"><i class="material-icons">filter_hdr</i><div id="layer_image_src"></div></div></oneshort>
 						<oneshort>
 							<div id="image_layer_media_library_button" data-evt="updatelayerimagesrc" data-r="media.imageUrl" data-rid="media.imageId" data-sty="behavior.imageSourceType" data-lib="media.imageLib" class="getImageFromMediaLibrary basic_action_button longbutton layerinput"><i class="material-icons">style</i><?php _e('Media Library', 'revslider');?></div>
-							<div id="image_layer_object_library_button" data-evt="" data-r="media.imageUrl" data-rid="media.imageId" data-sty="behavior.imageSourceType" data-lib="media.imageLib" class="getImageFromObjectLibrary basic_action_button longbutton layerinput"><i class="material-icons">camera_enhance</i><?php _e('Object Library', 'revslider');?></div>
+							<div id="image_layer_object_library_button" data-evt="updatelayerimagesrc" data-r="media.imageUrl" data-rid="media.imageId" data-sty="behavior.imageSourceType" data-lib="media.imageLib" class="getImageFromObjectLibrary basic_action_button longbutton layerinput"><i class="material-icons">camera_enhance</i><?php _e('Object Library', 'revslider');?></div>
 						</oneshort>
 					</row>
 					<div class="div15"></div>
@@ -281,6 +282,7 @@ if(!defined('ABSPATH')) exit();
 					</div>
 					<longoption class="_nsfa_"><i class="material-icons">featured_video</i><label_a ><?php _e('Inline Mode', 'revslider');?></label_a><input type="checkbox" class="easyinit layerinput" data-r="media.playInline"></longoption>
 					<longoption class="_nsfa_"><i class="material-icons">volume_mute</i><label_a><?php _e('Mute at Start', 'revslider');?></label_a><input type="checkbox" class="easyinit layerinput" data-r="media.mute"></longoption>
+					<longoption class="_nsfa_ carouselavailable standardunavailable sceneunavailable"><i class="material-icons">start</i><label_a><?php _e('Keep when Slide Unfocused', 'revslider');?></label_a><div class="tponoffwrap off"><div class="tponoff_inner"><div class="tponoff_off">Off</div><div class="tponoff_on">On<input type="checkbox" id="vide_playback_oncarousel" class="layerinput easyinit tponoff" data-r="media.keepOnCarousel"></div></div></div></longoption>
 					<div class="div15"></div>
 					<row class="directrow">
 						<onelong><label_icon class="ui_volume"></label_icon><input id="layer_video_volume" data-allowed="" data-numeric="true" data-min="0" data-max="100" class="layerinput easyinit" type="text" data-r="media.volume" placeholder="<?php _e('Media Volume (0-100)', 'revslider');?>"></onelong>
@@ -975,16 +977,16 @@ if(!defined('ABSPATH')) exit();
 			<div class="form_inner open">
 				<div class="form_inner_header"><i class="material-icons">description</i><?php _e('Attributes', 'revslider');?></div>
 				<div class="collapsable">
-					 <label_a><?php _e('Layer ID', 'revslider');?></label_a><input class="layerinput easyinit " id="layer_id"  data-r="attributes.id" type="text">
-					 <label_a><?php _e('Classes', 'revslider');?></label_a><input class="layerinput easyinit " id="layer_classes"  data-r="attributes.classes" type="text">
-					 <label_a><?php _e('Title', 'revslider');?></label_a><input class="layerinput easyinit " id="layer_title"  data-r="attributes.title" type="text">
-					 <label_a><?php _e('Rel', 'revslider');?></label_a><input class="layerinput easyinit " id="layer_rel"  data-r="attributes.rel" type="text">
-					 <label_a><?php _e('TabIndex', 'revslider');?></label_a><input data-numeric="true" data-allowed="" class="layerinput valueduekeyboard easyinit " id="layer_tbindex"  data-r="attributes.tabIndex" type="text">
-					 <div class="div15"></div>
-					 <label_a><?php _e('Wrapper ID', 'revslider');?></label_a><input class="layerinput easyinit " id="layer_wrapper_id"  data-r="attributes.wrapperId" type="text">
-					 <label_a><?php _e('Classes', 'revslider');?></label_a><input class="layerinput easyinit " id="layer_wrapper_classes"  data-r="attributes.wrapperClasses" type="text">
+					<label_a><?php _e('Layer ID', 'revslider');?></label_a><input class="layerinput easyinit " id="layer_id"  data-r="attributes.id" type="text">
+					<label_a><?php _e('Classes', 'revslider');?></label_a><input class="layerinput easyinit " id="layer_classes"  data-r="attributes.classes" type="text">
+					<label_a><?php _e('Title', 'revslider');?></label_a><input class="layerinput easyinit " id="layer_title"  data-r="attributes.title" type="text">
+					<label_a><?php _e('Rel', 'revslider');?></label_a><input class="layerinput easyinit " id="layer_rel"  data-r="attributes.rel" type="text">					 
+					<div class="div15"></div>
+					<label_a><?php _e('TabIndex', 'revslider');?></label_a><input data-numeric="true" data-allowed="" class="layerinput valueduekeyboard easyinit" id="layer_tbindex" data-r="attributes.tabIndex" type="text">
+					<label_a><?php _e('Wrapper ID', 'revslider');?></label_a><input class="layerinput easyinit " id="layer_wrapper_id"  data-r="attributes.wrapperId" type="text">
+					<label_a><?php _e('Classes', 'revslider');?></label_a><input class="layerinput easyinit " id="layer_wrapper_classes"  data-r="attributes.wrapperClasses" type="text">
 				</div>				
-			</div>
+			</div>			
 		</div>			
 	</div>
 
@@ -1006,11 +1008,50 @@ if(!defined('ABSPATH')) exit();
 					<div class="div10"></div>
 					<row class="direktrow">
 						<labelhalf><i class="material-icons vmi">sms_failed</i></labelhalf>
-						<contenthalf><div class="function_info"><?php _e('Depricated Function !<br>Only visible by Rendering. Limited influence on Styled Layers. Custom CSS Inline will be removed in Version 6.2', 'revslider');?></div></contenthalf>
+						<contenthalf><div class="function_info"><?php _e('Deprecated Function !<br>Only visible by Rendering. Limited influence on Styled Layers. Custom CSS Inline will be removed in Version 6.2', 'revslider');?></div></contenthalf>
 					</row>
 				</div>
 			</div>
 
+		</div>
+	</div>
+
+	<!-- LAYER ATTRIBUTES CONTAINER -->
+	<div class="form_collector layer_settings_collector" data-type="layersconfig" data-pcontainer="#layer_settings" data-offset="#rev_builder_wrapper">
+		<div id="form_layer_acc"  class="formcontainer form_menu_inside collapsed" data-select="#gst_layer_16" data-unselect=".layer_submodule_trigger">
+			<!-- LAYER CUSTOM SETTINGS -->
+			<div class="form_inner open">
+				<div class="form_inner_header"><i class="material-icons">accessibility</i><?php _e('Web Content Accessibility', 'revslider');?></div>
+				<div class="collapsable">	
+					<label_a><?php _e('Hidden', 'revslider');?></label_a><select id="layer_acc_ariahidden" class="layerinput tos2 nosearchbox easyinit" data-r="acc.hidden">
+						<option value="false"><?php _e('False', 'revslider');?></option>
+						<option value="true"><?php _e('True', 'revslider');?></option>
+					</select>
+
+					<label_a><?php _e('Role', 'revslider');?></label_a><select id="layer_acc_role" class="layerinput tos2 nosearchbox easyinit" data-r="acc.role">
+						<option value="unset"><?php _e('Unset', 'revslider');?></option>
+						<option value="button"><?php _e('Button', 'revslider');?></option>
+						<option value="link"><?php _e('Link', 'revslider');?></option>
+						<option value="img"><?php _e('Image', 'revslider');?></option>
+						<option value="heading"><?php _e('Heading', 'revslider');?></option>
+						<option value="paragraph"><?php _e('Paragraph', 'revslider');?></option>
+						<option value="group"><?php _e('Group', 'revslider');?></option>
+						<option value="presentation"><?php _e('Presentation', 'revslider');?></option>
+					</select>
+
+					<label_a><?php _e('Label', 'revslider');?></label_a><input class="layerinput easyinit" id="layer_acc_arialabel" data-r="acc.label" type="text">
+
+					<label_a><?php _e('Labeled By', 'revslider');?></label_a><input class="layerinput easyinit" id="layer_acc_arialabeledby" data-r="acc.labeledby" type="text">
+										
+					<label_a><?php _e('Has PopUp', 'revslider');?></label_a><select id="layer_acc_haspopup" class="layerinput tos2 nosearchbox easyinit" data-r="acc.haspopup">
+						<option value="unset"><?php _e('Unset', 'revslider');?></option>
+						<option value="menu"><?php _e('Menu', 'revslider');?></option>
+						<option value="dialog"><?php _e('Dialog', 'revslider');?></option>
+						<option value="modal"><?php _e('Modal', 'revslider');?></option>
+						<option value="false"><?php _e('False', 'revslider');?></option>						
+					</select>					
+				</div>
+			</div>
 		</div>
 	</div>
 

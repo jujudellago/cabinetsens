@@ -2,6 +2,15 @@
 
 $costs_meta = get_post_meta(get_the_ID(), 'qodef_costs_meta', true);
 
+if ( is_array( $costs_meta ) ) {
+    $costs_meta = array_filter(
+        $costs_meta,
+        function ( $cost ) {
+            return isset( $cost['value'] ) && qodef_re_has_property_field_value( $cost['value'] );
+        }
+    );
+}
+
 if(is_array($costs_meta) && count($costs_meta)) { ?>
 <div class="qodef-property-costs qodef-property-label-items-holder">
     <div class="qodef-property-cost-label qodef-property-label-style">

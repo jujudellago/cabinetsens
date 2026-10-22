@@ -28,3 +28,10 @@ if(!function_exists('bridge_qode_product_ajax_wishlist')) {
 	add_action('wp_ajax_nopriv_bridge_qode_product_ajax_wishlist', 'bridge_qode_product_ajax_wishlist');
 }
 
+if( ! function_exists( 'bridge_qode_wishlist_page_responsive' ) ) {
+	function bridge_qode_wishlist_page_responsive() {
+		return false;
+	}
+	
+	add_filter( 'yith_wcwl_is_wishlist_responsive', 'bridge_qode_wishlist_page_responsive' );
+}

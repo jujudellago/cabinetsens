@@ -393,10 +393,10 @@ function qodeInitProductListFilter(){
         qodeReturnOrderingParemeters(queryParams, clickedLink.data());
 
         //set paremeters for new query passed through ajax
-        loadData.category = queryParams.category !== undefined ? queryParams.category : '';
+        loadData.category = queryParams.category !== undefined ? queryParams.category : ( loadData.category !== undefined ? loadData.category : '' );
         loadData.metaKey = queryParams.metaKey !== undefined ? queryParams.metaKey : '';
-        loadData.order = queryParams.order !== undefined ? queryParams.order : '';
-        loadData.orderby = queryParams.orderby !== undefined ? queryParams.orderby : '';
+        loadData.order = queryParams.order !== undefined ? queryParams.order : ( loadData.order !== undefined ? loadData.order : '' );
+        loadData.orderby = queryParams.orderby !== undefined ? queryParams.orderby : ( loadData.orderby !== undefined ? loadData.orderby : '' );
         loadData.minPrice = queryParams.minprice !== undefined ? queryParams.minprice : '';
         loadData.maxPrice = queryParams.maxprice !== undefined ? queryParams.maxprice : '';
         loadData.categoryNonce = clickedLink.parents('.qode-pl-categories-nonce-holder').data('nonce') !== undefined ? clickedLink.parents('ul').data('nonce') : '';

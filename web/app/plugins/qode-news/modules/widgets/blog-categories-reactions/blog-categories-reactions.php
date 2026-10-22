@@ -114,9 +114,9 @@ class qodeNewsClassBlogCategoriesReactions extends qodeNewsPhpClassWidget {
 	    	<div class="qode-news-bcr-dropdown">
 				<?php if ( ! empty( $instance['title'] ) ) { ?>
 	            	<div class="qode-news-blog-cr-title-holder">
-	            		<<?php echo esc_attr($instance['title_tag']);?> class="qode-news-bcr-title">
+	            		<<?php echo esc_attr( qode_news_sanitize_title_tag( $instance['title_tag'] ) ); ?> class="qode-news-bcr-title">
 					    	<?php echo esc_html( $instance['title'] ); ?>
-					    </<?php echo esc_attr($instance['title_tag']);?>>
+					    </<?php echo esc_attr( qode_news_sanitize_title_tag( $instance['title_tag'] ) ); ?>>
 					</div>
 				<?php } ?>
 				<?php if (count($categories_array)) { ?>

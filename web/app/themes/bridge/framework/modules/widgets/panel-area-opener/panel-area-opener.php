@@ -24,6 +24,9 @@ if(class_exists('BridgeQodeWidget')) {
         }
 
         public function widget($args, $instance) {
+			wp_enqueue_script( 'niceScroll' );
+			wp_enqueue_script( 'qode-nice-scroll' );
+			
             extract($args);
 
             //prepare variables

@@ -21,7 +21,7 @@
     function qodeInitElementorQodeNewsPostCarousel1(){
         $j(window).on('elementor/frontend/init', function () {
             elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_post_carousel1.default', function() {
-                qodeOwlSlider();
+                qode.modules.owlSlider.qodeOwlSlider();
             } );
         });
     }

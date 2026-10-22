@@ -17,6 +17,10 @@ class BridgeCoreElementorPortfolioCarousel extends \Elementor\Widget_Base{
 		return [ 'qode' ];
 	}
 	
+	public function get_script_depends() {
+		return array( 'swiper', 'qode-portfolio-carousel' );
+	}
+	
 	protected function register_controls(){
 		$this->start_controls_section(
 			'general',

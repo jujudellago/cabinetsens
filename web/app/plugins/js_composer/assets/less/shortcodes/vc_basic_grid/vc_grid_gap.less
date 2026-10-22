@@ -23,3 +23,16 @@
 .vc_grid-gutter(25px);
 .vc_grid-gutter(30px);
 .vc_grid-gutter(35px);
+
+// Custom gap from the number+units field. The value is provided inline as the
+// `--vc-grid-gap` custom property, so any value/unit is supported.
+.vc_grid.vc_row.vc_grid-gutter {
+  margin-bottom: ~"calc(-1 * var(--vc-grid-gap, 0px))";
+  .vc_pageable-slide-wrapper {
+    margin-right: ~"calc(-1 * var(--vc-grid-gap, 0px))";
+  }
+  .vc_grid-item {
+    padding-right: ~"var(--vc-grid-gap, 0px)";
+    padding-bottom: ~"var(--vc-grid-gap, 0px)";
+  }
+}

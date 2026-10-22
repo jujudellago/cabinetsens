@@ -19,18 +19,18 @@ if(!function_exists('bridge_qode_general_options_map')) {
 				"dependence_hide_on_yes" => "#qodef_disable_google_fonts_container",
 				"dependence_show_on_yes" => ""));
 		$panel1->addChild("disable_google_fonts",$disable_google_fonts);
-
-		$disable_google_fonts_container = new BridgeQodeContainer("disable_google_fonts_container","disable_google_fonts","yes");
-		$panel1->addChild("disable_google_fonts_container",$disable_google_fonts_container);
 	
 	    $google_fonts = new BridgeQodeField("font", "google_fonts", "-1", esc_html__("Font Family", "bridge"), esc_html__("Choose a default font for your site", "bridge"));
-	    $disable_google_fonts_container->addChild("google_fonts", $google_fonts);
+	    $panel1->addChild("google_fonts", $google_fonts);
+	    
+	    $disable_google_fonts_container = new BridgeQodeContainer("disable_google_fonts_container","disable_google_fonts","yes");
+	    $panel1->addChild("disable_google_fonts_container",$disable_google_fonts_container);
 
         $additional_google_fonts = new BridgeQodeField("yesno","additional_google_fonts","no",esc_html__("Additional Google Fonts", "bridge"),"", array(),
             array("dependence" => true,
                 "dependence_hide_on_yes" => "",
                 "dependence_show_on_yes" => "#qodef_additional_google_font_container"));
-		$disable_google_fonts_container->addChild("additional_google_fonts",$additional_google_fonts);
+	    $disable_google_fonts_container->addChild("additional_google_fonts",$additional_google_fonts);
 
         $additional_google_font_container = new BridgeQodeContainer("additional_google_font_container","additional_google_fonts","no");
         $panel1->addChild("additional_google_font_container",$additional_google_font_container);
@@ -330,24 +330,6 @@ if(!function_exists('bridge_qode_general_options_map')) {
         $panel4 = new BridgeQodePanel("Settings", "settings");
         $generalPage->addChild("panel4", $panel4);
 
-        $qode_ui_scripts = bridge_qode_return_ui_scripts_array();
-
-        foreach ($qode_ui_scripts as $script => $name){
-            $qode_default_scripts[] = $script;
-        }
-
-        bridge_qode_add_admin_field(
-            array(
-                'name'          => 'qode_ui_scripts_option',
-                'type'          => 'checkboxgroup',
-                'default_value' => $qode_default_scripts,
-                'label'         => esc_html__( 'JQuery Scripts ', 'bridge' ),
-                'description'   => esc_html__( 'Choose which JQuery scripts will be loaded for your site. By default, all scripts are loaded initially', 'bridge' ),
-                'parent'        => $panel4,
-                'options'       => $qode_ui_scripts
-            )
-        );
-
         $page_transitions = new BridgeQodeField("select", "page_transitions", "0", esc_html__("Page Transition", "bridge"), esc_html__('Choose a a type of transition between loading pages. In order for animation to work properly, you must choose "Post name" in permalinks settings', "bridge"), array(0 => "No animation",
             1 => esc_html__("Up/Down", "bridge"),
             2 => esc_html__("Fade", "bridge"),
@@ -436,9 +418,45 @@ if(!function_exists('bridge_qode_general_options_map')) {
 
         $responsiveness = new BridgeQodeField("yesno", "responsiveness", "yes", esc_html__("Responsiveness", "bridge"), esc_html__("Enabling this option will make all pages responsive", "bridge"));
         $panel4->addChild("responsiveness", $responsiveness);
-
-        $content_sidebar_responsiveness = new BridgeQodeField("yesno", "content_sidebar_responsiveness", "no", esc_html__("Sidebar Responsiveness for Tablet Devices (Portrait View)", "bridge"), esc_html__("Enabling this option will enable responsive sidebar on tablet devices in portrait view. Default behavior is for responsive sidebar to be enabled in Mobile View", "bridge"));
-        $panel4->addChild("content_sidebar_responsiveness", $content_sidebar_responsiveness);
+	    
+	    bridge_qode_add_admin_field(
+			array(
+                 'type'          => 'yesno',
+                 'name'          => 'content_sidebar_responsiveness',
+                 'default_value' => 'no',
+                 'label'         => esc_html__("Sidebar Responsiveness for Tablet Devices", "bridge"),
+                 'description'   => esc_html__("Enabling this option will enable responsive sidebar on tablet devices. Default behavior is for responsive sidebar to be enabled in Mobile View", "bridge"),
+                 'parent'        => $panel4,
+                 'args' => array(
+                     'dependence' => true,
+                     'dependence_hide_on_yes' => '',
+                     'dependence_show_on_yes' => '#qodef_qode_sidebar_advanced_responsiveness_container'
+                 )
+             )
+	    );
+	    
+	    $qode_sidebar_advanced_responsiveness_container = bridge_qode_add_admin_container(
+		    array(
+			    'parent'          => $panel4,
+			    'name'            => 'qode_sidebar_advanced_responsiveness_container',
+			    'hidden_property' => 'content_sidebar_responsiveness',
+			    'hidden_value'    => 'no'
+		    )
+	    );
+	    
+	    bridge_qode_add_admin_field(
+			array(
+				'type'          => 'select',
+				'name'          => 'sidebar_advanced_responsive_width',
+				'default_value' => '',
+				'label'         => esc_html__('Advanced Responsive Breakpoint', 'bridge'),
+				'description'   => esc_html__('Choose a width at which advanced responsive options will take effect.', 'bridge'),
+				'parent'        => $qode_sidebar_advanced_responsiveness_container,
+				'options'       => array(
+					'' => esc_html__( 'Default( 768px )', 'bridge' ),
+					'1024'  => '1024px',
+			)
+		));
 
         $favicon_image = new BridgeQodeField("image", "favicon_image", QODE_ROOT . "/img/favicon.ico", esc_html__("Favicon Image", "bridge"), esc_html__("Choose a favicon image to be displayed", "bridge"));
         $panel4->addChild("favicon_image", $favicon_image);

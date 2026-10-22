@@ -77,3 +77,27 @@ if(!function_exists('qode_listing_load_comment_template')){
 	}
 	add_filter( 'comments_template', 'qode_listing_load_comment_template');
 }
+
+if( ! function_exists( 'qode_listing_enqueue_listing_single_owl_carousel' ) ) {
+	function qode_listing_enqueue_listing_single_owl_carousel( $should_enqueue ) {
+		if( is_singular( 'job_listing' ) ) {
+			$should_enqueue = true;
+		}
+		
+		return $should_enqueue;
+	}
+	
+	add_action( 'bridge_qode_filter_enqueue_owl_carousel_script', 'qode_listing_enqueue_listing_single_owl_carousel' );
+}
+
+if( ! function_exists( 'qode_listing_enqueue_listing_single_fitvids' ) ) {
+	function qode_listing_enqueue_listing_single_fitvids( $should_enqueue ) {
+		if( is_singular( 'job_listing' ) ) {
+			$should_enqueue = true;
+		}
+		
+		return $should_enqueue;
+	}
+	
+	add_action( 'bridge_qode_filter_enqueue_fitvids_script', 'qode_listing_enqueue_listing_single_fitvids' );
+}

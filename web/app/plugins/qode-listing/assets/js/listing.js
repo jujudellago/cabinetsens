@@ -8,8 +8,9 @@ function CustomMarker( options ) {
     };
 }
 
-
-CustomMarker.prototype = new google.maps.OverlayView();
+if (typeof google === 'object') {
+    CustomMarker.prototype = new google.maps.OverlayView();
+}
 
 CustomMarker.prototype.draw = function() {
 

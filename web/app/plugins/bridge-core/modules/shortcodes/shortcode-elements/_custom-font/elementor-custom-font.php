@@ -16,8 +16,12 @@ class BridgeCoreElementorCustomFont extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode' ];
     }
-
-    protected function register_controls() {
+	
+	public function get_script_depends() {
+		return array( 'typed', 'qode-custom-font' );
+	}
+	
+	protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -26,6 +30,14 @@ class BridgeCoreElementorCustomFont extends \Elementor\Widget_Base{
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
+		
+		$this->add_control(
+			'custom_class',
+			[
+				'label' => esc_html__('Custom CSS class', 'bridge-core'),
+				'type' => \Elementor\Controls_Manager::TEXT
+			]
+		);
 
         $this->add_control(
             'font_family',
@@ -237,13 +249,108 @@ class BridgeCoreElementorCustomFont extends \Elementor\Widget_Base{
         );
 
         $this->end_controls_section();
+
+		// Add responsive options
+		$this->start_controls_section(
+			'responsive_styles',
+			[
+				'label' => esc_html__( 'Responsive Styles', 'bridge-core' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+
+		$screen_sizes = array( '1440', '1366', '1280', '1024', '768', '680', '480' );
+
+		foreach ( $screen_sizes as $screen_size ) {
+
+			$this->add_control(
+				'font_size_' . $screen_size,
+				[
+					'label'   => esc_html__( "Font size " . $screen_size, 'bridge-core' ),
+					'type'    => \Elementor\Controls_Manager::TEXT,
+					'default' => '',
+				]
+			);
+
+			$this->add_control(
+				'line_height_' . $screen_size,
+				[
+					'label'   => esc_html__( "Line Height " . $screen_size, 'bridge-core' ),
+					'type'    => \Elementor\Controls_Manager::TEXT,
+					'default' => '',
+				]
+			);
+		}
+
+		$this->end_controls_section();
+
+		// Add predefined developer tab content for each shortcode element
+		$this->start_controls_section(
+			'developer_tools',
+			[
+				'label' => esc_html__( 'Developer Tools', 'bridge-core' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+		
+		$this->add_control(
+			'shortcode_snippet',
+			[
+				'label'   => esc_html__( 'Show Shortcode Snippet', 'bridge-core' ),
+				'type'    => \Elementor\Controls_Manager::SELECT,
+				'default' => 'no',
+				'options' => array(
+					'no'  => esc_html__( 'No', 'bridge-core' ),
+					'yes' => esc_html__( 'Yes', 'bridge-core' ),
+				),
+			]
+		);
+		
+		$this->end_controls_section();
     }
 
     protected function render(){
         $params = $this->get_settings_for_display();
-
-        echo bridge_core_get_shortcode_template_part('templates/custom-font', '_custom-font', '', $params);
+	    
+	    if( ! empty( $params['shortcode_snippet'] ) && $params['shortcode_snippet'] == 'yes' ){
+		    echo $this->get_shortcode_snippet( $params );
+	    } else{
+			echo bridge_core_get_shortcode_template_part('templates/custom-font', '_custom-font', '', $params);
+		}
     }
+	
+	private function get_shortcode_snippet( $params ) {
+		$atts = array();
+		
+		if ( empty( $this ) || ! is_object( $this ) ) {
+			return '';
+		}
+		
+		if ( ! empty( $params ) ) {
+			foreach ( $params as $key => $value ) {
+				if ( is_array( $value ) || $key === 'shortcode_snippet' ) {
+					continue;
+				}
+				
+				if( empty( $value ) || $value == '' ){
+					continue;
+				}
+				
+				$atts[] = $key . '="' . esc_attr( $value ) . '"';
+			}
+		}
+		
+		if( ! isset( $params['content'] ) ) {
+			$params['content'] = '';
+		}
+		
+		return sprintf( '<textarea class="qode-shortcode-snipper-holder" readonly>[%s %s] %s [/%s]</textarea>',
+		                'custom_font',
+		                implode( ' ', $atts ),
+						$params['content'],
+						'custom_font'
+		);
+	}
 
 }
 

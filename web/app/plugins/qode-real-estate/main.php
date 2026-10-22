@@ -3,7 +3,7 @@
 Plugin Name: Qode Real Estate
 Description: Plugin that adds post types for Real Estate extension
 Author: Qode Themes
-Version: 1.1.3
+Version: 1.1.9
 */
 
 require_once 'load.php';
@@ -49,8 +49,11 @@ if ( ! function_exists( 'qodef_re_scripts' ) ) {
 			$array_deps_css[]            = 'bridge-stylesheet';
 			$array_deps_css_responsive[] = 'bridge-responsive';
 			$array_deps_js[]             = 'bridge-default';
-			$array_deps_js[]             = 'google_map_api';
 			$array_deps_js[]             = 'underscore';
+
+			if ( qodef_re_is_google_maps_available() ) {
+				$array_deps_js[] = 'google-map-api';
+			}
 		}
 		
 		wp_enqueue_style( 'qodef-re-style', plugins_url( QODE_RE_REL_PATH . '/assets/css/real-estate.min.css' ), $array_deps_css );
@@ -191,3 +194,15 @@ if( ! function_exists('qode_re_add_elementor_widget_categories') ) {
 
 	add_action('elementor/elements/categories_registered', 'qode_re_add_elementor_widget_categories');
 };
+
+if( ! function_exists( 'qode_re_include_google_maps_api' ) ) {
+	function qode_re_include_google_maps_api( $should_enqueue ) {
+		if ( ! qodef_re_is_google_maps_available() ) {
+			return false;
+		}
+
+		return true;
+	}
+	
+	add_filter( 'bridge_qode_filter_enqueue_google_maps_api', 'qode_re_include_google_maps_api' );
+}

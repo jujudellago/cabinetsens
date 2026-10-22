@@ -29,6 +29,10 @@
   .vc_tta-panel-title {
     margin: 0;
     line-height: 1;
+    font-size: inherit;
+    font-weight: inherit;
+    text-transform: inherit;
+    letter-spacing: inherit;
     > a {
       background: transparent;
       display: block;
@@ -118,7 +122,7 @@
     display: inline-block;
     padding: 0;
     margin: 0;
-    > a {
+    a {
       padding: @vc_tta-tabs-padding-vertical @vc_tta-tabs-padding-horizontal;
       display: block;
       box-sizing: border-box;
@@ -141,7 +145,7 @@
       }
     }
     &.vc_active {
-      > a {
+      a {
         cursor: default;
         text-decoration: none;
         color: inherit;
@@ -548,7 +552,7 @@
     .vc_tta-tab {
       margin-left: -@vc_tta-border-size;
       margin-top: -@vc_tta-border-size;
-      > a {
+      a {
         border-width: @vc_tta-border-size;
       }
     }
@@ -608,12 +612,12 @@
     .vc_tta-tab {
       margin-left: -@vc_tta-border-size;
       margin-top: -@vc_tta-border-size;
-      > a {
+      a {
         border-width: @vc_tta-border-size;
         #gradient > .vertical(@start-color: rgba(255, 255, 255, .2); @end-color: rgba(255, 255, 255, .01));
       }
       &.vc_active {
-        > a {
+        a {
           background-clip: border-box;
         }
       }
@@ -673,7 +677,7 @@
     .vc_tta-tab {
       margin-left: -@vc_tta-border-size-outline;
       margin-top: -@vc_tta-border-size-outline;
-      > a {
+      a {
         border-width: @vc_tta-border-size-outline;
       }
     }

@@ -20,6 +20,18 @@ if(class_exists('BridgeQodeWidget')) {
                     'type' => 'textfield',
                     'title' => esc_html__('Thickness (px)', 'bridge'),
                 ),
+                array(
+                    'name' => 'disable_below',
+                    'type' => 'dropdown',
+                    'title' => esc_html__('Disable separator below', 'bridge'),
+                    'options' => array(
+						'' => esc_html__( 'Never', 'bridge' ),
+						'1024' => esc_html__( '1024px', 'bridge' ),
+						'768' => esc_html__( '768px', 'bridge' ),
+						'600' => esc_html__( '600px', 'bridge' ),
+						'480' => esc_html__( '480px', 'bridge' ),
+                    )
+                ),
             );
         }
 
@@ -31,8 +43,15 @@ if(class_exists('BridgeQodeWidget')) {
             if( ! empty( $instance['thickness'] ) ){
                 $thickness = bridge_qode_filter_px( $instance['thickness'] );
             }
+			
+			$separator_classes = array(
+				'widget',
+				'qode_separator_widget'
+			);
+	        
+	        $separator_classes[] = ! empty( $instance['disable_below'] ) ? 'qode-disabled-below--' . $instance['disable_below'] : '';
 
-            echo '<div class="widget qode_separator_widget" style="margin-bottom: ' . $thickness . 'px;">';
+            echo '<div class="' . implode( ' ', $separator_classes ) . '" style="margin-bottom: ' . $thickness . 'px;">';
 
             echo '</div>';
         }

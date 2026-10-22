@@ -17,6 +17,10 @@ class BridgeCoreElementorPortfolioProjectSlider extends \Elementor\Widget_Base{
 		return [ 'qode' ];
 	}
 	
+	public function get_script_depends() {
+		return array( 'swiper', 'qode-portfolio-project-slider' );
+	}
+	
 	public function getAllCustomWidgetAreas(){
 		$custom_sidebars = get_option( 'qode_sidebars' );
 		$formatted_array             = array(

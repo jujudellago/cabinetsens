@@ -164,7 +164,11 @@ class PropertyCityList implements Lib\ShortcodeInterface {
 			$list_of_cities = explode( ',', $params['city'] );
 			
 			foreach ( $list_of_cities as $city ) {
-				$property_list[] = get_term_by( 'slug', $city, 'property-city' );
+				$property_city = get_term_by( 'slug', $city, 'property-city' );
+				
+				if( ! is_wp_error( $property_city ) && $property_city ) {
+					$property_list[] = $property_city;
+				}
 			}
 		} else {
 			$property_list = qodef_re_get_taxonomy_list( 'property-city', false, 'obj' );
@@ -273,8 +277,8 @@ class PropertyCityList implements Lib\ShortcodeInterface {
 		if ( ! empty( $query ) ) {
 			// get portfolio category
 			$property_city = get_term_by( 'slug', $query, 'property-city' );
-			if ( is_object( $property_city ) ) {
-				
+			
+			if ( ! is_wp_error( $property_city ) && $property_city ) {
 				$portfolio_city_slug  = $property_city->slug;
 				$portfolio_city_title = $property_city->name;
 				

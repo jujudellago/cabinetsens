@@ -10,16 +10,16 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see     https://docs.woocommerce.com/document/template-structure/
- * @package WooCommerce/Templates
- * @version 7.0.1
+ * @see     https://woocommerce.com/document/template-structure/
+ * @package WooCommerce\Templates
+ * @version 9.7.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
 do_action( 'woocommerce_before_shipping_calculator' ); ?>
 
-<form class="woocommerce-shipping-calculator shipping_calculator" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
+<form class="woocommerce-shipping-calculator" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
 	
 	<?php /*** Our code modification inside Woo template - begin ***/ ?>
 	<h2><a href="#" class="shipping-calculator-button"><?php ! empty( $button_text ) ? esc_attr($button_text) : esc_html_e( 'Calculate shipping', 'bridge' ) ; ?><span>↓</span></a></h2>

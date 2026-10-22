@@ -232,6 +232,30 @@
 @border:            @vc_pagination-color-white;
 );
 
+// Custom Color (colorpicker)
+// Applied via CSS custom property `--vc-pagination-color` set inline on the
+// pagination wrapper. Used when `pagination_color` is a colorpicker value.
+// ------------------------
+.vc_pagination.vc_pagination-color-custom {
+  &.vc_pagination-style-outline {
+    .vc_pagination-trigger {
+      border-color: var(--vc-pagination-color);
+      &:hover {
+        background-color: var(--vc-pagination-color);
+      }
+    }
+    .vc_active .vc_pagination-trigger {
+      background-color: var(--vc-pagination-color);
+    }
+  }
+
+  &.vc_pagination-style-flat {
+    .vc_pagination-trigger {
+      background-color: var(--vc-pagination-color);
+    }
+  }
+}
+
 //
 // Mixins
 // =====================

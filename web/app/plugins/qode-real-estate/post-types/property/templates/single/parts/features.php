@@ -1,6 +1,6 @@
 <?php
 $features = qodef_re_get_property_features();
-if(is_array($features)) { ?>
+if(is_array($features) && !empty($features)) { ?>
     <div class="qodef-property-features qodef-property-label-items-holder">
         <div class="qodef-property-features-label qodef-property-label-style">
             <h5>

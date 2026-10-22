@@ -1,47 +1,36 @@
-.vc_layout-panel-switcher() {
-  .vc_layout-btn {
-    display: inline-block;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-color: white;
-    cursor: pointer;
-    padding: 2px;
-    margin: 8px 4px 1px 0;
-    color: #A0A0A0;
-    font-size: 14px;
-    &:hover {
-      color: #0473aa;
-    }
-  }
-  .vc_custom-layout-btn {
-    background-color: transparent;
-    display: block;
-    width: auto;
-    height: auto;
-    margin: 4px 0 3px;
-    font-size: 11px;
-    text-align: center;
-  }
-}
-
 [data-vc-ui-element="panel-row-layout"] {
-  width: 420px;
+  &.vc_ui-panel.vc_ui-panel-window {
+    width: 411px;
+  }
   z-index: 100001;
   top: 90px;
   left: 50%;
   input.vc_row_layout[type="text"] {
-    width: 288px;
-    padding: 8px;
-    line-height: 1;
-  }
-  .vc_layout-panel-switcher {
-    .vc_layout-panel-switcher;
+    width: 100%;
   }
   .vc_ui-panel-window-inner > .vc_ui-panel-content-container {
     overflow: hidden;
-  }
-}
 
-.vc_general.vc_ui-button-update-layout {
-  vertical-align: top;
+    .vc_column:last-of-type {
+      padding-bottom: 15px;
+    }
+  }
+  .vc_row-layout-presets {
+    .wpb_button_group-buttons {
+      flex-wrap: wrap;
+    }
+    .wpb_button_group-button-wrapper {
+      min-width: 0;
+    }
+    .wpb_button_group-button {
+      width: auto;
+      height: auto;
+      padding: 9px;
+    }
+    .wpb_button_group-icon {
+      font-size: 13px;
+      overflow: visible;
+      width: auto;
+    }
+  }
 }

@@ -36,7 +36,7 @@ if(!function_exists('bridge_qode_get_woo_shortcode_module_template_part')) {
 		$temp = $template_path.'/'.$template;
 
 		if(is_array($params) && count($params)) {
-			extract($params);
+			extract( $params, EXTR_SKIP );
 		}
 
 		$templates = array();
@@ -111,12 +111,14 @@ if(!function_exists('bridge_qode_product_ajax_load_category')) {
 		check_ajax_referer('bridge_qode_load_cat_nonce', 'categoryNonce');
 		if(!empty($_POST)) {
 			foreach ($_POST as $key => $value) {
-				if($key !== '') {
-					$addUnderscoreBeforeCapitalLetter = preg_replace('/([A-Z])/', '_$1', $key);
-					$setAllLettersToLowercase = strtolower($addUnderscoreBeforeCapitalLetter);
-
-					$shortcode_params[$setAllLettersToLowercase] = $value;
+				if($key === '' || ! is_scalar( $value )) {
+					continue;
 				}
+
+				$addUnderscoreBeforeCapitalLetter = preg_replace('/([A-Z])/', '_$1', $key);
+				$setAllLettersToLowercase = strtolower($addUnderscoreBeforeCapitalLetter);
+
+				$shortcode_params[$setAllLettersToLowercase] = sanitize_text_field( wp_unslash( $value ) );
 			}
 		}
 
@@ -160,4 +162,70 @@ if(!function_exists('bridge_qode_product_single_enable_default_gallery_features'
 	add_action('init', 'bridge_qode_product_single_enable_default_gallery_features');
 }
 
+if( ! function_exists( 'bridge_qode_product_gallery_slider_on_mobile_body_class' ) ) {
+	function bridge_qode_product_gallery_slider_on_mobile_body_class( $classes ) {
+		if( 'yes' === bridge_qode_options()->getOptionValue( 'product_gallery_slider_on_mobile' ) ) {
+			$classes[] = 'qode-product-gallery-slider-on-mobile';
+		}
+		
+		return $classes;
+	}
+}
 
+add_filter( 'body_class', 'bridge_qode_product_gallery_slider_on_mobile_body_class' );
+
+if( ! function_exists( 'bridge_qode_enqueue_owl_slider_scripts_for_thumbs_slider' ) ) {
+	function bridge_qode_enqueue_owl_slider_scripts_for_thumbs_slider( $should_enqueue ) {
+		if( 'yes' === bridge_qode_options()->getOptionValue( 'product_gallery_slider_on_mobile' ) ) {
+			return true;
+		}
+		
+		return $should_enqueue;
+	}
+}
+
+add_filter( 'bridge_qode_filter_enqueue_flexslider_script', 'bridge_qode_enqueue_owl_slider_scripts_for_thumbs_slider' );
+
+if (!function_exists('bridge_qode_woocommerce_show_product_images')) {
+	/**
+	 * Function for overriding product images template in YITH Quick View plugin template
+	 */
+	function bridge_qode_woocommerce_show_product_images() {
+		global $product;
+		
+		$html = '';
+		$attachment_ids = $product->get_gallery_image_ids();
+		if ( version_compare( WOOCOMMERCE_VERSION, '3.0' ) >= 0 ) {
+			$product_id = $product->get_id();
+		} else {
+			$product_id = $product->ID;
+		}
+		
+		$html .= '<div class="images qode-quick-view-gallery qode-owl-slider">';
+		$image_title = esc_attr( get_the_title($product_id) );
+		if ( version_compare( WOOCOMMERCE_VERSION, '3.3' ) >= 0 ) {
+			$image_src = wp_get_attachment_image_src(get_post_thumbnail_id($product_id), 'woocommerce_single');
+		} else {
+			$image_src = wp_get_attachment_image_src(get_post_thumbnail_id($product_id), 'shop_single');
+		}
+		$html .= '<div class="item"><img src="'.esc_url($image_src[0]).'" alt="'.esc_html($image_title).'"></div>';
+		if ( $attachment_ids ) {
+			foreach ($attachment_ids as $attachment_id) {
+				$image_link = wp_get_attachment_url($attachment_id);
+				if ($image_link !== '') {
+					$image_title = esc_attr(get_the_title($attachment_id));
+					if ( version_compare( WOOCOMMERCE_VERSION, '3.3' ) >= 0 ) {
+						$image_src = wp_get_attachment_image_src($attachment_id, 'woocommerce_single');
+					} else {
+						$image_src = wp_get_attachment_image_src($attachment_id, 'shop_single');
+					}
+					$html .= '<div class="item"><img src="' . esc_url($image_src[0]) . '" alt="' . esc_html($image_title) . '"></div>';
+				}
+			}
+		}
+		$html .= '</div>';
+		
+		
+		print bridge_qode_get_module_part($html);
+	}
+}

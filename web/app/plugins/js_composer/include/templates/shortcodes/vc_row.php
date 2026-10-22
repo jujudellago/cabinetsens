@@ -1,32 +1,42 @@
 <?php
+/**
+ * The template for displaying [vc_row] shortcode output of 'Row' element.
+ *
+ * This template can be overridden by copying it to yourtheme/vc_templates/vc_row.php.
+ *
+ * @see https://kb.wpbakery.com/docs/developers-how-tos/change-shortcodes-html-output
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 
 /**
  * Shortcode attributes
- * @var $atts
- * @var $el_class
- * @var $full_width
- * @var $full_height
- * @var $equal_height
- * @var $columns_placement
- * @var $content_placement
- * @var $parallax
- * @var $parallax_image
- * @var $css
- * @var $el_id
- * @var $video_bg
- * @var $video_bg_url
- * @var $video_bg_parallax
- * @var $parallax_speed_bg
- * @var $parallax_speed_video
- * @var $content - shortcode content
- * @var $css_animation
+ *
+ * @var array $atts
+ * @var string $el_class
+ * @var string $full_width
+ * @var string $min_height
+ * @var string $full_height
+ * @var string $equal_height
+ * @var string $columns_placement
+ * @var string $content_placement
+ * @var string $parallax
+ * @var string $parallax_image
+ * @var string $css
+ * @var string $el_id
+ * @var string $video_bg
+ * @var string $video_bg_url
+ * @var string $video_bg_parallax
+ * @var string $parallax_speed_bg
+ * @var string $parallax_speed_video
+ * @var string $content - shortcode content
+ * @var string $css_animation
  * Shortcode class
  * @var WPBakeryShortCode_Vc_Row $this
  */
-$el_class = $full_height = $parallax_speed_bg = $parallax_speed_video = $full_width = $equal_height = $flex_row = $columns_placement = $content_placement = $parallax = $parallax_image = $css = $el_id = $video_bg = $video_bg_url = $video_bg_parallax = $css_animation = '';
+$el_class = $full_height = $min_height = $parallax_speed_bg = $parallax_speed_video = $full_width = $equal_height = $flex_row = $columns_placement = $content_placement = $parallax = $parallax_image = $css = $el_id = $video_bg = $video_bg_url = $video_bg_parallax = $css_animation = '';
 $disable_element = '';
 $output = $after_output = '';
 $atts = vc_map_get_attributes( $this->getShortcode(), $atts );
@@ -36,46 +46,59 @@ wp_enqueue_script( 'wpb_composer_front_js' );
 
 $el_class = $this->getExtraClass( $el_class ) . $this->getCSSAnimation( $css_animation );
 
-$css_classes = array(
+$css_classes = [
 	'vc_row',
 	'wpb_row',
-	// deprecated
+	// deprecated.
 	'vc_row-fluid',
 	$el_class,
 	vc_shortcode_custom_css_class( $css ),
-);
+];
 
 if ( 'yes' === $disable_element ) {
 	if ( vc_is_page_editable() ) {
-		$css_classes[] = 'vc_hidden-lg vc_hidden-xs vc_hidden-sm vc_hidden-md';
+		$css_classes[] = 'vc_hidden-xl vc_hidden-lg vc_hidden-xs vc_hidden-sm vc_hidden-md';
 	} else {
 		return '';
 	}
 }
 
-if ( vc_shortcode_custom_css_has_property( $css, array(
+if ( vc_shortcode_custom_css_has_property( $css, [
 	'border',
 	'background',
-) ) || $video_bg || $parallax
+] ) || $video_bg || $parallax
 ) {
 	$css_classes[] = 'vc_row-has-fill';
 }
 
-if ( ! empty( $atts['gap'] ) ) {
-	$css_classes[] = 'vc_column-gap-' . $atts['gap'];
+$gap = ! empty( $atts['gap'] ) ? (float) $atts['gap'] : 0;
+if ( $gap > 0 ) {
+	$css_classes[] = 'vc_column-gap-' . $gap; // BC: legacy class.
+	$css_classes[] = 'wpb_column-gap';
 }
 
 if ( ! empty( $atts['rtl_reverse'] ) ) {
 	$css_classes[] = 'vc_rtl-columns-reverse';
 }
 
-$wrapper_attributes = array();
-// build attributes for wrapper
+$wrapper_attributes = [];
+$inline_styles = [];
+// build attributes for wrapper.
 if ( ! empty( $el_id ) ) {
 	$wrapper_attributes[] = 'id="' . esc_attr( $el_id ) . '"';
 }
+
+if ( $min_height ) {
+	$min_height = wpb_format_with_css_unit( $min_height );
+
+	if ( strlen( $min_height ) > 0 ) {
+		$inline_styles[] = 'min-height: ' . $min_height;
+	}
+}
+
 if ( ! empty( $full_width ) ) {
 	$wrapper_attributes[] = 'data-vc-full-width="true"';
+	$wrapper_attributes[] = 'data-vc-full-width-temp="true"';
 	$wrapper_attributes[] = 'data-vc-full-width-init="false"';
 	if ( 'stretch_row_content' === $full_width ) {
 		$wrapper_attributes[] = 'data-vc-stretch-content="true"';
@@ -124,7 +147,7 @@ if ( $has_video_bg ) {
 
 if ( ! empty( $parallax ) ) {
 	wp_enqueue_script( 'vc_jquery_skrollr_js' );
-	$wrapper_attributes[] = 'data-vc-parallax="' . esc_attr( $parallax_speed ) . '"'; // parallax speed
+	$wrapper_attributes[] = 'data-vc-parallax="' . esc_attr( $parallax_speed ) . '"'; // parallax speed.
 	$css_classes[] = 'vc_general vc_parallax vc_parallax-' . $parallax;
 	if ( false !== strpos( $parallax, 'fade' ) ) {
 		$css_classes[] = 'js-vc_parallax-o-fade';
@@ -149,7 +172,13 @@ if ( ! empty( $parallax_image ) ) {
 if ( ! $parallax && $has_video_bg ) {
 	$wrapper_attributes[] = 'data-vc-video-bg="' . esc_attr( $video_bg_url ) . '"';
 }
-$css_class = preg_replace( '/\s+/', ' ', apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, implode( ' ', array_filter( array_unique( $css_classes ) ) ), $this->settings['base'], $atts ) );
+if ( $gap > 0 ) {
+	$inline_styles[] = '--wpb-column-gap: ' . wpb_format_with_css_unit( $atts['gap'] );
+}
+if ( ! empty( $inline_styles ) ) {
+	$wrapper_attributes[] = 'style="' . esc_attr( implode( '; ', $inline_styles ) ) . '"';
+}
+$css_class = preg_replace( '/\s+/', ' ', apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, implode( ' ', array_filter( array_unique( $css_classes ) ) ), $this->getSettings()['base'], $atts ) );
 $wrapper_attributes[] = 'class="' . esc_attr( trim( $css_class ) ) . '"';
 
 $output .= '<div ' . implode( ' ', $wrapper_attributes ) . '>';
@@ -157,4 +186,4 @@ $output .= wpb_js_remove_wpautop( $content );
 $output .= '</div>';
 $output .= $after_output;
 
-echo $output;
+echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

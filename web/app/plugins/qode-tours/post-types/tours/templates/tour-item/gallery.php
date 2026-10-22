@@ -2,6 +2,7 @@
 if (!isset($title_tag) || $title_tag == ''){
 	$title_tag = 'h4';
 }
+$title_tag = qode_tours_sanitize_title_tag( $title_tag );
 ?>
 <div <?php post_class(array('qode-tours-gallery-item qode-tours-row-item qode-item-space',qode_tours_get_tour_rating_class())); ?>>
 	<div class="qode-tour-item-inner">

@@ -34,3 +34,20 @@ if(!function_exists('bridge_qode_woocommerce_disable_yith_pretty_photo')) {
 	add_action('wp_footer', 'bridge_qode_woocommerce_disable_yith_pretty_photo');
 }
 
+if( ! function_exists('bridge_qode_enqueue_quickview_owl_carousel' ) ) {
+	/**
+	 * Function that enables Owl Carousel for YITH Quick View modal
+	 */
+	function bridge_qode_enqueue_quickview_owl_carousel( $should_enqueue ) {
+		//are WooCommerce and YITH QuickView installed?
+		if( bridge_qode_is_woocommerce_installed() && bridge_qode_is_yith_wcqv_install() ) {
+			$should_enqueue = true;
+		}
+		
+		return $should_enqueue;
+	}
+
+	add_action('bridge_qode_filter_enqueue_owl_carousel_script', 'bridge_qode_enqueue_quickview_owl_carousel');
+}
+
+

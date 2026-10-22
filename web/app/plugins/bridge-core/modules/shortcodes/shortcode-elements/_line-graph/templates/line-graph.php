@@ -43,7 +43,7 @@ $data = array(
 
 <div class="q_line_graf_holder">
 	<div class="q_line_graf" <?php echo bridge_qode_get_inline_attrs( $data ); ?>>
-		<canvas id="<?php echo 'lineGraph'. $id ?>" height="<?php echo esc_html($height); ?>" width="<?php echo esc_html($width); ?>"></canvas>
+		<canvas id="<?php echo 'lineGraph' . $id ?>" height="<?php echo esc_html( $height ); ?>" width="<?php echo esc_html( $width ); ?>"></canvas>
 	</div>
 	<div class="q_line_graf_legend">
 		<ul>

@@ -100,12 +100,63 @@ if(!function_exists('qodef_re_user_registration_role_picker')) {
     add_action('qode_membership_additional_registration_field', 'qodef_re_user_registration_role_picker');
 }
 
+if(!function_exists('qodef_re_get_registration_allowed_roles')) {
+    /**
+     * Returns RE roles that may be assigned during public registration.
+     * Mirrors the options used by the registration role picker UI.
+     *
+     * @return array
+     */
+    function qodef_re_get_registration_allowed_roles() {
+        $allowed = array();
+
+        if ( ! qodef_re_theme_installed() ) {
+            return $allowed;
+        }
+
+        $role_enabled = bridge_qode_options()->getOptionValue( 'real_estate_registration_role_enabled' );
+        if ( empty( $role_enabled ) || $role_enabled !== 'yes' ) {
+            return $allowed;
+        }
+
+        if ( bridge_qode_options()->getOptionValue( 'real_estate_enable_owner_role' ) === 'yes' ) {
+            $allowed[] = 'owner';
+        }
+        if ( bridge_qode_options()->getOptionValue( 'real_estate_enable_agent_role' ) === 'yes' ) {
+            $allowed[] = 'agent';
+        }
+        if ( bridge_qode_options()->getOptionValue( 'real_estate_enable_agency_role' ) === 'yes' ) {
+            $allowed[] = 'agency';
+        }
+
+        return $allowed;
+    }
+}
+
+if(!function_exists('qodef_re_extend_registration_allowed_roles')) {
+    /**
+     * @param array $allowed
+     *
+     * @return array
+     */
+    function qodef_re_extend_registration_allowed_roles( $allowed ) {
+        return array_values( array_unique( array_merge( $allowed, qodef_re_get_registration_allowed_roles() ) ) );
+    }
+
+    add_filter( 'qode_membership_allowed_registration_roles', 'qodef_re_extend_registration_allowed_roles' );
+}
+
 if(!function_exists('qodef_re_user_registration_additional_params')) {
     function qodef_re_user_registration_additional_params($additional_params, $login_data) {
-        if(isset($login_data) && !empty($login_data)) {
-            if(isset($login_data['user_register_role'])) {
-                $additional_params['role'] = $login_data['user_register_role'];
-            }
+        if ( ! isset( $login_data['user_register_role'] ) || $login_data['user_register_role'] === '' ) {
+            return $additional_params;
+        }
+
+        $requested_role = sanitize_key( $login_data['user_register_role'] );
+        $allowed_roles  = qodef_re_get_registration_allowed_roles();
+
+        if ( in_array( $requested_role, $allowed_roles, true ) ) {
+            $additional_params['role'] = $requested_role;
         }
 
         return $additional_params;

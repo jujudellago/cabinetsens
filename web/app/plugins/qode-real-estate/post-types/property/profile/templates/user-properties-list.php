@@ -48,11 +48,12 @@ $query_results = new \WP_Query($query_args);
                             'custom_class' => 'qodef-property-item-delete',
                             'custom_attrs' => array(
                                 'data-property-id'  => get_the_ID(),
-                                'data-confirm-text' => esc_html__('Are you sure you want to delete this property?', 'qode-real-estate')
+                                'data-confirm-text' => esc_html__('Are you sure you want to delete this property?', 'qode-real-estate'),
+                                'data-nonce'        => wp_create_nonce( 'qodef_re_delete_property_' . get_the_ID() ),
                             )
                         ));
                     } else {
-                        echo '<a href="#" target="_self" class="qodef-btn qodef-btn-medium qodef-btn-solid qodef-property-item-delete" data-property-id="<?php echo get_the_ID()?>" data-confirm-text="<?php esc_html__("Are you sure you want to delete this property?","qodef-real-estate");?>"><span class="qodef-btn-text">' . esc_html__('EDIT PROPERTY', 'qode-real-estate') . '</span></a>';
+                        echo '<a href="#" target="_self" class="qodef-btn qodef-btn-medium qodef-btn-solid qodef-property-item-delete" data-property-id="' . esc_attr( get_the_ID() ) . '" data-confirm-text="' . esc_attr__( 'Are you sure you want to delete this property?', 'qode-real-estate' ) . '" data-nonce="' . esc_attr( wp_create_nonce( 'qodef_re_delete_property_' . get_the_ID() ) ) . '"><span class="qodef-btn-text">' . esc_html__( 'DELETE PROPERTY', 'qode-real-estate' ) . '</span></a>';
                     }
                     ?>
                 </div>

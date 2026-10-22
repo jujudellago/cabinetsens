@@ -14,14 +14,15 @@
             if(likeLink.hasClass('liked')) return false;
 
             var type = '';
-            if(typeof likeLink.data('type') !== 'undefined') {
+            if (typeof likeLink.data('type') !== 'undefined') {
                 type = likeLink.data('type');
             }
 
             var $dataToPass = {
                 action: 'qode_like',
                 likes_id: id,
-                type: type
+                type: type,
+                nonce: likeLink.data('nonce')
             }
 
             $.ajax({

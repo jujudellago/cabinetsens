@@ -1,4 +1,12 @@
 <?php
+/**
+ * WXR Parser.
+ *
+ * Parses WXR files and extracts data such as authors, posts,
+ * categories, tags, and terms. Validates WXR version and
+ * handles XML parsing errors.
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
@@ -8,9 +16,102 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Vc_WXR_Parser_XML {
 	/**
+	 * WXR version number extracted from the feed.
+	 *
+	 * @var string|false
+	 */
+	public $wxr_version;
+
+	/**
+	 * Whether the parser is currently inside an <item> element.
+	 *
+	 * @var bool
+	 */
+	public $in_post;
+
+	/**
+	 * Buffer for accumulating character data while parsing.
+	 *
+	 * @var string|false
+	 */
+	public $cdata;
+
+	/**
+	 * Holds data for the current entity (post/term/category/tag) being parsed.
+	 *
+	 * @var array|false
+	 */
+	public $data;
+
+	/**
+	 * Holds data for the current sub-entity (comment/meta) being parsed.
+	 *
+	 * @var array|false
+	 */
+	public $sub_data;
+
+	/**
+	 * Current tag (without namespace) being processed, or false when none.
+	 *
+	 * @var string|false
+	 */
+	public $in_tag;
+
+	/**
+	 * Current sub-tag (without namespace) being processed, or false when none.
+	 *
+	 * @var string|false
+	 */
+	public $in_sub_tag;
+
+	/**
+	 * Collected authors keyed by author login.
+	 *
 	 * @var array
 	 */
-	public $wp_tags = array(
+	public $authors;
+
+	/**
+	 * Collected posts.
+	 *
+	 * @var array
+	 */
+	public $posts;
+
+	/**
+	 * Collected terms.
+	 *
+	 * @var array
+	 */
+	public $term;
+
+	/**
+	 * Collected categories.
+	 *
+	 * @var array
+	 */
+	public $category;
+
+	/**
+	 * Collected tags.
+	 *
+	 * @var array
+	 */
+	public $tag;
+
+	/**
+	 * Base site URL parsed from the WXR feed.
+	 *
+	 * @var string|null
+	 */
+	public $base_url;
+
+	/**
+	 * WP tags.
+	 *
+	 * @var array
+	 */
+	public $wp_tags = [
 		'wp:post_id',
 		'wp:post_date',
 		'wp:post_date_gmt',
@@ -42,11 +143,13 @@ class Vc_WXR_Parser_XML {
 		'wp:author_display_name',
 		'wp:author_first_name',
 		'wp:author_last_name',
-	);
+	];
 	/**
+	 * WP sub tags.
+	 *
 	 * @var array
 	 */
-	public $wp_sub_tags = array(
+	public $wp_sub_tags = [
 		'wp:comment_id',
 		'wp:comment_author',
 		'wp:comment_author_email',
@@ -59,10 +162,12 @@ class Vc_WXR_Parser_XML {
 		'wp:comment_type',
 		'wp:comment_parent',
 		'wp:comment_user_id',
-	);
+	];
 
 	/**
-	 * @param $file
+	 * Parsing happen here.
+	 *
+	 * @param string $file
 	 * @return array|\WP_Error
 	 */
 	public function parse( $file ) {
@@ -74,20 +179,22 @@ class Vc_WXR_Parser_XML {
 		$this->in_tag = false;
 		$this->in_sub_tag = false;
 
-		$this->authors = array();
-		$this->posts = array();
-		$this->term = array();
-		$this->category = array();
-		$this->tag = array();
+		$this->authors = [];
+		$this->posts = [];
+		$this->term = [];
+		$this->category = [];
+		$this->tag = [];
 
 		$xml = xml_parser_create( 'UTF-8' );
 		xml_parser_set_option( $xml, XML_OPTION_SKIP_WHITE, 1 );
 		xml_parser_set_option( $xml, XML_OPTION_CASE_FOLDING, 0 );
+        // phpcs:ignore Generic.PHP.DeprecatedFunctions.Deprecated
 		xml_set_object( $xml, $this );
 		xml_set_character_data_handler( $xml, 'cdata' );
 		xml_set_element_handler( $xml, 'tag_open', 'tag_close' );
 
-		/** @var \WP_Filesystem_Direct $wp_filesystem */ global $wp_filesystem;
+		// WP_Filesystem_Direct $wp_filesystem - global variable.
+		global $wp_filesystem;
 		if ( empty( $wp_filesystem ) ) {
 			require_once ABSPATH . '/wp-admin/includes/file.php';
 			WP_Filesystem( false, false, true );
@@ -98,11 +205,11 @@ class Vc_WXR_Parser_XML {
 			$error_code = xml_get_error_code( $xml );
 			$error_string = xml_error_string( $error_code );
 
-			return new WP_Error( 'XML_parse_error', 'There was an error when reading this WXR file', array(
+			return new WP_Error( 'XML_parse_error', 'There was an error when reading this WXR file', [
 				$current_line,
 				$current_column,
 				$error_string,
-			) );
+			] );
 		}
 		xml_parser_free( $xml );
 
@@ -110,7 +217,7 @@ class Vc_WXR_Parser_XML {
 			return new WP_Error( 'WXR_parse_error', esc_html__( 'This does not appear to be a WXR file, missing/invalid WXR version number', 'js_composer' ) );
 		}
 
-		return array(
+		return [
 			'authors' => $this->authors,
 			'posts' => $this->posts,
 			'categories' => $this->category,
@@ -118,15 +225,17 @@ class Vc_WXR_Parser_XML {
 			'terms' => $this->term,
 			'base_url' => $this->base_url,
 			'version' => $this->wxr_version,
-		);
+		];
 	}
 
 	/**
-	 * @param $parse
-	 * @param $tag
-	 * @param $attr
+	 *  Handles the opening of specific XML tags during parsing.
+	 *
+	 * @param bool $parse
+	 * @param string $tag
+	 * @param array $attr
 	 */
-	public function tag_open( $parse, $tag, $attr ) {
+	public function tag_open( $parse, $tag, $attr ) { // phpcs:ignore:Generic.Metrics.CyclomaticComplexity.TooHigh
 		if ( in_array( $tag, $this->wp_tags, true ) ) {
 			$this->in_tag = substr( $tag, 3 );
 
@@ -183,8 +292,10 @@ class Vc_WXR_Parser_XML {
 	}
 
 	/**
-	 * @param $parser
-	 * @param $cdata
+	 * Handles the character data (CDATA) found within an XML element.
+	 *
+	 * @param mixed $parser
+	 * @param string $cdata
 	 */
 	public function cdata( $parser, $cdata ) {
 		if ( ! trim( $cdata ) ) {
@@ -199,23 +310,25 @@ class Vc_WXR_Parser_XML {
 	}
 
 	/**
-	 * @param $parser
-	 * @param $tag
+	 * Handles the closing of specific XML tags during parsing.
+	 *
+	 * @param mixed $parser
+	 * @param string $tag
 	 */
-	public function tag_close( $parser, $tag ) {
+	public function tag_close( $parser, $tag ) { // phpcs:ignore:Generic.Metrics.CyclomaticComplexity, CognitiveComplexity.Complexity.MaximumComplexity.TooHigh
 		switch ( $tag ) {
 			case 'wp:comment':
-				unset( $this->sub_data['key'], $this->sub_data['value'] ); // remove meta sub_data
+				unset( $this->sub_data['key'], $this->sub_data['value'] ); // remove meta sub_data.
 				if ( ! empty( $this->sub_data ) ) {
 					$this->data['comments'][] = $this->sub_data;
 				}
 				$this->sub_data = false;
 				break;
 			case 'wp:commentmeta':
-				$this->sub_data['commentmeta'][] = array(
+				$this->sub_data['commentmeta'][] = [
 					'key' => $this->sub_data['key'],
 					'value' => $this->sub_data['value'],
-				);
+				];
 				break;
 			case 'category':
 				if ( ! empty( $this->sub_data ) ) {

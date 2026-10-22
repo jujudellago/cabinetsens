@@ -1,14 +1,23 @@
 <?php
+/**
+ * The template for displaying [vc_gitem_zone] shortcode output.
+ *
+ * This template can be overridden by copying it to yourtheme/vc_templates/vc_gitem_zone.php.
+ *
+ * @see https://kb.wpbakery.com/docs/developers-how-tos/change-shortcodes-html-output
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 /**
  * Shortcode attributes
- * @var $atts
- * @var $el_class
- * @var $css
- * @var $render
- * @var $content - shortcode content
+ *
+ * @var array $atts
+ * @var string $el_class
+ * @var string $css
+ * @var string $render
+ * @var string $content - shortcode content
  * Shortcode class
  * @var WPBakeryShortCode_Vc_Gitem_Zone $this
  */
@@ -32,4 +41,4 @@ $output = '';
 
 $output .= '<div class="' . esc_attr( $css_class ) . '"><div class="' . esc_attr( $css_class_mini ) . '">' . do_shortcode( $content ) . '</div></div>';
 
-echo $output;
+echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

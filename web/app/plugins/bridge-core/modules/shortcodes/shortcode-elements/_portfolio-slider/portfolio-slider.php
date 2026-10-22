@@ -15,7 +15,8 @@ if (!function_exists('bridge_core_portfolio_slider')) {
             "separator"         =>  "",
             "hide_button"		=>  "",
             "image_size"        =>  "portfolio-square",
-            "enable_navigation" =>  ""
+            "enable_navigation" =>  "",
+            "enable_autoplay"   =>  ""
         );
 
         $params = shortcode_atts($args, $atts);

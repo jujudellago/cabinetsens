@@ -176,7 +176,7 @@ class LS_Sliders {
 				SELECT SQL_CALC_FOUND_ROWS {$args['columns']}
 				FROM $table
 				$where
-				ORDER BY `{$args['orderby']}` {$args['order']}
+				ORDER BY `{$args['orderby']}` {$args['order']}, name ASC
 				LIMIT {$args['limit']}
 
 			", ARRAY_A);
@@ -225,23 +225,34 @@ class LS_Sliders {
 	 * @param array $data The settings of the slider to create
 	 * @return int The slider database ID inserted
 	 */
-	public static function add($title = 'Unnamed', $data = [], $slug = '', $groupId = NULL ) {
+	public static function add($title = 'Unnamed', $data = [], $slug = '', $groupId = NULL, $addProperties = [] ) {
 
 		global $wpdb;
 
 		// Slider data
-		$data = !empty($data) ? $data : [
+		$data = ! empty( $data ) ? $data : [
 			'properties' => [
+
 				'createdWith' => LS_PLUGIN_VERSION,
 				'sliderVersion' => LS_PLUGIN_VERSION,
+
 				'title' => $title,
+
 				'new' => true,
+
+				// v7.10.0: Prevent user selection on the entire project by default. This is
+				// only applied to newly created projects and we don't try to compare versions
+				// or anything like that. The actual default remained 'false' for backward compatibility.
+				'noUserSelect' => true
 			],
 			'layers' => [ [] ],
 		];
 
-		// Fix WP 4.2 issue with longer varchars
-		// than the column length
+		// Ensure the project has the current importVersion even if it's
+		// imported or duplicated from an older version.
+		$data['properties']['importVersion'] = LS_PLUGIN_VERSION;
+
+		// Fix WP 4.2 issue with longer varchars than the column length
 		if(strlen($title) > 99) {
 			$title = substr($title, 0, (99-strlen($title)) );
 		}
@@ -252,18 +263,25 @@ class LS_Sliders {
 			$popup = 1;
 		}
 
+		// Keywords
+		$keywords = '';
+		if( ! empty($data['properties']['keywords']) ) {
+			$keywords = $data['properties']['keywords'];
+		}
+
 		// Insert slider, WPDB will escape data automatically
 		$wpdb->insert( $wpdb->prefix.LS_DB_TABLE, [
 			'group_id' => $groupId,
 			'author' => get_current_user_id(),
 			'name' => $title,
 			'slug' => $slug,
+			'keywords' => $keywords,
 			'data' => json_encode($data),
-			'date_c' => time(),
-			'date_m' => time(),
+			'date_c' => ! empty( $addProperties['date_c'] ) ? $addProperties['date_c'] : time(),
+			'date_m' => ! empty( $addProperties['date_m'] ) ? $addProperties['date_m'] : time(),
 			'flag_popup' => $popup
 		], [
-			'%d', '%d', '%s', '%s', '%s', '%d', '%d', '%d'
+			'%d', '%d', '%s', '%s', '%s', '%s', '%d', '%d', '%d'
 		]);
 
 		// Return insert database ID
@@ -322,10 +340,17 @@ class LS_Sliders {
 			$popup = 1;
 		}
 
+		// Keywords
+		$keywords = '';
+		if( ! empty($data['properties']['keywords']) ) {
+			$keywords = $data['properties']['keywords'];
+		}
+
 		// Insert slider, WPDB will escape data automatically
 		$wpdb->update( $wpdb->prefix.LS_DB_TABLE, [
 				'name' => $title,
 				'slug' => $slug,
+				'keywords' => $keywords,
 				'data' => json_encode( $data ),
 				'schedule_start' => $schedule['schedule_start'],
 				'schedule_end' => $schedule['schedule_end'],
@@ -335,7 +360,7 @@ class LS_Sliders {
 				'flag_popup' => $popup
 			],
 			[ 'id' => $id ],
-			[ '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%d', '%d' ]
+			[ '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%d', '%d' ]
 		);
 
 		// Return insert database ID
@@ -440,6 +465,11 @@ class LS_Sliders {
 
 		// Delete any slider drafts (if any)
 		self::deleteDraft( $id );
+
+		// WPML package cleanup
+		if( ls_should_auto_cleanup_translation_strings() ) {
+			do_action( 'wpml_delete_package', "project-{$id}", LS_WPML_SP_SLUG );
+		}
 
 		return true;
 	}
@@ -853,7 +883,7 @@ class LS_Sliders {
 			SELECT *
 			FROM $table
 			WHERE $where
-			ORDER BY `{$args['orderby']}` {$args['order']}
+			ORDER BY `{$args['orderby']}` {$args['order']}, name ASC
 			LIMIT 100
 		", ARRAY_A );
 
@@ -891,7 +921,10 @@ class LS_Sliders {
 		// Get Sliders
 		global $wpdb;
 		$table = $wpdb->prefix.LS_DB_TABLE;
-		$result = $wpdb->get_row("SELECT * FROM $table WHERE id = '$id' ORDER BY id DESC LIMIT 1", ARRAY_A);
+		$result = $wpdb->get_row( $wpdb->prepare(
+			"SELECT * FROM $table WHERE id = %d ORDER BY id DESC LIMIT 1",
+			$id
+		), ARRAY_A );
 
 		// Check return value
 		if(!is_array($result)) { return false; }
@@ -948,14 +981,16 @@ class LS_Sliders {
 
 		// Check slug
 		if(empty($slug)) { return false; }
-			else { $slug = esc_sql($slug); }
 
 		// Get DB stuff
 		global $wpdb;
 		$table = $wpdb->prefix.LS_DB_TABLE;
 
 		// Make the call
-		$result = $wpdb->get_row("SELECT * FROM $table WHERE slug = '$slug' ORDER BY id DESC LIMIT 1", ARRAY_A);
+		$result = $wpdb->get_row( $wpdb->prepare(
+			"SELECT * FROM `$table` WHERE slug = %s ORDER BY id DESC LIMIT 1",
+			$slug
+		), ARRAY_A);
 
 		// Check return value
 		if(!is_array($result)) { return false; }

@@ -90,32 +90,52 @@ if(!function_exists('qode_restaurant_get_shortcode_module_template_part')) {
 	 * @param array $params array of parameters to pass to template
 	 * @return html
 	 */
-	function qode_restaurant_get_shortcode_module_template_part($shortcode,$template, $slug = '', $params = array()) {
-
+	function qode_restaurant_get_shortcode_module_template_part( $shortcode,$template, $slug = '', $params = array() ) {
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
+		}
+		
+		if ( is_scalar( $shortcode ) ) {
+			$shortcode = preg_replace( $available_characters, '', $shortcode );
+		} else {
+			$shortcode = '';
+		}
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
 		//HTML Content from template
-		$html = '';
-		$template_path = QODE_RESTAURANT_CPT_PATH.'/'.$shortcode.'/shortcodes';
-
-		$temp = $template_path.'/'.$template;
-		if(is_array($params) && count($params)) {
-			extract($params);
+		$html          = '';
+		$template_path = QODE_RESTAURANT_CPT_PATH . '/' . $shortcode . '/shortcodes';
+		
+		$temp = $template_path . '/' . $template;
+		if ( is_array( $params ) && count( $params ) ) {
+			extract( $params );
 		}
 		
 		$template = '';
-
-		if($temp !== '') {
-			$template = $temp.'.php';
-
-			if($slug !== '') {
+		
+		if ( $temp !== '' ) {
+			$template = $temp . '.php';
+			
+			if ( $slug !== '' ) {
 				$template = "{$temp}-{$slug}.php";
 			}
 		}
-		if($template) {
+		if ( $template ) {
 			ob_start();
-			include($template);
+			include( $template );
 			$html = ob_get_clean();
 		}
-
+		
 		return $html;
 	}
 }
@@ -132,7 +152,22 @@ if(!function_exists('qode_restaurant_get_template_part')) {
 	 *
 	 * @return mixed
 	 */
-	function qode_restaurant_get_template_part($template, $slug = '', $params = array(), $return = false) {
+	function qode_restaurant_get_template_part( $template, $slug = '', $params = array(), $return = false ) {
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
+		}
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
 		//HTML Content from template
 		$html = '';
 		$template_path = QODE_RESTAURANT_ABS_PATH;
@@ -151,21 +186,21 @@ if(!function_exists('qode_restaurant_get_template_part')) {
 				$template = "{$temp}-{$slug}.php";
 			}
 		}
-
-		if($template) {
-			if($return) {
+		
+		if ( $template ) {
+			if ( $return ) {
 				ob_start();
 			}
-
-			include($template);
-
-			if($return) {
+			
+			include( $template );
+			
+			if ( $return ) {
 				$html = ob_get_clean();
 			}
-
+			
 		}
-
-		if($return) {
+		
+		if ( $return ) {
 			return $html;
 		}
 	}

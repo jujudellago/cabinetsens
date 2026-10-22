@@ -168,6 +168,7 @@
     			var thisDeleteButton = $(this),
     				propertyId = thisDeleteButton.data('property-id'),
     				confirmText = thisDeleteButton.data('confirm-text'),
+    				nonce = thisDeleteButton.data('nonce'),
     				property = thisDeleteButton.parents('.qodef-re-profile-property-item');
 
     			thisDeleteButton.on('click', function(e){
@@ -179,7 +180,8 @@
 
 	    				var dataForm = {
 	    					'action' : 'qodef_re_delete_property',
-	    					'property_id' : propertyId
+	    					'property_id' : propertyId,
+	    					'nonce' : nonce
 	    				}
 
 	    				$.ajax({

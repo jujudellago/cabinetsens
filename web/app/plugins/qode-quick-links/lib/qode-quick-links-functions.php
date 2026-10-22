@@ -40,8 +40,8 @@ if ( ! function_exists( 'qode_quick_links_html' ) ) {
 	function qode_quick_links_html() {
 		if(qode_quick_links_theme_installed()){
 			$enable_quick_links = bridge_qode_options()->getOptionValue('enable_quick_links');
-			if($enable_quick_links == 'yes' ) {
-				echo qode_quick_links_get_template_part('templates/quick-links-holder');
+			if ( $enable_quick_links == 'yes' ) {
+				echo qode_quick_links_get_template_part( 'templates/quick-links-holder' );
 			}
 		} else {
 			echo qode_quick_links_get_template_part('templates/quick-links-holder');

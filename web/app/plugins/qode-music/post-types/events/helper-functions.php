@@ -180,3 +180,23 @@ if(!function_exists('qode_music_event_date_and_time_meta_save')){
 }
 
 add_action( 'save_post', 'qode_music_event_date_and_time_meta_save');
+
+if( ! function_exists( 'qode_music_event_include_google_maps_api' ) ) {
+	function qode_music_event_include_google_maps_api( $should_enqueue ) {
+		if( is_singular( 'qode-event' ) ) {
+			return true;
+		}
+		
+		return $should_enqueue;
+	}
+	
+	add_filter( 'bridge_qode_filter_enqueue_google_maps_api', 'qode_music_event_include_google_maps_api' );
+}
+
+if( ! function_exists( 'qode_music_enqueue_fluidvids' ) ) {
+	function qode_music_enqueue_fluidvids() {
+		return true;
+	}
+	
+	add_action( 'bridge_qode_filter_enqueue_fluidvids_script', 'qode_music_enqueue_fluidvids' );
+}

@@ -43,7 +43,27 @@ if ( ! function_exists( 'qode_membership_get_shortcode_template_part' ) ) {
 	 * @return string
 	 */
 	function qode_membership_get_shortcode_template_part( $shortcode, $template, $slug = '', $params = array() ) {
-
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $shortcode ) ) {
+			$shortcode = preg_replace( $available_characters, '', $shortcode );
+		} else {
+			$shortcode = '';
+		}
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
+		}
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
 		//HTML Content from template
 		$html          = '';
 		$template_path = QODE_MEMBERSHIP_ABS_PATH . '/shortcodes/' . $shortcode . '/templates';
@@ -84,7 +104,27 @@ if ( ! function_exists( 'qode_membership_get_widget_template_part' ) ) {
 	 * @return string
 	 */
 	function qode_membership_get_widget_template_part( $widget, $template, $slug = '', $params = array() ) {
-
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $widget ) ) {
+			$widget = preg_replace( $available_characters, '', $widget );
+		} else {
+			$widget = '';
+		}
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
+		}
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
 		//HTML Content from template
 		$html          = '';
 		$template_path = QODE_MEMBERSHIP_ABS_PATH . '/widgets/' . $widget . '/templates';
@@ -125,37 +165,63 @@ if ( ! function_exists( 'qode_membership_get_module_template_part' ) ) {
      * @return string
      */
     function qode_membership_get_module_template_part( $module, $submodule, $template, $slug = '', $params = array() ) {
-
-        //HTML Content from template
-        $html          = '';
-        $template_path = QODE_MEMBERSHIP_ABS_PATH . '/modules/' . $module . '/' . $submodule .'/templates';
-
-        $temp = $template_path . '/' . $template;
-        if ( is_array( $params ) && count( $params ) ) {
-            extract( $params );
-        }
-
-        $template = '';
-
-        if (!empty($temp)) {
-            if (!empty($slug)) {
-                $template = "{$temp}-{$slug}.php";
-
-                if(!file_exists($template)) {
-                    $template = $temp.'.php';
-                }
-            } else {
-                $template = $temp.'.php';
-            }
-        }
-
-        if ( $template ) {
-            ob_start();
-            include( $template );
-            $html = ob_get_clean();
-        }
-
-        return $html;
+	    
+	    $available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+	    
+	    if ( is_scalar( $module ) ) {
+		    $module = preg_replace( $available_characters, '', $module );
+	    } else {
+		    $module = '';
+	    }
+	    
+	    if ( is_scalar( $submodule ) ) {
+		    $submodule = preg_replace( $available_characters, '', $submodule );
+	    } else {
+		    $submodule = '';
+	    }
+		
+	    if ( is_scalar( $template ) ) {
+		    $template = preg_replace( $available_characters, '', $template );
+	    } else {
+		    $template = '';
+	    }
+	    
+	    if ( is_scalar( $slug ) ) {
+		    $slug = preg_replace( $available_characters, '', $slug );
+	    } else {
+		    $slug = '';
+	    }
+	    
+	    //HTML Content from template
+	    $html          = '';
+	    $template_path = QODE_MEMBERSHIP_ABS_PATH . '/modules/' . $module . '/' . $submodule . '/templates';
+	    
+	    $temp = $template_path . '/' . $template;
+	    if ( is_array( $params ) && count( $params ) ) {
+		    extract( $params );
+	    }
+	    
+	    $template = '';
+	    
+	    if ( ! empty( $temp ) ) {
+		    if ( ! empty( $slug ) ) {
+			    $template = "{$temp}-{$slug}.php";
+			    
+			    if ( ! file_exists( $template ) ) {
+				    $template = $temp . '.php';
+			    }
+		    } else {
+			    $template = $temp . '.php';
+		    }
+	    }
+	    
+	    if ( $template ) {
+		    ob_start();
+		    include( $template );
+		    $html = ob_get_clean();
+	    }
+	    
+	    return $html;
     }
 }
 

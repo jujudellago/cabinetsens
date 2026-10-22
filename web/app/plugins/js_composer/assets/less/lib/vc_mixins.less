@@ -176,26 +176,45 @@
 
 .vc_frontend-editor-invisibility-settings {
   display: block !important;
-  .opacity(.5);
+  position: relative;
+
+  // Overlay to indicate disabled state - doesn't affect nested elements' opacity
+  > .vc_element::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 9;
+    pointer-events: none; // Allow interactions to pass through
+  }
+
+  // All controls (including nested) should be above the overlay
+  .vc_controls,
+  .vc_controls .vc_controls-bc {
+    z-index: 10;
+  }
+
   .vc_controls, &.vc_section + .vc_controls, &.vc_section + .vc_row-full-width + .vc_controls {
-    .vc_btn-content {
-      background-color: #CCC !important;
-      border-color: #CCC !important;
+    .vc_btn-content,
+    .vc_copypaste-select + .select2-container .select2-selection {
+      background-color: @grayControls !important;
+      border-color: @grayControls !important;
       &:hover {
-        background-color: #b3b3b3 !important;
-        border-color: #b3b3b3 !important;
+        background-color: @grayControlsDarker !important;
+        border-color: @grayControlsDarker !important;
       }
     }
     .vc_control-btn-append:before {
-      border-bottom-color: #CCC !important;
+      border-bottom-color: @grayControls !important;
     }
     .vc_control-btn-append:hover:before {
-      border-bottom-color: #b3b3b3 !important;
+      border-bottom-color: @grayControlsDarker !important;
     }
-  }
-  &.vc_section + .vc_controls, &.vc_section + .vc_row-full-width + .vc_controls {
-    .vc_btn-content {
-      .opacity(.5);
+    > .vc_controls-cc {
+      background-color: @grayControls !important;
     }
   }
 }
@@ -204,11 +223,11 @@
   display: block !important;
   .vc_controls {
     .vc_btn-content {
-      background-color: #CCC !important;
-      border-color: #CCC !important;
+      background-color: @grayControls !important;
+      border-color: @grayControls !important;
       &:hover {
-        background-color: #b3b3b3 !important;
-        border-color: #b3b3b3 !important;
+        background-color: @grayControlsDarker !important;
+        border-color: @grayControlsDarker !important;
       }
     }
   }
@@ -254,6 +273,48 @@
   .vc_bg-@{color} {
     background-color: @@color;
   }
+}
+
+.wpb_param_label_text(@size: @wpb_font-size-sm) {
+  color: @textGray;
+  font-family: @wpb_font-family-primary;
+  font-size: @size;
+  font-weight: @wpb_font-weight;
+  line-height: 1.5;
+}
+
+.wpb-field-shape {
+  border-radius: 3px;
+  border: 1px solid @grayLight;
+}
+
+.wpb-form-input-styles {
+  .wpb_param_label_text();
+  .wpb-field-shape();
+  background-color: #fff;
+  padding: 10px;
+  margin: 0;
+  box-shadow: unset;
+  min-height: unset;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: @vc_main_color_hover;
+  }
+
+  &::placeholder {
+    color: @grayPlaceholder;
+  }
+}
+
+.wpb_param_focus_outline() {
+  outline: 1px solid @vc_main_color;
+  outline-offset: 1px;
+}
+
+.wpb_transition(@property: all, @duration: @wpb_transition_duration) {
+  transition: @property @duration @wpb_transition_easing;
 }
 
 // End Mixins

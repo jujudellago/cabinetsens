@@ -59,25 +59,25 @@ if ( ! function_exists('bridge_core_is_installed') ) {
 	}
 }
 
-if(!function_exists('bridge_core_get_module_template_part')) {
-
-	function bridge_core_get_module_template_part($template, $module, $slug = '', $params = array()) {
+if ( ! function_exists( 'bridge_core_get_module_template_part' ) ) {
+	
+	function bridge_core_get_module_template_part( $template, $module, $slug = '', $params = array() ) {
 		$template_path = BRIDGE_CORE_MODULES_PATH . '/' .$module;
 
-		return bridge_core_return_template_part($template_path.'/'.$template, $slug, $params);
+		return bridge_core_return_template_part($template_path.'/'.$template, $slug, $params );
 
 	}
 }
 if(!function_exists('bridge_core_get_shortcode_template_part')) {
 
-	function bridge_core_get_shortcode_template_part($template, $module, $slug = '', $params = array()) {
+	function bridge_core_get_shortcode_template_part( $template, $module, $slug = '', $params = array() ) {
 		$template_path = BRIDGE_CORE_SHORTCODES_PATH . '/' .$module;
 
 		return bridge_core_return_template_part($template_path.'/'.$template, $slug, $params);
 
 	}
 }
-if(!function_exists('bridge_core_return_template_part')) {
+if ( ! function_exists( 'bridge_core_return_template_part' ) ) {
 	/**
 	 * Loads template part with parameters. If file with slug parameter added exists it will load that file, else it will load file without slug added.
 	 * Child theme friendly function
@@ -89,9 +89,29 @@ if(!function_exists('bridge_core_return_template_part')) {
 	 * @return html
 	 * @see bridge_qode_get_template_part()
 	 */
-	function bridge_core_return_template_part($template, $slug = '', $params = array()) {
-		if(is_array($params) && count($params)) {
-			extract($params);
+	function bridge_core_return_template_part( $template, $slug = '', $params = array() ) {
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\\.]/';
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+			if ( strpos( $template, '..' ) !== false ) {
+				$template = '';
+			}
+		} else {
+			$template = '';
+		}
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+			if ( strpos( $slug, '..' ) !== false ) {
+				$slug = '';
+			}
+		} else {
+			$slug = '';
+		}
+		
+		if ( is_array( $params ) && count( $params ) ) {
+			extract( $params, EXTR_SKIP );
 		}
 		$html          = '';
 		$templates = array();
@@ -104,11 +124,11 @@ if(!function_exists('bridge_core_return_template_part')) {
 			$templates[] = $template.'.php';
 		}
 
-		$located = bridge_qode_find_template_path($templates, true);
-
-		if($located) {
+		$located = bridge_qode_find_template_path( $templates, true );
+		
+		if ( $located ) {
 			ob_start();
-			include($located);
+			include( $located );
 			$html = ob_get_clean();
 		}
 
@@ -119,7 +139,8 @@ if(!function_exists('bridge_core_return_template_part')) {
 if(!function_exists('bridge_core_send_contact_page_form')) {
 
 	function bridge_core_send_contact_page_form() {
-		if(bridge_core_is_installed('theme')) {
+		
+		if ( bridge_core_is_installed( 'theme' ) ) {
 			global $wp_filesystem;
             WP_Filesystem();
 
@@ -162,9 +183,9 @@ if(!function_exists('bridge_core_send_contact_page_form')) {
 						bridge_qode_ajax_status('error', esc_html__('Invalid Captcha', 'bridge-core'));
 					}
 				}
-
-				if ($send_mail) {
-					$result = wp_mail($email_to, $subject, $text, $headers);
+				
+				if ( $send_mail ) {
+					$result = wp_mail( $email_to, $subject, $text, $headers );
 					if ($result) {
 						bridge_qode_ajax_status('success', '<strong>' . esc_html__('THANK YOU!', 'bridge-core') . ' </strong>' . esc_html__('Your email was successfully sent. We will contact you as soon as possible.', 'bridge-core'));
 					} else {
@@ -297,13 +318,14 @@ if(!function_exists('bridge_core_import_theme_options')) {
 	 * It hooks to ajax wp_ajax_qode_import_theme_options action.
 	 */
 	function bridge_core_import_theme_options() {
-
-		if(current_user_can('edit_theme_options')) {
-			if (empty($_POST) || !isset($_POST)) {
+		
+		if ( current_user_can( 'edit_theme_options' ) ) {
+			if ( empty( $_POST ) || ! isset( $_POST ) ) {
 				bridge_qode_ajax_status('error', esc_html__('Import field is empty', 'bridge-core'));
+				wp_die();
 			} else {
 				$data = $_POST;
-				if (wp_verify_nonce($data['nonce'], 'qodef_import_theme_options_secret_value')) {
+				if ( wp_verify_nonce($data['nonce'], 'qodef_import_theme_options_secret_value' ) ) {
 					$content = $data['content'];
 					$unserialized_content = unserialize(base64_decode($content));
 					update_option( 'qode_options_proya', $unserialized_content);
@@ -315,6 +337,7 @@ if(!function_exists('bridge_core_import_theme_options')) {
 			}
 		} else {
 			bridge_qode_ajax_status('error', esc_html__('You don\'t have privileges for this operation', 'bridge-core'));
+			wp_die();
 		}
 	}
 

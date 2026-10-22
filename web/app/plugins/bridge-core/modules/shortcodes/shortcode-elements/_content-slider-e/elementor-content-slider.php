@@ -16,8 +16,12 @@ class BridgeCoreElementorContentSlider extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode' ];
     }
-
-    protected function register_controls() {
+	
+	public function get_script_depends() {
+		return array( 'flexslider', 'fitvids', 'touchSwipe' );
+	}
+	
+	protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -146,7 +150,7 @@ class BridgeCoreElementorContentSlider extends \Elementor\Widget_Base{
             $classes[] = 'control_nav_justified';
         }
 
-        if( $params['enable_drag'] !== '' ){
+        if( $params['enable_drag'] !== '' && $params['enable_drag'] == 'yes' ){
             $classes[] = 'drag_enabled';
         }
 

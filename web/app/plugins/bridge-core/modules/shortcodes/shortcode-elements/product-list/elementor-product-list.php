@@ -18,8 +18,12 @@ if( bridge_core_is_installed('woocommerce') ){
         public function get_categories() {
             return [ 'qode' ];
         }
-
-        protected function register_controls(){
+		
+		public function get_script_depends() {
+			return array( 'packery' );
+		}
+	    
+	    protected function register_controls(){
             $this->start_controls_section(
                 'general',
                 [

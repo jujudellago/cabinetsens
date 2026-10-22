@@ -58,7 +58,7 @@
 		$filters['where'] = "flag_popup = '1'";
 	}
 
-	if( ! empty($_GET['order']) ) {
+	if( ! empty($_GET['order']) && in_array( $_GET['order'], ['name', 'date_c', 'date_m', 'schedule_start'], true ) ) {
 		$userFilters = true;
 		$urlParamOrder = $_GET['order'];
 		$filters['orderby'] = htmlentities($_GET['order']);
@@ -72,7 +72,7 @@
 		$userFilters = true;
 		$urlParamTerm = htmlentities($_GET['term']);
 		$filters['groups'] = false;
-		$filters['where'] = "name LIKE '%".esc_sql($_GET['term'])."%' OR slug LIKE '%".esc_sql($_GET['term'])."%' OR id = '".esc_sql($_GET['term'])."'";
+		$filters['where'] = "name LIKE '%".esc_sql($_GET['term'])."%' OR slug LIKE '%".esc_sql($_GET['term'])."%' OR id = '".esc_sql($_GET['term'])."'  OR keywords LIKE '%".esc_sql($_GET['term'])."%'";
 	}
 
 	// Find sliders
@@ -107,12 +107,20 @@
 
 	// Update last visited date
 	if( empty( $lsStoreLastViewed ) ) {
-		$lsStoreLastViewed = time();
+		$lsStoreLastViewed = date('Y-m-d');
 		update_user_meta( $userID, 'ls-store-last-viewed', date('Y-m-d'));
 	}
 
 	$lsStoreHasUpdate = ( ! empty($lsStoreData['last_updated']) && $lsStoreLastViewed <  $lsStoreData['last_updated'] );
 	//$lsStoreHasUpdate = true;
+
+	$lsAddonsHasUpdates = false;
+	$lsAddonsLastVersion = get_user_meta( $userID, 'ls-addons-last-version', true);
+	$lsAddonsLastVersion = empty( $lsAddonsLastVersion ) ? '1.0.0' : $lsAddonsLastVersion;
+
+	if( version_compare( $lsAddonsLastVersion, LS_ADDONS_VERSION, '<' ) ) {
+		$lsAddonsHasUpdates = true;
+	}
 
 
 	// Notifications panel contents
@@ -120,7 +128,9 @@
 	$inlineNotifications = LS_Notifications::inlineNotifications();
 
 
-	$pluginUpdates 			= get_plugin_updates();
+	$pluginUpdates 	= get_plugin_updates();
+	$lBoxOrder 		= LS_RemoteData::get('license-box-order');
+	$lsReleaseLog 	= LS_RemoteData::get('release-log');
 
 	// Notification messages
 	$notificationsItemCount = ! empty( $_GET['count'] ) ? (int)$_GET['count'] : 0;
@@ -143,6 +153,9 @@
 		'restoreSelectError' => __('Select an item to restore', 'LayerSlider'),
 		'restoreSuccess' => sprintf( _n( '%d item has been restored', '%d items have been restored', $notificationsItemCount, 'LayerSlider' ), $notificationsItemCount ),
 
+		'uploadError' => sprintf(__('Upload error. See %sSystem Status%s.', 'LayerSlider'), '<a href="'.admin_url('admin.php?page=layerslider&section=system-status').'">', '</a>'),
+		'uploadErrorSize' => sprintf(__('Upload size limit reached. See %sSystem Status%s.', 'LayerSlider'), '<a href="'.admin_url('admin.php?page=layerslider&section=system-status').'">', '</a>'),
+
 		'exportNotFound' => __('No items were found to export', 'LayerSlider'),
 		'exportSelectError' => __('Select an item to export', 'LayerSlider'),
 		'exportZipError' => __('The PHP ZipArchive extension is required to import .zip files', 'LayerSlider'),
@@ -162,9 +175,11 @@
 	wp_localize_script('ls-dashboard', 'LS_slidersMeta', [
 		'isActivatedSite' => $validity
 	]);
+
 	wp_localize_script('ls-dashboard', 'LS_pageMeta', [
-		'assetsPath' 	=> LS_ROOT_URL,
-		'skinsPath' 	=> LS_ROOT_URL.'/static/layerslider/skins/',
+		'assetsPath' 		=> LS_ROOT_URL,
+		'skinsPath' 		=> LS_ROOT_URL.'/static/layerslider/skins/',
+		'dashboardNonce' 	=> wp_create_nonce('ls-dashboard-nonce')
 	]);
 
 
@@ -250,7 +265,7 @@
 					<ls-button-text><?= __('Projects', 'LayerSlider') ?></ls-button-text>
 				</ls-button>
 
-				<ls-button data-scroll="#ls--box-twitter-feed">
+				<ls-button data-scroll="#ls--box-news-feed">
 					<?= lsGetSVGIcon('newspaper') ?>
 					<ls-button-text><?= __('News', 'LayerSlider') ?></ls-button-text>
 				</ls-button>
@@ -434,7 +449,7 @@
 							<ls-menu-item>
 								<ls-menu-icon><?= lsGetSVGIcon('layer-group') ?></ls-menu-icon>
 								<ls-menu-title><?= __('About LayerSlider', 'LayerSlider') ?></ls-menu-title>
-								<ls-menu-text><?= __('About the product & useful resources.') ?></ls-menu-text>
+								<ls-menu-text><?= __('About the product & useful resources.', 'LayerSlider') ?></ls-menu-text>
 								<a class="ls-menu-link" href="<?= admin_url('admin.php?page=layerslider&section=about') ?>"></a>
 							</ls-menu-item>
 						</ls-dropdown-menu>
@@ -488,16 +503,18 @@
 					</div>
 				</div>
 
-				<?php //if( ! $validity ) : ?>
-				<div class="ls-item">
-					<div class="ls-item-inner">
-						<a href="#" id="ls-addons-button">
+
+				<div id="ls-addons-button" class="ls-item <?= $lsAddonsHasUpdates ? 'has-updates' : '' ?>">
+					<div class="ls-item-inner ls--anim-shine">
+						<a href="#">
 							<?= lsGetSVGIcon('award'); ?>
-							<div class="ls-tile-text"><?= __('Premium Benefits', 'LayerSlider') ?></div>
+							<div class="ls-tile-text"><?= __('Add-Ons & Premium', 'LayerSlider') ?></div>
 						</a>
 					</div>
+					<lse-badge><?= __('NEW', 'LayerSlider') ?></lse-badge>
 				</div>
-				<?php //endif ?>
+
+
 			</div>
 
 			<!-- show hidden projects if any -->
@@ -669,7 +686,7 @@
 										<div class="ls-name">
 											<?= lsGetSVGIcon('th-large') ?>
 											<ls-span>
-												<?= apply_filters('ls_slider_title', stripslashes( $item['name'] ), 40) ?>
+												<?= apply_filters('ls_slider_title', stripslashes( $item['name'] ), 99) ?>
 											</ls-span>
 										</div>
 									</div>
@@ -712,7 +729,6 @@
 					<select name="action">
 						<option value="0"><?= __('Bulk Actions', 'LayerSlider') ?></option>
 						<option value="export"><?= __('Export selected', 'LayerSlider') ?></option>
-						<option value="export-html"><?= __('Export as HTML', 'LayerSlider') ?></option>
 						<option value="duplicate"><?= __('Duplicate selected', 'LayerSlider') ?></option>
 						<option value="hide"><?= __('Hide selected', 'LayerSlider') ?></option>
 						<option value="delete"><?= __('Delete permanently', 'LayerSlider') ?></option>
@@ -729,13 +745,13 @@
 					<div class="tablenav-pages">
 						<span class="displaying-num"><?= sprintf(_n('%d project', '%d projects', $maxItem, 'LayerSlider'), $maxItem) ?></span>
 						<span class="pagination-links">
-							<a class="button first-page<?= ($curPage <= 1) ? ' disabled' : ''; ?>" title="<?= __('Go to the first page', 'LayerSlider') ?>" href="<?= admin_url( 'admin.php?page=layerslider&filter='.$urlParamFilter.'&term='.$urlParamTerm.'&order='.$urlParamOrder ) ?>">«</a>
-							<a class="button prev-page <?= ($curPage <= 1) ? ' disabled' : ''; ?>" title="<?= __('Go to the previous page', 'LayerSlider') ?>" href="<?= admin_url( 'admin.php?page=layerslider&paged='.($curPage-1).'&filter='.$urlParamFilter.'&term='.$urlParamTerm.'&order='.$urlParamOrder ) ?> ">‹</a>
+							<a class="button first-page<?= ($curPage <= 1) ? ' disabled' : ''; ?>" title="<?= __('Go to the first page', 'LayerSlider') ?>" href="<?= esc_url( admin_url( 'admin.php?page=layerslider&filter='.$urlParamFilter.'&term='.$urlParamTerm.'&order='.$urlParamOrder ) ) ?>">«</a>
+							<a class="button prev-page <?= ($curPage <= 1) ? ' disabled' : ''; ?>" title="<?= __('Go to the previous page', 'LayerSlider') ?>" href="<?= esc_url( admin_url( 'admin.php?page=layerslider&paged='.($curPage-1).'&filter='.$urlParamFilter.'&term='.$urlParamTerm.'&order='.$urlParamOrder ) ) ?> ">‹</a>
 
 							<span class="total-pages"><?= sprintf(__('%1$d of %2$d', 'LayerSlider'), $curPage, $maxPage) ?> </span>
 
-							<a class="button next-page <?= ($curPage >= $maxPage) ? ' disabled' : ''; ?>" title="<?= __('Go to the next page', 'LayerSlider') ?>" href="<?= admin_url( 'admin.php?page=layerslider&paged='.($curPage+1).'&filter='.$urlParamFilter.'&term='.$urlParamTerm.'&order='.$urlParamOrder ) ?>">›</a>
-							<a class="button last-page <?= ($curPage >= $maxPage) ? ' disabled' : ''; ?>" title="<?= __('Go to the last page', 'LayerSlider') ?>" href="<?= admin_url( 'admin.php?page=layerslider&paged='.$maxPage.'&filter='.$urlParamFilter.'&term='.$urlParamTerm.'&order='.$urlParamOrder ) ?>">»</a>
+							<a class="button next-page <?= ($curPage >= $maxPage) ? ' disabled' : ''; ?>" title="<?= __('Go to the next page', 'LayerSlider') ?>" href="<?= esc_url( admin_url( 'admin.php?page=layerslider&paged='.($curPage+1).'&filter='.$urlParamFilter.'&term='.$urlParamTerm.'&order='.$urlParamOrder ) ) ?>">›</a>
+							<a class="button last-page <?= ($curPage >= $maxPage) ? ' disabled' : ''; ?>" title="<?= __('Go to the last page', 'LayerSlider') ?>" href="<?= esc_url( admin_url( 'admin.php?page=layerslider&paged='.$maxPage.'&filter='.$urlParamFilter.'&term='.$urlParamTerm.'&order='.$urlParamOrder ) ) ?>">»</a>
 						</span>
 					</div>
 				</div>
@@ -750,21 +766,22 @@
 		<ls-grid>
 			<ls-row class="ls--flex-stretch">
 
-				<ls-col class="ls--col1-2">
-					<ls-box id="ls--box-twitter-feed">
+				<ls-col class="ls--col1-2 ls--max-height">
+					<ls-box id="ls--box-news-feed">
 						<ls-box-inner>
 							<ls-h2 class="ls--lightgray">
 								<?= __('Latest News', 'LayerSlider') ?>
 							</ls-h2>
-							<ls-wrapper>
-								<ls-div>
-									<a class="twitter-timeline" data-chrome="noheader noborders transparent" href="https://twitter.com/kreaturamedia?ref_src=twsrc%5Etfw">Tweets by kreaturamedia</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-								</ls-div>
-							</ls-wrapper>
+							<iframe src="https://layerslider.com/embed/news-feed/?v=<?= LS_PLUGIN_VERSION?>&t=<?= floor( time() / 60 / 60 ) ?>" frameborder="0"></iframe>
+							<ls-div id="ls--news-feed-more" class="ls--text-center ls--bottom-gradient">
+								<a target="_blank" href="https://layerslider.com/blog/" class="ls--button ls--bg-lightgray ls--white">
+									<?= __('Read More Articles', 'LayerSlider') ?>
+								</a>
+							</ls-div>
 						</ls-box-inner>
 					</ls-box>
 				</ls-col>
-				<ls-col class="ls--col1-2">
+				<ls-col class="ls--col1-2 ls--max-height">
 					<ls-box id="ls--box-updates">
 						<ls-box-inner>
 							<ls-h2 class="ls--red">
@@ -829,17 +846,17 @@
 									</ls-li>
 								</ls-ul>
 							</ls-box>
-							<?php if( empty( LS_RemoteData::get('release-log') ) ) : ?>
+							<?php if( empty( $lsReleaseLog ) ) : ?>
 							<ls-p><?= sprintf(__('Couldn’t display the release log. Please check %sSystem Status%s for potential errors.', 'LayerSlider'), '<a href="'.admin_url('admin.php?page=layerslider&section=system-status').'">', '</a>' ) ?></ls-p>
 							<?php endif ?>
 							<ls-ul id="ls--release-log">
 
-								<?php if( ! empty( LS_RemoteData::get('release-log') ) ) : ?>
-								<?= LS_RemoteData::get('release-log') ?>
+								<?php if( ! empty( $lsReleaseLog ) ) : ?>
+								<?= $lsReleaseLog ?>
 
 								<ls-div class="ls--text-center ls--bottom-gradient">
 									<a target="_blank" href="https://layerslider.com/release-log/" class="ls--button ls--bg-lightgray ls--white">
-										<?= __('Show More', 'LayerSlider') ?>
+										<?= __('Open Release Log', 'LayerSlider') ?>
 									</a>
 								</ls-div>
 								<?php endif ?>
@@ -849,7 +866,7 @@
 					</ls-box>
 				</ls-col>
 
-				<ls-col>
+				<ls-col <?= ! empty( $lBoxOrder ) ? 'style="order: '.$lBoxOrder.'"' : '' ?>>
 
 					<ls-box id="ls--box-license" class="ls--bg-cover ls--no-overflow">
 

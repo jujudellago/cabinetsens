@@ -88,6 +88,42 @@ if(!function_exists('bridge_qode_portfolio_options_map')) {
         $portfolio_navigation_through_same_category = new BridgeQodeField("yesno", "portfolio_navigation_through_same_category", "no", esc_html__('Enable Pagination Through Same Category', 'bridge'), esc_html__('Enabling this option will make portfolio pagination sort through current category.', 'bridge'));
         $panel1->addChild("portfolio_navigation_through_same_category", $portfolio_navigation_through_same_category);
 
+        /* Portfolio Archive */
+
+        $panel_archive = new BridgeQodePanel(esc_html__('Portfolio Archive', 'bridge'), "portfolio_archive");
+        $portfolioPage->addChild("panel_archive", $panel_archive);
+
+        $portfolio_archive_type = new BridgeQodeField("select", "portfolio_archive_type", "masonry_with_space", esc_html__('List Type', 'bridge'), esc_html__('Choose a layout for portfolio category, tag and post type archive pages (for example /portfolio-category/category1).', 'bridge'), array(
+            "standard"                               => esc_html__('Standard', 'bridge'),
+            "standard_no_space"                      => esc_html__('Standard No Space', 'bridge'),
+            "hover_text"                             => esc_html__('Hover Text', 'bridge'),
+            "hover_text_no_space"                    => esc_html__('Hover Text No Space', 'bridge'),
+            "masonry"                                => esc_html__('Masonry without space', 'bridge'),
+            "masonry_gallery_with_space"             => esc_html__('Masonry with space', 'bridge'),
+            "masonry_with_space"                     => esc_html__('Masonry(Pinterest) with space', 'bridge'),
+            "masonry_with_space_without_description" => esc_html__('Masonry(Pinterest) with space (image only)', 'bridge'),
+            "justified_gallery"                      => esc_html__('Justified Gallery', 'bridge'),
+            "alternating_sizes"                      => esc_html__('Alternating Sizes', 'bridge'),
+        ));
+        $panel_archive->addChild("portfolio_archive_type", $portfolio_archive_type);
+
+        $portfolio_archive_columns = new BridgeQodeField("select", "portfolio_archive_columns", "3", esc_html__('Number of Columns', 'bridge'), esc_html__('Choose how many columns to display on portfolio archive pages.', 'bridge'), array(
+            "2" => esc_html__('2 columns', 'bridge'),
+            "3" => esc_html__('3 columns', 'bridge'),
+            "4" => esc_html__('4 columns', 'bridge'),
+            "5" => esc_html__('5 columns', 'bridge'),
+            "6" => esc_html__('6 columns', 'bridge'),
+        ));
+        $panel_archive->addChild("portfolio_archive_columns", $portfolio_archive_columns);
+
+        $portfolio_archive_number = new BridgeQodeField("text", "portfolio_archive_number", "-1", esc_html__('Number of Items', 'bridge'), esc_html__('Number of portfolio items to show (-1 shows all).', 'bridge'), array(), array("col_width" => 3));
+        $panel_archive->addChild("portfolio_archive_number", $portfolio_archive_number);
+
+        $portfolio_archive_spacing = new BridgeQodeField("text", "portfolio_archive_spacing", "", esc_html__('Spacing between items (px)', 'bridge'), esc_html__('Applies to Masonry(Pinterest) with space layouts.', 'bridge'), array(), array("col_width" => 3));
+        $panel_archive->addChild("portfolio_archive_spacing", $portfolio_archive_spacing);
+
+        $portfolio_archive_show_load_more = new BridgeQodeField("yesno", "portfolio_archive_show_load_more", "no", esc_html__('Show Load More', 'bridge'), esc_html__('Enabling this option will display a Load More button on portfolio archive pages.', 'bridge'));
+        $panel_archive->addChild("portfolio_archive_show_load_more", $portfolio_archive_show_load_more);
 
         /* Portfolio List */
 

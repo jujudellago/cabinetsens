@@ -73,14 +73,6 @@
                 return 'You haven\'t saved your changes.';
             }
         });
-        $('#anchornav input').on('click',function() {
-            if ($('.qodef-input-change.yes').length) {
-                $('.qodef-input-change.yes').removeClass('yes');
-            }
-            $('.qodef-changes-saved').addClass('yes');
-			checkBottomPaddingOfFormWrapDiv();
-            setTimeout(function(){$('.qodef-changes-saved').removeClass('yes'); checkBottomPaddingOfFormWrapDiv();}, 3000);
-        });
 
 
     }
@@ -1131,32 +1123,56 @@
         }
     }
 
-    function qodefInitAjaxForm() {
+        function qodefInitAjaxForm() {
         $('#qode_top_save_button').on('click', function() {
-            $('.qode_ajax_form').submit();
-            if ($('.qodef-input-change.yes').length) {
-                $('.qodef-input-change.yes').removeClass('yes');
-            }
-            $('.qodef-changes-saved').addClass('yes');
-            setTimeout(function(){$('.qodef-changes-saved').removeClass('yes');}, 3000);
+            $('.qode_ajax_form').trigger('submit');
             return false;
         });
-        $(document).delegate(".qode_ajax_form", "submit", function (a) {
-        var b = $(this);
-        var c = {
-            action: "bridge_qode_save_options"
-        };
-        jQuery.ajax({
-            url: ajaxurl,
-            cache: !1,
-            type: "POST",
-            data: jQuery.param(c, !0) + "&" + b.serialize()
-//            ,
-//            success: function(data, textStatus, XMLHttpRequest){
-//                alert(data);
-//            }
-        }), a.preventDefault(), a.stopPropagation()
-    })
+        $(document).on("submit", ".qode_ajax_form", function (a) {
+            a.preventDefault();
+            a.stopPropagation();
+
+            var $form = $(this);
+            var $saved = $('.qodef-changes-saved');
+            var $changed = $('.qodef-input-change');
+            var defaultSuccess = (typeof qodefAdminVars !== 'undefined' && qodefAdminVars.saveSuccess) ? qodefAdminVars.saveSuccess : $saved.text();
+            var defaultError = (typeof qodefAdminVars !== 'undefined' && qodefAdminVars.saveError) ? qodefAdminVars.saveError : 'Options could not be saved. Please try again.';
+            var assetsError = (typeof qodefAdminVars !== 'undefined' && qodefAdminVars.assetsError) ? qodefAdminVars.assetsError : defaultError;
+
+            $saved.removeClass('yes error').text(defaultSuccess);
+
+            jQuery.ajax({
+                url: ajaxurl,
+                cache: false,
+                type: "POST",
+                dataType: "json",
+                data: jQuery.param({ action: "bridge_qode_save_options" }, true) + "&" + $form.serialize()
+            }).done(function(response) {
+                var payload = response && response.data ? response.data : {};
+                var message = payload.message || defaultSuccess;
+                var assetsGenerated = typeof payload.assets_generated === 'undefined' ? true : payload.assets_generated;
+
+                if (response && response.success) {
+                    $changed.removeClass('yes');
+                    if (assetsGenerated) {
+                        $saved.removeClass('error').addClass('yes').text(defaultSuccess);
+                    } else {
+                        $saved.addClass('yes error').text(payload.message || assetsError);
+                    }
+                } else {
+                    $saved.addClass('yes error').text(message || defaultError);
+                }
+
+                setTimeout(function() {
+                    $saved.removeClass('yes error').text(defaultSuccess);
+                }, 4000);
+            }).fail(function() {
+                $saved.addClass('yes error').text(defaultError);
+                setTimeout(function() {
+                    $saved.removeClass('yes error').text(defaultSuccess);
+                }, 4000);
+            });
+        });
     }
 
     function qodefInitDatePicker() {

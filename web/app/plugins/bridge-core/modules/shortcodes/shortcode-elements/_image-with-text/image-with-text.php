@@ -7,7 +7,10 @@ if (!function_exists('bridge_core_image_with_text')) {
             "image" => "",
             "title" => "",
             "title_color" => "",
-            "title_tag" => "h3"
+            "title_tag" => "h3",
+            "link" => "",
+            "link_target" => "_self",
+            "link_position" => "overlay"
         );
 
         $params = shortcode_atts($args, $atts);

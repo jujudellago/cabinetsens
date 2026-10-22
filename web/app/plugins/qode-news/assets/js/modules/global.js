@@ -134,6 +134,7 @@
 					loadingItem.addClass('qode-showing');
 				}
 				var ajaxData = qode.modules.common.setLoadMoreAjaxData(loadMoreDatta, 'qode_news_shortcodes_load_more');
+				ajaxData.nonce = thisHolder.data('nonce');
 				
 				$.ajax({
 					type: 'POST',
@@ -146,7 +147,7 @@
 						
 						thisHolder.data('next-page', nextPage);
 						
-						var response = $.parseJSON(data),
+						var response = (typeof data === 'object') ? data : $.parseJSON(data),
 							responseHtml =  response.html;
 						
 						if(thisHolder.hasClass('qode-news-pag-standard')) {
@@ -270,6 +271,7 @@
 						}
 						
 						var ajaxData = qode.modules.common.setLoadMoreAjaxData(loadMoreData, 'qode_news_shortcodes_filter');
+						ajaxData.nonce = thisHolder.data('nonce');
 						
 						$.ajax({
 							type: 'POST',
@@ -277,7 +279,7 @@
 							url: QodeAdminAjax.ajaxurl,
 							success: function (data) {
 								
-								var response = $.parseJSON(data),
+								var response = (typeof data === 'object') ? data : $.parseJSON(data),
 									responseHtml =  response.html,
 									newQueryParams =  response.newQueryParams;
 

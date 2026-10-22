@@ -130,7 +130,7 @@ class TT_Bookings_List extends WP_List_Table
 					return sprintf(esc_html__('Guest (%s)', 'timetable'), $guest_info);
 				}
 			case 'message':
-				return nl2br($item['guest_message']);
+				return (!empty($item['guest_message']) ? nl2br($item['guest_message']) : '');
 			default:
 				return print_r($item, true); //Show the whole array for troubleshooting purposes
 		}

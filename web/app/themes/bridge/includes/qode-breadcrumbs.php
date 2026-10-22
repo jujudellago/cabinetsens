@@ -38,7 +38,7 @@ if(!function_exists('bridge_qode_custom_breadcrumbs')) {
 
 			echo '<div class="breadcrumbs"><div itemprop="breadcrumb" class="breadcrumbs_inner"><a' . $bread_style . ' href="' . $homeLink . '">' . $home . '</a>' . $delimiter;
 
-			if (is_category() || bridge_qode_is_product_category()) {
+			if (is_category() || bridge_qode_is_product_category() || bridge_qode_is_product_brand()) {
 				$thisCat = get_category(get_query_var('cat'), false);
 				if (isset($thisCat->parent) && $thisCat->parent != 0) echo get_category_parents($thisCat->parent, TRUE, ' ' . $delimiter);
 				echo bridge_qode_get_module_part($before . single_cat_title('', false) . $after);

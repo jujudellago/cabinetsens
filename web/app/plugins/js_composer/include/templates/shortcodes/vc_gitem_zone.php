@@ -1,25 +1,18 @@
 <?php
+/**
+ * The template for displaying [vc_gitem_zone] shortcode output.
+ *
+ * This template can be overridden by copying it to yourtheme/vc_templates/vc_gitem_zone.php.
+ *
+ * @see https://kb.wpbakery.com/docs/developers-how-tos/change-shortcodes-html-output
+ *
+ * @var array $atts
+ * @var WPBakeryShortCode_Vc_Gitem_Zone $this
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
-/**
- * Shortcode attributes
- * @var $atts
- * @var $el_class
- * @var $css
- * @var $position
- * @var $bgimage
- * @var $height
- * @var $link
- * @var $url
- * @var $height_mode
- * @var $featured_image
- * @var $img_size
- * @var $render
- * @var $content - shortcode content
- * Shortcode class
- * @var WPBakeryShortCode_Vc_Gitem_Zone $this
- */
 $el_class = $css = $position = $bgimage = $height = $link = $url = $height_mode = $featured_image = $img_size = $render = $rel = '';
 
 $css_style = $css_style_mini = '';
@@ -27,6 +20,24 @@ $image_block = $image = '';
 
 $atts = vc_map_get_attributes( $this->getShortcode(), $atts );
 extract( $atts );
+
+/**
+ * Shortcode attributes
+ *
+ * @var string $el_class
+ * @var string $css
+ * @var string $position
+ * @var string $bgimage
+ * @var string $height
+ * @var string $link
+ * @var string $url
+ * @var string $height_mode
+ * @var string $featured_image
+ * @var string $img_size
+ * @var string $render
+ * @var string $content - shortcode content
+ * @var string|null $css_style_mini
+ */
 
 if ( 'no' === $render ) {
 	return '';
@@ -39,7 +50,7 @@ $css_class = 'vc_gitem-zone' . ( strlen( $this->zone_name ) ? ' vc_gitem-zone-' 
 $css_class_mini = 'vc_gitem-zone-mini';
 // Autoheight Mode
 // https://jsfiddle.net/tL2pgtyb/4/ {{
-// Set css classes for shortcode main html element wrapper and background block
+// Set css classes for shortcode main html element wrapper and background block.
 $css_class .= vc_shortcode_custom_css_class( $css, ' ' ) . ( strlen( $el_class ) ? ' ' . $el_class : '' );
 preg_match( '/background(\-image)?\s*\:\s*[^\s]*?\s*url\(\'?([^\)]+)\'?\)/', $css, $img_matches );
 $background_image_css_editor = isset( $img_matches[2] ) ? $img_matches[2] : false;
@@ -53,11 +64,30 @@ if ( 'custom' === $height_mode ) {
 } elseif ( 'original' !== $height_mode ) {
 	$css_class .= ' vc-gitem-zone-height-mode-auto' . ( strlen( $height_mode ) > 0 ? ' vc-gitem-zone-height-mode-auto-' . $height_mode : '' );
 }
+
+
 if ( 'yes' === $featured_image ) {
-	$css_style .= '{{ post_image_background_image_css' . ':' . $img_size . ' }}';
-	$image = '<img src="{{ post_image_url' . ( false !== $background_image_css_editor ? ':' . rawurlencode( $background_image_css_editor ) . '' : ':' ) . ':' . $img_size . ' }}" class="vc_gitem-zone-img" alt="{{ post_image_alt }}">';
+	$css_style .= '{{ post_image_background_image_css:' . $img_size . ' }}';
+
+	$attributes = [
+		'class' => 'vc_gitem-zone-img',
+		'src' => '{{ post_image_url' . ( false !== $background_image_css_editor ? ':' . rawurlencode( $background_image_css_editor ) . '' : ':' ) . ':' . $img_size . ' }}',
+		'alt' => '{{ post_image_alt }}',
+	];
+	$attributes = vc_add_lazy_loading_attribute( $attributes );
+
+	$image = '<img ' . vc_stringify_attributes( $attributes ) . '>';
+
 } elseif ( false !== $background_image_css_editor ) {
-	$image = '<img src="' . esc_url( $background_image_css_editor ) . '" class="vc_gitem-zone-img" alt="{{ post_image_alt }}">';
+	$attributes = [
+		'class' => 'vc_gitem-zone-img',
+		'src' => esc_url( $background_image_css_editor ),
+		'alt' => '{{ post_image_alt }}',
+	];
+
+	$attributes = vc_add_lazy_loading_attribute( $attributes );
+
+	$image = '<img ' . vc_stringify_attributes( $attributes ) . '>';
 }
 if ( strlen( $link ) > 0 && 'none' !== $link ) {
 	$css_class .= ' vc_gitem-is-link';
@@ -102,4 +132,4 @@ $output .= '>';
 $output .= $image_block . $image;
 $output .= '<div class="' . esc_attr( $css_class_mini ) . '"' . ( empty( $css_style_mini ) ? '' : ' style="' . esc_attr( $css_style_mini ) . '"' ) . '>' . do_shortcode( $content ) . '</div></div>';
 
-echo $output;
+echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

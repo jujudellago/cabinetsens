@@ -308,7 +308,9 @@ var lsTrBuilder = {
 
 				jQuery('.transitionpreview', $parent).layerSlider( 'destroy', true );
 				$parent.append(
-					jQuery('<img>', { 'src' : lsTrImgPath + 'sample_slide_1.jpg' })
+					jQuery('<img>', {
+						src: 'https://layerslider.com/media/slide-transitions/1.jpg'
+					})
 				);
 			}
 		});
@@ -432,8 +434,15 @@ var LS_TransitionGallery = {
 			section.append('<h3>'+title+'</h3>');
 		}
 
-		if( transitions && transitions.length ) {
-			for( c = 0; c < transitions.length; c++ ){
+		let limit = transitions.length;
+
+		if( tbodyclass === '2d_transitions' ) {
+			limit = 117;
+		}
+
+		if( transitions && limit ) {
+			for( c = 0; c < limit; c++ ){
+
 				section.append( jQuery( '<div class="tr-item"data-key="' + ( c + 1 ) + '"><span><i>' + ( c + 1 ) + '</i></span><span>' + transitions[c].name + '</span></div>' ) );
 			}
 		}
@@ -448,7 +457,6 @@ var LS_TransitionGallery = {
 		var settings = $.extend( true, {}, {
 			width: 300,
 			height: 150,
-			delay: 100,
 			imgPath: '../assets/img/',
 			skinPath: '../layerslider/skins/',
 			transitionType: '2d',
@@ -466,14 +474,17 @@ var LS_TransitionGallery = {
 		};
 
 		// Add slider HTML markup
-		$('<div class="transitionpreview" style="width: '+settings.width+'px; height: '+settings.height+'px;"> \
-				<div class="ls-slide" data-ls="slidedelay: '+settings.delay+';"> \
-					<img src="'+settings.imgPath+'sample_slide_1.jpg" class="ls-bg"> \
-				</div> \
-				<div class="ls-slide" data-ls="slidedelay: '+settings.delay+';"> \
-					<img src="'+settings.imgPath+'sample_slide_2.jpg" class="ls-bg"> \
-				</div> \
-			</div>').appendTo(el);
+		$(`<div class="transitionpreview" style="width: ${settings.width}px; height: ${settings.height}px;">
+				<div class="ls-slide" data-ls="slidedelay: ${settings.slidedelay};">
+					<img src="${LS_slideTransitionImages[0]}" class="ls-bg">
+				</div>
+				<div class="ls-slide" data-ls="slidedelay: ${settings.slidedelay};">
+					<img src="${LS_slideTransitionImages[1]}" class="ls-bg">
+				</div>
+				<div class="ls-slide" data-ls="slidedelay: ${settings.slidedelay};">
+					<img src="${LS_slideTransitionImages[2]}" class="ls-bg">
+				</div>
+			</div>`).appendTo(el);
 
 
 
@@ -574,6 +585,9 @@ var LS_TransitionGallery = {
 
 
 jQuery(document).ready(function() {
+
+	// v7.7.8: IMPORTANT! Decompress transitions object
+	_lsConvTrProp( layerSliderTransitions );
 
 	// Transition select
 	jQuery('.ls-transitions-sidebar').on('click', 'li', function() {

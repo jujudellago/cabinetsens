@@ -1,7 +1,7 @@
 <div class="projects_masonry_wrapper <?php echo implode(' ', $portfolio_holder_universal_classes); ?>">
     <?php echo bridge_core_get_shortcode_template_part( 'templates/parts/filter', '_portfolio-list', '', $params ); ?>
 
-    <div class="projects_masonry_holder portfolio_main_holder gs<?php esc_attr_e($grid_size);?> <?php echo esc_attr($portfolio_loading_class);?>">
+    <div class="projects_masonry_holder portfolio_main_holder gs<?php echo esc_attr($grid_size);?> <?php echo esc_attr($portfolio_loading_class);?>">
         <div class="qode-portfolio-masonry-gallery-grid-sizer"></div>
         <div class="qode-portfolio-masonry-gallery-grid-gutter"></div>
 

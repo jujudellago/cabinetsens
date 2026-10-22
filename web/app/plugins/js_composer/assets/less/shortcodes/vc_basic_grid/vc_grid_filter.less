@@ -45,6 +45,18 @@
   .vc_grid_filter_color_variants(~'purple', @purple, @white);
   .vc_grid_filter_color_variants(~'white', @white, #666666);
 
+  // Custom color from the `filter_color` colorpicker (`--vc-filter-bg`).
+  &.vc_grid-filter-color-custom {
+    > .vc_grid-filter-item {
+      &:hover, &.vc_active {
+        background-color: var(--vc-filter-bg);
+        > span {
+          color: var(--vc-filter-bg-contrast);
+        }
+      }
+    }
+  }
+
   // global filter styles
   > .vc_grid-filter-item {
     &:first-child {

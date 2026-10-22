@@ -1,6 +1,140 @@
 /* Colors for TTA
  * ========================== */
 
+// Custom Color (driven by inline --vc-tta-color CSS variable)
+// ------------------------
+.vc_tta-make-colors-set-custom(~'vc_tta-color-custom');
+
+// For the Tabs layout the shared panel-color mixin hard-codes a transparent
+// panel-body so the surrounding panels container colour shows through. With a
+// user-defined colour we want the body itself to render the matching colour
+// (the light active tint for Classic/Modern, the picked colour for Flat) so
+// the result does not depend on the container being visible. The `no-fill`
+// option keeps the body transparent (matches the standard palette behaviour).
+.vc_tta-color-custom:not(.vc_tta-o-no-fill) {
+  &.vc_tta-style-classic,
+  &.vc_tta-style-modern {
+    &.vc_tta-tabs {
+      .vc_non_responsive &,
+      .vc_tta-o-non-responsive & {
+        .vc_tta-panels .vc_tta-panel-body {
+          border-color: color-mix(in srgb, var(--vc-tta-active-color, @vc_tta-common-border-color), #000 5%);
+          background-color: var(--vc-tta-active-color, @vc_tta-common-background-color);
+        }
+      }
+      @media (min-width: @vc_tta-breakpoint) {
+        .vc_tta-panels .vc_tta-panel-body {
+          border-color: color-mix(in srgb, var(--vc-tta-active-color, @vc_tta-common-border-color), #000 5%);
+          background-color: var(--vc-tta-active-color, @vc_tta-common-background-color);
+        }
+      }
+    }
+  }
+
+  &.vc_tta-style-flat {
+    &.vc_tta-tabs {
+      .vc_non_responsive &,
+      .vc_tta-o-non-responsive & {
+        .vc_tta-panels .vc_tta-panel-body {
+          border-color: color-mix(in srgb, var(--vc-tta-active-color, var(--vc-tta-color)), #000 10%);
+          background-color: var(--vc-tta-active-color, var(--vc-tta-color));
+        }
+      }
+      @media (min-width: @vc_tta-breakpoint) {
+        .vc_tta-panels .vc_tta-panel-body {
+          border-color: color-mix(in srgb, var(--vc-tta-active-color, var(--vc-tta-color)), #000 10%);
+          background-color: var(--vc-tta-active-color, var(--vc-tta-color));
+        }
+      }
+    }
+  }
+}
+
+.vc_tta-color-custom.vc_tta-accordion {
+  @title:        ~"var(--vc-tta-title-color, #666)";
+  @title-active: ~"var(--vc-tta-active-title-color, #666)";
+
+  &.vc_tta-style-classic,
+  &.vc_tta-style-modern,
+  &.vc_tta-style-flat {
+    .vc_tta-panel {
+      .vc_tta-panel-title > a {
+        color: @title;
+      }
+
+      &.vc_active .vc_tta-panel-title > a {
+        color: @title-active;
+      }
+    }
+
+    .vc_tta-controls-icon::before,
+    .vc_tta-controls-icon::after {
+      border-color: @title;
+    }
+
+    .vc_active .vc_tta-panel-heading .vc_tta-controls-icon::before,
+    .vc_active .vc_tta-panel-heading .vc_tta-controls-icon::after {
+      border-color: @title-active;
+    }
+  }
+
+  &.vc_tta-style-outline {
+    @outline: ~"var(--vc-tta-color, #EBEBEB)";
+
+    .vc_tta-panel {
+      .vc_tta-panel-heading {
+        border-color: @outline;
+
+        &:hover,
+        &:focus {
+          background-color: transparent;
+        }
+      }
+
+      .vc_tta-panel-title > a {
+        color: @title;
+
+        &:hover {
+          color: @title;
+        }
+      }
+
+      &.vc_active {
+        .vc_tta-panel-heading {
+          border-color: @outline;
+        }
+
+        .vc_tta-panel-title > a {
+          color: @title-active;
+        }
+      }
+
+      .vc_tta-panel-body,
+      .vc_tta-panel-body::before,
+      .vc_tta-panel-body::after {
+        border-color: @outline;
+      }
+    }
+
+    .vc_tta-controls-icon::before,
+    .vc_tta-controls-icon::after {
+      border-color: @title;
+    }
+
+    .vc_tta-panel-heading:hover .vc_tta-controls-icon::before,
+    .vc_tta-panel-heading:focus .vc_tta-controls-icon::before,
+    .vc_tta-panel-heading:hover .vc_tta-controls-icon::after,
+    .vc_tta-panel-heading:focus .vc_tta-controls-icon::after {
+      border-color: @title;
+    }
+
+    .vc_active .vc_tta-panel-heading .vc_tta-controls-icon::before,
+    .vc_active .vc_tta-panel-heading .vc_tta-controls-icon::after {
+      border-color: @title-active;
+    }
+  }
+}
+
 // Blue Color
 // ------------------------
 .vc_tta-make-colors-set(~'vc_tta-color-blue';

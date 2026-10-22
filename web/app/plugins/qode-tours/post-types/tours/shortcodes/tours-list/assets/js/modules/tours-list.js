@@ -98,7 +98,8 @@
             var fetchData = function(callback) {
                 var data = {
                     action: 'qode_tours_list_ajax_pagination',
-                    fields: paginationDataHolder.find('input').serialize()
+                    fields: paginationDataHolder.find('input').serialize(),
+                    nonce: paginationDataHolder.find('[name="nonce"]').val()
                 };
 
                 $.ajax({

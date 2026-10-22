@@ -747,8 +747,8 @@ if(!function_exists('qode_tours_get_tour_categories_html')) {
 						<a href="<?php echo esc_url(get_term_link($category->slug, 'tour-category')); ?>">
 							<?php
 							$category_image_id = get_term_meta($category->term_id, 'tours_category_custom_image', true);
-							$image_original    = wp_get_attachment_image_src( $category_image_id, 'full' );
-							$category_image    = $image_original[0];
+							$image_original    = ! empty( $category_image_id ) ? wp_get_attachment_image_src( $category_image_id, 'full' ) : false;
+							$category_image    = ( is_array( $image_original ) && ! empty( $image_original[0] ) ) ? $image_original[0] : '';
 							
 							if(qode_tours_theme_installed() && empty($category_image)) {
 

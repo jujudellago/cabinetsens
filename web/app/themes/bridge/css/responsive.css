@@ -1,5 +1,6 @@
 @media only screen and (min-width: 1921px) {
-  section.parallax_section_holder {
+  section.parallax_section_holder,
+  div[data-element_type=container].parallax_section_holder {
     background-size: cover;
   }
 }
@@ -29,7 +30,9 @@
   .full_width .grid_section .q_masonry_blog article,
   .full_width .grid_section .q_masonry_blog_grid_sizer,
   .full_width .qode_elementor_container_inner .q_masonry_blog article,
-  .full_width .qode_elementor_container_inner .q_masonry_blog_grid_sizer {
+  .full_width div[data-element_type=container].qode_elementor_container_inner .q_masonry_blog article,
+  .full_width .qode_elementor_container_inner .q_masonry_blog_grid_sizer,
+  .full_width div[data-element_type=container].qode_elementor_container_inner .q_masonry_blog_grid_sizer {
     width: 31.2%;
   }
   .blog_holder.masonry_full_width article,
@@ -139,6 +142,7 @@
   .footer_bottom_border.in_grid,
   .title_border_in_grid_holder,
   .qode_elementor_container_inner,
+  div[data-element_type=container].qode_elementor_container_inner,
   .elementor-container .elementor-widget-wrap > .qode_elementor_container_inner,
   .elementor-row .elementor-widget-wrap > .qode_elementor_container_inner {
     width: 950px;
@@ -155,6 +159,7 @@
   .paspartu_enabled .footer_bottom_border.in_grid,
   .paspartu_enabled .title_border_in_grid_holder,
   .paspartu_enabled .qode_elementor_container_inner,
+  .paspartu_enabled div[data-element_type=container].qode_elementor_container_inner,
   .paspartu_enabled .elementor-container .elementor-widget-wrap > .qode_elementor_container_inner,
   .paspartu_enabled .elementor-row .elementor-widget-wrap > .qode_elementor_container_inner {
     width: 900px;
@@ -228,10 +233,10 @@
   .projects_holder.v6.hover_text.no_space .filler {
     width: 19.99%;
   }
-  .safari_browser .projects_holder.v6.standard_no_space .mix,
-  .safari_browser .projects_holder.v6.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v6.standard_no_space .filler,
-  .safari_browser .projects_holder.v6.hover_text.no_space .filler {
+  .qode-safari .projects_holder.v6.standard_no_space .mix,
+  .qode-safari .projects_holder.v6.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v6.standard_no_space .filler,
+  .qode-safari .projects_holder.v6.hover_text.no_space .filler {
     width: 19.93%;
   }
   .full_width .projects_masonry_holder .portfolio_masonry_item,
@@ -389,6 +394,24 @@
   .qode_pricing_tables.three_columns .q_price_table.qode_pricing_table_advanced:nth-child(3n) {
     margin-left: 0;
   }
+  .qode-content-sidebar-responsive-1024 .content .container > .container_inner.default_template_holder > .grid2 > * {
+    width: 100%;
+  }
+  .qode-content-sidebar-responsive-1024 .content .container > .container_inner.default_template_holder > .grid2 > * > * {
+    padding: 0;
+  }
+  .qode-content-sidebar-responsive-1024 .portfolio_single .portfolio_container > * {
+    width: 100%;
+  }
+  .qode-content-sidebar-responsive-1024 .portfolio_single .portfolio_container > * > * {
+    padding: 0;
+  }
+  body.qode_advanced_footer_responsive_1024 .four_columns .column1,
+  body.qode_advanced_footer_responsive_1024 .four_columns .column2,
+  body.qode_advanced_footer_responsive_1024 .four_columns .column3,
+  body.qode_advanced_footer_responsive_1024 .four_columns .column4 {
+    width: 50%;
+  }
 }
 
 @media only screen and (max-width: 1000px) {
@@ -412,6 +435,7 @@
   .footer_bottom_border.in_grid,
   .title_border_in_grid_holder,
   .qode_elementor_container_inner,
+  div[data-element_type=container].qode_elementor_container_inner,
   .elementor-container .elementor-widget-wrap > .qode_elementor_container_inner,
   .elementor-row .elementor-widget-wrap > .qode_elementor_container_inner {
     width: 768px;
@@ -443,6 +467,7 @@
   .paspartu_enabled .footer_bottom_border.in_grid,
   .paspartu_enabled .title_border_in_grid_holder,
   .paspartu_enabled .qode_elementor_container_inner,
+  .paspartu_enabled div[data-element_type=container].qode_elementor_container_inner,
   .paspartu_enabled .elementor-container .elementor-widget-wrap > .qode_elementor_container_inner,
   .paspartu_enabled .elementor-row .elementor-widget-wrap > .qode_elementor_container_inner {
     width: 720px;
@@ -761,18 +786,18 @@
   .projects_holder.v4.hover_text.no_space .filler {
     width: 24.99%;
   }
-  .safari_browser .projects_holder.v6.standard_no_space .mix,
-  .safari_browser .projects_holder.v6.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v6.standard_no_space .filler,
-  .safari_browser .projects_holder.v6.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v5.standard_no_space .mix,
-  .safari_browser .projects_holder.v5.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v5.standard_no_space .filler,
-  .safari_browser .projects_holder.v5.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v4.standard_no_space .mix,
-  .safari_browser .projects_holder.v4.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v4.standard_no_space .filler,
-  .safari_browser .projects_holder.v4.hover_text.no_space .filler {
+  .qode-safari .projects_holder.v6.standard_no_space .mix,
+  .qode-safari .projects_holder.v6.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v6.standard_no_space .filler,
+  .qode-safari .projects_holder.v6.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v5.standard_no_space .mix,
+  .qode-safari .projects_holder.v5.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v5.standard_no_space .filler,
+  .qode-safari .projects_holder.v5.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v4.standard_no_space .mix,
+  .qode-safari .projects_holder.v4.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v4.standard_no_space .filler,
+  .qode-safari .projects_holder.v4.hover_text.no_space .filler {
     width: 24.95%;
   }
   .projects_holder.v6.standard_no_space .mix,
@@ -859,7 +884,9 @@
   .full_width .grid_section .q_masonry_blog article,
   .full_width .grid_section .q_masonry_blog_grid_sizer,
   .full_width .qode_elementor_container_inner .q_masonry_blog article,
-  .full_width .qode_elementor_container_inner .q_masonry_blog_grid_sizer {
+  .full_width div[data-element_type=container].qode_elementor_container_inner .q_masonry_blog article,
+  .full_width .qode_elementor_container_inner .q_masonry_blog_grid_sizer,
+  .full_width div[data-element_type=container].qode_elementor_container_inner .q_masonry_blog_grid_sizer {
     width: 48%;
   }
   .blog_holder.masonry .blog_holder_grid_gutter,
@@ -1272,18 +1299,18 @@
   .projects_holder.v4.hover_text.no_space .filler {
     width: 33.32%;
   }
-  .safari_browser .projects_holder.v6.standard_no_space .mix,
-  .safari_browser .projects_holder.v6.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v6.standard_no_space .filler,
-  .safari_browser .projects_holder.v6.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v5.standard_no_space .mix,
-  .safari_browser .projects_holder.v5.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v5.standard_no_space .filler,
-  .safari_browser .projects_holder.v5.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v4.standard_no_space .mix,
-  .safari_browser .projects_holder.v4.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v4.standard_no_space .filler,
-  .safari_browser .projects_holder.v4.hover_text.no_space .filler {
+  .qode-safari .projects_holder.v6.standard_no_space .mix,
+  .qode-safari .projects_holder.v6.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v6.standard_no_space .filler,
+  .qode-safari .projects_holder.v6.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v5.standard_no_space .mix,
+  .qode-safari .projects_holder.v5.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v5.standard_no_space .filler,
+  .qode-safari .projects_holder.v5.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v4.standard_no_space .mix,
+  .qode-safari .projects_holder.v4.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v4.standard_no_space .filler,
+  .qode-safari .projects_holder.v4.hover_text.no_space .filler {
     width: 33.3%;
   }
 }
@@ -1325,6 +1352,7 @@
   .footer_bottom_border.in_grid,
   .title_border_in_grid_holder,
   .qode_elementor_container_inner,
+  div[data-element_type=container].qode_elementor_container_inner,
   .elementor-container .elementor-widget-wrap > .qode_elementor_container_inner,
   .elementor-row .elementor-widget-wrap > .qode_elementor_container_inner {
     width: 600px;
@@ -1341,6 +1369,7 @@
   .paspartu_enabled .footer_bottom_border.in_grid,
   .paspartu_enabled .title_border_in_grid_holder,
   .paspartu_enabled .qode_elementor_container_inner,
+  .paspartu_enabled div[data-element_type=container].qode_elementor_container_inner,
   .paspartu_enabled .elementor-container .elementor-widget-wrap > .qode_elementor_container_inner,
   .paspartu_enabled .elementor-row .elementor-widget-wrap > .qode_elementor_container_inner {
     width: 550px;
@@ -1406,26 +1435,26 @@
   .projects_holder.v2.hover_text.no_space .filler {
     width: 49.99%;
   }
-  .safari_browser .projects_holder.v6.standard_no_space .mix,
-  .safari_browser .projects_holder.v6.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v6.standard_no_space .filler,
-  .safari_browser .projects_holder.v6.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v5.standard_no_space .mix,
-  .safari_browser .projects_holder.v5.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v5.standard_no_space .filler,
-  .safari_browser .projects_holder.v5.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v4.standard_no_space .mix,
-  .safari_browser .projects_holder.v4.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v4.standard_no_space .filler,
-  .safari_browser .projects_holder.v4.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v3.standard_no_space .mix,
-  .safari_browser .projects_holder.v3.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v3.standard_no_space .filler,
-  .safari_browser .projects_holder.v3.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v2.standard_no_space .mix,
-  .safari_browser .projects_holder.v2.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v2.standard_no_space .filler,
-  .safari_browser .projects_holder.v2.hover_text.no_space .filler {
+  .qode-safari .projects_holder.v6.standard_no_space .mix,
+  .qode-safari .projects_holder.v6.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v6.standard_no_space .filler,
+  .qode-safari .projects_holder.v6.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v5.standard_no_space .mix,
+  .qode-safari .projects_holder.v5.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v5.standard_no_space .filler,
+  .qode-safari .projects_holder.v5.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v4.standard_no_space .mix,
+  .qode-safari .projects_holder.v4.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v4.standard_no_space .filler,
+  .qode-safari .projects_holder.v4.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v3.standard_no_space .mix,
+  .qode-safari .projects_holder.v3.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v3.standard_no_space .filler,
+  .qode-safari .projects_holder.v3.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v2.standard_no_space .mix,
+  .qode-safari .projects_holder.v2.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v2.standard_no_space .filler,
+  .qode-safari .projects_holder.v2.hover_text.no_space .filler {
     width: 49.97%;
   }
   .projects_holder.v6.standard_no_space .mix,
@@ -1460,7 +1489,9 @@
   .full_width .grid_section .q_masonry_blog article,
   .q_masonry_blog .q_masonry_blog_grid_sizer,
   .full_width .qode_elementor_container_inner .q_masonry_blog article,
+  .full_width div[data-element_type=container].qode_elementor_container_inner .q_masonry_blog article,
   .full_width .qode_elementor_container_inner .q_masonry_blog_grid_sizer,
+  .full_width div[data-element_type=container].qode_elementor_container_inner .q_masonry_blog_grid_sizer,
   .full_width .grid_section .q_masonry_blog_grid_sizer,
   .blog_holder.masonry_full_width article,
   .blog_holder.blog_pinterest article,
@@ -1664,21 +1695,21 @@
   body:not(.qode_disabled_responsive_button_padding_change) .qbutton.small {
     padding: 0px 14px;
   }
-  .qbutton.big_large,
-  .qbutton.big_large_full_width {
+  body:not(.qode_disabled_responsive_button_padding_change) .qbutton.big_large,
+  body:not(.qode_disabled_responsive_button_padding_change) .qbutton.big_large_full_width {
     height: 50px;
     line-height: 50px;
     font-size: 16px;
     padding: 0 20px;
   }
-  .qbutton.large {
+  body:not(.qode_disabled_responsive_button_padding_change) .qbutton.large {
     height: 42px;
     line-height: 42px;
     padding: 0px 17px;
   }
-  .qbutton.medium,
-  #submit_comment,
-  .load_more.tiny a {
+  body:not(.qode_disabled_responsive_button_padding_change) .qbutton.medium,
+  body:not(.qode_disabled_responsive_button_padding_change) #submit_comment,
+  body:not(.qode_disabled_responsive_button_padding_change) .load_more.tiny a {
     height: 38px;
     line-height: 38px;
     padding: 0px 16px;
@@ -1990,6 +2021,7 @@
   .footer_bottom_border.in_grid,
   .title_border_in_grid_holder,
   .qode_elementor_container_inner,
+  div[data-element_type=container].qode_elementor_container_inner,
   .elementor-container .elementor-widget-wrap > .qode_elementor_container_inner,
   .elementor-row .elementor-widget-wrap > .qode_elementor_container_inner {
     width: 420px;
@@ -2006,6 +2038,7 @@
   .paspartu_enabled .footer_bottom_border.in_grid,
   .paspartu_enabled .title_border_in_grid_holder,
   .paspartu_enabled .qode_elementor_container_inner,
+  .paspartu_enabled div[data-element_type=container].qode_elementor_container_inner,
   .paspartu_enabled .elementor-container .elementor-widget-wrap > .qode_elementor_container_inner,
   .paspartu_enabled .elementor-row .elementor-widget-wrap > .qode_elementor_container_inner {
     width: 400px;
@@ -2033,26 +2066,26 @@
   .projects_holder.v4.hover_text.no_space .filler,
   .projects_holder.v3.hover_text.no_space .filler,
   .projects_holder.v2.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v6.standard_no_space .mix,
-  .safari_browser .projects_holder.v6.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v6.standard_no_space .filler,
-  .safari_browser .projects_holder.v6.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v5.standard_no_space .mix,
-  .safari_browser .projects_holder.v5.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v5.standard_no_space .filler,
-  .safari_browser .projects_holder.v5.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v4.standard_no_space .mix,
-  .safari_browser .projects_holder.v4.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v4.standard_no_space .filler,
-  .safari_browser .projects_holder.v4.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v3.standard_no_space .mix,
-  .safari_browser .projects_holder.v3.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v3.standard_no_space .filler,
-  .safari_browser .projects_holder.v3.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v2.standard_no_space .mix,
-  .safari_browser .projects_holder.v2.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v2.standard_no_space .filler,
-  .safari_browser .projects_holder.v2.hover_text.no_space .filler {
+  .qode-safari .projects_holder.v6.standard_no_space .mix,
+  .qode-safari .projects_holder.v6.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v6.standard_no_space .filler,
+  .qode-safari .projects_holder.v6.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v5.standard_no_space .mix,
+  .qode-safari .projects_holder.v5.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v5.standard_no_space .filler,
+  .qode-safari .projects_holder.v5.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v4.standard_no_space .mix,
+  .qode-safari .projects_holder.v4.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v4.standard_no_space .filler,
+  .qode-safari .projects_holder.v4.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v3.standard_no_space .mix,
+  .qode-safari .projects_holder.v3.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v3.standard_no_space .filler,
+  .qode-safari .projects_holder.v3.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v2.standard_no_space .mix,
+  .qode-safari .projects_holder.v2.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v2.standard_no_space .filler,
+  .qode-safari .projects_holder.v2.hover_text.no_space .filler {
     width: 100%;
   }
   .projects_holder.v6.standard_no_space .mix,
@@ -2091,6 +2124,10 @@
   .four_columns .column1, .four_columns .column2, .four_columns .column3, .four_columns .column4 {
     width: 100%;
   }
+  body.qode_advanced_footer_responsive_1024 .four_columns .column1,
+  body.qode_advanced_footer_responsive_1024 .four_columns .column2,
+  body.qode_advanced_footer_responsive_1024 .four_columns .column3,
+  body.qode_advanced_footer_responsive_1024 .four_columns .column4,
   body.qode_advanced_footer_responsive_1000 .four_columns .column1,
   body.qode_advanced_footer_responsive_1000 .four_columns .column2,
   body.qode_advanced_footer_responsive_1000 .four_columns .column3,
@@ -2200,7 +2237,9 @@
   .q_masonry_blog article,
   .full_width .grid_section .q_masonry_blog article,
   .full_width .qode_elementor_container_inner .q_masonry_blog article,
+  .full_width div[data-element_type=container].qode_elementor_container_inner .q_masonry_blog article,
   .full_width .qode_elementor_container_inner .q_masonry_blog_grid_sizer,
+  .full_width div[data-element_type=container].qode_elementor_container_inner .q_masonry_blog_grid_sizer,
   .blog_holder.blog_pinterest article,
   .blog_holder.blog_pinterest .blog_holder_grid_sizer,
   .two_columns_75_25 .blog_holder.blog_pinterest article,
@@ -2629,6 +2668,7 @@
   nav.content_menu ul,
   .container_inner nav.content_menu,
   .qode_elementor_container_inner,
+  div[data-element_type=container].qode_elementor_container_inner,
   .elementor-container .elementor-widget-wrap > .qode_elementor_container_inner,
   .elementor-row .elementor-widget-wrap > .qode_elementor_container_inner {
     width: 300px;
@@ -2642,6 +2682,7 @@
   .paspartu_enabled nav.content_menu ul,
   .paspartu_enabled .container_inner nav.content_menu,
   .paspartu_enabled .qode_elementor_container_inner,
+  .paspartu_enabled div[data-element_type=container].qode_elementor_container_inner,
   .paspartu_enabled .elementor-container .elementor-widget-wrap > .qode_elementor_container_inner,
   .paspartu_enabled .elementor-row .elementor-widget-wrap > .qode_elementor_container_inner {
     width: 280px;
@@ -3081,6 +3122,7 @@
   body.boxed .full_width .parallax_content,
   body.boxed .carousel-inner,
   .qode_elementor_container_inner,
+  div[data-element_type=container].qode_elementor_container_inner,
   .elementor-container .elementor-widget-wrap > .qode_elementor_container_inner,
   .elementor-row .elementor-widget-wrap > .qode_elementor_container_inner {
     width: 95%;

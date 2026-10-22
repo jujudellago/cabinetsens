@@ -12,7 +12,7 @@ defined( 'LS_ROOT_FILE' ) || exit;
  * @package KM_Updates
  * @since 4.6.3
  * @author John Gera
- * @copyright Copyright (c) 2023  John Gera, George Krupa, and Kreatura Media Kft.
+ * @copyright Copyright (c) 2026  John Gera, George Krupa, and Kreatura Media Kft.
  */
 
 
@@ -478,6 +478,8 @@ class KM_UpdatesV3 {
 	 */
 	public function handleDeactivation() {
 
+		check_ajax_referer('ls_authorize_site');
+
 		// Get response
 		$data = $this->sendApiRequest($this->config['repoUrl'].'deauthorize/');
 		list($response, $json) = $this->parseApiResponse($data);
@@ -535,7 +537,7 @@ class KM_UpdatesV3 {
 	public function attemptAutoActivation() {
 
 		// Bail out if there's no bundled license identifier
-		if( ! defined('LS_LICENSE_ID') || empty( LS_LICENSE_ID ) ) {
+		if( ! defined('LS_LICENSE_ID') || ! LS_LICENSE_ID ) {
 			return false;
 		}
 

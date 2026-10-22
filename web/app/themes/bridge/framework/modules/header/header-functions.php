@@ -338,13 +338,7 @@ if(!function_exists('bridge_qode_get_content_class')) {
 		$per_page_header_transparency = get_post_meta($id, 'qode_header_color_transparency_per_page', true);
 		$header_transparency = $per_page_header_transparency !== '' ? $per_page_header_transparency: bridge_qode_options()->getOptionValue('header_background_transparency_initial');
 
-		if((get_post_meta($id, "qode_revolution-slider", true) == "" &&
-			bridge_qode_is_title_hidden() &&
-			!is_category() &&
-			!is_tag() &&
-			!is_author() &&
-			($header_transparency === '' || $header_transparency == 1)) ||
-			bridge_qode_is_content_below_header()){
+		if((get_post_meta($id, "qode_revolution-slider", true) == "" && bridge_qode_is_title_hidden() && !is_category() && !is_tag() && !is_author() && ($header_transparency === '' || $header_transparency == 1)) || bridge_qode_is_content_below_header()){
 				if(in_array(bridge_qode_options()->getOptionValue('header_bottom_appearance'), array('fixed', 'fixed fixed_minimal'))){
 					$content_class = "content_top_margin";
 				}elseif(bridge_qode_is_content_below_header() && bridge_qode_options()->getOptionValue('header_bottom_appearance') == "fixed_hiding"){

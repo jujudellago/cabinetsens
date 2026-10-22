@@ -39,6 +39,6 @@ $css_class = apply_filters(VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, 'q_accordion_hold
 
 $output .= "\n\t".'<div class="'.$css_class.'" data-active-tab="'.$active_tab.'" data-collapsible="'.$collapsible.'" data-border-radius="'.$accordion_border_radius.'">';
 $output .= "\n\t\t\t".wpb_js_remove_wpautop($content);
-$output .= "\n\t".'</div> '.$this->endBlockComment('.wpb_accordion');
+$output .= "\n\t".'</div>';
 
 echo bridge_qode_get_module_part( $output );

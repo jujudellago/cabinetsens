@@ -4,6 +4,15 @@ $simple_address = get_post_meta(get_the_ID(), 'qodef_property_simple_address_met
 $zip_code = get_post_meta(get_the_ID(), 'qodef_property_zip_code_meta', true);
 $country = get_post_meta(get_the_ID(), 'qodef_property_address_country_meta', true);
 $map_style = bridge_qode_options()->getOptionValue('real_estate_map_style');
+$has_google_maps = qodef_re_is_google_maps_available();
+$has_address = qodef_re_has_property_field_value( $full_address )
+	|| qodef_re_has_property_field_value( $simple_address )
+	|| qodef_re_has_property_field_value( $zip_code )
+	|| qodef_re_has_property_field_value( $country );
+
+if ( ! $has_google_maps && ! $has_address ) {
+	return;
+}
 
 $google_map_params = array(
     'address1' => $full_address
@@ -21,11 +30,14 @@ if( ! empty ( $map_style ) ) {
         </h5>
     </div>
     <div class="qodef-property-map-items qodef-property-items-style clearfix">
+        <?php if ( $has_google_maps ) { ?>
         <div class="qodef-property-map-object">
             <?php echo bridge_qode_execute_shortcode('qode_google_map', $google_map_params); ?>
         </div>
+        <?php } ?>
         <div class="qodef-property-map-address">
             <div class="qode-grid-row">
+                <?php if ( qodef_re_has_property_field_value( $full_address ) ) { ?>
                 <div class="qode-grid-col-6">
                     <span class="qodef-full-address qodef-label-items-item">
                         <span class="qodef-label-items-label">
@@ -39,6 +51,8 @@ if( ! empty ( $map_style ) ) {
                         </span>
                     </span>
                 </div>
+                <?php } ?>
+                <?php if ( qodef_re_has_property_field_value( $simple_address ) ) { ?>
                 <div class="qode-grid-col-6">
                     <span class="qodef-simple-address qodef-label-items-item">
                         <span class="qodef-label-items-label">
@@ -52,6 +66,8 @@ if( ! empty ( $map_style ) ) {
                         </span>
                     </span>
                 </div>
+                <?php } ?>
+                <?php if ( qodef_re_has_property_field_value( $zip_code ) ) { ?>
                 <div class="qode-grid-col-6">
                     <span class="qodef-zip-code qodef-label-items-item">
                         <span class="qodef-label-items-label">
@@ -65,6 +81,8 @@ if( ! empty ( $map_style ) ) {
                         </span>
                     </span>
                 </div>
+                <?php } ?>
+                <?php if ( qodef_re_has_property_field_value( $country ) ) { ?>
                 <div class="qode-grid-col-6">
                     <span class="qodef-country qodef-label-items-item">
                         <span class="qodef-label-items-label">
@@ -78,6 +96,7 @@ if( ! empty ( $map_style ) ) {
                         </span>
                     </span>
                 </div>
+                <?php } ?>
             </div>
         </div>
     </div>

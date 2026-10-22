@@ -256,15 +256,12 @@ class CourseList implements Lib\ShortcodeInterface {
 	}
 
     /**
-     * Renders shortcodes HTML
+     * Returns default params for shortcode
      *
-     * @param $atts array of shortcode params
-     * @param $content string shortcode content
-     *
-     * @return string
+     * @return array
      */
-    public function render($atts, $content = null) {
-        $args = array(
+    public function getDefaultParams() {
+        return array(
 	        'number_of_columns'         => '3',
             'space_between_items'       => 'normal',
 	        'number_of_items'           => '-1',
@@ -301,6 +298,18 @@ class CourseList implements Lib\ShortcodeInterface {
 	        'pagination_position'       => '',
             'widget'                    => 'no',
         );
+    }
+
+    /**
+     * Renders shortcodes HTML
+     *
+     * @param $atts array of shortcode params
+     * @param $content string shortcode content
+     *
+     * @return string
+     */
+    public function render($atts, $content = null) {
+        $args = $this->getDefaultParams();
 		$params = shortcode_atts($args, $atts);
 	
 	    /***

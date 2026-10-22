@@ -13,23 +13,6 @@ if ( file_exists( $root.'/wp/wp-load.php' ) ) {
 header('Content-type: application/x-javascript');
 ?>
 
-function bridgeQodeAjaxSubmitCommentForm(){
-	"use strict";
-
-	var options = { 
-		success: function(){
-			$j("#commentform textarea").val("");
-			$j("#commentform .success p").text("<?php esc_html_e('Comment has been sent!','bridge'); ?>");
-		}
-	}; 
-	
-	$j('#commentform').submit(function() {
-		$j(this).find('input[type="submit"]').next('.success').remove();
-		$j(this).find('input[type="submit"]').after('<div class="success"><p></p></div>');
-		$j(this).ajaxSubmit(options); 
-		return false; 
-	}); 
-}
 var header_height = 100;
 var min_header_height_scroll = 57;
 var min_header_height_fixed_hidden = 50;

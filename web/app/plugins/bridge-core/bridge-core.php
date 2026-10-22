@@ -5,7 +5,7 @@ Plugin URI: https://qodeinteractive.com
 Description: Plugin that adds additional features needed by our theme
 Author: Qode
 Author URI: https://qodeinteractive.com
-Version: 3.0.9
+Version: 3.3.5.1
 */
 if ( ! class_exists( 'BridgeCore' ) ) {
 	class BridgeCore {
@@ -115,7 +115,7 @@ if ( ! function_exists( 'bridge_core_enqueue_our_prettyphoto_scripts_for_theme' 
             wp_enqueue_script("prettyphoto", QODE_ROOT."/js/plugins/jquery.prettyPhoto.js",array('jquery'),false,true);
 
             wp_deregister_script( 'flexslider' );
-            wp_enqueue_script("flexslider", QODE_ROOT."/js/plugins/jquery.flexslider-min.js",array('jquery'),false,true);
+	        wp_register_script("flexslider", QODE_ROOT."/js/plugins/jquery.flexslider-min.js",array('jquery'),false,true);
 
             wp_deregister_script( 'isotope' );
             wp_enqueue_script("isotope", QODE_ROOT."/js/plugins/jquery.isotope.min.js",array('jquery'),false,true);

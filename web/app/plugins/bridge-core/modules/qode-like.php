@@ -9,28 +9,37 @@ if(!defined('ABSPATH')) exit;
  */
 class QodeLike {
     public function __construct() {
-        add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'));
-        add_action('wp_ajax_qode_like', array($this, 'ajax'));
-        add_action('wp_ajax_nopriv_qode_like', array($this, 'ajax'));
+		add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'));
+		add_action('wp_ajax_qode_like', array($this, 'ajax'));
+		add_action('wp_ajax_nopriv_qode_like', array($this, 'ajax'));
     }
+	
+	public function is_like_enabled() {
+		$blog_like = bridge_qode_options()->getOptionValue( 'qode_like' );
+		$portfolio_like = bridge_qode_options()->getOptionValue( 'portfolio_qode_like' );
+		
+		return 'on' === $blog_like || 'on' === $portfolio_like;
+	}
 
 
     /**
      * Loads all necessary script for like functionality
      */
     public function enqueueScripts() {
-        wp_enqueue_script('jquery');
-        wp_enqueue_script('qode-like', get_template_directory_uri() . '/js/plugins/qode-like.min.js', 'jquery', false, true);
-
-        wp_localize_script('qode-like', 'qodeLike', array(
-            'ajaxurl' => admin_url('admin-ajax.php')
-        ));
+	    if( $this->is_like_enabled() ) {
+		    wp_enqueue_script( 'qode-like', get_template_directory_uri() . '/js/plugins/qode-like.min.js', 'jquery', false, true );
+		    
+		    wp_localize_script( 'qode-like', 'qodeLike', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+	    }
     }
 
     /**
      * Method that hooks to WP ajax functionality. Calss
      */
     public function ajax() {
+	    
+	    check_ajax_referer( 'qode_like_post_nonce', 'nonce' );
+		
         $type = isset($_POST['type']) ? $_POST['type'] : '';
 
         //update
@@ -126,12 +135,9 @@ class QodeLike {
             $title = esc_html__('You already like this!', 'bridge-core');
         }
 
-        return '<a '.bridge_qode_get_inline_attr($type, 'data-type').' href="#" class="'.esc_attr($class).'" id="qode-like-'.esc_attr($post->ID).'" title="'.esc_attr($title).'">' . $output . '</a>';
+        return '<a '.bridge_qode_get_inline_attr($type, 'data-type').' href="#" class="'.esc_attr($class).'" id="qode-like-'.esc_attr($post->ID).'" title="'.esc_attr($title).'" data-nonce="'. wp_create_nonce('qode_like_post_nonce') . '">' . $output . '</a>';
     }
 }
-
-global $qode_like;
-$qode_like = new QodeLike();
 
 if(!function_exists('bridge_core_like')) {
     /**
@@ -163,4 +169,14 @@ if(!function_exists('bridge_core_like_portfolio_list')) {
 
         return $qode_like->generateLikeHTML($type);
     }
+}
+
+if( ! function_exists( 'bridge_qode_instantiate_likes' ) ) {
+	function bridge_qode_instantiate_likes() {
+		global $qode_like;
+		
+		$qode_like = new QodeLike();
+	}
+	
+	add_action( 'after_setup_theme', 'bridge_qode_instantiate_likes' );
 }

@@ -18,7 +18,7 @@ if($frame == 'jungle') {
 $html .= "<div class='qode-hero-image'>";
 
 if ($link != '') {
-    $html .= "<a class='qode-hero-image-link' href=". esc_url($link)." target=". esc_attr($target).">";
+    $html .= "<a class='qode-hero-image-link' href=". esc_url( $link )." target=". esc_attr($target).">";
 }
 if ($hero_image != '') {
     $html .= "<img class='qode-frame-image qode-lazy-image' src='#' alt='" . esc_html__('hero image', 'bridge-core') . "' data-image='".wp_get_attachment_url($hero_image)."' data-lazy='true' />";
@@ -90,7 +90,7 @@ for ($i = 1; $i <= 8; $i++) {
             $html .= "<a class='qode-side-image-link' href=". esc_url($side_image_link)." target=". esc_attr($target).">";
         }
 
-        $html .= "<div ".$side_image_data_start." ".$side_image_data_end." class='". esc_attr($side_image_classes)."' data-image=".wp_get_attachment_url($side_image)." data-lazy='true' ></div>";
+        $html .= "<div ". $side_image_data_start ." ". $side_image_data_end ." class='". esc_attr($side_image_classes)."' data-image=".wp_get_attachment_url($side_image)." data-lazy='true' ></div>";
 
         if ($side_image_link != '') {
             $html .= "</a>";

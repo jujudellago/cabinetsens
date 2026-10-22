@@ -12,6 +12,11 @@ class BridgeQodeLatestPostsMenu extends WP_Widget {
 	public function widget( $args, $instance ) {
 		global $post;
 		extract( $args );
+		
+		wp_enqueue_script( 'flexslider' );
+		wp_enqueue_script( 'fitvids' );
+		wp_enqueue_script( 'touchSwipe' );
+		
 		$title = apply_filters('widget_title', empty($instance['title']) ? '' : $instance['title'], $instance, $this->id_base);
 
 		if ( empty( $instance['number'] ) || ! $number = absint( $instance['number'] ) ){

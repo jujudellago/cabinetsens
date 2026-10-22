@@ -1,45 +1,59 @@
 <?php
+/**
+ * Template for element param google fonts.
+ *
+ * @var array $settings
+ * @var string $value
+ * @var array $fields
+ * @var array $values
+ * @var array $param_id
+ * @var array $font_style_options
+ * @var Vc_Google_Fonts $this
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
+vc_include_template( 'params/font_container/font_family.php', [
+	'dropdown_atts' => [
+		'id' => wpbakery()->editForm()->get_value_control_id( $param_id, $settings['type'], 'font_family' ),
+		'classes' => 'vc_google_fonts_form_field-font_family-select',
+		'default-font-style' => $values['font_style'],
+		'options' => $font_style_options,
+	],
+	'fields' => $fields,
+	'param_id' => $param_id,
+	'settings' => $settings,
+	'container_class' => 'vc_google_fonts_form_field-font_family-container',
+	'edit_field_class' => $fields['font_family_edit_field_class'] ?? '',
+])
 ?>
-<div class="vc_row-fluid vc_column">
-	<div class="wpb_element_label"><?php esc_html_e( 'Font Family', 'js_composer' ); ?></div>
-	<div class="vc_google_fonts_form_field-font_family-container">
-		<select class="vc_google_fonts_form_field-font_family-select"
-				default[font_style]="<?php echo esc_attr( $values['font_style'] ); ?>">
-			<?php
-			/** @var Vc_Google_Fonts $this */
-			$fonts = $this->_vc_google_fonts_get_fonts();
-			foreach ( $fonts as $font_data ) :
-				?>
-				<option value="<?php echo esc_attr( $font_data->font_family ) . ':' . esc_attr( $font_data->font_styles ); ?>"
-					data[font_types]="<?php echo esc_attr( $font_data->font_types ); ?>"
-					data[font_family]="<?php echo esc_attr( $font_data->font_family ); ?>"
-					data[font_styles]="<?php echo esc_attr( $font_data->font_styles ); ?>"
-						class="<?php echo esc_attr( vc_build_safe_css_class( $font_data->font_family ) ); ?>" <?php echo( strtolower( $values['font_family'] ) === strtolower( $font_data->font_family ) || strtolower( $values['font_family'] ) === strtolower( $font_data->font_family ) . ':' . $font_data->font_styles ? 'selected' : '' ); ?> ><?php echo esc_html( $font_data->font_family ); ?></option>
-			<?php endforeach ?>
-		</select>
-	</div>
-	<?php if ( isset( $fields['font_family_description'] ) && strlen( $fields['font_family_description'] ) > 0 ) : ?>
-		<span class="vc_description clear"><?php echo esc_html( $fields['font_family_description'] ); ?></span>
-	<?php endif ?>
-</div>
 
 <?php if ( isset( $fields['no_font_style'] ) && false === $fields['no_font_style'] || ! isset( $fields['no_font_style'] ) ) : ?>
-	<div class="vc_row-fluid vc_column">
-		<div class="wpb_element_label"><?php esc_html_e( 'Font style', 'js_composer' ); ?></div>
+	<div class="vc_column <?php echo esc_attr( $fields['font_style_edit_field_class'] ?? '' ); ?>">
+		<div class="wpb-param-heading">
+			<label for="<?php echo esc_attr( wpbakery()->editForm()->get_value_control_id( $param_id, $settings['type'], 'font_style' ) ); ?>" class="wpb_element_label">
+				<?php esc_html_e( 'Font style', 'js_composer' ); ?>
+			</label>
+			<?php
+			if ( isset( $fields['font_style_description'] ) && strlen( $fields['font_style_description'] ) > 0 ) :
+				vc_include_template( 'editors/partials/param-info.tpl.php', [ 'description' => $fields['font_style_description'] ] );
+			endif;
+			?>
+		</div>
 		<div class="vc_google_fonts_form_field-font_style-container">
-			<select class="vc_google_fonts_form_field-font_style-select"></select>
+			<?php
+			WPB_Form_Field_Dropdown::render([
+				'id' => wpbakery()->editForm()->get_value_control_id( $param_id, $settings['type'], 'font_style' ),
+				'classes' => 'vc_google_fonts_form_field-font_style-select',
+			]);
+			?>
 		</div>
 	</div>
-	<?php if ( isset( $fields['font_style_description'] ) && strlen( $fields['font_style_description'] ) > 0 ) : ?>
-		<span class="vc_description clear"><?php echo esc_html( $fields['font_style_description'] ); ?></span>
-	<?php endif ?>
 <?php endif ?>
 
 <div class="vc_row-fluid vc_column vc_google_fonts_form_field-preview-wrapper">
-	<div class="wpb_element_label"><?php esc_html_e( 'Google Fonts preview', 'js_composer' ); ?>:</div>
+	<div class="wpb_element_label"><?php esc_html_e( 'Font preview', 'js_composer' ); ?>:</div>
 	<div class="vc_google_fonts_form_field-preview-container">
 		<span><?php esc_html_e( 'Grumpy wizards make toxic brew for the evil Queen and Jack.', 'js_composer' ); ?></span>
 	</div>

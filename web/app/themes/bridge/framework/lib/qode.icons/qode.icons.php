@@ -378,15 +378,34 @@ class BridgeQodeIconCollections {
 
         $iconPackParams = array($iconPackParams);
 
+		// Cache per-collection icon arrays so vc_map for button/icon/list/etc.
+		// does not rebuild the same huge dropdowns repeatedly.
+		static $icons_value_cache = array();
+
+		$GLOBALS['bridge_qode_vc_shared_icon_values'] = isset( $GLOBALS['bridge_qode_vc_shared_icon_values'] ) && is_array( $GLOBALS['bridge_qode_vc_shared_icon_values'] )
+			? $GLOBALS['bridge_qode_vc_shared_icon_values']
+			: array();
+
         $iconSetParams = array();
         if (is_array($this->iconCollections) && count($this->iconCollections)) {
             foreach ($this->iconCollections as $key => $collection) {
+				if ( ! isset( $icons_value_cache[ $key ] ) ) {
+					$icons_value_cache[ $key ] = $collection->getIconsArray();
+				}
+
+				// Store full icon lists once; WPBakery embeds vc_mapper via getShortCodes()
+				// (unfiltered), so we keep placeholders in params and restore via JS + vc_single_param_edit.
+				if ( ! isset( $GLOBALS['bridge_qode_vc_shared_icon_values'][ $collection->param ] ) ) {
+					$GLOBALS['bridge_qode_vc_shared_icon_values'][ $collection->param ] = $icons_value_cache[ $key ];
+				}
+
                 $iconSetParams[] = array(
                     "type" => "dropdown",
                     "class" => "",
                     "heading" => "Icon",
                     "param_name" => $iconCollectionPrefix . $collection->param,
-                    "value" => $collection->getIconsArray(),
+                    "value" => array( '' => '' ),
+					"qode_shared_icon_key" => $collection->param,
                     "description" => "",
                     "dependency" => array('element' => $this->iconPackParamName, 'value' => array($key))
                 );
@@ -436,13 +455,25 @@ class BridgeQodeIconCollections {
 
         $iconSetParams = array();
         if (is_array($iconCollections) && count($iconCollections)) {
+			$GLOBALS['bridge_qode_vc_shared_icon_values'] = isset( $GLOBALS['bridge_qode_vc_shared_icon_values'] ) && is_array( $GLOBALS['bridge_qode_vc_shared_icon_values'] )
+				? $GLOBALS['bridge_qode_vc_shared_icon_values']
+				: array();
+
             foreach ($iconCollections as $key => $collection) {
+				$social_icons = $collection->getSocialIconsArrayVC();
+				$shared_key   = 'social_' . $collection->param;
+
+				if ( ! isset( $GLOBALS['bridge_qode_vc_shared_icon_values'][ $shared_key ] ) ) {
+					$GLOBALS['bridge_qode_vc_shared_icon_values'][ $shared_key ] = $social_icons;
+				}
+
                 $iconSetParams[] = array(
                     "type" => "dropdown",
                     "class" => "",
                     "heading" => "Icon",
                     "param_name" => $iconCollectionPrefix . $collection->param,
-                    "value" => $collection->getSocialIconsArrayVC(),
+                    "value" => array( '' => '' ),
+					"qode_shared_icon_key" => $shared_key,
                     "description" => "",
                     "dependency" => array('element' => $this->iconPackParamName, 'value' => array($key))
                 );
@@ -872,4 +903,64 @@ class BridgeQodeIconCollections {
     public function renderIconHTML($icon, $iconPack, $iconParams = array()) {
         echo bridge_qode_get_module_part( $this->getIconHTML($icon, $iconPack, $iconParams) );
     }
+}
+
+if ( ! function_exists( 'bridge_qode_restore_shared_vc_icon_param' ) ) {
+	/**
+	 * WPBakery renders edit-form dropdowns on the server from mapped params.
+	 * Restore full shared icon lists before that HTML is built.
+	 *
+	 * @param array $param
+	 * @param mixed $value
+	 *
+	 * @return array
+	 */
+	function bridge_qode_restore_shared_vc_icon_param( $param, $value = null ) {
+		unset( $value );
+
+		if ( empty( $param['qode_shared_icon_key'] ) || empty( $param['type'] ) || 'dropdown' !== $param['type'] ) {
+			return $param;
+		}
+
+		$key = $param['qode_shared_icon_key'];
+		if ( empty( $GLOBALS['bridge_qode_vc_shared_icon_values'][ $key ] ) || ! is_array( $GLOBALS['bridge_qode_vc_shared_icon_values'][ $key ] ) ) {
+			return $param;
+		}
+
+		$param['value'] = $GLOBALS['bridge_qode_vc_shared_icon_values'][ $key ];
+
+		return $param;
+	}
+
+	add_filter( 'vc_single_param_edit', 'bridge_qode_restore_shared_vc_icon_param', 10, 2 );
+}
+
+if ( ! function_exists( 'bridge_qode_print_vc_shared_icon_values_script' ) ) {
+	/**
+	 * Restore shared icon dropdown values into vc_mapper before WPBakery boots.
+	 */
+	function bridge_qode_print_vc_shared_icon_values_script() {
+		if ( empty( $GLOBALS['bridge_qode_vc_shared_icon_values'] ) || ! is_array( $GLOBALS['bridge_qode_vc_shared_icon_values'] ) ) {
+			return;
+		}
+
+		$vc_editor_js_loaded = wp_script_is( 'vc-backend-min-js', 'enqueued' )
+			|| wp_script_is( 'vc-frontend-editor-min-js', 'enqueued' );
+
+		if ( ! $vc_editor_js_loaded ) {
+			return;
+		}
+
+		$payload = wp_json_encode( $GLOBALS['bridge_qode_vc_shared_icon_values'] );
+		if ( ! $payload ) {
+			return;
+		}
+
+		echo '<script id="qode-vc-shared-icons">';
+		echo '(function(){var shared=' . $payload . ';if(!shared||!window.vc_mapper){return;}Object.keys(window.vc_mapper).forEach(function(tag){var params=window.vc_mapper[tag]&&window.vc_mapper[tag].params;if(!params||!params.length){return;}params.forEach(function(param){if(!param||!param.qode_shared_icon_key||!shared[param.qode_shared_icon_key]){return;}param.value=shared[param.qode_shared_icon_key];});});})();';
+		echo '</script>';
+	}
+
+	add_action( 'admin_print_footer_scripts', 'bridge_qode_print_vc_shared_icon_values_script', 5 );
+	add_action( 'wp_footer', 'bridge_qode_print_vc_shared_icon_values_script', 5 );
 }

@@ -184,18 +184,29 @@ if(!function_exists('bridge_qode_map_title_meta_fields')) {
 			array(
 				'dependence' => true,
 				'hide' => array(
-					'no' => '#qodef_animation_page_page_breadcrumbs_container'
+					'no' => '#qodef_animation_page_page_breadcrumbs_container, #qodef_qode_title_breadcrumbs_container'
 				),
 				'show' => array(
-					'yes' => '#qodef_animation_page_page_breadcrumbs_container',
-					'' => '#qodef_animation_page_page_breadcrumbs_container'
+					'yes' => '#qodef_animation_page_page_breadcrumbs_container, #qodef_qode_title_breadcrumbs_container',
+					'' => '#qodef_animation_page_page_breadcrumbs_container, #qodef_qode_title_breadcrumbs_container'
 				)
 			)
 		);
 		$qode_page_title_area_container->addChild("qode_enable_breadcrumbs",$qode_enable_breadcrumbs);
+		
+		$qode_title_breadcrumbs_container = new BridgeQodeContainer("qode_title_breadcrumbs_container","qode_enable_breadcrumbs","no");
+		$qode_page_title_area_container->addChild("qode_title_breadcrumbs_container",$qode_title_breadcrumbs_container);
 
 		$qode_page_breadcrumbs_color = new BridgeQodeMetaField("color","qode_page_breadcrumbs_color","",esc_html__('Breadcrumbs Color', 'bridge'),esc_html__('Choose a color for breadcrumbs text','bridge'));
-		$qode_page_title_area_container->addChild("qode_page_breadcrumbs_color",$qode_page_breadcrumbs_color);
+		$qode_title_breadcrumbs_container->addChild("qode_page_breadcrumbs_color",$qode_page_breadcrumbs_color);
+		
+		$show_only_breadcrumbs = new BridgeQodeMetaField("selectblank","show_only_breadcrumbs_meta","",esc_html__('Show Only Breadcrumbs' ,'bridge'),esc_html__('Do you want to show only breadcrumbs in title area?','bridge'),
+			array(
+			   'no'	=> esc_html__( 'No', 'bridge' ),
+			   'yes'	=> esc_html__( 'Yes', 'bridge' )
+			)
+		);
+		$qode_title_breadcrumbs_container->addChild("show_only_breadcrumbs",$show_only_breadcrumbs);
 
 		$qode_page_subtitle = new BridgeQodeMetaField("text","qode_page_subtitle","",esc_html__('Subtitle Text', 'bridge'),esc_html__('Enter your subtitle text', 'bridge'));
 		$qode_page_title_area_container->addChild("qode_page_subtitle",$qode_page_subtitle);
@@ -220,11 +231,22 @@ if(!function_exists('bridge_qode_map_title_meta_fields')) {
 
 		$qode_margin_after_title_mobile = new BridgeQodeMetaField("selectblanksimple","qode_margin_after_title_mobile","",esc_html__('Set This Bottom Margin for Mobile Header', 'bridge'),"", array(
 			'no'	=> esc_html__( 'No', 'bridge' ),
-			'yes'	=> esc_html__( 'Yes', 'bridge' )
+			'yes'	=> esc_html__( 'Yes', 'bridge' ),
 		));
 		$row1->addChild("qode_margin_after_title_mobile",$qode_margin_after_title_mobile);
-
-
+		
+		bridge_qode_create_meta_box_field(
+			array(
+				'name'          => 'qode_margin_after_title_mobile_value',
+				'type'          => 'text',
+				'label'         => esc_html__('Spacing after title mobile', 'bridge'),
+				'description'   => esc_html__('Insert exact value you want to be applied on mobile screen resolutions. This option will not work when "Yes" is set for "Set This Bottom Margin for Mobile Header" option above', 'bridge'),
+				'parent'        => $qodeTitle,
+				'args' => array(
+					'col_width' => '3',
+				)
+			)
+		);
 	}
 
 	add_action('bridge_qode_action_meta_boxes_map', 'bridge_qode_map_title_meta_fields');

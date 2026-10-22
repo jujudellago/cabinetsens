@@ -15,10 +15,15 @@ define('LS_MARKETPLACE_ID', '1362246');
 define('LS_TEXTDOMAIN', 'LayerSlider');
 define('LS_REPO_BASE_URL', 'https://repository.kreaturamedia.com/v4/');
 
+define('LS_WPML_SP_TITLE', 'LayerSlider');
+define('LS_WPML_SP_SLUG', 'layerslider');
+
+
+
 if( ! defined('NL')  ) { define('NL', "\r\n"); }
 if( ! defined('TAB') ) { define('TAB', "\t");  }
 
-if( ! defined('DAY_IN_SECONDS') ) { define( 'DAY_IN_SECONDS', 24 * 3600 ); }
+if( ! defined('DAY_IN_SECONDS') ) { define('DAY_IN_SECONDS', 24 * 3600 ); }
 if( ! defined('MONTH_IN_SECONDS') ) { define('MONTH_IN_SECONDS', ''); }
 
 // Load & initialize plugin config class
@@ -27,9 +32,15 @@ LS_Config::init();
 
 // Shared
 include LS_ROOT_PATH.'/wp/compatibility.php';
+include LS_ROOT_PATH.'/wp/compatibility-multilingual.php';
+include LS_ROOT_PATH.'/wp/compatibility-wpml.php';
+include LS_ROOT_PATH.'/wp/compatibility-polylang.php';
 include LS_ROOT_PATH.'/wp/scripts.php';
 include LS_ROOT_PATH.'/wp/menus.php';
 include LS_ROOT_PATH.'/wp/hooks.php';
+include LS_ROOT_PATH.'/wp/templates.php';
+include LS_ROOT_PATH.'/addons/404/index.php';
+include LS_ROOT_PATH.'/addons/maintenance/index.php';
 include LS_ROOT_PATH.'/wp/widgets.php';
 include LS_ROOT_PATH.'/includes/slider_utils.php';
 include LS_ROOT_PATH.'/wp/shortcodes.php';
@@ -37,6 +48,7 @@ include LS_ROOT_PATH.'/classes/class.ls.posts.php';
 include LS_ROOT_PATH.'/classes/class.ls.sliders.php';
 include LS_ROOT_PATH.'/classes/class.ls.sources.php';
 include LS_ROOT_PATH.'/classes/class.ls.popups.php';
+include LS_ROOT_PATH.'/classes/class.ls.googlefonts.php';
 
 if( get_option('ls_elementor_widget', true ) ) {
 	include LS_ROOT_PATH.'/classes/class.ls.elementor.php';
@@ -95,25 +107,23 @@ $GLOBALS['LS_AutoUpdate'] = new KM_PluginUpdatesV3([
 ]);
 
 
-// Load locales
-add_action('plugins_loaded', function() {
-	load_plugin_textdomain('LayerSlider', false, LS_PLUGIN_SLUG . '/assets/locales/' );
-});
+add_action( 'plugins_loaded', function() {
+	$custom_locale = get_option( 'ls_custom_locale', 'auto' );
 
+	// Manually load a specific locale
+	if( ! empty( $custom_locale ) && $custom_locale !== 'auto' ) {
 
-// Override locale?
-$custom_locale = get_option('ls_custom_locale', 'auto' );
-
-if( ! empty( $custom_locale ) && $custom_locale !== 'auto' ) {
-
-	add_filter('plugin_locale', function( $locale, $domain ) use ( $custom_locale ) {
-		if( $domain === 'LayerSlider') {
-			$locale = $custom_locale;
+		$mo_file = LS_ROOT_PATH . '/locales/LayerSlider-' . $custom_locale . '.mo';
+		if( file_exists( $mo_file ) ) {
+			unload_textdomain( 'LayerSlider' );
+			load_textdomain( 'LayerSlider', $mo_file );
 		}
 
-		return $locale;
-	}, 10, 2);
-}
+	// Normal loading routine
+	} else {
+		load_plugin_textdomain( 'LayerSlider', false, LS_PLUGIN_SLUG . '/locales/' );
+	}
+});
 
 
 // Offering a way for authors to override LayerSlider resources by

@@ -29,6 +29,6 @@ $output .= '>';
 
 $output .= '<span>' . $title . '</span>';
 
-$output .='</div></div>'.$this->endBlockComment('separator')."\n";
+$output .='</div></div>';
 
 echo bridge_qode_get_module_part( $output );

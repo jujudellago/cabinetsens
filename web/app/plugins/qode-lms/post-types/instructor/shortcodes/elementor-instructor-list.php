@@ -16,6 +16,10 @@ class QodeLmsInstructorList extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode-lms' ];
     }
+	
+	public function get_script_depends() {
+		return array();
+	}
 
     public function getInstructorCategories(){
         $taxonomy = 'instructor-category';

@@ -194,8 +194,9 @@ class PropertyTypeSlider implements Lib\ShortcodeInterface
             $list_of_types = explode(',', $params['type']);
 
             foreach ($list_of_types as $type) {
-                $tax = get_term_by( 'slug', $type, 'property-type');
-                if( !is_wp_error($tax) && $tax) {
+                $tax = get_term_by(  'slug', $type, 'property-type' );
+                
+				if( ! is_wp_error( $tax ) && $tax ) {
                     $property_type[] = $tax;
                 }
             }
@@ -245,9 +246,9 @@ class PropertyTypeSlider implements Lib\ShortcodeInterface
         $query = trim($query['value']); // get value from requested
         if (!empty($query)) {
             // get portfolio category
-            $property_type = get_term_by('slug', $query, 'property-type');
-            if (is_object($property_type)) {
-
+            $property_type = get_term_by( 'slug', $query, 'property-type' );
+            
+			if( ! is_wp_error( $property_type ) && $property_type ) {
                 $portfolio_type_slug = $property_type->slug;
                 $portfolio_type_title = $property_type->name;
 

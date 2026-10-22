@@ -1,3 +1,4 @@
+<?php $title_tag = qode_tours_sanitize_title_tag( isset( $title_tag ) ? $title_tag : 'h4' ); ?>
 <div class="qode-tours-destination-grid">
 	<?php if($query->have_posts()) : ?>
 		<div <?php qode_tours_class_attribute($classes);?>>

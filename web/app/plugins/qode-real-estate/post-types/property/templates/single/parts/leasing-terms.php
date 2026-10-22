@@ -2,6 +2,15 @@
 
 $leasing_terms_meta = get_post_meta(get_the_ID(), 'qodef_leasing_terms_meta', true);
 
+if ( is_array( $leasing_terms_meta ) ) {
+    $leasing_terms_meta = array_filter(
+        $leasing_terms_meta,
+        function ( $leasing_term ) {
+            return isset( $leasing_term['value'] ) && qodef_re_has_property_field_value( $leasing_term['value'] );
+        }
+    );
+}
+
 if(is_array($leasing_terms_meta) && count($leasing_terms_meta)) { ?>
 <div class="qodef-property-leasing-terms qodef-property-label-items-holder">
     <div class="qodef-property-leasing-label qodef-property-label-style">

@@ -344,7 +344,7 @@ if (!function_exists('qode_news_get_holder_data_params')) {
         }
         
         if ( ! empty( $params['title_tag'] ) ) {
-            $query_result['title_tag'] = $params['title_tag'];
+            $query_result['title_tag'] = qode_news_sanitize_title_tag( $params['title_tag'] );
         }
 
         if ( ! empty( $params['image_size'] ) ) {
@@ -400,7 +400,7 @@ if (!function_exists('qode_news_get_holder_data_params')) {
         }
 
         if ( ! empty( $params['featured_title_tag'] ) ) {
-            $query_result['featured_title_tag'] = $params['featured_title_tag'];
+            $query_result['featured_title_tag'] = qode_news_sanitize_title_tag( $params['featured_title_tag'] );
         }
 
         if ( ! empty( $params['featured_image_size'] ) ) {
@@ -465,99 +465,236 @@ if (!function_exists('qode_news_get_holder_data_params')) {
     }
 }
 
-if ( ! function_exists( 'qode_news_shortcodes_load_more' ) ) {
-    function qode_news_shortcodes_load_more() {
-        $params = array();
-        
-        if ( ! empty( $_POST ) ) {
-            foreach ( $_POST as $key => $value ) {
-                if ( $key !== '' ) {
-                    $addUnderscoreBeforeCapitalLetter = preg_replace( '/([A-Z])/', '_$1', $key );
-                    $setAllLettersToLowercase         = strtolower( $addUnderscoreBeforeCapitalLetter );
-                    
-                    $params[ $setAllLettersToLowercase ] = $value;
-                }
-            }
+if ( ! function_exists( 'qode_news_get_news_shortcode_by_layout' ) ) {
+    /**
+     * Returns a registered news shortcode by its base (layout slug).
+     *
+     * @param string $layout
+     *
+     * @return \qodeNews\Lib\NewsShortcodes|null
+     */
+    function qode_news_get_news_shortcode_by_layout( $layout ) {
+        if ( ! is_string( $layout ) || $layout === '' || ! class_exists( '\qodeNews\Lib\ShortcodeLoader' ) ) {
+            return null;
         }
 
-        $layout = str_replace('qode_', '', $params['layout']);
-        $layout = str_replace('_', ' ', $layout);
-        $layout = str_replace(' ','',ucwords($layout));
-        $layout_class = ucfirst($layout);
+        $shortcode = \qodeNews\Lib\ShortcodeLoader::getInstance()->getShortcode( $layout );
 
-        $a = '\qodeNews\CPT\Shortcodes\\'.$layout_class.'\\'.$layout_class;
-        
-        $this_object = new $a;
-        
+        if ( $shortcode instanceof \qodeNews\Lib\NewsShortcodes ) {
+            return $shortcode;
+        }
+
+        return null;
+    }
+}
+
+if ( ! function_exists( 'qode_news_get_ajax_layout_from_request' ) ) {
+    /**
+     * Reads and resolves the registered shortcode object from the AJAX request.
+     *
+     * @return \qodeNews\Lib\NewsShortcodes|null
+     */
+    function qode_news_get_ajax_layout_from_request() {
+        if ( empty( $_POST['layout'] ) || ! is_string( $_POST['layout'] ) ) {
+            return null;
+        }
+
+        $layout = sanitize_text_field( wp_unslash( $_POST['layout'] ) );
+
+        return qode_news_get_news_shortcode_by_layout( $layout );
+    }
+}
+
+if ( ! function_exists( 'qode_news_get_ajax_allowed_param_keys' ) ) {
+    /**
+     * Allowed AJAX keys come from the shortcode itself (VC params + defaults).
+     *
+     * @param object $shortcode
+     *
+     * @return string[]
+     */
+    function qode_news_get_ajax_allowed_param_keys( $shortcode ) {
+        $keys = array( 'layout', 'next_page', 'paged' );
+
+        if ( method_exists( $shortcode, 'getShortcodeParams' ) ) {
+            $keys = array_merge( $keys, array_keys( qode_news_get_shortcode_params_names( $shortcode->getShortcodeParams() ) ) );
+        }
+
+        if ( method_exists( $shortcode, 'getDefaultParams' ) ) {
+            $keys = array_merge( $keys, array_keys( $shortcode->getDefaultParams() ) );
+        }
+
+        if ( method_exists( $shortcode, 'getDefaultFeaturedParams' ) ) {
+            $keys = array_merge( $keys, array_keys( $shortcode->getDefaultFeaturedParams() ) );
+        }
+
+        return array_unique( $keys );
+    }
+}
+
+if ( ! function_exists( 'qode_news_sanitize_ajax_param_value' ) ) {
+    /**
+     * Sanitizes a single AJAX param by key pattern rather than a hardcoded name list.
+     *
+     * @param string $key
+     * @param string $value
+     *
+     * @return mixed
+     */
+    function qode_news_sanitize_ajax_param_value( $key, $value ) {
+        $value = sanitize_text_field( $value );
+
+        if ( $key === 'layout' ) {
+            return qode_news_get_news_shortcode_by_layout( $value ) ? $value : '';
+        }
+
+        if ( substr( $key, -4 ) === '_tag' ) {
+            return qode_news_sanitize_title_tag( $value );
+        }
+
+        if ( $key === 'order' ) {
+            $value = strtoupper( $value );
+
+            return in_array( $value, array( 'ASC', 'DESC' ), true ) ? $value : '';
+        }
+
+        if ( $key === 'sort' ) {
+            $sort_allowed = array(
+                '',
+                'latest',
+                'random',
+                'random_today',
+                'random_seven_days',
+                'comments',
+                'title',
+                'popular',
+                'featured_first',
+                'trending_first',
+                'hot_first',
+                'reactions',
+            );
+
+            return in_array( $value, $sort_allowed, true ) ? $value : '';
+        }
+
+        if ( strpos( $key, 'display_' ) === 0 || strpos( $key, 'show_' ) === 0 || strpos( $key, 'enable_' ) === 0 || $key === 'only_videos' || $key === 'content_in_grid' ) {
+            return in_array( $value, array( 'yes', 'no' ), true ) ? $value : '';
+        }
+
+        if ( preg_match( '/(_page|_length|_width|_height|_amount|_number)$/', $key ) || in_array( $key, array( 'offset', 'year', 'monthnum', 'day', 'paged' ), true ) ) {
+            return intval( $value );
+        }
+
+        return $value;
+    }
+}
+
+if ( ! function_exists( 'qode_news_parse_ajax_shortcode_params' ) ) {
+    /**
+     * Builds shortcode params from the AJAX request, limited to keys the shortcode actually accepts.
+     *
+     * @param object $shortcode
+     *
+     * @return array
+     */
+    function qode_news_parse_ajax_shortcode_params( $shortcode ) {
+        $allowed_keys = qode_news_get_ajax_allowed_param_keys( $shortcode );
+        $params       = array();
+
+        if ( empty( $_POST ) || ! is_array( $_POST ) ) {
+            $params['post_status'] = 'publish';
+
+            return $params;
+        }
+
+        foreach ( $_POST as $key => $value ) {
+            if ( $key === '' || $key === 'action' || $key === 'nonce' || is_array( $value ) ) {
+                continue;
+            }
+
+            $normalized = strtolower( preg_replace( '/([A-Z])/', '_$1', $key ) );
+
+            if ( ! in_array( $normalized, $allowed_keys, true ) ) {
+                continue;
+            }
+
+            $params[ $normalized ] = qode_news_sanitize_ajax_param_value( $normalized, wp_unslash( $value ) );
+        }
+
+        $params['post_status'] = 'publish';
+
+        return $params;
+    }
+}
+
+if ( ! function_exists( 'qode_news_shortcodes_load_more' ) ) {
+    function qode_news_shortcodes_load_more() {
+        check_ajax_referer( 'qode_news_load_more_nonce', 'nonce' );
+
+        $this_object = qode_news_get_ajax_layout_from_request();
+
+        if ( ! $this_object instanceof \qodeNews\Lib\NewsShortcodes ) {
+            wp_send_json( array( 'html' => '' ) );
+        }
+
+        $params = qode_news_parse_ajax_shortcode_params( $this_object );
+
         $query_results = $this_object->generatePostsQuery( $params );
 
-        $params['this_object'] = $this_object;
+        $params['this_object']  = $this_object;
         $params['query_result'] = $query_results;
 
-        $html = '';
+        $html = $this_object->renderQuery( $params, null, true );
 
-        $html .= $this_object->renderQuery($params, null, true);
-
-        $return_obj = array(
-            'html' => $html,
+        wp_send_json(
+            array(
+                'html' => $html,
+            )
         );
-        
-        echo json_encode( $return_obj );
-        exit;
     }
-    
+
     add_action( 'wp_ajax_nopriv_qode_news_shortcodes_load_more', 'qode_news_shortcodes_load_more' );
     add_action( 'wp_ajax_qode_news_shortcodes_load_more', 'qode_news_shortcodes_load_more' );
 }
 
 if ( ! function_exists( 'qode_news_shortcodes_filter' ) ) {
     function qode_news_shortcodes_filter() {
-        $params = array();
-        
-        if ( ! empty( $_POST ) ) {
-            foreach ( $_POST as $key => $value ) {
-                if ( $key !== '' ) {
-                    $addUnderscoreBeforeCapitalLetter = preg_replace( '/([A-Z])/', '_$1', $key );
-                    $setAllLettersToLowercase         = strtolower( $addUnderscoreBeforeCapitalLetter );
-                    
-                    $params[ $setAllLettersToLowercase ] = $value;
-                }
-            }
+        check_ajax_referer( 'qode_news_load_more_nonce', 'nonce' );
+
+        $this_object = qode_news_get_ajax_layout_from_request();
+
+        if ( ! $this_object instanceof \qodeNews\Lib\NewsShortcodes ) {
+            wp_send_json(
+                array(
+                    'html'           => '',
+                    'newQueryParams' => array(),
+                )
+            );
         }
-        
-        $layout = str_replace('qode_', '', $params['layout']);
-        $layout = str_replace('_', ' ', $layout);
-        $layout = str_replace(' ','',ucwords($layout));
-        $layout_class = ucwords($layout);
 
-        $a = '\qodeNews\CPT\Shortcodes\\'.$layout_class.'\\'.$layout_class;
-        
-        $this_object = new $a;
+        $params = qode_news_parse_ajax_shortcode_params( $this_object );
 
-        if (isset($params['next_page'])){
-        	unset($params['next_page']); //to stay on the current page, whatever it is
+        if ( isset( $params['next_page'] ) ) {
+            unset( $params['next_page'] ); //to stay on the current page, whatever it is
         }
 
         $query_results = $this_object->generatePostsQuery( $params );
 
-        $params['this_object'] = $this_object;
+        $params['this_object']  = $this_object;
         $params['query_result'] = $query_results;
 
-        $html = '';
+        $html = $this_object->renderQuery( $params, null, true );
 
-        $html .= $this_object->renderQuery($params, null, true);
+        $query_params = qode_news_get_query( $params, false );
 
-        $query_params = qode_news_get_query($params, false);
-
-        $return_obj = array(
-            'html' => $html,
-            'newQueryParams' => $query_params
+        wp_send_json(
+            array(
+                'html'           => $html,
+                'newQueryParams' => $query_params,
+            )
         );
-        
-        echo json_encode( $return_obj );
-        exit;
     }
-    
+
     add_action( 'wp_ajax_nopriv_qode_news_shortcodes_filter', 'qode_news_shortcodes_filter' );
     add_action( 'wp_ajax_qode_news_shortcodes_filter', 'qode_news_shortcodes_filter' );
 }

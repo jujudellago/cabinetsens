@@ -46,7 +46,7 @@
     function qodeInitElementorInstructorSlider(){
         $j(window).on('elementor/frontend/init', function () {
             elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_instructor_slider.default', function() {
-                qodeOwlSlider();
+                qode.modules.owlSlider.qodeOwlSlider();
             } );
         });
     }

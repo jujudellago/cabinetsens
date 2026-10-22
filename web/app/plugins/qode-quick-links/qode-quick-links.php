@@ -3,7 +3,7 @@
 Plugin Name: Qode Quick Links
 Description: Plugin that adds quick links functionality to our theme
 Author: Qode Themes
-Version: 2.1
+Version: 2.1.1.2
 */
 
 include_once 'load.php';

@@ -10,9 +10,9 @@ add_filter('ls_get_thumbnail', 'ls_get_thumbnail', 10, 3);
 add_filter('ls_get_image', 'ls_get_image', 10, 2);
 
 // Public filters
-add_filter('ls_parse_defaults', 'ls_parse_defaults', 10, 2);
+add_filter('ls_parse_defaults', 'ls_parse_defaults', 10, 3);
 
-function ls_filter_slider_title($sliderName = '', $maxLength = 50) {
+function ls_filter_slider_title($sliderName = '', $maxLength = 70) {
 	$name = empty($sliderName) ? 'Unnamed' : htmlspecialchars(stripslashes($sliderName), ENT_COMPAT);
 	$name = str_replace('&amp;', '&', $name);
 	$return = isset($name[$maxLength]) ? substr($name, 0, $maxLength) . ' ...' : $name;
@@ -105,14 +105,13 @@ function ls_get_image($id = null, $url = null) {
 }
 
 
-function ls_parse_defaults($defaults = [], $raw = []) {
+function ls_parse_defaults( $defaults = [], $raw = [], $parseProperties = [] ) {
 
 
 	$activated 	= LS_Config::isActivatedSite();
 	$capability = get_option('layerslider_custom_capability', 'manage_options');
 	$permission = current_user_can( $capability );
 	$ret = [];
-
 
 	foreach($defaults as $key => $default) {
 
@@ -163,12 +162,12 @@ function ls_parse_defaults($defaults = [], $raw = []) {
 		} elseif(isset($raw[$phpKey])) {
 
 			if(
-				isset($default['props']['meta']) ||
+				isset( $default['props']['meta'] ) ||
 				(
 					(string)$default['value'] !== (string)$raw[$phpKey] &&
-					(string)$raw[$phpKey] !== '')
+					(string)$raw[$phpKey] !== ''
 				)
-			{
+			) {
 				$raw[$phpKey] = isset($default['props']['raw']) ? addslashes($raw[$phpKey]) : $raw[$phpKey];
 				$ret[$retKey][$jsKey] = stripslashes($raw[$phpKey]);
 			}
@@ -193,6 +192,13 @@ function ls_parse_defaults($defaults = [], $raw = []) {
 		if( ! $activated && $isPremium && ( isset($ret[$retKey][$jsKey]) || ! empty( $premiumStyle ) ) ) {
 			$feature = ! empty( $default['name'] ) ? $default['name'] : $jsKey;
 			$GLOBALS['lsPremiumNotice'][ sanitize_title($feature) ] = $feature;
+		}
+
+
+		if( isset( $parseProperties['esc_js'] ) ) {
+			if( isset( $ret[$retKey][$jsKey] ) && is_string( $ret[$retKey][$jsKey] ) ) {
+				$ret[$retKey][$jsKey] = esc_js( $ret[$retKey][$jsKey] );
+			}
 		}
 
 	}

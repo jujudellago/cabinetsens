@@ -11,6 +11,21 @@ if ( ! function_exists( 'qode_lms_get_module_template_part' ) ) {
 	 * @return html
 	 */
 	function qode_lms_get_module_template_part( $template, $slug = '', $params = array() ) {
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
+		}
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
 		//HTML Content from template
 		$html          = '';
 		$template_path = QODE_LMS_ABS_PATH;
@@ -57,6 +72,27 @@ if ( ! function_exists( 'qode_lms_get_cpt_shortcode_module_template_part' ) ) {
 	 * @return html
 	 */
 	function qode_lms_get_cpt_shortcode_module_template_part( $shortcode, $template, $slug = '', $params = array(), $additional_params = array() ) {
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $shortcode ) ) {
+			$shortcode = preg_replace( $available_characters, '', $shortcode );
+		} else {
+			$shortcode = '';
+		}
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
+		}
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
 		//HTML Content from template
 		$html          = '';
 		$template_path = QODE_LMS_CPT_PATH . '/' . $shortcode . '/shortcodes/templates';
@@ -106,6 +142,27 @@ if ( ! function_exists( 'qode_lms_cpt_single_module_template_part' ) ) {
 	 * @return html
 	 */
 	function qode_lms_cpt_single_module_template_part( $template, $cpt_name, $slug = '', $params = array() ) {
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
+		}
+		
+		if ( is_scalar( $cpt_name ) ) {
+			$cpt_name = preg_replace( $available_characters, '', $cpt_name );
+		} else {
+			$cpt_name = '';
+		}
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
 		//HTML Content from template
 		$html          = '';
 		$template_path = QODE_LMS_CPT_PATH . '/' . $cpt_name;
@@ -152,6 +209,27 @@ if ( ! function_exists( 'qode_lms_get_cpt_single_module_template_part' ) ) {
 	 * @return html
 	 */
 	function qode_lms_get_cpt_single_module_template_part( $template, $cpt_name, $slug = '', $params = array() ) {
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
+		}
+		
+		if ( is_scalar( $cpt_name ) ) {
+			$cpt_name = preg_replace( $available_characters, '', $cpt_name );
+		} else {
+			$cpt_name = '';
+		}
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
 		//HTML Content from template
 		$html          = '';
 		$template_path = QODE_LMS_CPT_PATH . '/' . $cpt_name;
@@ -198,6 +276,27 @@ if ( ! function_exists( 'qode_lms_get_shortcode_module_template_part' ) ) {
 	 * @return html
 	 */
 	function qode_lms_get_shortcode_module_template_part( $template, $shortcode, $slug = '', $params = array() ) {
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
+		}
+		
+		if ( is_scalar( $shortcode ) ) {
+			$shortcode = preg_replace( $available_characters, '', $shortcode );
+		} else {
+			$shortcode = '';
+		}
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
 		//HTML Content from template
 		$html          = '';
 		$template_path = QODE_LMS_SHORTCODES_PATH . '/' . $shortcode;
@@ -267,6 +366,13 @@ if ( ! function_exists( 'qode_lms_qode_woocommerce_integration_installed' ) ) {
 	}
 }
 
+if ( ! function_exists( 'qode_lms_qode_membership_installed' ) ) {
+	//is Qode Woocommerce Integration?
+	function qode_lms_qode_membership_installed() {
+		return defined( 'QODE_MEMBERSHIP_VERSION' );
+	}
+}
+
 if ( ! function_exists( 'qode_lms_update_order_status' ) ) {
 	function qode_lms_update_order_status( $order_id, $old_status, $new_status ) {
 		$items_list         = apply_filters( 'woocommerce_purchase_order_item_types', 'line_item' );
@@ -309,4 +415,45 @@ if ( ! function_exists( 'qode_lms_update_order_status' ) ) {
 	}
 	
 	add_action( 'woocommerce_order_status_changed', 'qode_lms_update_order_status', 10, 3 );
+}
+
+if( ! function_exists( 'qode_lms_render_login_form' ) ) {
+	function qode_lms_render_login_form() {
+		if( qode_lms_qode_membership_installed() && ! is_user_logged_in() && is_singular( 'course' ) ) {
+			echo qode_membership_get_widget_template_part( 'login-widget', 'login-modal-template' );
+			
+			add_filter( 'qode_membership_filter_is_login_form_rendered', function() {
+				return true;
+			} );
+		}
+	}
+	
+	add_action( 'wp_footer', 'qode_lms_render_login_form' );
+}
+
+if ( ! function_exists( 'qode_lms_get_allowed_title_tags' ) ) {
+	/**
+	 * HTML tags allowed in title-tag position.
+	 *
+	 * @return string[]
+	 */
+	function qode_lms_get_allowed_title_tags() {
+		return array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'div' );
+	}
+}
+
+if ( ! function_exists( 'qode_lms_sanitize_title_tag' ) ) {
+	/**
+	 * Constrains a title tag name to an allow-list. esc_attr() is not safe in tag-name position.
+	 *
+	 * @param mixed  $title_tag
+	 * @param string $default
+	 *
+	 * @return string
+	 */
+	function qode_lms_sanitize_title_tag( $title_tag, $default = 'h4' ) {
+		$title_tag = is_string( $title_tag ) ? strtolower( trim( $title_tag ) ) : '';
+
+		return in_array( $title_tag, qode_lms_get_allowed_title_tags(), true ) ? $title_tag : $default;
+	}
 }

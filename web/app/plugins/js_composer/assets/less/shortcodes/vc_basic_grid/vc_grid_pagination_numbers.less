@@ -129,6 +129,20 @@
     .vc_grid_pagination_number_color_variants(~'purple', @purple, @white);
     .vc_grid_pagination_number_color_variants(~'white', @white, @black);
 
+    // Custom color from the `paging_color` colorpicker (`--vc-grid-paging-color`).
+    &.vc_grid-pagination-color-custom {
+      > li {
+        border-color: var(--vc-grid-paging-color);
+        > a,
+        > span {
+          background-color: var(--vc-grid-paging-color);
+          border-color: var(--vc-grid-paging-color);
+          // Dark bg -> white (var set); light bg -> var unset -> inherit theme.
+          color: var(--vc-grid-paging-color-contrast);
+        }
+      }
+    }
+
     &.vc_grid-pagination_default, &.vc_grid-pagination_default_dark, &.vc_grid-pagination_default_light {
       > li {
         > a, > span {

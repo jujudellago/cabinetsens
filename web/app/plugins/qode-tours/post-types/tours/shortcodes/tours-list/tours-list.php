@@ -152,6 +152,25 @@ class ToursList implements ShortcodeInterface {
 		));
 	}
 
+	public function getDefaultParams() {
+		$args = array(
+			'tour_type'               => 'standard',
+			'tour_item'               => '3',
+			'image_size'              => 'full',
+			'custom_image_dimensions' => '',
+			'space_between_items'     => 'normal',
+			'title_tag'               => 'h4',
+			'text_length'             => '90',
+			'filter'                  => 'no',
+			'enable_load_more'        => '',
+			'load_more_text'          => '',
+			'hover_color'             => '',
+			'enable_shadow'           => 'no'
+		);
+
+		return array_merge( $args, qode_tours_query()->getShortcodeAtts() );
+	}
+
 	/**
 	 * Renders shortcodes HTML
 	 *
@@ -161,22 +180,7 @@ class ToursList implements ShortcodeInterface {
 	 * @return string
 	 */
 	public function render($atts, $content = null) {
-		$args = array(
-			'tour_type'                     => 'standard',
-			'tour_item'                     => '3',
-			'image_size'                    => 'full',
-			'custom_image_dimensions'       => '',
-			'space_between_items'			=> 'normal',
-			'title_tag'	                    => 'h4',
-			'text_length'                   => '90',
-			'filter'                        => 'no',
-			'enable_load_more'              => '',
-			'load_more_text'                => '',
-			'hover_color'					=> '',
-			'enable_shadow'					=> 'no'
-		);
-
-		$args   = array_merge($args, qode_tours_query()->getShortcodeAtts());
+		$args = $this->getDefaultParams();
 		$params = shortcode_atts($args, $atts);
 		
 		$meta_params = $this->getMetaQueryParams($params);
@@ -220,51 +224,121 @@ class ToursList implements ShortcodeInterface {
 
 
 	public function handleLoadMore() {
+		check_ajax_referer( 'qode_tours_list_load_more_nonce', 'nonce' );
+
 		$fields = $this->parseRequest();
 
-		$returnObject = new \stdClass();
-		
-		$meta_params = $this->getMetaQueryParams($fields);
-		$query  = qode_tours_query()->buildQueryObject($fields,$meta_params);
+		if ( $fields === false ) {
+			wp_send_json(
+				array(
+					'havePosts' => false,
+					'message'   => esc_html__( 'No more tours.', 'qode-tours' ),
+				)
+			);
+		}
 
-		if($query->have_posts()) {
+		$returnObject = new \stdClass();
+
+		$meta_params = $this->getMetaQueryParams( $fields );
+		$query       = qode_tours_query()->buildQueryObject( $fields, $meta_params );
+
+		if ( $query->have_posts() ) {
 			ob_start();
 
-			$this->getToursQueryTemplate(array(
+			$this->getToursQueryTemplate( array(
 				'query'     => $query,
 				'tour_type' => $fields['tour_type'],
 				'caller'    => $this,
 				'params'    => $fields
-			));
+			) );
 
 			$returnObject->html      = ob_get_clean();
 			$returnObject->havePosts = true;
-			$returnObject->message   = esc_html__('Success','qode-tours');
+			$returnObject->message   = esc_html__( 'Success', 'qode-tours' );
 			$returnObject->nextPage  = $fields['next_page'] + 1;
 		} else {
 			$returnObject->havePosts = false;
-			$returnObject->message   = esc_html__('No more tours.', 'qode-tours');
+			$returnObject->message   = esc_html__( 'No more tours.', 'qode-tours' );
 		}
 
-		echo json_encode($returnObject);
-		exit;
+		wp_send_json( $returnObject );
 	}
 
 	private function parseRequest() {
-		if(empty($_POST['fields'])) {
+		if ( empty( $_POST['fields'] ) || ! is_string( $_POST['fields'] ) ) {
 			return false;
 		}
 
-		parse_str($_POST['fields'], $fields);
+		parse_str( wp_unslash( $_POST['fields'] ), $fields );
 
-		if(!(is_array($fields) && count($fields))) {
+		if ( ! ( is_array( $fields ) && count( $fields ) ) ) {
 			return false;
 		}
 
-		return $fields;
+		return $this->sanitizeAjaxFields( $fields );
+	}
+
+	private function sanitizeAjaxFields( $fields ) {
+		$defaults     = $this->getDefaultParams();
+		$allowed_keys = array_unique( array_merge( array_keys( $defaults ), array( 'next_page', 'thumb_size' ) ) );
+		$params       = $defaults;
+		$params['next_page'] = 1;
+
+		foreach ( $fields as $key => $value ) {
+			if ( $key === 'nonce' || is_array( $value ) || ! in_array( $key, $allowed_keys, true ) ) {
+				continue;
+			}
+
+			$params[ $key ] = $this->sanitizeAjaxField( $key, $value );
+		}
+
+		return $params;
+	}
+
+	private function sanitizeAjaxField( $key, $value ) {
+		$value = sanitize_text_field( $value );
+
+		if ( substr( $key, -4 ) === '_tag' ) {
+			return qode_tours_sanitize_title_tag( $value );
+		}
+
+		if ( $key === 'tour_type' ) {
+			return in_array( $value, array( 'standard', 'gallery', 'masonry' ), true ) ? $value : 'standard';
+		}
+
+		if ( $key === 'order' ) {
+			$value = strtoupper( $value );
+
+			return in_array( $value, array( 'ASC', 'DESC' ), true ) ? $value : 'ASC';
+		}
+
+		if ( $key === 'order_by' ) {
+			return in_array( $value, array( 'title', 'date', 'menu_order' ), true ) ? $value : 'date';
+		}
+
+		if ( $key === 'image_size' ) {
+			return in_array( $value, array( 'full', 'square', 'landscape', 'portrait', 'custom' ), true ) ? $value : 'full';
+		}
+
+		if ( $key === 'tour_item' ) {
+			$tour_item = intval( $value );
+
+			return ( $tour_item >= 1 && $tour_item <= 6 ) ? (string) $tour_item : '3';
+		}
+
+		if ( strpos( $key, 'enable_' ) === 0 || $key === 'filter' ) {
+			return in_array( $value, array( 'yes', 'no' ), true ) ? $value : '';
+		}
+
+		if ( in_array( $key, array( 'number', 'next_page', 'text_length', 'paged' ), true ) ) {
+			return intval( $value );
+		}
+
+		return $value;
 	}
 
 	public function getItemTemplate($tour_type = 'standard', $params = array()) {
+		$tour_type = in_array( $tour_type, array( 'standard', 'gallery', 'masonry' ), true ) ? $tour_type : 'standard';
 	    $slug = $tour_type == 'masonry' ? get_post_meta(get_the_ID(), 'qode_tours_masonry_layout', true) : "";
 		echo qode_tours_get_tour_module_template_part('templates/tour-item/'.$tour_type, 'tours', '', $slug, $params);
 	}

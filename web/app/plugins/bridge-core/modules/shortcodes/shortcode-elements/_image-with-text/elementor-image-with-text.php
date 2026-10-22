@@ -76,6 +76,40 @@ class BridgeCoreElementorImageWithText extends \Elementor\Widget_Base{
                 'default' => "<p>".esc_html__( 'I am test text for Image with text shortcode.', 'bridge-core' )."</p>"
             ]
         );
+	    
+	    $this->add_control(
+		    'link',
+		    [
+			    'label' => esc_html__( "Link", 'bridge-core' ),
+			    'type' => \Elementor\Controls_Manager::TEXT
+		    ]
+	    );
+	    
+	    $this->add_control(
+		    'link_target',
+		    [
+			    'label' => esc_html__( "Link Target", 'bridge-core' ),
+			    'type' => \Elementor\Controls_Manager::SELECT,
+			    'options' => [
+				    '_self' => esc_html__( 'Self', 'bridge-core' ),
+				    '_blank' => esc_html__( 'Blank', 'bridge-core' ),
+			    ],
+			    'default' => '_self'
+		    ]
+	    );
+		
+		$this->add_control(
+		    'link_position',
+		    [
+			    'label' => esc_html__( "Link Position", 'bridge-core' ),
+			    'type' => \Elementor\Controls_Manager::SELECT,
+			    'options' => [
+				    'overlay' => esc_html__( 'Overlay', 'bridge-core' ),
+				    'image_title' => esc_html__( 'Blank', 'bridge-core' ),
+			    ],
+			    'default' => 'overlay'
+		    ]
+	    );
 
         $this->end_controls_section();
     }

@@ -31,10 +31,10 @@
   .projects_holder.v6.hover_text.no_space .filler {
     width: 19.99%;
   }
-  .safari_browser .projects_holder.v6.standard_no_space .mix,
-  .safari_browser .projects_holder.v6.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v6.standard_no_space .filler,
-  .safari_browser .projects_holder.v6.hover_text.no_space .filler {
+  .qode-safari .projects_holder.v6.standard_no_space .mix,
+  .qode-safari .projects_holder.v6.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v6.standard_no_space .filler,
+  .qode-safari .projects_holder.v6.hover_text.no_space .filler {
     width: 19.93%;
   }
   .touchevents footer.uncover {
@@ -71,6 +71,7 @@
   .qode_grid_1400 .footer_bottom_border.in_grid,
   .qode_grid_1400 .title_border_in_grid_holder,
   .qode_grid_1400 .qode_elementor_container_inner,
+  .qode_grid_1400 div[data-element_type=container].qode_elementor_container_inner,
   .qode_grid_1400 .elementor-container .elementor-widget-wrap > .qode_elementor_container_inner,
   .qode_grid_1400 .elementor-row .elementor-widget-wrap > .qode_elementor_container_inner {
     width: 1100px;
@@ -90,6 +91,7 @@
   .qode_grid_1300 .footer_bottom_border.in_grid,
   .qode_grid_1300 .title_border_in_grid_holder,
   .qode_grid_1300 .qode_elementor_container_inner,
+  .qode_grid_1300 div[data-element_type=container].qode_elementor_container_inner,
   .qode_grid_1300 .elementor-container .elementor-widget-wrap > .qode_elementor_container_inner,
   .qode_grid_1300 .elementor-row .elementor-widget-wrap > .qode_elementor_container_inner {
     width: 1100px;
@@ -109,6 +111,7 @@
   .qode_grid_1200 .footer_bottom_border.in_grid,
   .qode_grid_1200 .title_border_in_grid_holder,
   .qode_grid_1200 .qode_elementor_container_inner,
+  .qode_grid_1200 div[data-element_type=container].qode_elementor_container_inner,
   .qode_grid_1200 .elementor-container .elementor-widget-wrap > .qode_elementor_container_inner,
   .qode_grid_1200 .elementor-row .elementor-widget-wrap > .qode_elementor_container_inner {
     width: 1100px;
@@ -139,6 +142,7 @@
   nav.content_menu ul,
   .container_inner nav.content_menu,
   .qode_elementor_container_inner,
+  div[data-element_type=container].qode_elementor_container_inner,
   .elementor-container .elementor-widget-wrap > .qode_elementor_container_inner,
   .elementor-row .elementor-widget-wrap > .qode_elementor_container_inner {
     width: 950px;
@@ -218,6 +222,7 @@
   .paspartu_enabled.vertical_menu_enabled .container_inner,
   .paspartu_enabled div.grid_section .section_inner,
   .qode_elementor_container_inner,
+  div[data-element_type=container].qode_elementor_container_inner,
   .elementor-container .elementor-widget-wrap > .qode_elementor_container_inner,
   .elementor-row .elementor-widget-wrap > .qode_elementor_container_inner {
     width: 768px;
@@ -325,18 +330,18 @@
   .projects_holder.v4.hover_text.no_space .filler {
     width: 24.99%;
   }
-  .safari_browser .projects_holder.v6.standard_no_space .mix,
-  .safari_browser .projects_holder.v6.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v6.standard_no_space .filler,
-  .safari_browser .projects_holder.v6.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v5.standard_no_space .mix,
-  .safari_browser .projects_holder.v5.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v5.standard_no_space .filler,
-  .safari_browser .projects_holder.v5.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v4.standard_no_space .mix,
-  .safari_browser .projects_holder.v4.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v4.standard_no_space .filler,
-  .safari_browser .projects_holder.v4.hover_text.no_space .filler {
+  .qode-safari .projects_holder.v6.standard_no_space .mix,
+  .qode-safari .projects_holder.v6.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v6.standard_no_space .filler,
+  .qode-safari .projects_holder.v6.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v5.standard_no_space .mix,
+  .qode-safari .projects_holder.v5.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v5.standard_no_space .filler,
+  .qode-safari .projects_holder.v5.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v4.standard_no_space .mix,
+  .qode-safari .projects_holder.v4.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v4.standard_no_space .filler,
+  .qode-safari .projects_holder.v4.hover_text.no_space .filler {
     width: 24.95%;
   }
   .projects_holder.v6.standard_no_space .mix,
@@ -551,18 +556,18 @@
   .projects_holder.v4.hover_text.no_space .filler {
     width: 33.32%;
   }
-  .safari_browser .projects_holder.v6.standard_no_space .mix,
-  .safari_browser .projects_holder.v6.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v6.standard_no_space .filler,
-  .safari_browser .projects_holder.v6.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v5.standard_no_space .mix,
-  .safari_browser .projects_holder.v5.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v5.standard_no_space .filler,
-  .safari_browser .projects_holder.v5.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v4.standard_no_space .mix,
-  .safari_browser .projects_holder.v4.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v4.standard_no_space .filler,
-  .safari_browser .projects_holder.v4.hover_text.no_space .filler {
+  .qode-safari .projects_holder.v6.standard_no_space .mix,
+  .qode-safari .projects_holder.v6.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v6.standard_no_space .filler,
+  .qode-safari .projects_holder.v6.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v5.standard_no_space .mix,
+  .qode-safari .projects_holder.v5.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v5.standard_no_space .filler,
+  .qode-safari .projects_holder.v5.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v4.standard_no_space .mix,
+  .qode-safari .projects_holder.v4.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v4.standard_no_space .filler,
+  .qode-safari .projects_holder.v4.hover_text.no_space .filler {
     width: 33.3%;
   }
   .q_percentage {
@@ -614,6 +619,7 @@
   nav.content_menu,
   .paspartu_enabled div.grid_section .section_inner,
   .qode_elementor_container_inner,
+  div[data-element_type=container].qode_elementor_container_inner,
   .elementor-container .elementor-widget-wrap > .qode_elementor_container_inner,
   .elementor-row .elementor-widget-wrap > .qode_elementor_container_inner {
     width: 600px;
@@ -675,26 +681,26 @@
   .projects_holder.v2.hover_text.no_space .filler {
     width: 49.99%;
   }
-  .safari_browser .projects_holder.v6.standard_no_space .mix,
-  .safari_browser .projects_holder.v6.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v6.standard_no_space .filler,
-  .safari_browser .projects_holder.v6.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v5.standard_no_space .mix,
-  .safari_browser .projects_holder.v5.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v5.standard_no_space .filler,
-  .safari_browser .projects_holder.v5.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v4.standard_no_space .mix,
-  .safari_browser .projects_holder.v4.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v4.standard_no_space .filler,
-  .safari_browser .projects_holder.v4.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v3.standard_no_space .mix,
-  .safari_browser .projects_holder.v3.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v3.standard_no_space .filler,
-  .safari_browser .projects_holder.v3.hover_text.no_space .filler,
-  .safari_browser .projects_holder.v2.standard_no_space .mix,
-  .safari_browser .projects_holder.v2.hover_text.no_space .mix,
-  .safari_browser .projects_holder.v2.standard_no_space .filler,
-  .safari_browser .projects_holder.v2.hover_text.no_space .filler {
+  .qode-safari .projects_holder.v6.standard_no_space .mix,
+  .qode-safari .projects_holder.v6.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v6.standard_no_space .filler,
+  .qode-safari .projects_holder.v6.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v5.standard_no_space .mix,
+  .qode-safari .projects_holder.v5.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v5.standard_no_space .filler,
+  .qode-safari .projects_holder.v5.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v4.standard_no_space .mix,
+  .qode-safari .projects_holder.v4.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v4.standard_no_space .filler,
+  .qode-safari .projects_holder.v4.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v3.standard_no_space .mix,
+  .qode-safari .projects_holder.v3.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v3.standard_no_space .filler,
+  .qode-safari .projects_holder.v3.hover_text.no_space .filler,
+  .qode-safari .projects_holder.v2.standard_no_space .mix,
+  .qode-safari .projects_holder.v2.hover_text.no_space .mix,
+  .qode-safari .projects_holder.v2.standard_no_space .filler,
+  .qode-safari .projects_holder.v2.hover_text.no_space .filler {
     width: 49.97%;
   }
   .projects_holder.v6.standard_no_space .mix,
@@ -711,7 +717,9 @@
   .q_masonry_blog article,
   .full_width .grid_section .q_masonry_blog article,
   .full_width .qode_elementor_container_inner .q_masonry_blog article,
-  .full_width .qode_elementor_container_inner .q_masonry_blog_grid_sizer {
+  .full_width div[data-element_type=container].qode_elementor_container_inner .q_masonry_blog article,
+  .full_width .qode_elementor_container_inner .q_masonry_blog_grid_sizer,
+  .full_width div[data-element_type=container].qode_elementor_container_inner .q_masonry_blog_grid_sizer {
     width: 46.5%;
   }
   .blog_holder.masonry .blog_holder_grid_gutter,

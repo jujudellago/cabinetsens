@@ -10,6 +10,8 @@
 @import "lib/elements_icons.less";
 // Add element box
 @import "popups/modal_add_element.less";
+// Element teasers
+@import "popups/modal_teasers.less";
 // Edit form for shortcode
 @import "popups/panel_edit_form.less";
 // Template library
@@ -35,10 +37,11 @@
 @import "shortcodes/vc_cta3_editform.less";
 // Used in deprecated logic in edit form and add element windows
 @import "shortcodes/vc_message_box/vc_message_box_front.less";
-@import "backend_shortcodes/vc_charts.less";
-// Used to arrange our custom post layout logic
-@import "modules/vc_post_custom_layout.less";
 // edit form for vc_line_chart
+@import "modules/vc_info_tooltip.less";
+// drag and drop helper and smart line
+@import "modules/vc_helper.less";
+@import "modules/vc_smart_line.less";
 
 .vc_editor {
   // Fix admin page
@@ -70,13 +73,19 @@
     position: absolute;
     width: 100%;
   }
+  #vc_inline-frame-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    pointer-events: none;
+  }
   #vc_inline-frame {
     margin: 0 auto;
     display: block;
-    position: initial !important;
-  }
-  .custom_code {
-    border: 1px solid #BABABA;
+    position: relative !important;
+    z-index: 9;
   }
 }
 
@@ -86,15 +95,20 @@
 @import "vendor/layerslider.less";
 @import "vendor/rev_slider.less";
 @import "vendor/jwplayer.less";
-
-.vc_shortcode-param[data-param_type="iconpicker"] {
-  .vc-icons-selector .selected-icon {
-    line-height: 40px;
-    i.vc_pixel_icon {
-      position: relative;
-      top: 3px;
-    }
-  }
-}
+@import "vendor/woocommerce_product_editor.less";
 
 @import "lib/vc_pointer.less";
+
+.vc-is-no-selection {
+  user-select: none;
+}
+
+#adminmenumain {
+  visibility: hidden;
+}
+
+@media (max-width: 782px) {
+  #wpcontent {
+    padding-top: 0;
+  }
+}

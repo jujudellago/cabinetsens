@@ -56,6 +56,10 @@ if (!function_exists('qodef_re_get_real_estate_item_map')) {
      * @return string
      */
     function qodef_re_get_real_estate_property_map($id) {
+        if ( ! qodef_re_is_google_maps_available() ) {
+            return '';
+        }
+
         $id = isset($id) && !empty($id) ? $id : get_the_ID();
 
         qodef_re_set_single_property_map_variables($id);
@@ -118,6 +122,9 @@ if (!function_exists('qodef_re_get_real_estate_multiple_map')) {
      * @return string
      */
     function qodef_re_get_real_estate_multiple_map($query = '') {
+        if ( ! qodef_re_is_google_maps_available() ) {
+            return '';
+        }
 
         qodef_re_set_multiple_property_map_variables($query);
 
@@ -200,6 +207,23 @@ if (!function_exists('qodef_re_marker_template')) {
 /* MAP ITEMS FUNCTIONS - END */
 
 /* HELPER FUNCTIONS - START */
+if ( ! function_exists( 'qodef_re_is_google_maps_available' ) ) {
+	/**
+	 * Whether Google Maps can be used on the frontend.
+	 *
+	 * @return bool
+	 */
+	function qodef_re_is_google_maps_available() {
+		if ( ! function_exists( 'bridge_qode_options' ) ) {
+			return false;
+		}
+
+		$google_maps_api_key = bridge_qode_options()->getOptionValue( 'google_maps_api_key' );
+
+		return ! empty( $google_maps_api_key );
+	}
+}
+
 if (!function_exists('qodef_re_generate_real_estate_map_params')) {
     function qodef_re_generate_real_estate_map_params($re_item_id) {
 

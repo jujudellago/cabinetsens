@@ -2,6 +2,7 @@
     <?php
     $title = get_the_title();
     $portfolio_link = bridge_core_generate_portfolio_link();
+    $target = bridge_core_generate_portfolio_link_target();
     ?>
 
     <?php echo bridge_core_get_shortcode_template_part( 'templates/parts/badge', '_portfolio-list', $type, $params ); ?>

@@ -12,22 +12,22 @@ if (!function_exists('qode_quick_links_title_typography_styles') && qode_quick_l
 		$styles = array();
 
 		$color = bridge_qode_options()->getOptionValue('quick_links_title_color');
-		if($color !== '') {
+		if(is_string($color) && $color !== '') {
 			$styles['color'] = $color;
 		}
 
 		$font_size = bridge_qode_options()->getOptionValue('quick_links_title_font_size');
-		if($font_size !== '') {
+		if(is_string($font_size) && $font_size !== '') {
 			$styles['font-size'] = bridge_qode_filter_px($font_size).'px';
 		}
 
 		$line_height = bridge_qode_options()->getOptionValue('quick_links_title_line_height');
-		if($line_height !== '') {
+		if(is_string($line_height) && $line_height !== '') {
 			$styles['line-height'] = bridge_qode_filter_px($line_height).'px';
 		}
 
 		$font_family = bridge_qode_options()->getOptionValue('quick_links_title_font_family');
-		if(bridge_qode_is_font_option_valid($font_family)) {
+		if(is_string($font_family) && bridge_qode_is_font_option_valid($font_family)) {
 			$styles['font-family'] = bridge_qode_get_font_option_val($font_family);
 		}
 
@@ -42,7 +42,7 @@ if (!function_exists('qode_quick_links_title_typography_styles') && qode_quick_l
 		}
 
 		$letter_spacing = bridge_qode_options()->getOptionValue('quick_links_title_letter_spacing');
-		if($letter_spacing !== '') {
+		if(is_string($letter_spacing) && $letter_spacing !== '') {
 			$styles['letter-spacing'] = bridge_qode_filter_px($letter_spacing).'px';
 		}
 
@@ -69,22 +69,22 @@ if (!function_exists('qode_quick_links_text_typography_styles') && qode_quick_li
 		$styles = array();
 
 		$color = bridge_qode_options()->getOptionValue('quick_links_text_color');
-		if($color !== '') {
+		if(is_string($color) && $color !== '') {
 			$styles['color'] = $color;
 		}
 
 		$font_size = bridge_qode_options()->getOptionValue('quick_links_text_font_size');
-		if($font_size !== '') {
+		if(is_string($font_size) && $font_size !== '') {
 			$styles['font-size'] = bridge_qode_filter_px($font_size).'px';
 		}
 
 		$line_height = bridge_qode_options()->getOptionValue('quick_links_text_line_height');
-		if($line_height !== '') {
+		if(is_string($line_height) && $line_height !== '') {
 			$styles['line-height'] = bridge_qode_filter_px($line_height).'px';
 		}
 
 		$font_family = bridge_qode_options()->getOptionValue('quick_links_text_font_family');
-		if(bridge_qode_is_font_option_valid($font_family)) {
+		if(is_string($font_family) && bridge_qode_is_font_option_valid($font_family)) {
 			$styles['font-family'] = bridge_qode_get_font_option_val($font_family);
 		}
 
@@ -99,7 +99,7 @@ if (!function_exists('qode_quick_links_text_typography_styles') && qode_quick_li
 		}
 
 		$letter_spacing = bridge_qode_options()->getOptionValue('quick_links_text_letter_spacing');
-		if($letter_spacing !== '') {
+		if(is_string($letter_spacing) && $letter_spacing !== '') {
 			$styles['letter-spacing'] = bridge_qode_filter_px($letter_spacing).'px';
 		}
 

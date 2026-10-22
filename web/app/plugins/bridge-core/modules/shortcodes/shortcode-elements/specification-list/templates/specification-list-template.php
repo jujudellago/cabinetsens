@@ -5,21 +5,27 @@
 		</div>
 	<?php endif; ?>
 	<div class="qode-specification-list-text-holder">
-		<<?php echo esc_attr($title_tag); ?> class="qode-specification-list-title">
+		<<?php echo bridge_qode_get_escape_title_tag($title_tag); ?> class="qode-specification-list-title">
 			<?php echo esc_attr($title); ?>
-		</<?php echo esc_attr($title_tag); ?>>
-		<div class="qode-specification-list-items">
-			<?php foreach($list_items as $list_items):?>
-				<div class="qode-specification-list-item">
-					<span class="qode-specification-list-item-label">
-						<?php echo esc_attr($list_items['label']); ?>
-					</span>
-					<span class="qode-specification-list-item-value">
-						<?php echo esc_attr($list_items['value']); ?>
-					</span>
-				</div>
-			<?php endforeach; ?>
-		</div>
+		</<?php echo bridge_qode_get_escape_title_tag($title_tag); ?>>
+		<?php if ( ! empty( $list_items ) && count( $list_items ) > 0 ) : ?>
+			<div class="qode-specification-list-items">
+				<?php foreach ( $list_items as $list_item ): ?>
+					<div class="qode-specification-list-item">
+						<?php if ( ! empty( $list_item['label'] ) ) : ?>
+							<span class="qode-specification-list-item-label">
+								<?php echo esc_attr($list_item['label']); ?>
+							</span>
+						<?php endif; ?>
+						<?php if ( ! empty( $list_item['value'] ) ) : ?>
+							<span class="qode-specification-list-item-value">
+								<?php echo esc_attr($list_item['value']); ?>
+							</span>
+						<?php endif; ?>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
 	</div>
 	<?php if($enable_button): ?>
 		<div class="qode-specification-list-holder">

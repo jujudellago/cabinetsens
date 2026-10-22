@@ -54,6 +54,11 @@
   color: #888888;
   font-size: 14px;
 
+  &:focus:not(:focus-visible) {
+    color: #888888;
+    box-shadow: none;
+  }
+
   &.column_add, .vc-controls-add {
     .vc_icon {
       background-position: -16px -16px;
@@ -82,7 +87,6 @@
   // Row drag handler
   &.column_move, .vc-controls-move {
     cursor: move;
-    float: left;
   }
   &:hover {
     color: #888888;
@@ -93,34 +97,51 @@
 }
 
 .vc_controls-row {
-  text-align: center;
-  line-height: 1px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;  line-height: 1px;
   position: relative;
   z-index: 1;
   visibility: visible; // TODO: set as default
   .opacity(1); // TODO: set as default
   height: auto; // TODO: set as default
+  width: 100%;
   &:hover {
     z-index: 10;
+  }
+  > div {
+    position: relative;
+    display: flex;
+    margin-right: auto;
+  }
+  .vc_row_edit_clone_delete {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-left: auto;
   }
   .vc_control {
     background-color: @vc_row_control_bg;
     padding: 3px 10px;
   }
   .column_add, .vc_control-add-column {
-    float: left;
     margin-left: 1px;
   }
   .column_move {
     padding: 6px 10px 5px;
     font-size: 13px;
   }
-  .column_edit {
+  .column_edit, .vc_column-copy, .vc_column-clone, .vc_column-paste {
     padding: 5px 12px;
   }
 
-  .vc-c-icon-add,
-  .vc-c-icon-delete_empty,
+  .vc_control.column_add.vc_column-add {
+    .vc-c-add-circle {
+      height: 20px;
+    }
+  }
+
+  .vc-c-add-circle,
+  .vc-c-trash,
   .vc-c-icon-content_copy {
     position: relative;
     font-size: 14px;
@@ -136,7 +157,7 @@
     }
   }
 
-  .vc-c-icon-delete_empty {
+  .vc-c-trash {
     font-size: 12px;
   }
 
@@ -156,8 +177,7 @@
     display: block;
     height: 16px;
     overflow: hidden;
-    float: left;
-    padding: 3px 0 5px 4px;
+    padding: 3px 0 7px 4px;
     text-align: left;
     margin-left: 1px;
     background: #e6e6e6;
@@ -166,7 +186,8 @@
     .vc_active {
       display: inline-block;
     }
-    &:hover {
+    &:hover,
+    &.vc_active {
       width: auto;
       height: auto;
       position: absolute;
@@ -182,9 +203,6 @@
     }
   }
   .vc_control-set-column {
-    //background-image: url(../vc/row_layouts/1.gif);
-    //background-position: center center;
-    //background-repeat: no-repeat;
     display: none;
     border: none;
     width: 32px;
@@ -265,7 +283,6 @@
   // Right controls (delete, clone, edit)
   .vc_row_edit_clone_delete {
     .vc_control {
-      float: right;
       background-position: center center;
       background-repeat: no-repeat;
       margin-left: 1px;
@@ -273,10 +290,72 @@
       -moz-box-shadow: none !important;
       box-shadow: none !important;
     }
+    .column_toggle {
+      margin: 0;
+    }
+    // Border radius on the rightmost button (first-child due to row-reverse)
+    > :first-child {
+      .border-right-radius(@vc_border_radius);
+    }
+  }
+
+  // Copy/Paste select dropdown
+  .vc_copypaste-select {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    border: 0 !important;
+
+    + .select2-container {
+      vertical-align: middle;
+      width: auto !important;
+      margin-left: 1px;
+
+      .select2-selection {
+        background-color: @vc_row_control_bg;
+        border: none;
+        border-radius: 0;
+        height: auto;
+        padding: 5px 12px;
+        cursor: pointer;
+
+        &:hover .select2-selection__rendered::before {
+          .opacity(0.7);
+        }
+      }
+
+      .select2-selection__rendered {
+        font-size: 0;
+        color: transparent;
+        padding: 0 !important;
+        width: 18px;
+        height: 18px;
+        position: relative;
+
+        &::before {
+          content: @vc-c-controls-menu;
+          font-family: 'vcpb-plugin-icons' !important;
+          font-size: 12px;
+          color: #888888;
+          display: inline-block;
+          width: 18px;
+          height: 18px;
+          line-height: 18px;
+          text-align: center;
+        }
+      }
+
+      .select2-selection__arrow {
+        display: none;
+      }
+    }
   }
 
   .vc_row_color {
-    float: right;
     margin-top: 3px;
     width: 16px;
     height: 16px;
@@ -285,7 +364,6 @@
     border-radius: 8px;
   }
   .vc_row_image {
-    float: right;
     margin-top: 3px;
     width: 16px;
     height: 16px;
@@ -294,6 +372,14 @@
     background-size: cover;
     border-radius: 8px;
   }
+}
+
+.vc_row_title {
+  text-align: left;
+  max-width: 120px;
+  padding-bottom: 7px;
+  font-style: italic;
+  color: #aaaaaa;
 }
 
 .wpb_vc_section {
@@ -375,10 +461,24 @@
   }
 }
 
-.wpb_content_element {
-  &:hover {
+body:not(.vc-dnd-dragging--start) .wpb_content_element {
+  &:hover,
+  &.vc_active {
     > .vc_controls {
       .vc_controls-visible;
+      > div {
+        .opacity(1);
+      }
     }
+  }
+}
+
+@media screen and (max-width: 510px) {
+  .vc_controls-row .vc_row_layouts.vc_active,
+  .vc_controls-row .vc_row_layouts:hover{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 70vw;
   }
 }

@@ -9,9 +9,9 @@ if( ! class_exists('BridgeQodeSidebar') ){
 
 	class BridgeQodeSidebar{
 
-		var $sidebars  = array();
-		var $stored    = "";
-		var $title     = "";
+		public $sidebars  = array();
+		public $stored    = "";
+		public $title     = "";
 
 		// load needed stuff on widget page
 		function __construct(){

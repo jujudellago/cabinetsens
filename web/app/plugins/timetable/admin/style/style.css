@@ -140,6 +140,7 @@
 .timetable_table.form-table td[colspan="3"]
 {
 	padding-left: 0;
+	padding-right: 0;
 }
 .timetable_table.form-table th,
 .timetable_table.form-table td
@@ -302,6 +303,12 @@
 #timetable_bookings_export select
 {
 	width: 200px;
+}
+/* --- update info --- */
+.plugins tr[data-slug="timetable-booking-schedule-for-wordpress"]:has(+tr.plugin-update-tr) td,
+.plugins tr[data-slug="timetable-booking-schedule-for-wordpress"]:has(+tr.plugin-update-tr) th
+{
+	box-shadow: none;
 }
 /* --- visual composer --- */
 .vc_element-icon.icon-wpb-layer-timetable,

@@ -1,12 +1,38 @@
 <?php
 if ( ! function_exists( 'qodef_re_start_session' ) ) {
-    function qodef_re_start_session() {
-        if (!session_id()) {
+    function qodef_re_start_session( $write = false ) {
+        if ( function_exists( 'bridge_qode_maybe_start_session' ) ) {
+            bridge_qode_maybe_start_session( $write );
+            return;
+        }
+
+        if ( headers_sent() ) {
+            return;
+        }
+
+        if ( defined( 'WP_CLI' ) && WP_CLI ) {
+            return;
+        }
+
+        if ( function_exists( 'wp_doing_cron' ) && wp_doing_cron() ) {
+            return;
+        }
+
+        if ( function_exists( 'bridge_qode_is_session_blocked_request' ) && bridge_qode_is_session_blocked_request() ) {
+            return;
+        }
+
+        if ( session_status() === PHP_SESSION_ACTIVE ) {
+            return;
+        }
+
+        if ( session_status() === PHP_SESSION_NONE ) {
             session_start();
         }
     }
 
-    add_action('init', 'qodef_re_start_session', 1);
+    add_action( 'after_setup_theme', 'qodef_re_start_session', 1 );
+    add_action( 'init', 'qodef_re_start_session', 1 );
 }
 
 //SIDE AREA WITH ITEMS PART
@@ -128,6 +154,8 @@ if ( !function_exists( 'qodef_re_get_compare_list_items_structured' ) ) {
 
 if ( !function_exists( 'qodef_re_handle_add_to_compare' ) ) {
     function qodef_re_handle_add_to_compare() {
+        qodef_re_start_session();
+
         if ( empty( $_POST ) || ! isset( $_POST ) ) {
             qodef_re_ajax_status(
                 'error',
@@ -187,6 +215,8 @@ if ( !function_exists( 'qodef_re_handle_add_to_compare' ) ) {
 
 if ( !function_exists( 'qodef_re_handle_clear_compare_list' ) ) {
     function qodef_re_handle_clear_compare_list() {
+        qodef_re_start_session();
+
         if ( empty( $_POST ) || ! isset( $_POST ) ) {
             qodef_re_ajax_status(
                 'error',
@@ -213,6 +243,8 @@ if ( !function_exists( 'qodef_re_handle_clear_compare_list' ) ) {
 
 if ( !function_exists( 'qodef_re_refresh_compare_popup' ) ) {
     function qodef_re_refresh_compare_popup() {
+        qodef_re_start_session();
+
         if ( empty( $_POST ) || ! isset( $_POST ) ) {
             qodef_re_ajax_status(
                 'error',

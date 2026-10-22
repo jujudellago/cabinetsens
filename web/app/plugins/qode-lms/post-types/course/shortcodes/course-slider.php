@@ -288,7 +288,7 @@ class CourseSlider implements Lib\ShortcodeInterface {
 			'space_between_items'    => 'normal',
 			'image_proportions'      => 'full',
 			'category'               => '',
-			'selected_projects'      => '',
+			'selected_courses'       => '',
 			'tag'                    => '',
 			'orderby'                => 'date',
 			'order'                  => 'ASC',

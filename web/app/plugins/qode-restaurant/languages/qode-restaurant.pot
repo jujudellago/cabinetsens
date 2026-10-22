@@ -1,17 +1,17 @@
-# Copyright (C) 2020 Qode Themes
+# Copyright (C) 2024 Qode Themes
 # This file is distributed under the same license as the Qode Restaurant plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Qode Restaurant 3.0\n"
+"Project-Id-Version: Qode Restaurant 3.0.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/qode-restaurant\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-09-18T12:43:53+02:00\n"
+"POT-Creation-Date: 2024-01-05T10:25:53+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.3.0\n"
+"X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: qode-restaurant\n"
 
 #. Plugin Name of the plugin

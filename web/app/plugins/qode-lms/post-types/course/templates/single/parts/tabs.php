@@ -13,9 +13,9 @@ if ( ! empty( $tabs ) ) :
 				<li class="<?php echo esc_attr( $key ); ?>_tab">
 					<a href="#tab-<?php echo esc_attr( $key ); ?>">
 				<?php } ?>
-						<!-- <span class="qode-tab-icon">
-		                    <?php print $tab['icon']; ?>
-		                </span> -->
+						<?php if( isset( $tab['icon'] ) ) {
+							print $tab['icon'];
+						} ?>
 						<span class="qode-tab-title">
 		                    <?php echo apply_filters( 'qode_sc_' . $key . '_tab_title', esc_html( $tab['title'] ), $key ); ?>
 		                </span>

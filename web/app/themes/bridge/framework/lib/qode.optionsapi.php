@@ -334,6 +334,36 @@ if(!function_exists('bridge_qode_add_admin_section_title')) {
     }
 }
 
+if(!function_exists('bridge_qode_add_admin_section_subtitle')) {
+    /**
+     * Generates admin title field
+     * $attributes can contain:
+     *      $parent - parent object to which to add title
+     *      $name - name of title with which to add it to the parent
+     *      $title - title text
+     *
+     * @param $attributes
+     *
+     * @return bool|BridgeQodeSubtitle
+     */
+    function bridge_qode_add_admin_section_subtitle($attributes) {
+        $parent = '';
+        $name = '';
+        $title = '';
+
+        extract($attributes);
+
+        if(is_object($parent) && !empty($title) && !empty($name)) {
+            $section_title = new BridgeQodeSubtitle($name, $title);
+            $parent->addChild($name, $section_title);
+
+            return $section_title;
+        }
+
+        return false;
+    }
+}
+
 if(!function_exists('bridge_qode_add_admin_notice')) {
     /**
      * Generates QodeNotice object from given parameters

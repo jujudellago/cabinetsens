@@ -19,7 +19,6 @@ if ( ! class_exists( 'BridgeCoreDashboard' ) ) {
 
 		function __construct() {
 			add_action( 'admin_menu', array( &$this, 'register_sub_pages' ) );
-			add_action( 'wp_enqueue_scripts', array( &$this, 'enqueue_styles' ) );
 			add_action( 'admin_menu', array( &$this, 'dashboard_add_page' ) );
 			add_action( 'bridge_core_action_on_deactivation', array( &$this, 'remove_redirect' ) );
 			add_action( 'bridge_core_action_plugin_loaded', array( &$this, 'page_welcome_redirect' ) );
@@ -82,7 +81,7 @@ if ( ! class_exists( 'BridgeCoreDashboard' ) ) {
 
 		function enqueue_scripts() {
 			wp_enqueue_script( 'isotope', BRIDGE_CORE_MODULES_URL_PATH . '/core-dashboard/assets/js/plugins/isotope.pkgd.min.js', array(), false, true );
-			wp_enqueue_script('waitforimages', BRIDGE_CORE_MODULES_URL_PATH . '/core-dashboard/assets//js/plugins/jquery.waitforimages.js', array( 'jquery' ), false, true);
+			wp_enqueue_script('waitforimages', BRIDGE_CORE_MODULES_URL_PATH . '/core-dashboard/assets/js/plugins/jquery.waitforimages.js', array( 'jquery' ), false, true);
 			wp_enqueue_script( 'bridge-core-dashboard-script', BRIDGE_CORE_MODULES_URL_PATH . '/core-dashboard/assets/js/modules/core-dashboard.js', array(), false, true );
 			$global_variables = apply_filters( 'bridge_core_dashboard_filter_js_global_variables', array() );
 
@@ -117,9 +116,16 @@ if ( ! class_exists( 'BridgeCoreDashboard' ) ) {
 
 		function purchase_code_registration() {
 
-			if ( ! isset( $_POST ) || empty( $_POST ) ) {
+			if ( ! isset( $_POST ) || empty( $_POST ) || ! isset( $_POST['security_token'] ) ) {
 				return esc_html__( 'All fields are empty', 'bridge-core' );
 			} else {
+				
+				// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+				if ( ! wp_verify_nonce( wp_unslash( $_POST['security_token'] ), 'wp_rest' ) ) {
+					bridge_core_ajax_status( 'error', esc_html__( 'You are not authorized.', 'bridge-core' ) );
+					wp_die( esc_html__( 'You are not authorized.', 'bridge-core' ) );
+				}
+				
 				switch ( $_POST['options']['action'] ):
 					case 'register':
 						$this->register_purchase_code( $_POST['options']['post'] );

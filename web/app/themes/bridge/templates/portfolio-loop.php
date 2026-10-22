@@ -245,7 +245,7 @@ if(isset($bridge_qode_options['disable_portfolio_single_title_label']) && $bridg
 							if($bridge_qode_all > 0){
 								?>
 								<div class="info portfolio_categories">
-									<h6><?php esc_html_e('Category ','bridge'); ?></h6>
+									<h6><?php esc_html_e('Category','bridge'); ?></h6>
 													<span class="category">
 													<?php
 
@@ -420,7 +420,7 @@ if(isset($bridge_qode_options['disable_portfolio_single_title_label']) && $bridg
 							if($bridge_qode_all > 0){
 								?>
 								<div class="info portfolio_categories">
-									<h6><?php esc_html_e('Category ','bridge'); ?></h6>
+									<h6><?php esc_html_e('Category','bridge'); ?></h6>
 													<span class="category">
 													<?php
 
@@ -599,7 +599,7 @@ if(isset($bridge_qode_options['disable_portfolio_single_title_label']) && $bridg
 							if($bridge_qode_all > 0){
 								?>
 								<div class="info portfolio_categories">
-									<h6><?php esc_html_e('Category ','bridge'); ?></h6>
+									<h6><?php esc_html_e('Category','bridge'); ?></h6>
 													<span class="category">
 													<?php
 
@@ -825,7 +825,7 @@ if(isset($bridge_qode_options['disable_portfolio_single_title_label']) && $bridg
 							if($bridge_qode_all > 0){
 								?>
 								<div class="info portfolio_categories">
-									<h6><?php esc_html_e('Category ','bridge'); ?></h6>
+									<h6><?php esc_html_e('Category','bridge'); ?></h6>
 													<span class="category">
 													<?php
 
@@ -1045,7 +1045,7 @@ if(isset($bridge_qode_options['disable_portfolio_single_title_label']) && $bridg
 							if($bridge_qode_all > 0){
 								?>
 								<div class="info portfolio_categories">
-									<h6><?php esc_html_e('Category ','bridge'); ?></h6>
+									<h6><?php esc_html_e('Category','bridge'); ?></h6>
 													<span class="category">
 													<?php
 
@@ -1230,7 +1230,7 @@ if(isset($bridge_qode_options['disable_portfolio_single_title_label']) && $bridg
                             if($bridge_qode_all > 0){
                                 ?>
                                 <div class="info portfolio_categories">
-                                    <h6><?php esc_html_e('Category ','bridge'); ?></h6>
+                                    <h6><?php esc_html_e('Category','bridge'); ?></h6>
 													<span class="category">
 													<?php
 

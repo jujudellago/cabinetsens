@@ -7,6 +7,7 @@
 .vc_ui-panel-window {
   box-sizing: content-box;
   font-size: @vcui-panel-window-font-size;
+  font-family: @wpb_font-family-primary;
   padding: @vcui-panel-window-frame-size;
   background: @vcui-panel-window-frame-color;
 }
@@ -22,6 +23,7 @@
   align-items: stretch;
   align-content: stretch;
   flex-basis: 100%;
+  min-width: 0; // Allow flex children to shrink below content size
   > .vc_ui-panel-header-container,
   > .vc_ui-panel-footer-container {
     flex: 0 0 auto;
@@ -58,6 +60,13 @@
   }
 }
 
+// Hide move icon for non-draggable panels (e.g. add element, template library)
+.vc_ui-panel-window:not(.ui-draggable) {
+  .vc_ui-panel-header-heading .vc-composer-icon {
+    display: none;
+  }
+}
+
 @media (max-width: @screen-xs-max) {
   .vc_ui-panel-window {
     box-sizing: border-box !important;
@@ -66,8 +75,8 @@
     max-height: none !important;
     position: fixed !important;
     left: 0 !important;
-    top: 0 !important;
-    padding: 5vh 5vw !important;
+    top: @wpb_admin-bar-mobile-height !important;
+    padding: 0 !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
     &.vc_active {

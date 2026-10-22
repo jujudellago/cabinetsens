@@ -1,6 +1,7 @@
 <?php
-$city_enabled = isset($enable_city) && $enable_city === 'yes';
+$city_enabled = isset( $enable_city ) && $enable_city === 'yes';
 $cities = qodef_re_get_taxonomy_list('property-city');
+
 ?>
 <?php if($city_enabled) { ?>
     <div class="qodef-search-bottom-part qodef-search-city-section">

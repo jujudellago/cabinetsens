@@ -8,7 +8,14 @@ require_once 'lib/shortcode-interface.php';
 require_once 'lib/shortcode-loader.php';
 require_once 'lib/shortcode-functions.php';
 
-require_once 'modules/widgets/load.php';
+if ( ! function_exists( 'qode_restaurant_load_widgets' ) ) {
+	function qode_restaurant_load_widgets() {
+		if ( qode_restaurant_theme_installed() ) {
+			require_once 'modules/widgets/load.php';
+		}
+	}
+	add_action( 'after_setup_theme', 'qode_restaurant_load_widgets' );
+}
 
 //load post-post-types
 require_once 'lib/post-type-interface.php';

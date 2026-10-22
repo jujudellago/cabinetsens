@@ -26,6 +26,7 @@ class QodeMembershipLoginRegister extends WP_Widget {
 					echo bridge_qode_icon_collections()->renderIconHTML( 'dripicons-user', 'dripicons' );
 				}
 			echo '</a>';
+			
 			add_action( 'wp_footer', array( $this, 'qode_membership_render_login_form' ) );
 
 		} else {
@@ -36,9 +37,12 @@ class QodeMembershipLoginRegister extends WP_Widget {
 	}
 
 	public function qode_membership_render_login_form() {
-
-		//Render modal with login and register forms
-		echo qode_membership_get_widget_template_part( 'login-widget', 'login-modal-template' );
+		$is_rendered = apply_filters( 'qode_membership_filter_is_login_form_rendered', false );
+		
+		if( ! $is_rendered ) {
+			//Render modal with login and register forms
+			echo qode_membership_get_widget_template_part( 'login-widget', 'login-modal-template' );
+		}
 	}
 }
 

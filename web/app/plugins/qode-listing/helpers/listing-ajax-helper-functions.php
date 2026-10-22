@@ -207,21 +207,29 @@ if(!function_exists('qode_listing_send_listing_item_enquiry')){
 
 				//Validate
 				if ( $email_data['name'] ) {
-					$name = esc_html($email_data['name']);
+					$name = qode_listing_sanitize_mail_header_text( $email_data['name'] );
+					if ( $name === '' ) {
+						$error = true;
+						$responseMessage = esc_html__('Please insert valid name', 'qode-listing');
+					}
 				} else {
 					$error = true;
 					$responseMessage = esc_html__('Please insert valid name', 'qode-listing');
 				}
 
 				if ( $email_data['email'] ) {
-					$email = esc_html($email_data['email']);
+					$email = sanitize_email( $email_data['email'] );
+					if ( ! is_email( $email ) ) {
+						$error = true;
+						$responseMessage = esc_html__('Please insert valid email', 'qode-listing');
+					}
 				} else {
 					$error = true;
 					$responseMessage = esc_html__('Please insert valid email', 'qode-listing');
 				}
 
 				if ( $email_data['message'] ) {
-					$message = esc_html($email_data['message']);
+					$message = sanitize_textarea_field( $email_data['message'] );
 				} else {
 					$error = true;
 					$responseMessage = esc_html__('Please insert valid phone', 'qode-listing');
@@ -234,31 +242,34 @@ if(!function_exists('qode_listing_send_listing_item_enquiry')){
 
 				} else {
 
-					//Get post id from request
-					$post_id = $email_data['itemId'];
-					//Get email address
-					$mail_to = get_post_meta( $post_id, '_listing_mail', true );
+					$post_id = absint( $email_data['itemId'] );
+					$mail_to = $post_id ? sanitize_email( get_post_meta( $post_id, '_listing_mail', true ) ) : '';
+
+					if ( ! is_email( $mail_to ) ) {
+						wp_send_json_error( esc_html__('Please review your enquiry and send again', 'qode-listing') );
+					}
 
 					$headers = array(
-						'From: ' . $name . ' <' . $email . '>',
-						'Reply-To: ' . $name . ' <' . $email . '>',
+						'Reply-To: ' . $email,
 					);
 
-					$additional_emails = array();
-
-					$post = get_post($post_id);
-					$additional_emails[] = get_the_author_meta( 'user_email', (int) $post->post_author );
-					$headers[] = 'Bcc: ' . implode(',', $additional_emails);
+					$post = get_post( $post_id );
+					if ( $post ) {
+						$author_email = sanitize_email( get_the_author_meta( 'user_email', (int) $post->post_author ) );
+						if ( is_email( $author_email ) ) {
+							$headers[] = 'Bcc: ' . $author_email;
+						}
+					}
 
 					$messageTemplate = esc_html__('From', 'qode-listing'). ': ' . $name . "\r\n";
 					$messageTemplate .= esc_html__('Message', 'qode-listing') . ': ' . $message . "\r\n\n";
 					$messageTemplate .= esc_html__( 'Message sent via enquiry form on', 'qode-listing' ) . ' ' . get_bloginfo('name') . ' - ' . esc_url( home_url('/') );
 
 					wp_mail(
-						$mail_to, //Mail To
-						esc_html__('New Enquiry form blog name', 'qode-listing'), //Subject
-						$messageTemplate, //Message
-						$headers //Additional Headers
+						$mail_to,
+						esc_html__('New Enquiry form blog name', 'qode-listing'),
+						$messageTemplate,
+						$headers
 					);
 
 					$responseMessage = esc_html__('Enquiry sent successfully', 'qode-listing');
@@ -266,6 +277,8 @@ if(!function_exists('qode_listing_send_listing_item_enquiry')){
 				}
 
 			}
+
+			wp_send_json_error( esc_html__('Please review your enquiry and send again', 'qode-listing') );
 
 
 

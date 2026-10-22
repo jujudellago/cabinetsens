@@ -4,8 +4,11 @@
             <?php
             $redirect = '';
             if ( isset( $_GET['redirect_uri'] ) ) {
-                $redirect = $_GET['redirect_uri'];
-            } ?>
+                $redirect = qode_membership_sanitize_redirect_url( wp_unslash( $_GET['redirect_uri'] ) );
+            }
+            
+            $redirect = apply_filters( 'qode_membership_filter_login_redirect_uri', $redirect );
+			?>
             <fieldset>
                 <div>
 	                <label for="user_login_name" class="qode-membership-lr-label"><?php esc_html_e( 'User Name', 'qode-membership' ) ?></label>

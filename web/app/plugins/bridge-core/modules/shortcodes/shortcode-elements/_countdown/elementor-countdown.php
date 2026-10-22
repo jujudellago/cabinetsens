@@ -1,7 +1,7 @@
 <?php
 
 class BridgeCoreElementorCountdown extends \Elementor\Widget_Base{
-    public function get_name() {
+	public function get_name() {
         return 'bridge_countdown';
     }
 
@@ -16,6 +16,10 @@ class BridgeCoreElementorCountdown extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode' ];
     }
+	
+	public function get_script_depends() {
+		return array( 'abstractBaseClass', 'countdown', 'qode-countdown' );
+	}
 
     protected function register_controls() {
 
@@ -34,17 +38,18 @@ class BridgeCoreElementorCountdown extends \Elementor\Widget_Base{
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'options' => [
                     "" => "",
-                    "2014" => "2014",
-                    "2015" => "2015",
-                    "2016" => "2016",
-                    "2017" => "2017",
-                    "2018" => "2018",
-                    "2019" => "2019",
-                    "2020" => "2020",
-                    "2021" => "2021",
                     "2022" => "2022",
                     "2023" => "2023",
-                    "2024" => "2024"
+                    "2024" => "2024",
+                    "2025" => "2025",
+                    "2026" => "2026",
+                    "2027" => "2027",
+                    "2028" => "2028",
+                    "2029" => "2029",
+                    "2030" => "2030",
+                    "2031" => "2031",
+                    "2032" => "2032",
+                    "2033" => "2033",
                 ]
             ]
         );
@@ -356,7 +361,7 @@ class BridgeCoreElementorCountdown extends \Elementor\Widget_Base{
 
     protected function render(){
         $params = $this->get_settings_for_display();
-
+	    
         echo bridge_core_get_shortcode_template_part('templates/countdown', '_countdown', '', $params);
     }
 

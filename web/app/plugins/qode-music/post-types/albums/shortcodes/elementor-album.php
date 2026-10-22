@@ -107,20 +107,23 @@ class QodeMusicElementorAlbum extends \Elementor\Widget_Base{
 	private function getTracks($params){
 		
 		$tracks_array = array();
-		$tracks = get_post_meta($params['album'], 'qode_album_tracks', true);
 		
+		$tracks = get_post_meta($params['album'], 'qode_album_tracks', true);
+	
 		
 		$i = 0;
 		if($tracks){
 			foreach($tracks as $track){
+				
 				/*------------------------------------------------------------------------------------------*/
 				//if import is executed second time and file does exists in 'uploads' but not in database
 				//usercase ex: user empties db, but not 'uploads' folder
-				if(qode_music_get_attachment_id_from_url($track) == null){
+				if(qode_music_get_attachment_id_from_url($track['qode_album_track_file']) == null){
 					$i++;
 					continue;
 				}
 				/*------------------------------------------------------------------------------------------*/
+		
 				$track_id = qode_music_get_attachment_id_from_url($track['qode_album_track_file']);
 				$track_data = wp_get_attachment_metadata($track_id);
 				//var_dump($track_data['length_formatted']);

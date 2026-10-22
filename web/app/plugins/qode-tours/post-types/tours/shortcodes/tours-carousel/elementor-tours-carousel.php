@@ -17,6 +17,10 @@ class QodeToursElementorToursCarousel extends \Elementor\Widget_Base{
 		return [ 'qode-tours' ];
 	}
 	
+	public function get_script_depends() {
+		return array( 'owlCarousel', 'qode-owl-slider' );
+	}
+	
 	protected function register_controls() {
 		
 		$this->start_controls_section(

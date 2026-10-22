@@ -31,7 +31,7 @@
 					'data-help' => __('This project has a saved draft that has not been published yet. Changes will not be visible on front-end pages until you publish them.', 'LayerSlider')
 				]) ?>
 				<?php endif ?>
-				<input value="<?= htmlentities( apply_filters('ls_slider_title', stripslashes( $sliderName ), 40) ) ?>" class="ls--project-name-input">
+				<input value="<?= htmlentities( apply_filters('ls_slider_title', stripslashes( $sliderName ), 99 ) ) ?>" class="ls--project-name-input">
 				<ls-span class="ls-project-id">#<?= $item['id'] ?></ls-span>
 			</div>
 		</div>

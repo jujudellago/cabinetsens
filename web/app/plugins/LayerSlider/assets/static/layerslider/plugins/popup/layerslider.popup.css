@@ -2,7 +2,7 @@
 /*
 	* LayerSlider Add-On: Popup Slider Styles
 	*
-	* (c) 2011-2023 George Krupa, John Gera & Kreatura Media
+	* (c) 2011-2026 George Krupa, John Gera & Kreatura Media
 	*
 	* LayerSlider home:		https://layerslider.com/
 	* Licensing:			https://layerslider.com/licensing/
@@ -21,14 +21,6 @@
 }
 
 .ls-popup {
-	position: static !important;
-	width: 0 !important;
-	height: 0 !important;
-	overflow: hidden !important;
-	visibility: hidden !important;
-}
-
-.ls-popup-visible {
 	position: fixed !important;
 	width: auto !important;
 	height: auto !important;
@@ -38,7 +30,21 @@
 	visibility: visible !important;
 }
 
-.ls-popup-visible .ls-popup-inner {
+.ls-popup:not(.ls-popup-visible) {
+	transform: translate(-10000px,-10000px);
+}
+
+.ls-popup:not(.ls-popup-visible),
+.ls-popup:not(.ls-popup-visible) .ls-popup-inner .ls-container {
+	pointer-events: none !important;
+	visibility: hidden !important;
+}
+
+.ls-popup.ls-popup-scrollable {
+	position: absolute !important;
+}
+
+.ls-popup .ls-popup-inner {
 	width: 100% !important;
 	height: 100% !important;
 }
@@ -52,7 +58,7 @@
 	background: none !important;
 }
 
-.ls-popup-visible .ls-popup-inner .ls-container {
+.ls-popup .ls-popup-inner .ls-container {
 	position: absolute !important;
 	pointer-events: auto !important;
 }

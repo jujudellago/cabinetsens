@@ -343,12 +343,14 @@
                 function ( e ) {
                     e.preventDefault();
                     var link = $( this ),
-                        allLinks = $('.qodef-install-plugin-link');
+                        allLinks = $('.qodef-install-plugin-link'),
+                        spinner = link.next( '.spinner' );
 
                     allLinks.addClass('qodef-disabled');
                     link.removeClass('qodef-disabled');
-                    link.next( '.spinner' ).addClass( 'active' );
+                    spinner.addClass( 'active' );
                     var requredPlugins = link.closest( '.qodef-popup-required-plugins-holder' ).find( '.qode-required-demo-plugins-list' ).data( 'required-demo-plugins' );
+                    var nonce = link.closest( '.qodef-popup-required-plugins-holder' ).find( '#qodef_cd_install_plugins_nonce' );
                     var pluginAction   = 'install';
                     var pluginSlug     = '';
 
@@ -367,35 +369,35 @@
                             action: 'install_plugin_per_demo',
                             requredPlugins: requredPlugins,
                             pluginAction: pluginAction,
-                            pluginSlug: pluginSlug
+                            pluginSlug: pluginSlug,
+                            nonce: nonce.val()
                         },
                         success: function ( data ) {
-                            var response = JSON.parse( data );
+                            var response = {};
 
-                            if ( pluginAction == 'install' ) {
-                                if ( response.status == 'success' ) {
-                                    link.next( '.spinner' ).removeClass( 'active' );
-                                    link.text( response.message );
-                                    link.data(
-                                        'plugin-action',
-                                        'activate'
-                                    );
-                                }
-                            } else {
-                                if ( response.status == 'success' ) {
-                                    link.next( '.spinner' ).removeClass( 'active' );
-                                    link.replaceWith( response.data.html );
-                                    link.data(
-                                        'plugin-action',
-                                        'activate'
-                                    );
-                                }
+                            try {
+                                response = ( typeof data === 'object' && data !== null ) ? data : JSON.parse( data );
+                            } catch ( err ) {
+                                return;
                             }
 
-                            allLinks.removeClass('qodef-disabled');
+                            if ( response.status !== 'success' ) {
+                                return;
+                            }
+
+                            if ( pluginAction === 'install' ) {
+                                link.text( response.message );
+                                link.data( 'plugin-action', 'activate' );
+                            } else if ( response.data && response.data.html ) {
+                                link.replaceWith( response.data.html );
+                            }
                         },
                         error: function () {
 
+                        },
+                        complete: function () {
+                            spinner.removeClass( 'active' );
+                            allLinks.removeClass( 'qodef-disabled' );
                         }
                     } );
                     return false;
@@ -506,7 +508,8 @@
                 type: 'POST',
                 url: qodefCoreDashboardGlobalVars.vars.restUrl + qodefCoreDashboardGlobalVars.vars.registrationThemeRoute,
                 data: {
-                    options: options
+                    options: options,
+                    security_token: qodefCoreDashboardGlobalVars.vars.restNonce,
                 },
                 beforeSend: function ( request ) {
                     request.setRequestHeader(
@@ -578,7 +581,7 @@
 				qsRegex = new RegExp( $quicksearch.val(), 'gi' );
 				$('.qodef-cd-demos-list-inner').isotope({
 					filter: function() {
-						return qsRegex ? $(this).text().match( qsRegex ) : true;
+						return qsRegex ? $(this).html().match( qsRegex ) : true;
 					}
 				});
 			}, 200 ) );
@@ -630,13 +633,13 @@
                             data: {
                                 action: 'demo_import_popup',
                                 demoId: demoId,
-                                originalDemoId: originalDemoId
+                                originalDemoId: originalDemoId,
+                                nonce: $('#qodef_cd_demo_links_popup').val()
                             },
                             success: function (data) {
                                 qodefInitAppendPopup.init(data);
                                 qodefImport.init();
                                 qodefInitRemovePopup.init();
-	                            // qodefDemosPluginsToInstall.init();
                                 qodefDemosInstallPluginPerDemo.init();
                                 qodefInitSwitch();
                             },
@@ -671,22 +674,6 @@
 
     var qodefInitRemovePopup = {
 	    init: function () {
-            // var body = $('body'),
-            //     demoImportPopup = $('#qodef-demo-import-popup'),
-            //     popupDataHolder = demoImportPopup.find('.qodef-core-dashboard');
-            //
-            // if(demoImportPopup.length) {
-            //     demoImportPopup.on('click', function () {
-            //         demoImportPopup.remove();
-            //         body.removeClass('qodef-demo-import-popup-opened');
-            //     })
-            // }
-            //
-            // if( popupDataHolder.length ){
-            //     popupDataHolder.on('click', function(e){
-            //         e.stopPropagation();
-            //     });
-            // }
             var body = $('body'),
                 demoImportPopup = $('#qodef-demo-import-popup'),
                 closeButton = demoImportPopup.find('.qodef-import-popup-close');
@@ -701,35 +688,6 @@
 
         }
     }
-	var qodefDemosPluginsToInstall = {
-		init: function () {
-		$('.qodef-popup-required-plugins-holder').on('click', '.qode-demo-plugin-install-link', function (e) {
-			e.preventDefault();
-			var $this = $(this);
-			$this.next('.spinner').addClass('active');
-			var reqiredPlugins = $this.closest('.qodef-popup-required-plugins-holder').find('.qode-required-demo-plugins-list').data('required-demo-plugins');
-			var link = $this.attr('href');
-			jQuery.ajax({
-				type: 'POST',
-				url: ajaxurl,
-				dataType: 'json',
-				data: {
-					action: 'plugins_to_install',
-					reqiredPlugins: reqiredPlugins,
-					link: link
-				},
-				success: function(response){
-					$this.next('.spinner').removeClass('active');
-					window.location.href = response['link'];
-				},
-				error: function(){
-
-				}
-			});
-			return false;
-		});
-	}
-	}
 
     function qodefInitSwitch() {
         $(".qode-cd-cb-enable").on('click', function () {

@@ -16,6 +16,10 @@ class QodeLmsCourseList extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode-lms' ];
     }
+	
+	public function get_script_depends() {
+		return array( 'owlCarousel', 'qode-owl-slider' );
+	}
 
     public function getCourseCategories(){
         $taxonomy = 'course-category';
@@ -66,8 +70,8 @@ class QodeLmsCourseList extends \Elementor\Widget_Base{
 
         return $formated_courses;
     }
-
-    protected function register_controls() {
+	
+	protected function register_controls() {
 
         $this->start_controls_section(
             'general',

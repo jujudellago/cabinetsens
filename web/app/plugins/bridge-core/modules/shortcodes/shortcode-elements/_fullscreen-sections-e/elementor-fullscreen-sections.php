@@ -16,8 +16,12 @@ class BridgeCoreElementorFullscreenSection extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode' ];
     }
-
-    protected function register_controls() {
+	
+	public function get_script_depends() {
+		return array( 'one_page_scroll' );
+	}
+	
+	protected function register_controls() {
 
         $this->start_controls_section(
             'general',

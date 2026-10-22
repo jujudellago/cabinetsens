@@ -1,8 +1,9 @@
 <?php
 $thumb_size = $this_object->getImageSize($params);
+$use_featured_meta = isset( $params['use_featured_meta'] ) ? $params['use_featured_meta'] : 'no';
 
 $list_image = get_post_meta(get_the_ID(), 'qodef_property_featured_image_meta', true);
-if(!isset($list_image) || empty($list_image) || $params['use_featured_meta'] == 'no') {
+if( empty($list_image) || $use_featured_meta == 'no') {
     if(has_post_thumbnail(get_the_ID())) {
         $list_image = get_the_post_thumbnail_url(get_the_ID(), $thumb_size);
     } else {

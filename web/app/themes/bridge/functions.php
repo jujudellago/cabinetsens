@@ -9,51 +9,37 @@ if (!function_exists('bridge_qode_styles')) {
         global $bridge_qode_options;
         global $woocommerce;
 
-
         wp_enqueue_style('wp-mediaelement');
-        wp_enqueue_style("bridge-default-style", QODE_ROOT . "/style.css");
+        wp_enqueue_style("bridge-default-style", QODE_ROOT . "/style.css", array(), BRIDGE_THEME_VERSION);
         bridge_qode_icon_collections()->enqueueStyles();
-        wp_enqueue_style("bridge-stylesheet", QODE_ROOT . "/css/stylesheet.min.css");
+        wp_enqueue_style("bridge-stylesheet", QODE_ROOT . "/css/stylesheet.min.css", array(), BRIDGE_THEME_VERSION);
 
         if ($woocommerce) {
-            wp_enqueue_style("bridge-woocommerce", QODE_ROOT . "/css/woocommerce.min.css");
+            wp_enqueue_style("bridge-woocommerce", QODE_ROOT . "/css/woocommerce.min.css", array(), BRIDGE_THEME_VERSION);
             if (!empty($bridge_qode_options['responsiveness']) && $bridge_qode_options['responsiveness'] == 'yes') {
-                wp_enqueue_style("bridge-woocommerce-responsive", QODE_ROOT . "/css/woocommerce_responsive.min.css");
+                wp_enqueue_style("bridge-woocommerce-responsive", QODE_ROOT . "/css/woocommerce_responsive.min.css", array(), BRIDGE_THEME_VERSION);
             }
         }
 
-        wp_enqueue_style("bridge-print", QODE_ROOT . "/css/print.css");
+        wp_enqueue_style("bridge-print", QODE_ROOT . "/css/print.css", array(), BRIDGE_THEME_VERSION);
 
         if (bridge_qode_timetable_schedule_installed()) {
-            wp_enqueue_style("bridge-timetable", QODE_ROOT . "/css/timetable-schedule.min.css");
-            wp_enqueue_style("bridge-timetable-responsive", QODE_ROOT . "/css/timetable-schedule-responsive.min.css");
+            wp_enqueue_style("bridge-timetable", QODE_ROOT . "/css/timetable-schedule.min.css", array(), BRIDGE_THEME_VERSION);
+            wp_enqueue_style("bridge-timetable-responsive", QODE_ROOT . "/css/timetable-schedule-responsive.min.css", array(), BRIDGE_THEME_VERSION);
         }
 
         //load styles before style dynamic because they are overriden with custom styles, qode-news for ex.
         do_action('bridge_qode_action_add_styles_before_style_dynamic');
 
-        if (file_exists(dirname(__FILE__) . "/css/style_dynamic.css") && bridge_qode_is_css_folder_writable() && !is_multisite()) {
-            wp_enqueue_style("bridge-style-dynamic", QODE_ROOT . "/css/style_dynamic.css", array(), filemtime(dirname(__FILE__) . "/css/style_dynamic.css"));
-        } else if (file_exists(QODE_ROOT_DIR . '/css/style_dynamic_ms_id_' . bridge_qode_get_multisite_blog_id() . '.css') && bridge_qode_is_css_folder_writable() && is_multisite()) {
-            wp_enqueue_style('bridge-style-dynamic', QODE_ROOT . '/css/style_dynamic_ms_id_' . bridge_qode_get_multisite_blog_id() . '.css', array(), filemtime(QODE_ROOT_DIR . '/css/style_dynamic_ms_id_' . bridge_qode_get_multisite_blog_id() . '.css')); //it must be included after woocommerce styles so it can override it
-        } else {
-            wp_enqueue_style("bridge-style-dynamic", QODE_ROOT . "/css/style_dynamic_callback.php");
-        }
-
+        bridge_qode_enqueue_dynamic_style('style_dynamic');
 
         $responsiveness = "yes";
         if (isset($bridge_qode_options['responsiveness']))
             $responsiveness = $bridge_qode_options['responsiveness'];
         if ($responsiveness != "no"):
-            wp_enqueue_style("bridge-responsive", QODE_ROOT . "/css/responsive.min.css");
+            wp_enqueue_style("bridge-responsive", QODE_ROOT . "/css/responsive.min.css", array(), BRIDGE_THEME_VERSION);
 
-            if (file_exists(dirname(__FILE__) . "/css/style_dynamic_responsive.css") && bridge_qode_is_css_folder_writable() && !is_multisite()) {
-                wp_enqueue_style("bridge-style-dynamic-responsive", QODE_ROOT . "/css/style_dynamic_responsive.css", array(), filemtime(dirname(__FILE__) . "/css/style_dynamic_responsive.css"));
-            } else if (file_exists(QODE_ROOT_DIR . '/css/style_dynamic_responsive_ms_id_' . bridge_qode_get_multisite_blog_id() . '.css') && bridge_qode_is_css_folder_writable() && is_multisite()) {
-                wp_enqueue_style('bridge-style-dynamic-responsive', QODE_ROOT . '/css/style_dynamic_responsive_ms_id_' . bridge_qode_get_multisite_blog_id() . '.css', array(), filemtime(QODE_ROOT_DIR . '/css/style_dynamic_responsive_ms_id_' . bridge_qode_get_multisite_blog_id() . '.css'));
-            } else {
-                wp_enqueue_style("bridge-style-dynamic-responsive", QODE_ROOT . "/css/style_dynamic_responsive_callback.php");
-            }
+            bridge_qode_enqueue_dynamic_style('style_dynamic_responsive');
         endif;
 
         $vertical_area = "no";
@@ -61,7 +47,7 @@ if (!function_exists('bridge_qode_styles')) {
             $vertical_area = $bridge_qode_options['vertical_area'];
         }
         if ($vertical_area == "yes" && $responsiveness != "no") {
-            wp_enqueue_style("bridge-vertical-responsive", QODE_ROOT . "/css/vertical_responsive.min.css");
+            wp_enqueue_style("bridge-vertical-responsive", QODE_ROOT . "/css/vertical_responsive.min.css", array(), BRIDGE_THEME_VERSION);
         }
 
         //include Visual Composer styles
@@ -70,7 +56,7 @@ if (!function_exists('bridge_qode_styles')) {
         }
 
         if (is_rtl()) {
-            wp_enqueue_style('bridge-rtl', QODE_ROOT . '/rtl.css');
+            wp_enqueue_style('bridge-rtl', QODE_ROOT . '/rtl.css', array(), BRIDGE_THEME_VERSION);
         }
 
 		$custom_css = bridge_qode_options()->getOptionValue('custom_css');
@@ -94,8 +80,11 @@ if(!function_exists('bridge_qode_google_fonts_styles')) {
 	 */
 	function bridge_qode_google_fonts_styles() {
 		global $bridge_qode_options, $bridge_qode_framework;
+		$is_disabled = apply_filters( 'bridge_qode_filter_disable_google_fonts', false );
 
-		if(bridge_qode_options()->getOptionValue('disable_google_fonts') != 'yes') {
+		if( ! $is_disabled ) {
+			$display_swap_option = bridge_qode_options()->getOptionValue( 'google_fonts_display_swap_enabled' );
+			
 			$font_weight_str = '100,200,300,400,500,600,700,800,900,100italic,300italic,400italic,700italic';
 			$default_font_string = 'Raleway:' . $font_weight_str;
 
@@ -186,6 +175,10 @@ if(!function_exists('bridge_qode_google_fonts_styles')) {
 					'family' => urlencode( $fonts_full_list ),
 					'subset' => urlencode( $font_subset_str ),
 				);
+				
+				if( ! empty( $display_swap_option ) && 'yes' === $display_swap_option ) {
+					$fonts_full_list_args['display'] = 'swap';
+				}
 
 				$bridge_php_global_fonts = add_query_arg( $fonts_full_list_args, $protocol . '//fonts.googleapis.com/css' );
 				wp_enqueue_style( 'bridge-style-handle-google-fonts', esc_url_raw( $bridge_php_global_fonts ), array(), '1.0.0' );
@@ -196,6 +189,11 @@ if(!function_exists('bridge_qode_google_fonts_styles')) {
 					'family' => urlencode( $default_font_string ),
 					'subset' => urlencode( $font_subset_str ),
 				);
+				
+				if( ! empty( $display_swap_option ) && 'yes' === $display_swap_option ) {
+					$fonts_full_list_args['display'] = 'swap';
+				}
+				
 				$bridge_php_global_fonts = add_query_arg( $default_fonts_args, $protocol . '//fonts.googleapis.com/css' );
 				wp_enqueue_style( 'bridge-style-handle-google-fonts', esc_url_raw( $bridge_php_global_fonts ), array(), '1.0.0' );
 			}
@@ -205,49 +203,109 @@ if(!function_exists('bridge_qode_google_fonts_styles')) {
 	add_action('wp_enqueue_scripts', 'bridge_qode_google_fonts_styles');
 }
 
+if( ! function_exists( 'bridge_qode_get_third_party_scripts_array' ) ) {
+	function bridge_qode_get_third_party_scripts_array() {
+		$scripts_to_register = array(
+			'abstractBaseClass' => QODE_ROOT . "/js/plugins/abstractBaseClass.js",
+			'countdown' => QODE_ROOT . '/js/plugins/jquery.countdown.js',
+			'twentytwenty' => QODE_ROOT . '/js/plugins/jquery.twentytwenty.js',
+			'eventMove' => QODE_ROOT . "/js/plugins/jquery.event.move.js",
+			'typed' => QODE_ROOT . '/js/plugins/typed.js',
+			'counter' => QODE_ROOT . '/js/plugins/counter.js',
+			'countTo' => QODE_ROOT . '/js/plugins/countTo.js',
+			'easyPieChart' => QODE_ROOT . '/js/plugins/easypiechart.js',
+			'chart' => QODE_ROOT . '/js/plugins/Chart.min.js',
+			'lemmonSlider' => QODE_ROOT . '/js/plugins/lemmon-slider.min.js',
+			'swiper' => QODE_ROOT . '/js/plugins/swiper.min.js',
+			'owlCarousel' => QODE_ROOT . '/js/plugins/owl.carousel.min.js',
+			'mixItUp' => QODE_ROOT . '/js/plugins/mixitup.js',
+			'justifiedGallery' => QODE_ROOT . '/js/plugins/jquery.justifiedGallery.min.js',
+			'carouFredSel' => QODE_ROOT . '/js/plugins/jquery.carouFredSel-6.2.1.min.js',
+			'bigtext' => QODE_ROOT . '/js/plugins/bigtext.js',
+			'rangeSlider' => QODE_ROOT . '/js/plugins/rangeslider.min.js',
+			'infiniteScroll' => QODE_ROOT . '/js/plugins/infinitescroll.min.js',
+			'flexslider' => QODE_ROOT . '/js/plugins/jquery.flexslider-min.js',
+			'multiscroll' => QODE_ROOT . '/js/plugins/jquery.multiscroll.min.js',
+			'one_page_scroll' => QODE_ROOT . '/js/plugins/jquery.fullPage.min.js',
+			'stretch' => QODE_ROOT . '/js/plugins/jquery.stretch.js',
+			'fluidvids' => QODE_ROOT . '/js/plugins/fluidvids.min.js',
+			'imagesLoaded' => QODE_ROOT . "/js/plugins/imagesloaded.js",
+			'bootstrapCarousel' => QODE_ROOT . "/js/plugins/bootstrap.carousel.js",
+			'stickyKit' => QODE_ROOT . "/js/plugins/jquery.sticky-kit.min.js",
+			'niceScroll' => QODE_ROOT . "/js/plugins/jquery.nicescroll.min.js",
+			'touchSwipe' => QODE_ROOT . "/js/plugins/jquery.touchSwipe.min.js",
+			'fitvids' => QODE_ROOT . "/js/plugins/jquery.fitvids.js",
+			'packery' => QODE_ROOT . "/js/plugins/packery-mode.pkgd.min.js",
+		);
+		
+		$partial_scripts_to_register = apply_filters( 'bridge_qode_filter_partial_scripts', array() );
+		
+		$scripts_to_enqueue = array(
+			'doubleTapToGo' => QODE_ROOT . "/js/plugins/doubletaptogo.js",
+			'modernizr' => QODE_ROOT . "/js/plugins/modernizr.min.js",
+			'appear' => QODE_ROOT . "/js/plugins/jquery.appear.js",
+			'hoverIntent' => false,
+			'prettyphoto' => QODE_ROOT . "/js/plugins/jquery.prettyPhoto.js",
+			'wp-mediaelement' => false,
+			'waitforimages' => QODE_ROOT . "/js/plugins/jquery.waitforimages.js",
+			'jquery-form' => false,
+			'waypoints' => QODE_ROOT . "/js/plugins/waypoints.min.js",
+			'easing' => QODE_ROOT . "/js/plugins/jquery.easing.1.3.js",
+			'mousewheel' => QODE_ROOT . "/js/plugins/jquery.mousewheel.min.js",
+			'isotope' => QODE_ROOT . "/js/plugins/jquery.isotope.min.js",
+			'skrollr' => QODE_ROOT . "/js/plugins/skrollr.js",
+		);
+		
+		return array(
+			'register' => $scripts_to_register,
+			'partials_register' => $partial_scripts_to_register,
+			'enqueue'  => $scripts_to_enqueue
+		);
+	}
+}
+
 if( ! function_exists('bridge_qode_return_ui_scripts_array') ){
     /**
      * Function that collects and return all JQuery UI Scripts
      */
     function bridge_qode_return_ui_scripts_array(){
-
-        $qode_ui_scripts = array();
-
-        $qode_ui_scripts['jquery-ui-core'] = esc_html__('JQuery UI Core', 'bridge');
-        $qode_ui_scripts['jquery-ui-widget'] = esc_html__('JQuery UI Widget', 'bridge');
-        $qode_ui_scripts['jquery-ui-accordion'] = esc_html__('JQuery UI Accordion', 'bridge');
-        $qode_ui_scripts['jquery-ui-autocomplete'] = esc_html__('JQuery UI Autocomplete', 'bridge');
-        $qode_ui_scripts['jquery-ui-button'] = esc_html__('JQuery UI Button', 'bridge');
-        $qode_ui_scripts['jquery-ui-datepicker'] = esc_html__('JQuery UI Datepicker', 'bridge');
-        $qode_ui_scripts['jquery-ui-dialog'] = esc_html__('JQuery UI Dialog', 'bridge');
-        $qode_ui_scripts['jquery-ui-draggable'] = esc_html__('JQuery UI Draggable', 'bridge');
-        $qode_ui_scripts['jquery-ui-droppable'] = esc_html__('JQuery UI Droppable', 'bridge');
-        $qode_ui_scripts['jquery-ui-menu'] = esc_html__('JQuery UI Menu', 'bridge');
-        $qode_ui_scripts['jquery-ui-mouse'] = esc_html__('JQuery UI Mouse', 'bridge');
-        $qode_ui_scripts['jquery-ui-position'] = esc_html__('JQuery UI Position', 'bridge');
-        $qode_ui_scripts['jquery-ui-progressbar'] = esc_html__('JQuery UI Progressbar', 'bridge');
-        $qode_ui_scripts['jquery-ui-selectable'] = esc_html__('JQuery UI Selectable', 'bridge');
-        $qode_ui_scripts['jquery-ui-resizable'] = esc_html__('JQuery UI Resizable', 'bridge');
-        $qode_ui_scripts['jquery-ui-sortable'] = esc_html__('JQuery UI Sortable', 'bridge');
-        $qode_ui_scripts['jquery-ui-sortable'] = esc_html__('JQuery UI Sortable', 'bridge');
-        $qode_ui_scripts['jquery-ui-slider'] = esc_html__('JQuery UI Slider', 'bridge');
-        $qode_ui_scripts['jquery-ui-spinner'] = esc_html__('JQuery UI Spinner', 'bridge');
-        $qode_ui_scripts['jquery-ui-tooltip'] = esc_html__('JQuery UI Tooltip', 'bridge');
-        $qode_ui_scripts['jquery-ui-tabs'] = esc_html__('JQuery UI Tabs', 'bridge');
-        $qode_ui_scripts['jquery-effects-core'] = esc_html__('JQuery Effects Core', 'bridge');
-        $qode_ui_scripts['jquery-effects-blind'] = esc_html__('JQuery Effects Blind', 'bridge');
-        $qode_ui_scripts['jquery-effects-bounce'] = esc_html__('JQuery Effects Bounce', 'bridge');
-        $qode_ui_scripts['jquery-effects-clip'] = esc_html__('JQuery Effects Clip', 'bridge');
-        $qode_ui_scripts['jquery-effects-drop'] = esc_html__('JQuery Effects Drop', 'bridge');
-        $qode_ui_scripts['jquery-effects-explode'] = esc_html__('JQuery Effects Explode', 'bridge');
-        $qode_ui_scripts['jquery-effects-fade'] = esc_html__('JQuery Effects Fade', 'bridge');
-        $qode_ui_scripts['jquery-effects-fold'] = esc_html__('JQuery Effects Fold', 'bridge');
-        $qode_ui_scripts['jquery-effects-highlight'] = esc_html__('JQuery Effects Highlight', 'bridge');
-        $qode_ui_scripts['jquery-effects-pulsate'] = esc_html__('JQuery Effects Pulsate', 'bridge');
-        $qode_ui_scripts['jquery-effects-scale'] = esc_html__('JQuery Effects Scale', 'bridge');
-        $qode_ui_scripts['jquery-effects-shake'] = esc_html__('JQuery Effects Shake', 'bridge');
-        $qode_ui_scripts['jquery-effects-slide'] = esc_html__('JQuery Effects Slide', 'bridge');
-        $qode_ui_scripts['jquery-effects-transfer'] = esc_html__('JQuery Effects Transfer', 'bridge');
+		
+		$qode_ui_scripts = array(
+			'jquery-ui-core' => esc_html__('JQuery UI Core', 'bridge' ),
+	        'jquery-ui-widget' => esc_html__('JQuery UI Widget', 'bridge' ),
+	        'jquery-ui-accordion' => esc_html__('JQuery UI Accordion', 'bridge' ),
+	        'jquery-ui-autocomplete' => esc_html__('JQuery UI Autocomplete', 'bridge' ),
+	        'jquery-ui-button' => esc_html__('JQuery UI Button', 'bridge' ),
+	        'jquery-ui-datepicker' => esc_html__('JQuery UI Datepicker', 'bridge' ),
+	        'jquery-ui-dialog' => esc_html__('JQuery UI Dialog', 'bridge' ),
+	        'jquery-ui-draggable' => esc_html__('JQuery UI Draggable', 'bridge' ),
+	        'jquery-ui-droppable' => esc_html__('JQuery UI Droppable', 'bridge' ),
+	        'jquery-ui-menu' => esc_html__('JQuery UI Menu', 'bridge' ),
+	        'jquery-ui-mouse' => esc_html__('JQuery UI Mouse', 'bridge' ),
+	        'jquery-ui-position' => esc_html__('JQuery UI Position', 'bridge' ),
+	        'jquery-ui-progressbar' => esc_html__('JQuery UI Progressbar', 'bridge' ),
+	        'jquery-ui-selectable' => esc_html__('JQuery UI Selectable', 'bridge' ),
+	        'jquery-ui-resizable' => esc_html__('JQuery UI Resizable', 'bridge' ),
+	        'jquery-ui-sortable' => esc_html__('JQuery UI Sortable', 'bridge' ),
+	        'jquery-ui-slider' => esc_html__('JQuery UI Slider', 'bridge' ),
+	        'jquery-ui-spinner' => esc_html__('JQuery UI Spinner', 'bridge' ),
+	        'jquery-ui-tooltip' => esc_html__('JQuery UI Tooltip', 'bridge' ),
+	        'jquery-ui-tabs' => esc_html__('JQuery UI Tabs', 'bridge' ),
+	        'jquery-effects-core' => esc_html__('JQuery Effects Core', 'bridge' ),
+	        'jquery-effects-blind' => esc_html__('JQuery Effects Blind', 'bridge' ),
+	        'jquery-effects-bounce' => esc_html__('JQuery Effects Bounce', 'bridge' ),
+	        'jquery-effects-clip' => esc_html__('JQuery Effects Clip', 'bridge' ),
+	        'jquery-effects-drop' => esc_html__('JQuery Effects Drop', 'bridge' ),
+	        'jquery-effects-explode' => esc_html__('JQuery Effects Explode', 'bridge' ),
+	        'jquery-effects-fade' => esc_html__('JQuery Effects Fade', 'bridge' ),
+	        'jquery-effects-fold' => esc_html__('JQuery Effects Fold', 'bridge' ),
+	        'jquery-effects-highlight' => esc_html__('JQuery Effects Highlight', 'bridge' ),
+	        'jquery-effects-pulsate' => esc_html__('JQuery Effects Pulsate', 'bridge' ),
+	        'jquery-effects-scale' => esc_html__('JQuery Effects Scale', 'bridge' ),
+	        'jquery-effects-shake' => esc_html__('JQuery Effects Shake', 'bridge' ),
+	        'jquery-effects-slide' => esc_html__('JQuery Effects Slide', 'bridge' ),
+	        'jquery-effects-transfer' => esc_html__('JQuery Effects Transfer', 'bridge' ),
+        );
 
         return $qode_ui_scripts;
     }
@@ -273,62 +331,85 @@ if (!function_exists('bridge_qode_scripts')) {
                 wp_enqueue_script($qode_ui_enabled_script);
             }
         }
-
-        // 3rd party JavaScripts that we used in our theme
-        wp_enqueue_script("doubleTapToGo", QODE_ROOT."/js/plugins/doubletaptogo.js",array('jquery'),false,true);
-        wp_enqueue_script("modernizr", QODE_ROOT."/js/plugins/modernizr.min.js",array('jquery'),false,true);
-        wp_enqueue_script("appear", QODE_ROOT."/js/plugins/jquery.appear.js",array('jquery'),false,true);
-        wp_enqueue_script("hoverIntent");
-        wp_enqueue_script("counter", QODE_ROOT."/js/plugins/counter.js",array('jquery'),false,true);
-        wp_enqueue_script("easyPieChart", QODE_ROOT."/js/plugins/easypiechart.js",array('jquery'),false,true);
-        wp_enqueue_script("mixItUp", QODE_ROOT."/js/plugins/mixitup.js",array('jquery'),false,true);
-        wp_enqueue_script("prettyphoto", QODE_ROOT."/js/plugins/jquery.prettyPhoto.js",array('jquery'),false,true);
-        wp_enqueue_script("fitvids", QODE_ROOT."/js/plugins/jquery.fitvids.js",array('jquery'),false,true);
-        wp_enqueue_script("flexslider", QODE_ROOT."/js/plugins/jquery.flexslider-min.js",array('jquery'),false,true);
-        wp_enqueue_script('wp-mediaelement');
-        wp_enqueue_script("infiniteScroll", QODE_ROOT."/js/plugins/infinitescroll.min.js",array('jquery'),false,true);
-        wp_enqueue_script("waitforimages", QODE_ROOT."/js/plugins/jquery.waitforimages.js",array('jquery'),false,true);
-        wp_enqueue_script("jquery-form");
-        wp_enqueue_script("waypoints", QODE_ROOT."/js/plugins/waypoints.min.js",array('jquery'),false,true);
-		wp_enqueue_script("bootstrapCarousel", QODE_ROOT."/js/plugins/bootstrap.carousel.js",array('jquery'),false,true);
-        wp_enqueue_script("skrollr", QODE_ROOT."/js/plugins/skrollr.js",array('jquery'),false,true);
-        wp_enqueue_script("chart", QODE_ROOT."/js/plugins/Chart.min.js",array('jquery'),false,true);
-        wp_enqueue_script("easing", QODE_ROOT."/js/plugins/jquery.easing.1.3.js",array('jquery'),false,true);
-        wp_enqueue_script("abstractBaseClass", QODE_ROOT."/js/plugins/abstractBaseClass.js",array('jquery'),false,true);
-        wp_enqueue_script("countdown", QODE_ROOT."/js/plugins/jquery.countdown.js",array('jquery'),false,true);
-        wp_enqueue_script("multiscroll", QODE_ROOT."/js/plugins/jquery.multiscroll.min.js",array('jquery'),false,true);
-        wp_enqueue_script("justifiedGallery", QODE_ROOT."/js/plugins/jquery.justifiedGallery.min.js",array('jquery'),false,true);
-        wp_enqueue_script("bigtext", QODE_ROOT."/js/plugins/bigtext.js",array('jquery'),false,true);
-        wp_enqueue_script("stickyKit", QODE_ROOT."/js/plugins/jquery.sticky-kit.min.js",array('jquery'),false,true);
-        wp_enqueue_script("owlCarousel", QODE_ROOT."/js/plugins/owl.carousel.min.js",array('jquery'),false,true);
-        wp_enqueue_script("typed", QODE_ROOT."/js/plugins/typed.js",array('jquery'),false,true);
-        wp_enqueue_script("fluidvids", QODE_ROOT."/js/plugins/fluidvids.min.js",array('jquery'),false,true);
-        wp_enqueue_script("carouFredSel", QODE_ROOT."/js/plugins/jquery.carouFredSel-6.2.1.min.js",array('jquery'),false,true);
-        wp_enqueue_script("lemmonSlider", QODE_ROOT."/js/plugins/lemmon-slider.min.js",array('jquery'),false,true);
-        wp_enqueue_script("one_page_scroll", QODE_ROOT."/js/plugins/jquery.fullPage.min.js",array('jquery'),false,true);
-        wp_enqueue_script("mousewheel", QODE_ROOT."/js/plugins/jquery.mousewheel.min.js",array('jquery'),false,true);
-        wp_enqueue_script("touchSwipe", QODE_ROOT."/js/plugins/jquery.touchSwipe.min.js",array('jquery'),false,true);
-        wp_enqueue_script("isotope", QODE_ROOT."/js/plugins/jquery.isotope.min.js",array('jquery'),false,true);
-        wp_enqueue_script("packery", QODE_ROOT."/js/plugins/packery-mode.pkgd.min.js",array('jquery'),false,true);
-        wp_enqueue_script("stretch", QODE_ROOT."/js/plugins/jquery.stretch.js",array('jquery'),false,true);
-        wp_enqueue_script("imagesLoaded", QODE_ROOT."/js/plugins/imagesloaded.js",array('jquery'),false,true);
-        wp_enqueue_script("rangeSlider", QODE_ROOT."/js/plugins/rangeslider.min.js",array('jquery'),false,true);
-        wp_enqueue_script("eventMove", QODE_ROOT."/js/plugins/jquery.event.move.js",array('jquery'),false,true);
-        wp_enqueue_script("twentytwenty", QODE_ROOT."/js/plugins/jquery.twentytwenty.js",array('jquery'),false,true);
-        wp_enqueue_script("swiper", QODE_ROOT."/js/plugins/swiper.min.js",array('jquery'),false,true);
-
-        $mac_os   = strpos( getenv( "HTTP_USER_AGENT" ), 'Mac' );
-        if($smooth_scroll && $mac_os == false){
-            wp_enqueue_script("TweenLite", QODE_ROOT."/js/plugins/TweenLite.min.js",array('jquery'),false,true);
-			if(!bridge_qode_layer_slider_installed() || !bridge_qode_revolution_slider_installed()){
-				wp_enqueue_script("ScrollToPlugin", QODE_ROOT."/js/plugins/ScrollToPlugin.min.js",array('jquery'),false,true);
+		
+		$third_party_scripts = bridge_qode_get_third_party_scripts_array();
+	    
+	    $scripts_array = class_exists( 'BridgeQodePerformance' ) ? BridgeQodePerformance::get_instance()->get_shortcode_3rd_party_scripts_array() : array();
+		
+		if( ! empty( $third_party_scripts['enqueue'] ) && is_array( $third_party_scripts['enqueue'] ) && count( $third_party_scripts['enqueue'] ) > 0 ) {
+			foreach( $third_party_scripts['enqueue'] as $handle => $url ) {
+				$script_loading_type = true;
+				$script_loading_type_option = bridge_qode_options()->getOptionValue( 'script_' . $handle . '_loading_type' );
+				
+				if( false !== $script_loading_type_option && '' !== $script_loading_type_option ) {
+					$script_loading_type = array(
+						'strategy' => $script_loading_type_option
+					);
+				}
+				
+				if( $url ) {
+					wp_enqueue_script( $handle, $url, array('jquery'), false, $script_loading_type );
+				} else {
+					wp_enqueue_script( $handle );
+				}
 			}
-            wp_enqueue_script("smoothPageScroll", QODE_ROOT."/js/plugins/smoothPageScroll.min.js",array('jquery'),false,true);
+		}
+		
+		if( ! empty( $third_party_scripts['register'] ) && is_array( $third_party_scripts['register'] ) && count( $third_party_scripts['register'] ) > 0 ) {
+			foreach( $third_party_scripts['register'] as $handle => $url ) {
+				$script_loading_type = true;
+				$script_loading_type_option = bridge_qode_options()->getOptionValue( 'script_' . $handle . '_loading_type' );
+				$script_force_load_option = bridge_qode_options()->getOptionValue( 'script_' . $handle . '_force_load' );
+				
+				if( in_array( $script_loading_type_option, array( 'defer', 'async' ) ) ) {
+					$script_loading_type = array(
+						'strategy' => $script_loading_type_option
+					);
+				}
+				
+				if( 'yes' === $script_force_load_option ) {
+					wp_enqueue_script( $handle, $url, array('jquery'), false, $script_loading_type );
+					
+					if( array_key_exists( $handle, $scripts_array ) ) {
+						foreach( $scripts_array[$handle] as $related_shortcode_script ) {
+							wp_enqueue_script( $related_shortcode_script );
+						}
+					}
+				} else {
+					wp_register_script( $handle, $url, array('jquery'), false, $script_loading_type );
+				}
+			}
+		}
+		
+		if( ! empty( $third_party_scripts['partials_register'] ) && is_array( $third_party_scripts['partials_register'] ) && count( $third_party_scripts['partials_register'] ) > 0 ) {
+			foreach( $third_party_scripts['partials_register'] as $handle => $url ) {
+				$script_loading_type = true;
+				$script_loading_type_option = bridge_qode_options()->getOptionValue( 'script_' . $handle . '_loading_type' );
+				$script_force_load_option = bridge_qode_options()->getOptionValue( 'script_' . $handle . '_force_load' );
+				
+				if( in_array( $script_loading_type_option, array( 'defer', 'async' ) ) ) {
+					$script_loading_type = array(
+						'strategy' => $script_loading_type_option
+					);
+				}
+				
+				if( 'yes' === $script_force_load_option ) {
+					wp_enqueue_script( $handle, $url, array('jquery', 'bridge-default'), false, $script_loading_type );
+				} else {
+					wp_register_script( $handle, $url, array('jquery', 'bridge-default'), false, $script_loading_type );
+				}
+			}
+		}
+		
+		
+		$mac_os   = strpos( getenv( "HTTP_USER_AGENT" ), 'Mac' );
+        if( $smooth_scroll && ! $mac_os ){
+            wp_enqueue_script("smoothPageScroll", QODE_ROOT . "/js/plugins/smoothPageScroll.min.js", array('jquery'), false, true);
         }
 
 
         if ( $is_IE ) {
-            wp_enqueue_script("html5", QODE_ROOT."/js/plugins/html5.js",array('jquery'),false,false);
+            wp_enqueue_script("html5", QODE_ROOT . "/js/plugins/html5.js",array('jquery'),false,false);
         }
 
 		if( (isset($bridge_qode_options['google_maps_api_key']) && $bridge_qode_options['google_maps_api_key'] != "")) {
@@ -336,6 +417,7 @@ if (!function_exists('bridge_qode_scripts')) {
 			$google_maps_url = 'https://maps.googleapis.com/maps/api/js';
 			$google_maps_api_key = $bridge_qode_options['google_maps_api_key'];
 			$google_maps_url = add_query_arg( array( 'key' => $google_maps_api_key ), $google_maps_url );
+//			$google_maps_url = add_query_arg( array( 'loading' => 'async' ), $google_maps_url );
 			$google_maps_url = add_query_arg( array( 'callback' => 'qodeEmptyCallback' ), $google_maps_url );
 
 			$google_maps_get_params = apply_filters('bridge_qode_filter_google_maps_get_params', $google_maps_get_params);
@@ -344,19 +426,30 @@ if (!function_exists('bridge_qode_scripts')) {
 					$google_maps_url = add_query_arg( array( $google_maps_get_param => $value ), $google_maps_url );
 				}
 			}
-			wp_enqueue_script("google_map_api", $google_maps_url, array('jquery'),false,true);
-			wp_add_inline_script('google_map_api', 'window.qodeEmptyCallback = function () {};','before');
+			
+			$script_loading_type = true;
+			$script_loading_type_option = bridge_qode_options()->getOptionValue( 'script_google_maps_loading_type' );
+			$script_force_load_option = bridge_qode_options()->getOptionValue( 'script_google_maps_force_load' );
+			
+			if( in_array( $script_loading_type_option, array( 'defer', 'async' ) ) ) {
+				$script_loading_type = array(
+					'strategy' => $script_loading_type_option
+				);
+			}
+			
+			if( 'yes' === $script_force_load_option ) {
+				wp_enqueue_script( 'google-map-api', $google_maps_url, array( 'jquery' ), false, $script_loading_type );
+				wp_enqueue_script( 'qode-google-map' );
+			} else {
+				wp_register_script( 'google-map-api', $google_maps_url, array( 'jquery' ), false, $script_loading_type );
+			}
+			
+			wp_add_inline_script('google-map-api', 'window.qodeEmptyCallback = function () {};','before');
 		}
 
-		if (file_exists(dirname(__FILE__) ."/js/default_dynamic.js") && bridge_qode_is_js_folder_writable() && !is_multisite()) {
-			wp_enqueue_script("bridge-default-dynamic", QODE_ROOT."/js/default_dynamic.js",array('jquery'), filemtime(dirname(__FILE__) ."/js/default_dynamic.js"),true);
-		} else if (file_exists(QODE_ROOT_DIR . '/js/default_dynamic_ms_id_' . bridge_qode_get_multisite_blog_id() . '.js') && bridge_qode_is_css_folder_writable() && is_multisite()) {
-            wp_enqueue_script('bridge-default-dynamic', QODE_ROOT . '/js/default_dynamic_ms_id_' . bridge_qode_get_multisite_blog_id() . '.js', array('jquery'), filemtime(QODE_ROOT_DIR . '/js/default_dynamic_ms_id_' . bridge_qode_get_multisite_blog_id() . '.js'), true);
-        } else {
-			wp_enqueue_script("bridge-default-dynamic", QODE_ROOT."/js/default_dynamic_callback.php",array('jquery'),false,true);
-		}
+		bridge_qode_enqueue_dynamic_script('default_dynamic', array('jquery'), true);
 
-        wp_enqueue_script("bridge-default", QODE_ROOT."/js/default.min.js",array('jquery'),false,true);
+        wp_enqueue_script("bridge-default", QODE_ROOT . "/js/default.min.js", array('jquery', 'bridge-default-dynamic'), BRIDGE_THEME_VERSION, true);
 
 		$custom_js = bridge_qode_options()->getOptionValue('custom_js');
 
@@ -378,7 +471,7 @@ if (!function_exists('bridge_qode_scripts')) {
             $has_ajax = true;
 
         if ($has_ajax) :
-            wp_enqueue_script("bridge-ajax", QODE_ROOT."/js/ajax.min.js",array('jquery'),false,true);
+            wp_enqueue_script("bridge-ajax", QODE_ROOT . "/js/ajax.min.js", array('jquery'), BRIDGE_THEME_VERSION, true);
         endif;
         wp_enqueue_script( 'wpb_composer_front_js' );
 
@@ -391,7 +484,7 @@ if (!function_exists('bridge_qode_scripts')) {
         endif;
 
         if($woocommerce) {
-            wp_enqueue_script("bridge-woocommerce", QODE_ROOT."/js/woocommerce.min.js",array('jquery'),false,true);
+            wp_enqueue_script("bridge-woocommerce", QODE_ROOT . "/js/woocommerce.min.js",array('jquery'),false,true);
 	        wp_enqueue_script('select2');
         }
         do_action( 'bridge_qode_action_enqueue_third_party_scripts' );
@@ -412,6 +505,7 @@ if (!function_exists('bridge_qode_get_global_variables')) {
 
 		$global_variables['qodeAddingToCartLabel'] = esc_html__('Adding to Cart...', 'bridge');
 		$global_variables['page_scroll_amount_for_sticky'] = bridge_qode_filter_px( get_post_meta( get_the_ID(), "qode_page_scroll_amount_for_sticky", true ) );
+		$global_variables['commentSentLabel'] = esc_html__( 'Comment has been sent!', 'bridge' );
 
 		$global_variables = apply_filters('bridge_qode_filter_js_global_variables', $global_variables);
 
@@ -421,28 +515,6 @@ if (!function_exists('bridge_qode_get_global_variables')) {
 	}
 
 	add_action('wp_enqueue_scripts', 'bridge_qode_get_global_variables');
-}
-
-/*Because of the bug when Revolution slider, Layer Slider and Smooth Scroll are enabled together (greensock.js doesn't have included ScrollTo so it need to be included before)*/
-
-if(!function_exists('bridge_qode_scrollto_script')) {
-
-	function bridge_qode_scrollto_script(){
-
-		global $bridge_qode_options;
-
-		$smooth_scroll = true;
-		if(isset($bridge_qode_options['smooth_scroll']) && $bridge_qode_options['smooth_scroll'] == "no"){
-			$smooth_scroll = false;
-		}
-		$mac_os = strpos( getenv( "HTTP_USER_AGENT" ), 'Mac' );
-		if($smooth_scroll && $mac_os == false && bridge_qode_layer_slider_installed() && bridge_qode_revolution_slider_installed()) {
-			wp_enqueue_script("ScrollToPlugin", QODE_ROOT . "/js/plugins/ScrollToPlugin.min.js", array(), false, false);
-		}
-	}
-
-	add_action('wp_enqueue_scripts', 'bridge_qode_scrollto_script', 1);
-
 }
 
 /* Add admin js and css */
@@ -576,7 +648,7 @@ if(!function_exists('bridge_qode_theme_setup')) {
         load_theme_textdomain( 'bridge', get_template_directory().'/languages' );
     }
 
-    add_action('after_setup_theme', 'bridge_qode_theme_setup');
+    add_action( 'after_setup_theme', 'bridge_qode_theme_setup' );
 }
 
 if (!function_exists('bridge_qode_ajax_classes')) {
@@ -990,6 +1062,10 @@ if(!function_exists('bridge_qode_content_sidebar_responsive_body_class')) {
 
         if(isset($bridge_qode_options['content_sidebar_responsiveness']) && $bridge_qode_options['content_sidebar_responsiveness'] === 'yes') {
             $classes[] = 'qode-content-sidebar-responsive';
+	        
+	        if( isset( $bridge_qode_options['sidebar_advanced_responsive_width'] ) && '1024' === $bridge_qode_options['sidebar_advanced_responsive_width'] ) {
+		        $classes[] = 'qode-content-sidebar-responsive-1024';
+	        }
         }
 
         return $classes;
@@ -1074,6 +1150,32 @@ if(!function_exists('bridge_qode_enable_button_white_space_wrapping')) {
     }
 
     add_filter('body_class', 'bridge_qode_enable_button_white_space_wrapping');
+}
+
+/* Add class on body depending on smooth scroll */
+
+if (!function_exists('bridge_qode_smooth_scroll_class')) {
+	/**
+	 * Function that adds class on body depending on content width
+	 * @param $classes array of current body classes
+	 * @return array array of changed body classes
+	 */
+	function bridge_qode_smooth_scroll_class($classes){
+		global $bridge_qode_options;
+
+		$smooth_scroll = true;
+		if(isset($bridge_qode_options['smooth_scroll']) && $bridge_qode_options['smooth_scroll'] == "no"){
+			$smooth_scroll = false;
+		}
+		$mac_os = strpos( getenv( "HTTP_USER_AGENT" ), 'Mac' );
+		if($smooth_scroll && $mac_os == false) {
+			$classes[] = 'qode-smooth-scroll-enabled';
+		}
+
+		return $classes;
+	}
+
+	add_filter('body_class','bridge_qode_smooth_scroll_class');
 }
 
 if(!function_exists('bridge_qode_is_title_hidden')) {
@@ -1188,7 +1290,7 @@ if (!function_exists('bridge_qode_excerpt_length')) {
 	add_filter( 'excerpt_length', 'bridge_qode_excerpt_length', 999 );
 }
 
-if (!function_exists('bridge_qode_excerpt_max_charlength')) {
+if ( ! function_exists( 'bridge_qode_excerpt_max_charlength' ) ) {
 	/**
 	 * Function that sets character length for social share shortcode
 	 * @param $charlength string original text
@@ -1419,57 +1521,6 @@ if (!function_exists('bridge_qode_gallery_upload_get_images')) {
 	add_action( 'wp_ajax_bridge_qode_gallery_upload_get_images', 'bridge_qode_gallery_upload_get_images');
 }
 
-if (!function_exists('bridge_qode_generate_dynamic_css_and_js')){
-	/**
-	 * Function that gets content of dynamic assets files and puts that in static ones
-	 */
-	function bridge_qode_generate_dynamic_css_and_js() {
-
-	    global $wp_filesystem;
-	    WP_Filesystem();
-	    
-		$bridge_qode_options = get_option('qode_options_proya');
-		if(bridge_qode_is_css_folder_writable()) {
-			$css_dir = get_template_directory().'/css/';
-
-			ob_start();
-			include_once( QODE_ROOT_DIR . '/css/style_dynamic.php');
-			$css = ob_get_clean();
-            if ( is_multisite() ) {
-                $wp_filesystem->put_contents( $css_dir . 'style_dynamic_ms_id_' . bridge_qode_get_multisite_blog_id() . '.css', $css );
-            } else {
-                $wp_filesystem->put_contents($css_dir . 'style_dynamic.css', $css);
-            }
-
-
-			ob_start();
-			include_once( QODE_ROOT_DIR . '/css/style_dynamic_responsive.php');
-			$css = ob_get_clean();
-            if ( is_multisite() ) {
-                $wp_filesystem->put_contents( $css_dir . 'style_dynamic_responsive_ms_id_' . bridge_qode_get_multisite_blog_id() . '.css', $css );
-            } else {
-                $wp_filesystem->put_contents($css_dir . 'style_dynamic_responsive.css', $css);
-            }
-		}
-
-		if(bridge_qode_is_js_folder_writable()) {
-			$js_dir = get_template_directory().'/js/';
-
-			ob_start();
-			include_once( QODE_ROOT_DIR . '/js/default_dynamic.php');
-			$js = ob_get_clean();
-            if ( is_multisite() ) {
-                $wp_filesystem->put_contents( $js_dir . 'default_dynamic_ms_id_' . bridge_qode_get_multisite_blog_id() . '.js', $js );
-            } else {
-                $wp_filesystem->put_contents($js_dir . 'default_dynamic.js', $js);
-            }
-		}
-	}
-
-    add_action('bridge_qode_action_after_theme_option_save', 'bridge_qode_generate_dynamic_css_and_js');
-    add_action('bridge_core_action_after_demo_import_content', 'bridge_qode_generate_dynamic_css_and_js');
-}
-
 if (!function_exists('bridge_qode_hex2rgb')) {
 	/**
 	 * Function that transforms hex color to rgb color
@@ -1477,7 +1528,20 @@ if (!function_exists('bridge_qode_hex2rgb')) {
 	 * @return array array containing three elements (r, g, b)
 	 */
 	function bridge_qode_hex2rgb($hex) {
+		if( empty( $hex ) ) {
+			return array();
+		}
+		
 		$hex = str_replace("#", "", $hex);
+		
+		//if already in rgb or rgba format
+		if( str_contains( $hex, 'rgb' ) ) {
+			$hex = str_replace( 'rgba(', '', $hex );
+			$hex = str_replace( 'rgb(', '', $hex );
+			$hex = str_replace( ')', '', $hex );
+			
+			return explode( ',', $hex );
+		}
 
 		if(strlen($hex) == 3) {
 			$r = hexdec(substr($hex,0,1).substr($hex,0,1));
@@ -1561,6 +1625,12 @@ if(!function_exists('bridge_qode_is_woocommerce_shop')) {
 if(!function_exists('bridge_qode_is_product_category')) {
 	function bridge_qode_is_product_category() {
 		return function_exists('is_product_category') && is_product_category();
+	}
+}
+
+if ( ! function_exists( 'bridge_qode_is_product_brand' ) ) {
+	function bridge_qode_is_product_brand() {
+		return function_exists('is_product_taxonomy') && is_product_taxonomy() && class_exists( 'WC_Brands' ) && isset( $GLOBALS['WC_Brands'] );
 	}
 }
 
@@ -1858,7 +1928,7 @@ if(!function_exists('bridge_qode_get_title_text')) {
 		}
 
 		//is WooCommerce installed and is current page product archive page?
-		elseif(bridge_qode_is_woocommerce_installed() && (is_product_category() || is_product_tag())) {
+		elseif(bridge_qode_is_woocommerce_installed() && (is_product_category() || is_product_tag() || is_tax('product_brand'))) {
 			global $wp_query;
 
 			//get current taxonomy and it's name and assign to title
@@ -1867,6 +1937,14 @@ if(!function_exists('bridge_qode_get_title_text')) {
 			$title 			= $category_title;
 		}
 
+		elseif ( is_tax( 'portfolio_category' ) || is_tax( 'portfolio_tag' ) ) {
+			$title = single_term_title( '', false );
+		}
+
+		elseif ( is_post_type_archive( 'portfolio_page' ) ) {
+			$title = esc_html__( 'Portfolio', 'bridge' );
+		}
+		
 		//is current page some archive page?
 		elseif (is_archive()) {
 			$title = esc_html__('Archive','bridge');
@@ -2014,31 +2092,7 @@ if(!function_exists('bridge_qode_get_attachment_id_from_url')) {
 	 * @return null|string
 	 */
 	function bridge_qode_get_attachment_id_from_url($attachment_url) {
-		global $wpdb;
-		$attachment_id = '';
-		
-		if ( '' !== $attachment_url ) {
-			
-			$attachment_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE guid=%s", $attachment_url ) );
-			
-			// Additional check for undefined reason when guid is not image src
-			if ( empty( $attachment_id ) ) {
-				
-				// Skip if image is from theme folder ( ex. logo.png )
-				$theme_folder_name      = substr( get_template_directory(), strrpos( get_template_directory(), '/' ) + 1 );
-				$check_theme_files_urls = strpos( $attachment_url, $theme_folder_name . '/assets/img' );
-				
-				if ( false === $check_theme_files_urls ) {
-					
-					$modified_url = substr( $attachment_url, strrpos( $attachment_url, '/' ) + 1 );
-					
-					//get attachment id
-					$attachment_id = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='_wp_attached_file' AND meta_value LIKE %s", '%' . $modified_url . '%' ) );
-				}
-			}
-		}
-		
-		return $attachment_id;
+		return function_exists( 'attachment_url_to_postid' ) ? attachment_url_to_postid( $attachment_url ) : '';
 	}
 }
 
@@ -2499,6 +2553,10 @@ if(!function_exists('bridge_qode_assets_folders_writable')) {
 	 * @see bridge_qode_is_js_folder_writable()
 	 */
 	function bridge_qode_assets_folders_writable() {
+		if ( function_exists( 'bridge_qode_is_dynamic_assets_upload_writable' ) && bridge_qode_is_dynamic_assets_upload_writable() ) {
+			return true;
+		}
+
 		return bridge_qode_is_css_folder_writable() && bridge_qode_is_js_folder_writable();
 	}
 }
@@ -2518,17 +2576,15 @@ if(!function_exists('bridge_qode_writable_assets_folders_notice')) {
 		if($pagenow === 'admin.php' && $is_theme_options_page) {
 			if(!bridge_qode_assets_folders_writable()) { ?>
 				<div class="error">
-					<p><?php esc_html_e('Note that writing permissions aren\'t set for folders containing css and js files on your server.
+					<p><?php esc_html_e('Note that writing permissions aren\'t set for wp-content/uploads/bridge or the theme css/js folders.
+					Dynamic styles cannot be generated, which can break the header and menu after a theme update.
 					We recommend setting writing permissions in order to optimize your site performance.
 					For further instructions, please refer to our ', 'bridge'); ?><a target="_blank" href="http://demo.qodeinteractive.com/bridge-new-help/#!/getting_started"><?php esc_html_e('documentation', 'bridge'); ?></a></p>
-<!--					<p>--><?php //esc_html_e('It seams that css and js files in theme folder aren\'t writable.', 'bridge'); ?><!--</p>-->
 				</div>
 			<?php }
 		}
 	}
-	if(!is_multisite()) {
-		add_action('admin_notices', 'bridge_qode_writable_assets_folders_notice');
-	}
+	add_action('admin_notices', 'bridge_qode_writable_assets_folders_notice');
 }
 
 if(!function_exists('bridge_qode_localize_no_ajax_pages')) {
@@ -3024,19 +3080,26 @@ if(!function_exists('bridge_qode_get_mobile_menu_icon_html')) {
         $icon_pack = bridge_qode_option_get_value('mobile_menu_button_icon_pack');
 
         if(isset($icon_pack) && $icon_pack !== '') {
-            $icon_collection_obj = $qodeIconCollections->getIconCollection($icon_pack);
-            if( $icon_collection_obj ) {
-                $icon_field_name = 'mobile_menu_icon_' . $icon_collection_obj->param;
-
-                $mobile_menu_icon = bridge_qode_option_get_value($icon_field_name);
-
-                if (isset($mobile_menu_icon) && $mobile_menu_icon !== '') {
-
-                    if (method_exists($icon_collection_obj, 'render')) {
-                        $icon_html = $icon_collection_obj->render($mobile_menu_icon);
-                    }
-                }
-            }
+			if( 'svg_path' !== $icon_pack ) {
+				$icon_collection_obj = $qodeIconCollections->getIconCollection($icon_pack);
+				if( $icon_collection_obj ) {
+					$icon_field_name = 'mobile_menu_icon_' . $icon_collection_obj->param;
+					
+					$mobile_menu_icon = bridge_qode_option_get_value($icon_field_name);
+					
+					if (isset($mobile_menu_icon) && $mobile_menu_icon !== '') {
+						
+						if (method_exists($icon_collection_obj, 'render')) {
+							$icon_html = $icon_collection_obj->render($mobile_menu_icon);
+						}
+					}
+				}
+			} else {
+				$mobile_menu_icon_svg = bridge_qode_options()->getOptionValue('mobile_menu_icon_svg_opener');
+				if( ! empty( $mobile_menu_icon_svg ) ) {
+					echo bridge_qode_get_module_part( $mobile_menu_icon_svg );
+				}
+			}
         }
 
         return $icon_html;
@@ -3173,8 +3236,9 @@ if ( ! function_exists('bridge_qode_container_inner_style') ) {
 		);
 		$page_margin = get_post_meta( $page_id, 'qode_margin_after_title', true );
 		$page_mobile_margin = get_post_meta( $page_id, 'qode_margin_after_title_mobile', true );
+		$page_mobile_margin_value = get_post_meta( $page_id, 'qode_margin_after_title_mobile_value', true );
 
-		$container_inner_class       = array();
+		$container_inner_class = array();
 
 		if ( !empty($page_margin) ) {
 			if ( !empty($page_mobile_margin) && $page_mobile_margin == 'yes' ) {
@@ -3185,6 +3249,16 @@ if ( ! function_exists('bridge_qode_container_inner_style') ) {
 		}
 
 		$current_style = bridge_qode_dynamic_css( $container_selector, $container_inner_class );
+		
+		$container_inner_style_mobile = array();
+		
+		if( 'yes' !== $page_mobile_margin && ! empty( $page_mobile_margin_value ) ) {
+			$container_inner_style_mobile['padding-top'] = bridge_qode_filter_px( $page_mobile_margin_value ) . 'px !important';
+		}
+		
+		if ( count( $container_inner_style_mobile ) > 0 ) {
+			$current_style .= bridge_qode_dynamic_responsive_css( $container_selector, $container_inner_style_mobile, '', '1000' );
+		}
 
 		$style[] = $current_style;
 
@@ -3382,14 +3456,11 @@ if(!function_exists('bridge_qode_add_grid_lines')) {
 		if( $number_of_lines_page != '' && $number_of_lines_page != 'none' ){
 			$number_of_lines = $number_of_lines_page;
 			$lines_skin = $lines_skin_page;
-		}
-
-		else if( $number_of_lines_page == '' ){
+		} else if( $number_of_lines_page == '' ){
 			$number_of_lines = $number_of_lines_global;
 			$lines_skin = $lines_skin_global;
 		}
-
-
+		
 		$html = '';
 		if($number_of_lines !== 'none'){
 			$html .= '<div class="qode-grid-lines-holder qode-grid-columns-' . esc_html($number_of_lines) . ' qode-grid-lines-' . esc_html($lines_skin) . '-skin">';
@@ -3401,8 +3472,26 @@ if(!function_exists('bridge_qode_add_grid_lines')) {
 
 		print bridge_qode_get_module_part( $html );
 	}
+}
 
-	add_filter('bridge_qode_action_after_container_inner_open', 'bridge_qode_add_grid_lines');
+if( ! function_exists( 'bridge_qode_init_page_grid_lines' ) ) {
+	function bridge_qode_init_page_grid_lines() {
+		$page_template = get_page_template_slug();
+		
+		if( empty( $page_template ) ) {
+			if( is_single() ) {
+				$action = 'bridge_qode_action_after_wrapper_inner';
+			} else {
+				$action = 'bridge_qode_action_after_container_inner_open';
+			}
+		} else {
+			$action = 'bridge_qode_action_after_wrapper_inner';
+		}
+		
+		add_filter( $action, 'bridge_qode_add_grid_lines' );
+	}
+	
+	add_action( 'template_redirect', 'bridge_qode_init_page_grid_lines' );
 }
 
 if(!function_exists('bridge_qode_admin_google_fonts_styles')) {
@@ -3411,8 +3500,9 @@ if(!function_exists('bridge_qode_admin_google_fonts_styles')) {
      */
     function bridge_qode_admin_google_fonts_styles() {
         global $bridge_qode_options, $bridge_qode_framework;
-
-        if(bridge_qode_options()->getOptionValue('disable_google_fonts') != 'yes') {
+	    $is_disabled = apply_filters( 'bridge_qode_filter_disable_google_fonts', false );
+		
+        if( ! $is_disabled ) {
             $font_weight_str = '100,200,300,400,500,600,700,800,900,300italic,400italic,700italic';
             $default_font_string = 'Raleway:' . $font_weight_str;
 
@@ -3598,4 +3688,39 @@ if( ! function_exists( 'bridge_qode_add_registration_admin_notice' ) ) {
 	}
 
 	add_action('admin_notices', 'bridge_qode_add_registration_admin_notice');
+}
+
+if( ! function_exists( 'bridge_qode_set_portfolio_single_type_body_class' ) ) {
+	function bridge_qode_set_portfolio_single_type_body_class( $classes ) {
+		if( is_singular( 'portfolio_page' ) ) {
+			$portfolio_type_class = 'portfolio_template_1';
+			$portfolio_type_meta = get_post_meta( get_the_ID(),  'qode_choose-portfolio-single-view',  true );
+			$portfolio_type_option =  bridge_qode_options()->getOptionValue( 'portfolio_style' );
+			
+			if( ! empty( $portfolio_type_meta ) ){
+				$portfolio_type_class = 'qode-portfolio-single-template-' . $portfolio_type_meta;
+			} elseif( isset( $portfolio_type_option ) ) {
+				$portfolio_type_class = 'qode-portfolio-single-template-' . $portfolio_type_option;
+			}
+			
+			$classes[] = $portfolio_type_class;
+		}
+		
+		return $classes;
+	}
+	
+	add_filter( 'body_class', 'bridge_qode_set_portfolio_single_type_body_class' );
+}
+
+if( ! function_exists( 'bridge_child_add_title_to_single_events' ) ) {
+	function bridge_child_add_title_to_single_events( $new_html, $view_slug, $query, $context ) {
+		
+		if ( is_singular( 'tribe_events' ) ) {
+			$new_html = get_template_part( 'title' );
+		}
+		
+		return $new_html;
+	}
+	
+	add_filter( 'tribe_events_views_v2_bootstrap_pre_get_view_html', 'bridge_child_add_title_to_single_events', 10, 4 );
 }

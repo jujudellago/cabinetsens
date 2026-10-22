@@ -95,6 +95,33 @@ const LS_SearchActions = [
 				action: function() {
 					LayerSlider.addFormattedLayer('post');
 				}
+			},
+
+			{
+				name: 'Countdown',
+				icon: 'countdown',
+				keywords: 'add new create',
+				action: function() {
+					LayerSlider.addFormattedLayer('countdown');
+				}
+			},
+
+			{
+				name: 'Counter',
+				icon: 'counter',
+				keywords: 'add new create countup countdown',
+				action: function() {
+					LayerSlider.addFormattedLayer('counter');
+				}
+			},
+
+			{
+				name: 'Lottie',
+				icon: 'lottie',
+				keywords: 'add new create animation',
+				action: function() {
+					LayerSlider.addFormattedLayer('lottie');
+				}
 			}
 
 		]
@@ -114,7 +141,7 @@ const LS_SearchActions = [
 				icon: 'plus',
 				keywords: 'create',
 				action: function() {
-					jQuery('.lse-add-layer-button').click();
+					jQuery('#lse-add-layer-button').trigger('click');
 				}
 			},
 
@@ -145,9 +172,9 @@ const LS_SearchActions = [
 
 			{
 				name: 'Paste Layer',
-				icon: 'clipboard',
+				icon: 'paste',
 				action: function() {
-					LayerSlider.pastaLayer();
+					LayerSlider.pasteLayer();
 				}
 			},
 
@@ -177,7 +204,21 @@ const LS_SearchActions = [
 				}
 			},
 
+			{
+				name: 'Copy Layer Styles',
+				icon: 'copy',
+				action: function() {
+					LayerSlider.copyLayerStyles();
+				}
+			},
 
+			{
+				name: 'Paste Layer Styles',
+				icon: 'paste',
+				action: function() {
+					LayerSlider.pasteLayerStyles();
+				}
+			}
 		]
 	},
 
@@ -338,7 +379,7 @@ const LS_SearchActions = [
 
 			{
 				name: 'Event Callbacks',
-				icon: 'retweet',
+				icon: 'brackets-curly',
 				keywords: 'options',
 				action: function() {
 					LayerSlider.openEventCallbacks()

@@ -1,4 +1,4 @@
-@vc_controls-padding: 32px;
+@vc_controls-padding: (@vc-element-controls-height + 1px);
 .vc_vc_tabs, .vc_vc_accordion, .vc_vc_tour, .vc_vc_row_inner {
   margin-top: 0 !important;
 }
@@ -26,7 +26,9 @@
 }
 
 // Custom elements css
-.vc_vc_row_inner, .vc_vc_row > .vc_parallax, .vc_vc_section > .vc_parallax {
+.vc_vc_row_inner,
+.vc_vc_row > .vc_parallax,
+.vc_vc_section > .vc_parallax {
   padding-top: @vc_controls-padding;
 }
 .vc_vc_row_inner, .vc_vc_row > [data-vc-full-width="true"], .vc_vc_section > [data-vc-full-width="true"] {
@@ -88,7 +90,7 @@
 
 .vc_vc_tweetmeme {
   .vc_social-placeholder {
-    height: 32px;
+    min-height: 32px;
     background: transparent url(../vc/fe/social/tw/none.png) left center no-repeat;
   }
 }
@@ -174,6 +176,10 @@
       display: none;
     }
   }
+}
+
+.vc_container-block:last-child:has(> .vc_controls.vc_controls-parent) {
+  margin-bottom: @vc-element-controls-height;
 }
 
 .wpb_column {

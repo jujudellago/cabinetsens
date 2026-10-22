@@ -56,3 +56,14 @@ if(!function_exists('qode_lms_include_elementor_course_shortcodes')) {
 
     add_action('bridge_core_load_elementor_shortcodes_from_plugins', 'qode_lms_include_elementor_course_shortcodes');
 }
+
+if( ! function_exists( 'qode_lms_include_course_shortcodes_for_owl_carousel' ) ) {
+	function qode_lms_include_course_shortcodes_for_owl_carousel( $shortcodes_to_check ) {
+		$shortcodes_to_check[] = 'qode_course_list';
+		$shortcodes_to_check[] = 'qode_course_slider';
+		
+		return $shortcodes_to_check;
+	}
+	
+	add_filter( 'bridge_qode_filter_owl_carousel_shortcodes', 'qode_lms_include_course_shortcodes_for_owl_carousel' );
+}

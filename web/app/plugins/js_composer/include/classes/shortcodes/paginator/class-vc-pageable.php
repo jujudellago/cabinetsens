@@ -1,4 +1,8 @@
 <?php
+/**
+ * WPBakery Pageable Shortcode.
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
@@ -8,7 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class WPBakeryShortCode_Vc_Pageable extends WPBakeryShortCode {
 	/**
-	 * @param $settings
+	 * WPBakeryShortCode_Vc_Pageable constructor.
+	 *
+	 * @param array $settings
 	 */
 	public function __construct( $settings ) {
 		parent::__construct( $settings );
@@ -19,18 +25,20 @@ class WPBakeryShortCode_Vc_Pageable extends WPBakeryShortCode {
 	 * Register scripts and styles for pager
 	 */
 	public function shortcodeScripts() {
-		wp_register_script( 'vc_pageable_owl-carousel', vc_asset_url( 'lib/owl-carousel2-dist/owl.carousel.min.js' ), array(
+		wp_register_script( 'vc_pageable_owl-carousel', vc_asset_url( 'lib/vendor/owl-carousel2-dist/owl.carousel.min.js' ), [
 			'jquery-core',
-		), WPB_VC_VERSION, true );
-		wp_register_script( 'vc_waypoints', vc_asset_url( 'lib/vc_waypoints/vc-waypoints.min.js' ), array( 'jquery-core' ), WPB_VC_VERSION, true );
+		], WPB_VC_VERSION, true );
+		wp_register_script( 'vc_waypoints', vc_asset_url( 'lib/vc/vc_waypoints/vc-waypoints.min.js' ), [ 'jquery-core' ], WPB_VC_VERSION, true );
 
-		wp_register_style( 'vc_pageable_owl-carousel-css', vc_asset_url( 'lib/owl-carousel2-dist/assets/owl.min.css' ), array(), WPB_VC_VERSION );
+		wp_register_style( 'vc_pageable_owl-carousel-css', vc_asset_url( 'lib/vendor/owl-carousel2-dist/assets/owl.min.css' ), [], WPB_VC_VERSION );
 	}
 
 	/**
-	 * @param $grid_style
-	 * @param $settings
-	 * @param $content
+	 * Get element content with element content wrapper.
+	 *
+	 * @param string $grid_style
+	 * @param array $settings
+	 * @param string $content
 	 *
 	 * @return string
 	 */
@@ -39,42 +47,47 @@ class WPBakeryShortCode_Vc_Pageable extends WPBakeryShortCode {
 	}
 
 	/**
-	 * @param $grid_style
-	 * @param $settings
-	 * @param $content
+	 * Get element content with attached load more button.
+	 *
+	 * @param string $grid_style
+	 * @param array $settings
+	 * @param string $content
 	 *
 	 * @return string
 	 */
 	protected function contentLoadMore( $grid_style, $settings, $content ) {
-		if ( ! isset( $settings['btn_data'] ) && isset( $settings['button_style'] ) && isset( $settings['button_size'] ) && isset( $settings['button_color'] ) ) {
-			// BC: for those who overrided
-			$output = sprintf( '<div class="vc_pageable-slide-wrapper vc_clearfix" data-vc-grid-content="true">%s</div><div class="vc_pageable-load-more-btn" data-vc-grid-load-more-btn="true">%s</div>', $content, do_shortcode( '[vc_button2 size="' . $settings['button_size'] . '" title="' . esc_attr__( 'Load more', 'js_composer' ) . '" style="' . $settings['button_style'] . '" color="' . $settings['button_color'] . '" el_class="vc_grid-btn-load_more"]' ) );
-
-			return $output;
-		} elseif ( isset( $settings['btn_data'] ) ) {
+		$output = '';
+		if ( isset( $settings['btn_data'] ) ) {
 			$data = $settings['btn_data'];
 			$data['el_class'] = 'vc_grid-btn-load_more';
-			$data['link'] = 'load-more-grid';
-			$button3 = new WPBakeryShortCode_Vc_Btn( array( 'base' => 'vc_btn' ) );
+			$data['link'] = '';
+			$button3 = new WPBakeryShortCode_Vc_Btn( [ 'base' => 'vc_btn' ] );
 
-			$output = sprintf( '<div class="vc_pageable-slide-wrapper vc_clearfix" data-vc-grid-content="true">%s</div><div class="vc_pageable-load-more-btn" data-vc-grid-load-more-btn="true">%s</div>', $content, apply_filters( 'vc_gitem_template_attribute_vc_btn', '', array(
-				'post' => new stdClass(),
-				'data' => str_replace( array(
-					'{{ vc_btn:',
-					'}}',
-				), '', $button3->output( $data ) ),
-			) ) );
+			// Reset scope so output() uses the standard shortcode template
+			// instead of the grid placeholder (params/vc_grid_item/shortcodes/vc_btn.php).
+			$current_scope = WPBMap::getScope();
+			WPBMap::setScope( '' );
+			$button_html = $button3->output( $data );
+			WPBMap::setScope( $current_scope );
+
+			$output = sprintf(
+				'<div class="vc_pageable-slide-wrapper vc_clearfix" data-vc-grid-content="true">%s</div><div class="vc_pageable-load-more-btn" data-vc-grid-load-more-btn="true">%s</div>',
+				$content,
+				$button_html
+			);
 
 			return $output;
 		}
 
-		return '';
+		return $output;
 	}
 
 	/**
-	 * @param $grid_style
-	 * @param $settings
-	 * @param $content
+	 * Get element content with attached lazy loading button.
+	 *
+	 * @param string $grid_style
+	 * @param array $settings
+	 * @param string $content
 	 *
 	 * @return string
 	 */
@@ -83,8 +96,10 @@ class WPBakeryShortCode_Vc_Pageable extends WPBakeryShortCode {
 	}
 
 	/**
-	 * @param $grid_style
-	 * @param $settings
+	 * Get element content with attached pagination.
+	 *
+	 * @param string $grid_style
+	 * @param array $settings
 	 * @param string $content
 	 *
 	 * @param string $css_class
@@ -99,17 +114,19 @@ class WPBakeryShortCode_Vc_Pageable extends WPBakeryShortCode {
 		$output = '<div class="' . esc_attr( $css_class ) . '" data-vc-pageable-content="true">' . $content . '</div>';
 
 		return $output;
-
 	}
 
+	/**
+	 * Enqueue element specific scripts.
+	 */
 	public function enqueueScripts() {
 		wp_enqueue_script( 'vc_pageable_owl-carousel' );
 		wp_enqueue_style( 'vc_pageable_owl-carousel-css' );
-		wp_enqueue_style( 'vc_animate-css' );
 	}
 
 	/**
 	 * Check is pageable
+	 *
 	 * @return bool
 	 * @since 4.7.4
 	 */
@@ -125,9 +142,9 @@ class WPBakeryShortCode_Vc_Pageable extends WPBakeryShortCode {
 	 * @return bool
 	 */
 	public function currentUserCanManage( $page_id ) {
-		return vc_user_access()->wpAny( array(
+		return vc_user_access()->wpAny( [
 			'edit_post',
 			(int) $page_id,
-		) )->get();
+		] )->get();
 	}
 }

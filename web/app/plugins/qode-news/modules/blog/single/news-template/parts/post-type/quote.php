@@ -1,5 +1,5 @@
 <?php
-$title_tag = isset($quote_tag) ? $quote_tag : 'h2';
+$title_tag = isset( $quote_tag ) ? qode_news_sanitize_title_tag( $quote_tag, 'h2' ) : 'h2';
 $quote_text_meta = get_post_meta(get_the_ID(), "quote_format", true );
 
 $post_title = !empty($quote_text_meta) ? $quote_text_meta : get_the_title();

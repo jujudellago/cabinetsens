@@ -69,10 +69,11 @@
                         var scroll = $slider.scrollLeft();
                         var x = 0;
                         var slide = 0;
-
+                        
                         $items.each( function( i ) {
-                            if( x == 0 && $( this ).position().left > options.offset ) {
-                                x = $( this ).position().left;
+                            // -1 because of mozilla firefox rounding in some cases
+                            if( x == 0 && parseInt( $( this ).position().left - 1 ) > options.offset ) {
+                                x = parseInt( $( this ).position().left - 1 );
                                 slide = i;
                             }
                         } );
@@ -278,7 +279,6 @@
         if( $slider.options.center ) {
             var currentElement = $( $slider.items[ i ]);
             $slider.options.offset = Math.floor( ( $('.qode_image_gallery_holder').width() - currentElement.width() ) / 2 );
-            console.log( 'set offset to ', $slider.options.offset );
         }
 
         if( typeof t == 'undefined' ) {

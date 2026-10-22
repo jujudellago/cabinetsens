@@ -90,36 +90,6 @@ if ( ! function_exists( 'qode_membership_options_map' ) ) {
 				'parent'        => $enable_facebook_social_login_container
 			) );
 
-			bridge_qode_add_admin_field( array(
-				'type'          => 'yesno',
-				'name'          => 'enable_google_social_login',
-				'default_value' => 'no',
-				'label'         => esc_html__('Google+', 'qode-membership'),
-				'description'   => esc_html__('Enabling this option will allow login via Google+', 'qode-membership'),
-				'args'          => array(
-					'dependence'             => true,
-					'dependence_hide_on_yes' => '',
-					'dependence_show_on_yes' => '#qodef_enable_google_social_login_container'
-				),
-				'parent'        => $panel_enable_social_login
-			) );
-
-			$enable_google_social_login_container = bridge_qode_add_admin_container( array(
-				'name'            => 'enable_google_social_login_container',
-				'hidden_property' => 'enable_google_social_login',
-				'hidden_value'    => 'no',
-				'parent'          => $panel_enable_social_login
-			) );
-
-			bridge_qode_add_admin_field( array(
-				'type'          => 'text',
-				'name'          => 'enable_google_login_client_id',
-				'default_value' => '',
-				'label'         => esc_html__('Client ID', 'qode-membership'),
-				'description'   => esc_html__('Copy your Client ID form created Google Application', 'qode-membership'),
-				'parent'        => $enable_google_social_login_container
-			) );
-
 			$panel_terms = bridge_qode_add_admin_panel( array(
 				'title' => esc_html__('Terms And Conditions', 'qode-membership'),
 				'name'  => 'panel_terms',

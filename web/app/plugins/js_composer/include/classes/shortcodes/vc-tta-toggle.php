@@ -1,4 +1,10 @@
 <?php
+/**
+ * Class that handles specific [vc_tta_toggle] shortcode.
+ *
+ * @see js_composer/include/templates/shortcodes/vc_tta_toggle.php
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
@@ -13,13 +19,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 VcShortcodeAutoloader::getInstance()->includeClass( 'WPBakeryShortCode_Vc_Tta_Pageable' );
 
 /**
- * Class WPBakeryShortCode_Vc_Tta_Pageable
+ * Class WPBakeryShortCode_Vc_Tta_Toggle
+ * Toggle Container shortcode
+ *
  * @since 7.0
  */
 class WPBakeryShortCode_Vc_Tta_Toggle extends WPBakeryShortCode_Vc_Tta_Pageable {
 
 	/**
 	 * Unique toggle id
+	 *
 	 * @var string
 	 * @since 7.0
 	 */
@@ -27,17 +36,20 @@ class WPBakeryShortCode_Vc_Tta_Toggle extends WPBakeryShortCode_Vc_Tta_Pageable 
 
 	/**
 	 * Editor controls list
+	 *
 	 * @var string
 	 * @since 7.0
 	 */
 	protected $controls_list = [
 		'edit',
 		'clone',
+		'copy',
 		'delete',
 	];
 
 	/**
 	 * Template file name
+	 *
 	 * @return string
 	 * @since 7.0
 	 */
@@ -47,6 +59,7 @@ class WPBakeryShortCode_Vc_Tta_Toggle extends WPBakeryShortCode_Vc_Tta_Pageable 
 
 	/**
 	 * Toggle is on top only if tabs are at bottom
+	 *
 	 * @since 7.0
 	 *
 	 * @param array $atts
@@ -63,6 +76,7 @@ class WPBakeryShortCode_Vc_Tta_Toggle extends WPBakeryShortCode_Vc_Tta_Pageable 
 
 	/**
 	 * Toggle is at bottom only if tabs are on top
+	 *
 	 * @since 7.0
 	 *
 	 * @param array $atts
@@ -79,6 +93,7 @@ class WPBakeryShortCode_Vc_Tta_Toggle extends WPBakeryShortCode_Vc_Tta_Pageable 
 
 	/**
 	 * Get toggle html
+	 *
 	 * @since 7.0
 	 *
 	 * @return string
@@ -111,12 +126,13 @@ class WPBakeryShortCode_Vc_Tta_Toggle extends WPBakeryShortCode_Vc_Tta_Pageable 
 
 	/**
 	 * Add wrapper class related to toggle shortcode.
+	 *
 	 * @since 7.0
 	 *
 	 * @return string
 	 */
 	public function getTtaContainerClasses() {
-		$classes = array();
+		$classes = [];
 		$classes[] = 'vc_tta-container';
 		$classes[] = 'wpb-wrapper-tta-toggle';
 
@@ -128,6 +144,7 @@ class WPBakeryShortCode_Vc_Tta_Toggle extends WPBakeryShortCode_Vc_Tta_Pageable 
 
 	/**
 	 * Get element styles classes attribute.
+	 *
 	 * @since 7.0
 	 *
 	 * @param array $atts
@@ -157,6 +174,7 @@ class WPBakeryShortCode_Vc_Tta_Toggle extends WPBakeryShortCode_Vc_Tta_Pageable 
 
 	/**
 	 * Get pagination
+	 *
 	 * @since 7.0
 	 *
 	 * @param array $atts
@@ -167,33 +185,40 @@ class WPBakeryShortCode_Vc_Tta_Toggle extends WPBakeryShortCode_Vc_Tta_Pageable 
 		if ( empty( $atts['pagination_style'] ) ) {
 			return null;
 		}
-		$isPageEditable = vc_is_page_editable();
 
-		$html = array();
-		$html[] = '<ul class="' . $this->getTtaPaginationClasses() . '">';
+		$html = [];
+		$html[] = vc_get_template( 'partials/tta-pagination-start.php', [
+			'classes' => $this->getTtaPaginationClasses(),
+			'style' => $this->getTtaPaginationStyle(),
+		] );
 
-		if ( ! $isPageEditable ) {
+		if ( ! vc_is_page_editable() ) {
 			VcShortcodeAutoloader::getInstance()->includeClass( 'WPBakeryShortCode_Vc_Tta_Toggle_Section' );
 			foreach ( WPBakeryShortCode_Vc_Tta_Toggle_Section::$section_info as $nth => $section ) {
-				$active_section = $this->getActiveSection( $atts, false );
+				$active_section = $this->getActiveSection( $atts );
 
-				$classes = array( 'vc_pagination-item' );
-				if ( ( $nth + 1 ) === $active_section ) {
+				$classes = [ 'vc_pagination-item' ];
+				$current = $nth + 1;
+				if ( $current === $active_section ) {
 					$classes[] = $this->activeClass;
 				}
 
-				$a_html = '<a href="#' . $section['tab_id'] . '" class="vc_pagination-trigger" data-vc-tabs data-vc-container=".vc_tta"></a>';
-				$html[] = '<li class="' . implode( ' ', $classes ) . '" data-vc-tab>' . $a_html . '</li>';
+				$html[] = vc_get_template( 'partials/tta-pagination-item.php', [
+					'classes' => implode( ' ', $classes ),
+					'current' => $current,
+					'section' => $section,
+				] );
 			}
 		}
 
-		$html[] = '</ul>';
+		$html[] = vc_get_template( 'partials/tta-pagination-end.php' );
 
 		return implode( '', $html );
 	}
 
 	/**
 	 * Set global section info
+	 *
 	 * @since 7.0
 	 *
 	 * @return bool
@@ -204,12 +229,12 @@ class WPBakeryShortCode_Vc_Tta_Toggle extends WPBakeryShortCode_Vc_Tta_Pageable 
 		$sectionClass = wpbakery()->getShortCode( 'vc_tta_section' )->shortcodeClass();
 		$this->sectionClass = $sectionClass;
 
-		/** @var WPBakeryShortCode_Vc_Tta_Toggle_Section $sectionClass */
+		// WPBakeryShortCode_Vc_Tta_Toggle_Section $sectionClass.
 		if ( is_object( $sectionClass ) ) {
 			VcShortcodeAutoloader::getInstance()->includeClass( 'WPBakeryShortCode_Vc_Tta_Toggle_Section' );
 			WPBakeryShortCode_Vc_Tta_Toggle_Section::$tta_base_shortcode = $this;
 			WPBakeryShortCode_Vc_Tta_Toggle_Section::$self_count = 0;
-			WPBakeryShortCode_Vc_Tta_Toggle_Section::$section_info = array();
+			WPBakeryShortCode_Vc_Tta_Toggle_Section::$section_info = [];
 
 			return true;
 		}
@@ -219,6 +244,7 @@ class WPBakeryShortCode_Vc_Tta_Toggle extends WPBakeryShortCode_Vc_Tta_Pageable 
 
 	/**
 	 * Get active section
+	 *
 	 * @since 7.0
 	 *
 	 * @param array $atts
@@ -238,5 +264,15 @@ class WPBakeryShortCode_Vc_Tta_Toggle extends WPBakeryShortCode_Vc_Tta_Pageable 
 		}
 
 		return $active_section;
+	}
+
+	/**
+	 * Get CSS file names for vc_tta_toggle shortcode.
+	 *
+	 * @since 9.0
+	 * @return array
+	 */
+	public function get_shortcode_css_files() {
+		return [ 'vc_tta', 'vc_tta_toggle', 'vc_pagination' ];
 	}
 }

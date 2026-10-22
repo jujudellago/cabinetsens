@@ -24,7 +24,6 @@ html.js_active {
 }
 
 @import "modules/vc_welcome.less";
-@import "modules/vc_post_custom_layout.less";
 @import "vendor/jwplayer.less";
 
 .vc_welcome {
@@ -35,11 +34,10 @@ html.js_active {
   display: none;
 }
 
+// Vc element settings
+@import "lib/frontend_vc_elements.less";
+
 .compose-mode, .view-mode {
-
-  // Vc element settings
-  @import "lib/frontend_vc_elements.less";
-
   // Helper information
   .vc_welcome {
     display: block;
@@ -70,10 +68,18 @@ html.js_active {
     }
   }
   .vc_hidden-lg {
-    @media (min-width: @screen-lg-min) {
+    @media (min-width: @screen-lg-min) and (max-width: @screen-lg-max) {
       .vc_frontend-editor-invisibility-settings;
     }
     .vc_hidden-lg {
+      .opacity(1);
+    }
+  }
+  .vc_hidden-xl {
+    @media (min-width: @screen-xl-min) {
+      .vc_frontend-editor-invisibility-settings;
+    }
+    .vc_hidden-xl {
       .opacity(1);
     }
   }
@@ -110,5 +116,8 @@ html.js_active {
   @import "lib/frontend_draganddrop.less";
   @import "lib/vc_pointer.less";
 }
+
+// Form-component select styles (for the copy/paste dropdown rendered inside the iframe).
+@import "modules/ui/form-components/select.less";
 
 @import "shortcodes/tta/vc_tta-frontend-editor.less";

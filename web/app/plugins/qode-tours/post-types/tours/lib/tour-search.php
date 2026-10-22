@@ -211,6 +211,13 @@ class TourSearch {
 	 * that returns result and returns response as json
 	 */
 	public function handleFormSubmission() {
+		
+		parse_str($_GET['fields'], $form_data);
+		
+		if ( ! isset( $form_data['qode_tours_search_form_nonce'] ) || ! wp_verify_nonce( $form_data['qode_tours_search_form_nonce'], 'qode_tours_search_form') ) {
+			wp_send_json_error( esc_html__('Invalid nonce', 'qode-tours') );
+		}
+		
 		$request      = $this->getCurrentRequest();
 		$results      = $this->search();
 		
@@ -229,14 +236,9 @@ class TourSearch {
 	 * @return array
 	 */
 	public function getTourCheckedTypes() {
+		$request = $this->getCurrentRequest();
 
-		if(empty($_GET['type']) || implode($_GET['type']) == '' ) {
-			$types = array();
-		} else {
-			$types = $_GET['type'];
-		}
-
-		return $types;
+		return $this->sanitizeTourTypes( $request );
 	}
 
 	/**
@@ -320,8 +322,8 @@ class TourSearch {
 		if(!empty($this->month)) {
 			$where[] = "(MONTH({$wpdb->prefix}tour_dates.start_date) <= %d AND MONTH({$wpdb->prefix}tour_dates.end_date) >= %d)";
 
-			$prepareArray[] = $this->month; //for start date
-			$prepareArray[] = $this->month; // for end date
+			$prepareArray[] = (int) $this->month; //for start date
+			$prepareArray[] = (int) $this->month; // for end date
 		}
 
 		$join[] = "LEFT JOIN {$wpdb->prefix}term_relationships ON {$wpdb->prefix}posts.ID = {$wpdb->prefix}term_relationships.object_id";
@@ -330,10 +332,11 @@ class TourSearch {
 		
 		if(qode_tours_is_wpml_installed()) {
 			$lang = ICL_LANGUAGE_CODE;
-			
+
 			$join[] = "LEFT JOIN {$wpdb->prefix}icl_translations ON {$wpdb->prefix}posts.ID = {$wpdb->prefix}icl_translations.element_id";
-			
-			$where[] = "{$wpdb->prefix}icl_translations.language_code='$lang'";
+
+			$where[]        = "{$wpdb->prefix}icl_translations.language_code = %s";
+			$prepareArray[] = sanitize_text_field( $lang );
 		}
 
 		if(is_array($this->tourTypes) && count($this->tourTypes) && implode($this->tourTypes) != '') {
@@ -352,7 +355,7 @@ class TourSearch {
 			$prepareArray[] = "%{$wpdb->esc_like($this->keyword)}%";
 		}
 
-		switch($this->orderBy) {
+		switch ( $this->orderBy ) {
 			case 'date':
 				$orderTableField = "{$wpdb->prefix}tour_dates.start_date";
 				break;
@@ -364,17 +367,24 @@ class TourSearch {
 			case 'name':
 				$orderTableField = "{$wpdb->prefix}posts.post_title";
 				break;
+			default:
+				$orderTableField = "{$wpdb->prefix}tour_dates.start_date";
+				break;
 		}
 
-		$order = "ORDER BY {$orderTableField} {$this->orderType}";
+		$order = 'ORDER BY ' . $orderTableField . ' ' . $this->orderType;
 
 		$sql = implode(', ', $select).' '.$from.' '.implode(' ', $join).' '.implode(' AND ', $where);
 		$sql .= " GROUP BY {$wpdb->prefix}posts.ID";
 
-		if(!$count) {
-			$sql .= " ".$order;
-			$sql .= " LIMIT {$this->toursPerPage}";
-			$sql .= " OFFSET ".$this->toursPerPage * ($this->currentPage - 1);
+		if ( ! $count ) {
+			$limit  = max( 1, absint( $this->toursPerPage ) );
+			$page   = max( 1, absint( $this->currentPage ) );
+			$offset = $limit * ( $page - 1 );
+
+			$sql .= ' ' . $order;
+			$sql .= ' LIMIT ' . $limit;
+			$sql .= ' OFFSET ' . $offset;
 		}
 
 		//$wpdb->prepare can't be called
@@ -426,17 +436,17 @@ class TourSearch {
 			}
 		}
 
-		$this->tourTypes          = isset($request['type']) && is_array($request['type']) && count($request['type']) ? $request['type'] : array() ;
-		$this->keyword            = empty($request['keyword']) ? '' : $request['keyword'];
-		$this->destinationKeyword = empty($request['destination']) ? '' : $request['destination'];
-		$this->month              = empty($request['month']) ? '' : $request['month'];
-		$this->numberOfTickets    = empty($request['number_of_tickets']) ? 1 : $request['number_of_tickets'];
-		$this->minPrice           = empty($request['min_price']) ? '' : $request['min_price'];
-		$this->maxPrice           = empty($request['max_price']) ? '' : $request['max_price'];
-		$this->orderBy            = empty($request['order_by']) ? $defaultOrderBy : $request['order_by'];
-		$this->orderType          = empty($request['order_type']) ? $defaultOrderType : $request['order_type'];
-		$this->currentPage        = empty($request['page']) ? 1 : $request['page'];
-		$this->viewType           = empty($request['view_type']) ? $defaultViewType : $request['view_type'];
+		$this->tourTypes          = $this->sanitizeTourTypes( $request );
+		$this->keyword            = empty( $request['keyword'] ) ? '' : sanitize_text_field( wp_unslash( $request['keyword'] ) );
+		$this->destinationKeyword = empty( $request['destination'] ) ? '' : sanitize_text_field( wp_unslash( $request['destination'] ) );
+		$this->month              = $this->sanitizeMonth( $request );
+		$this->numberOfTickets    = empty( $request['number_of_tickets'] ) ? 1 : max( 1, absint( $request['number_of_tickets'] ) );
+		$this->minPrice           = empty( $request['min_price'] ) ? '' : absint( $request['min_price'] );
+		$this->maxPrice           = empty( $request['max_price'] ) ? '' : absint( $request['max_price'] );
+		$this->orderBy            = $this->sanitizeOrderBy( empty( $request['order_by'] ) ? $defaultOrderBy : $request['order_by'], $defaultOrderBy );
+		$this->orderType          = $this->sanitizeOrderType( empty( $request['order_type'] ) ? $defaultOrderType : $request['order_type'], $defaultOrderType );
+		$this->currentPage        = empty( $request['page'] ) ? 1 : max( 1, absint( $request['page'] ) );
+		$this->viewType           = $this->sanitizeViewType( empty( $request['view_type'] ) ? $defaultViewType : $request['view_type'], $defaultViewType );
 
 		if(qode_tours_theme_installed()) {
 			$this->toursPerPage = bridge_qode_options()->getOptionValue('tours_per_page');
@@ -479,6 +489,83 @@ class TourSearch {
 		$results = $this->getResults(true);
 
 		return count($results);
+	}
+
+	/**
+	 * Whitelist order_by values used in ORDER BY column selection.
+	 *
+	 * @param string $value
+	 * @param string $default
+	 *
+	 * @return string
+	 */
+	private function sanitizeOrderBy( $value, $default ) {
+		$allowed = array( 'date', 'price', 'name' );
+
+		return in_array( $value, $allowed, true ) ? $value : $default;
+	}
+
+	/**
+	 * Whitelist order_type values used in ORDER BY direction.
+	 *
+	 * @param string $value
+	 * @param string $default
+	 *
+	 * @return string
+	 */
+	private function sanitizeOrderType( $value, $default ) {
+		$value   = strtolower( sanitize_key( $value ) );
+		$allowed = array( 'asc', 'desc' );
+
+		return in_array( $value, $allowed, true ) ? $value : $default;
+	}
+
+	/**
+	 * Whitelist view_type values (not used in SQL, validated for consistency).
+	 *
+	 * @param string $value
+	 * @param string $default
+	 *
+	 * @return string
+	 */
+	private function sanitizeViewType( $value, $default ) {
+		$allowed = array( 'list', 'standard', 'gallery' );
+
+		return in_array( $value, $allowed, true ) ? $value : $default;
+	}
+
+	/**
+	 * Sanitize tour type term slugs from request.
+	 *
+	 * @param array $request
+	 *
+	 * @return array
+	 */
+	private function sanitizeTourTypes( $request ) {
+		if ( ! isset( $request['type'] ) || ! is_array( $request['type'] ) || ! count( $request['type'] ) ) {
+			return array();
+		}
+
+		$types = array_map( 'sanitize_title', wp_unslash( $request['type'] ) );
+
+		return array_values( array_filter( $types ) );
+	}
+
+	/**
+	 * Validate month (1-12) for tour period filter.
+	 *
+	 * @param array $request
+	 *
+	 * @return int|string Empty string when invalid or not set.
+	 */
+	private function sanitizeMonth( $request ) {
+		if ( empty( $request['month'] ) ) {
+			return '';
+		}
+
+		$month = absint( $request['month'] );
+
+		return ( $month >= 1 && $month <= 12 ) ? $month : '';
 	}
 
 	/**

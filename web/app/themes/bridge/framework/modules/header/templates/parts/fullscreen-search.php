@@ -1,4 +1,6 @@
-<?php if($enable_fullscreen_search=="yes"){ ?>
+<?php if($enable_fullscreen_search=="yes"){
+	$icon_pack = bridge_qode_options()->getOptionValue('search_icon_pack');
+	?>
 	<div class="fullscreen_search_holder <?php echo esc_attr($fullscreen_search_animation); ?>">
 		<div class="close_container">
 			<?php if($header_in_grid){ ?>
@@ -9,7 +11,14 @@
 						<div class="search_close_holder">
 							<div class="side_menu_button">
 								<a class="fullscreen_search_close" href="javascript:void(0)">
-									<?php bridge_qode_icon_collections()->getSearchClose(bridge_qode_options()->getOptionValue('search_icon_pack')); ?>
+									<?php if( 'svg_path' !== $icon_pack ) {
+										bridge_qode_icon_collections()->getSearchClose( $icon_pack );
+									} else {
+										$search_icon_svg_closer = bridge_qode_options()->getOptionValue('search_icon_svg_closer');
+										if( ! empty( $search_icon_svg_closer ) ) {
+											echo bridge_qode_get_module_part( $search_icon_svg_closer );
+										}
+									} ?>
 								</a>
 							</div>
 						</div>
@@ -30,7 +39,14 @@
 								<div class="line"></div>
 							</div>
 							<a class="qode_search_submit search_submit" href="javascript:void(0)">
-								<?php bridge_qode_icon_collections()->getSearchIcon(bridge_qode_options()->getOptionValue('search_icon_pack')); ?>
+								<?php if( 'svg_path' !== $icon_pack ) {
+									bridge_qode_icon_collections()->getSearchIcon( $icon_pack );
+								} else {
+									$search_icon_svg = bridge_qode_options()->getOptionValue('search_icon_svg_opener');
+									if( ! empty( $search_icon_svg ) ) {
+										echo bridge_qode_get_module_part( $search_icon_svg );
+									}
+								} ?>
 							</a>
 						</div>
 					</form>

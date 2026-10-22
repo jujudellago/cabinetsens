@@ -142,6 +142,21 @@
       .vc_grid_paging_active_hover_color_variants(~'sandy_brown', false, @sandy_brown, @sandy_brown, @sandy_brown);
       .vc_grid_paging_active_hover_color_variants(~'purple', false, @purple, @purple, @purple);
       .vc_grid_paging_active_hover_color_variants(~'white', false, @white, @white, @white);
+
+      // Custom color from the `paging_color` colorpicker (`--vc-grid-paging-color`).
+      &.vc_grid-owl-dots-color-custom {
+        .vc_grid-owl-dot {
+          span {
+            border-color: var(--vc-grid-paging-color);
+          }
+          &:hover, &.active {
+            span {
+              background-color: var(--vc-grid-paging-color);
+              border-color: var(--vc-grid-paging-color);
+            }
+          }
+        }
+      }
     }
 
     &.vc_grid-point_dots, &.vc_grid-fill_square_dots,
@@ -163,6 +178,13 @@
       .vc_grid_paging_color_variants(~'sandy_brown', @sandy_brown, false);
       .vc_grid_paging_color_variants(~'purple', @purple, false);
       .vc_grid_paging_color_variants(~'white', @white, false);
+
+      // Custom color from the `paging_color` colorpicker (`--vc-grid-paging-color`).
+      &.vc_grid-owl-dots-color-custom {
+        .vc_grid-owl-dot span {
+          background-color: var(--vc-grid-paging-color);
+        }
+      }
     }
   }
 }

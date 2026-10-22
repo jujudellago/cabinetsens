@@ -6,7 +6,6 @@ defined( 'LS_ROOT_FILE' ) || exit;
 $lsPriority = (int) get_option('ls_scripts_priority', 3);
 $lsPriority = ! empty($lsPriority) ? $lsPriority : 3;
 
-
 if( get_option('ls_gutenberg_block', true ) ) {
 	add_action('enqueue_block_editor_assets', 'ls_enqueue_slider_library');
 	add_action('init', 'layerslider_register_gutenberg_block');
@@ -22,15 +21,27 @@ add_action('wp_head', 'ls_meta_generator', 9);
 
 // Fix for CloudFlare's Rocket Loader
 add_filter('script_loader_tag', 'layerslider_script_attributes', 10, 3);
+add_filter('script_loader_tag', 'layerslider_fix_jquery_defer', 999, 3);
+
 function layerslider_script_attributes( $tag, $handle, $src ) {
+
+	if( $handle === 'layerslider-lottie' ) {
+		$tag = '<script src="'.$src.'" type="module" id="'.$handle.'-js"></script>' ."\n";
+	}
 
 
 	if(
 		$handle === 'layerslider' ||
 		$handle === 'layerslider-utils' ||
 		$handle === 'layerslider-transitions' ||
-		$handle === 'layerslider-origami' ||
+		$handle === 'layerslider-slidefxtr' ||
 		$handle === 'layerslider-popup' ||
+		$handle === 'layerslider-borderize' ||
+		$handle === 'layerslider-liquify' ||
+		$handle === 'layerslider-typewriter' ||
+		$handle === 'layerslider-replicator' ||
+		$handle === 'layerslider-reveal' ||
+		$handle === 'layerslider-slicer' ||
 		$handle === 'ls-user-transitions' ||
 		$handle === 'layerslider-timeline'
 	) {
@@ -44,6 +55,17 @@ function layerslider_script_attributes( $tag, $handle, $src ) {
 		}
 	}
 
+	return $tag;
+}
+
+function layerslider_fix_jquery_defer( $tag, $handle, $src ) {
+
+	if( get_option('ls_fix_optimizer_issues', true ) ) {
+
+		if( $handle === 'jquery-core' || $handle === 'jquery-migrate' ) {
+			$tag = str_replace( 'defer', '', $tag );
+		}
+	}
 
 	return $tag;
 }
@@ -187,12 +209,6 @@ function layerslider_enqueue_content_res() {
 
 	$footer = $condsc ? true : $footer;
 
-	// Use Gogole CDN version of jQuery
-	if(get_option('ls_use_custom_jquery', false)) {
-		wp_deregister_script('jquery');
-		wp_enqueue_script('jquery', '//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js', [], '1.8.3');
-	}
-
 	// Enqueue front-end assets
 	if( current_user_can(get_option('layerslider_custom_capability', 'manage_options')) ) {
 		wp_enqueue_style('layerslider-front', LS_ROOT_URL.'/static/public/front.css', false, LS_PLUGIN_VERSION );
@@ -204,13 +220,28 @@ function layerslider_enqueue_content_res() {
 	wp_register_script('layerslider-transitions', LS_ROOT_URL.'/static/layerslider/js/layerslider.transitions.js', false, LS_PLUGIN_VERSION, $footer );
 	wp_enqueue_style('layerslider', LS_ROOT_URL.'/static/layerslider/css/layerslider.css', false, LS_PLUGIN_VERSION );
 
-	// LayerSlider Origami plugin
-	wp_register_script('layerslider-origami', LS_ROOT_URL.'/static/layerslider/plugins/origami/layerslider.origami.js', ['jquery'], LS_PLUGIN_VERSION, $footer );
-	wp_register_style('layerslider-origami', LS_ROOT_URL.'/static/layerslider/plugins/origami/layerslider.origami.css', false, LS_PLUGIN_VERSION );
+	// LayerSlider special slide transitions plugin
+	wp_register_script('layerslider-slidefxtr', LS_ROOT_URL.'/static/layerslider/plugins/slidefxtr/layerslider.slidefxtr.js', ['jquery'], LS_PLUGIN_VERSION, $footer );
+	wp_register_style('layerslider-slidefxtr', LS_ROOT_URL.'/static/layerslider/plugins/slidefxtr/layerslider.slidefxtr.css', false, LS_PLUGIN_VERSION );
 
 	// LayerSlider Popup plugin
 	wp_register_script('layerslider-popup', LS_ROOT_URL.'/static/layerslider/plugins/popup/layerslider.popup.js', ['jquery'], LS_PLUGIN_VERSION, $footer );
 	wp_register_style('layerslider-popup', LS_ROOT_URL.'/static/layerslider/plugins/popup/layerslider.popup.css', false, LS_PLUGIN_VERSION );
+
+	// LayerSlider layer effects
+	wp_register_script('layerslider-borderize', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.borderize.js', ['jquery'], LS_PLUGIN_VERSION, $footer );
+	wp_register_style('layerslider-borderize', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.borderize.css', false, LS_PLUGIN_VERSION );
+	wp_register_script('layerslider-liquify', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.liquify.js', ['jquery'], LS_PLUGIN_VERSION, $footer );
+	wp_register_script('layerslider-typewriter', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.typewriter.js', ['jquery'], LS_PLUGIN_VERSION, $footer );
+	wp_register_style('layerslider-typewriter', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.typewriter.css', false, LS_PLUGIN_VERSION );
+	wp_register_script('layerslider-replicator', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.replicator.js', ['jquery'], LS_PLUGIN_VERSION, $footer );
+	wp_register_script('layerslider-reveal', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.reveal.js', ['jquery'], LS_PLUGIN_VERSION, $footer );
+	wp_register_style('layerslider-reveal', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.reveal.css', false, LS_PLUGIN_VERSION );
+	wp_register_script('layerslider-slicer', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.slicer.js', ['jquery'], LS_PLUGIN_VERSION, $footer );
+	wp_register_style('layerslider-slicer', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.slicer.css', false, LS_PLUGIN_VERSION );
+
+	// dotLottie Web Player
+	wp_register_script('layerslider-lottie', LS_ROOT_URL.'/static/dotlottie-web/dotlottie-web.global.js', ['jquery'], '0.58.0', $footer );
 
 	// 3rd-party: Font Awesome 4
 	wp_register_style('ls-font-awesome-4', LS_ROOT_URL.'/static/font-awesome-4/css/font-awesome.min.css', false, '4.7.0' );
@@ -235,12 +266,12 @@ function layerslider_enqueue_content_res() {
 	$uploads = wp_upload_dir();
 	$uploads['baseurl'] = set_url_scheme( $uploads['baseurl'] );
 
-	if(file_exists($uploads['basedir'].'/layerslider.custom.transitions.js')) {
-		wp_register_script('ls-user-transitions', $uploads['baseurl'].'/layerslider.custom.transitions.js', false, LS_PLUGIN_VERSION, $footer );
+	if( file_exists( $uploads['basedir'].'/layerslider.custom.transitions.js' ) ) {
+		wp_register_script('ls-user-transitions', $uploads['baseurl'].'/layerslider.custom.transitions.js', false, filemtime($uploads['basedir'].'/layerslider.custom.transitions.js'), $footer );
 	}
 
-	if(file_exists($uploads['basedir'].'/layerslider.custom.css')) {
-		wp_enqueue_style('ls-user', $uploads['baseurl'].'/layerslider.custom.css', false, LS_PLUGIN_VERSION );
+	if( file_exists( $uploads['basedir'].'/layerslider.custom.css' ) ) {
+		wp_enqueue_style('ls-user', $uploads['baseurl'].'/layerslider.custom.css', false, filemtime($uploads['basedir'].'/layerslider.custom.css') );
 	}
 
 	if( ! $footer || $always ) {
@@ -253,11 +284,22 @@ function layerslider_enqueue_content_res() {
 	// If the "Always load all JS files" option is enabled
 	// load all LayerSlider plugin files as well.
 	if( $always ) {
-		wp_enqueue_style( 'layerslider-origami' );
-		wp_enqueue_script( 'layerslider-origami' );
+		wp_enqueue_style( 'layerslider-slidefxtr' );
+		wp_enqueue_script( 'layerslider-slidefxtr' );
 
 		wp_enqueue_style( 'layerslider-popup' );
 		wp_enqueue_script( 'layerslider-popup' );
+
+		wp_enqueue_script( 'layerslider-borderize' );
+		wp_enqueue_style( 'layerslider-borderize' );
+		wp_enqueue_script( 'layerslider-liquify' );
+		wp_enqueue_script( 'layerslider-typewriter' );
+		wp_enqueue_style( 'layerslider-typewriter' );
+		wp_enqueue_script( 'layerslider-replicator' );
+		wp_enqueue_script( 'layerslider-reveal' );
+		wp_enqueue_style( 'layerslider-reveal' );
+		wp_enqueue_script( 'layerslider-slicer' );
+		wp_enqueue_style( 'layerslider-slicer' );
 	}
 }
 
@@ -296,14 +338,31 @@ function layerslider_footer_scripts() {
 		}
 	}
 
+	if( ! empty( $GLOBALS['lsLoadLottie'] ) ) {
+		wp_enqueue_script('layerslider-lottie');
+	}
+
 	// If the "Always load all JS files" option is enabled
 	// load all LayerSlider plugin files as well.
 	if( $always ) {
-		wp_enqueue_style( 'layerslider-origami' );
-		wp_enqueue_script( 'layerslider-origami' );
+		wp_enqueue_style( 'layerslider-slidefxtr' );
+		wp_enqueue_script( 'layerslider-slidefxtr' );
 
 		wp_enqueue_style( 'layerslider-popup' );
 		wp_enqueue_script( 'layerslider-popup' );
+
+		wp_enqueue_script( 'layerslider-borderize' );
+		wp_enqueue_style( 'layerslider-borderize' );
+		wp_enqueue_script( 'layerslider-liquify' );
+		wp_enqueue_script( 'layerslider-typewriter' );
+		wp_enqueue_style( 'layerslider-typewriter' );
+		wp_enqueue_script( 'layerslider-replicator' );
+		wp_enqueue_script( 'layerslider-reveal' );
+		wp_enqueue_style( 'layerslider-reveal' );
+		wp_enqueue_script( 'layerslider-slicer' );
+		wp_enqueue_style( 'layerslider-slicer' );
+
+		wp_enqueue_script('layerslider-lottie');
 	}
 
 
@@ -338,19 +397,19 @@ function layerslider_footer_scripts() {
 
 function layerslider_enqueue_admin_res() {
 
+	global $pagenow;
+
 	// Load global LayerSlider CSS
 	wp_enqueue_style('ls-global', LS_ROOT_URL.'/static/admin/css/global.css', false, LS_PLUGIN_VERSION );
 
 	// Load global LayerSlider JS
 	include LS_ROOT_PATH.'/wp/tinymce_l10n.php';
-	wp_enqueue_script('ls-global', LS_ROOT_URL.'/static/admin/js/ls-global.js', false, LS_PLUGIN_VERSION );
+	wp_enqueue_script('ls-global', LS_ROOT_URL.'/static/admin/js/ls-global.js', ['jquery'], LS_PLUGIN_VERSION );
 	wp_localize_script('ls-global', 'LS_MCE_l10n', $l10n_ls_mce);
 
-
-	// Use Google CDN version of jQuery
-	if( get_option( 'ls_use_custom_jquery', false ) ) {
-		wp_deregister_script('jquery');
-		wp_enqueue_script('jquery', '//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js', [], '1.8.3');
+	if( $pagenow === 'post.php' || $pagenow === 'post-new.php' ) {
+		wp_enqueue_style('ls-wp-editor', LS_ROOT_URL.'/static/admin/css/wp-editor.css', false, LS_PLUGIN_VERSION );
+		wp_enqueue_script('ls-wp-editor', LS_ROOT_URL.'/static/admin/js/wp-editor-min.js', ['jquery'], LS_PLUGIN_VERSION );
 	}
 
 	// Load LayerSlider-only resources
@@ -406,7 +465,13 @@ function layerslider_enqueue_admin_res() {
 		wp_localize_script('ls-common', 'LS_l10n', $l10n_ls);
 		wp_localize_script('ls-common', 'LS_ENV', [
 			'base' => LS_PLUGIN_BASE,
-			'slug' => LS_PLUGIN_SLUG
+			'slug' => LS_PLUGIN_SLUG,
+			'devMode' => LS_Config::isDevMode(),
+		]);
+		wp_localize_script('ls-common', 'LS_slideTransitionImages', [
+			LS_ROOT_URL.'/static/admin/img/slide-transitions/1.jpg',
+			LS_ROOT_URL.'/static/admin/img/slide-transitions/2.jpg',
+			LS_ROOT_URL.'/static/admin/img/slide-transitions/3.jpg'
 		]);
 
 		$section = ! empty( $_GET['section'] ) ? $_GET['section'] : false;
@@ -419,6 +484,7 @@ function layerslider_enqueue_admin_res() {
 
 		// LS Project Editor
 		} else {
+			wp_deregister_style('colors');
 			wp_deregister_style('wp-admin');
 			wp_dequeue_style('ls-global');
 		}
@@ -451,6 +517,13 @@ function layerslider_enqueue_admin_res() {
 			wp_enqueue_script('ls-dashboard', LS_ROOT_URL.'/static/admin/js/ls-dashboard.js', ['jquery'], LS_PLUGIN_VERSION, true );
 			wp_enqueue_script('layerslider', LS_ROOT_URL.'/static/layerslider/js/layerslider.kreaturamedia.jquery.js', ['jquery'], LS_PLUGIN_VERSION );
 			wp_enqueue_style('layerslider', LS_ROOT_URL.'/static/layerslider/css/layerslider.css', false, LS_PLUGIN_VERSION );
+
+			wp_localize_script('ls-dashboard', 'LS_AddonsMeta', [
+				'ajaxurl' => admin_url('admin-ajax.php'),
+				'settingsSaved' => __('Settings saved.', 'LayerSlider'),
+				'settingsError' => __('An error occurred while saving settings.', 'LayerSlider'),
+				'addonDisabled' => __('Add-on disabled.', 'LayerSlider'),
+			]);
 
 			ls_enqueue_font_library();
 
@@ -489,13 +562,28 @@ function ls_require_slider_assets() {
 	wp_enqueue_script('layerslider-timeline', LS_ROOT_URL.'/static/admin/js/layerslider.timeline-min.js', ['jquery'], LS_PLUGIN_VERSION );
 	// wp_enqueue_style('layerslider-timeline', LS_ROOT_URL.'/static/timeline/layerslider.timeline.css', false, LS_PLUGIN_VERSION );
 
-	// LayerSlider Origami plugin
-	wp_enqueue_script('layerslider-origami', LS_ROOT_URL.'/static/layerslider/plugins/origami/layerslider.origami.js', ['jquery'], LS_PLUGIN_VERSION );
-	wp_enqueue_style('layerslider-origami', LS_ROOT_URL.'/static/layerslider/plugins/origami/layerslider.origami.css', false, LS_PLUGIN_VERSION );
+	// LayerSlider special slide transitions plugin
+	wp_enqueue_script('layerslider-slidefxtr', LS_ROOT_URL.'/static/layerslider/plugins/slidefxtr/layerslider.slidefxtr.js', ['jquery'], LS_PLUGIN_VERSION );
+	wp_enqueue_style('layerslider-slidefxtr', LS_ROOT_URL.'/static/layerslider/plugins/slidefxtr/layerslider.slidefxtr.css', false, LS_PLUGIN_VERSION );
 
 	// LayerSlider Popup plugin
 	wp_enqueue_script('layerslider-popup', LS_ROOT_URL.'/static/layerslider/plugins/popup/layerslider.popup.js', ['jquery'], LS_PLUGIN_VERSION );
 	wp_enqueue_style('layerslider-popup', LS_ROOT_URL.'/static/layerslider/plugins/popup/layerslider.popup.css', false, LS_PLUGIN_VERSION );
+
+	// LayerSlider layer effects
+	wp_enqueue_script('layerslider-borderize', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.borderize.js', ['jquery'], LS_PLUGIN_VERSION );
+	wp_enqueue_style('layerslider-borderize', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.borderize.css', false, LS_PLUGIN_VERSION );
+	wp_enqueue_script('layerslider-liquify', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.liquify.js', ['jquery'], LS_PLUGIN_VERSION );
+	wp_enqueue_script('layerslider-typewriter', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.typewriter.js', ['jquery'], LS_PLUGIN_VERSION );
+	wp_enqueue_style('layerslider-typewriter', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.typewriter.css', false, LS_PLUGIN_VERSION );
+	wp_enqueue_script('layerslider-replicator', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.replicator.js', ['jquery'], LS_PLUGIN_VERSION );
+	wp_enqueue_script('layerslider-reveal', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.reveal.js', ['jquery'], LS_PLUGIN_VERSION );
+	wp_enqueue_style('layerslider-reveal', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.reveal.css', false, LS_PLUGIN_VERSION );
+	wp_enqueue_script('layerslider-slicer', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.slicer.js', ['jquery'], LS_PLUGIN_VERSION );
+	wp_enqueue_style('layerslider-slicer', LS_ROOT_URL.'/static/layerslider/plugins/layereffects/layerslider.slicer.css', false, LS_PLUGIN_VERSION );
+
+	// dotLottie Web Player
+	wp_enqueue_script('layerslider-lottie', LS_ROOT_URL.'/static/dotlottie-web/dotlottie-web.global.js', ['jquery'], '0.58.0' );
 }
 
 
@@ -510,12 +598,15 @@ function ls_require_builder_assets() {
 
 	ls_require_slider_assets();
 
-	wp_register_script('ls-project-editor', LS_ROOT_URL.'/static/admin/js/ls-project-editor-min.js', ['jquery', 'json2'], LS_PLUGIN_VERSION, true );
+	wp_register_script('jszip', LS_ROOT_URL.'/static/admin/js/jszip.min.js', [], '3.10.1', true );
+	wp_register_script('ls-project-editor', LS_ROOT_URL.'/static/admin/js/ls-project-editor-min.js', ['jquery', 'json2', 'jszip'], LS_PLUGIN_VERSION, true );
 
 	wp_register_script('ls-project-editor-new', LS_ROOT_URL.'/static/admin/js/ls-project-editor-new-min.js', ['jquery', 'json2'], LS_PLUGIN_VERSION, true );
 	wp_register_script('ls-ui-overrides', LS_ROOT_URL.'/static/admin/js/jquery-ui-overrides.js', ['jquery', 'json2'], LS_PLUGIN_VERSION, true );
 	wp_register_script('ls-project-editor-search', LS_ROOT_URL.'/static/admin/js/ls-project-editor-search.js', ['jquery'], LS_PLUGIN_VERSION, true );
 	wp_register_script('ls-project-editor-buttons', LS_ROOT_URL.'/static/admin/js/ls-button-presets-min.js', ['jquery'], LS_PLUGIN_VERSION, true );
+	wp_register_script('ls-project-editor-countdowns', LS_ROOT_URL.'/static/admin/js/ls-countdown-presets-min.js', ['jquery'], LS_PLUGIN_VERSION, true );
+	wp_register_script('ls-project-editor-counter', LS_ROOT_URL.'/static/admin/js/ls-counter-presets-min.js', ['jquery'], LS_PLUGIN_VERSION, true );
 
 	wp_register_style('ls-project-editor', LS_ROOT_URL.'/static/admin/css/editor.css', false, LS_PLUGIN_VERSION );
 
@@ -526,6 +617,8 @@ function ls_require_builder_assets() {
 	wp_enqueue_script('ls-ui-overrides');
 	wp_enqueue_script('ls-project-editor-search');
 	wp_enqueue_script('ls-project-editor-buttons');
+	wp_enqueue_script('ls-project-editor-countdowns');
+	wp_enqueue_script('ls-project-editor-counter');
 	wp_enqueue_style('ls-project-editor');
 
 	// 3rd party: GSAP Morph SVG Plugin
@@ -546,7 +639,7 @@ function ls_require_builder_assets() {
 	wp_enqueue_script('air-datepicker-en', LS_ROOT_URL.'/static/air-datepicker/i18n/datepicker.en.js', ['jquery'], '2.1.0' );
 
 	// 3rd party: html2canvas
-	wp_enqueue_script('html2canvas', LS_ROOT_URL.'/static/html2canvas/html2canvas.min.js', ['jquery'], '1.0.0rc7' );
+	wp_enqueue_script('html2canvas', LS_ROOT_URL.'/static/html2canvas/html2canvas.min.js', ['jquery'], '1.4.1' );
 
 	// 3rd party: iGuider
 	wp_enqueue_style('iguider', LS_ROOT_URL.'/static/iguider/iGuider.css', false, '4.5' );
@@ -557,13 +650,14 @@ function ls_require_builder_assets() {
 	$uploads = wp_upload_dir();
 	$uploads['baseurl'] = set_url_scheme( $uploads['baseurl'] );
 
-	if(file_exists($uploads['basedir'].'/layerslider.custom.transitions.js')) {
-		wp_enqueue_script('ls-user-transitions', $uploads['baseurl'].'/layerslider.custom.transitions.js', false, LS_PLUGIN_VERSION );
+
+	if( file_exists( $uploads['basedir'].'/layerslider.custom.transitions.js' ) ) {
+		wp_enqueue_script('ls-user-transitions', $uploads['baseurl'].'/layerslider.custom.transitions.js', false, filemtime($uploads['basedir'].'/layerslider.custom.transitions.js') );
 	}
 
 	// User transitions
-	if(file_exists($uploads['basedir'].'/layerslider.custom.css')) {
-		wp_enqueue_style('ls-user', $uploads['baseurl'].'/layerslider.custom.css', false, LS_PLUGIN_VERSION );
+	if( file_exists( $uploads['basedir'].'/layerslider.custom.css' ) ) {
+		wp_enqueue_style('ls-user', $uploads['baseurl'].'/layerslider.custom.css', false, filemtime($uploads['basedir'].'/layerslider.custom.css') );
 	}
 }
 
@@ -578,30 +672,11 @@ function ls_load_google_fonts() {
 	}
 
 	// Get font list
-	$fonts = get_option('ls-google-fonts', []);
+	$fontList 		= get_option('ls-google-fonts', [] );
+	$fontManager 	= new LS_GoogleFontsManager( $fontList );
+	$fontStyles 	= $fontManager->getInlineStyle( get_option('ls-google-fonts', [] ) );
 
-	// Check fonts if any
-	if(!empty($fonts) && is_array($fonts)) {
-		$lsFonts = [];
-		foreach($fonts as $item) {
-			$fontParams = explode(':', $item['param']);
-			$fontName 	= urldecode( $fontParams[0] );
-			$GLOBALS['lsLoadedFonts'][] = $fontName;
-			$lsFonts[] = urlencode( $fontName ).':100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i';
-		}
-
-		if( ! empty( $lsFonts ) ) {
-			$lsFonts = implode('%7C', $lsFonts);
-			$query_args = [
-				'family' => $lsFonts
-			];
-
-			wp_enqueue_style('ls-google-fonts',
-				add_query_arg($query_args, "https://fonts.googleapis.com/css" ),
-				[], null
-			);
-		}
-	}
+	echo $fontStyles;
 }
 
 function ls_meta_generator() {

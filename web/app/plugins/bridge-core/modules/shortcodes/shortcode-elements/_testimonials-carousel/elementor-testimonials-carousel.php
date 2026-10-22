@@ -16,8 +16,12 @@ class BridgeCoreElementorTestimonialsCarousel extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode' ];
     }
-
-    protected function register_controls() {
+	
+	public function get_script_depends() {
+		return array( 'flexslider', 'fitvids', 'touchSwipe' );
+	}
+	
+	protected function register_controls() {
 
         $this->start_controls_section(
             'general',
@@ -202,7 +206,8 @@ class BridgeCoreElementorTestimonialsCarousel extends \Elementor\Widget_Base{
 				   '10' => esc_html__( '10', 'bridge-core' ),
 				   '15' => esc_html__( '15', 'bridge-core' ),
 				   '0'  => esc_html__( 'Disable', 'bridge-core' )
-			    )
+			    ),
+			    'default' => '3'
 		    ]
 	    );
 

@@ -120,6 +120,8 @@ if(!function_exists('bridge_qode_title_options_map')) {
         $panel4->addChild("enable_breadcrumbs_container", $enable_breadcrumbs_container);
         $breadcrumbs_color = new BridgeQodeField("color", "breadcrumbs_color", "", esc_html__( 'Breadcrumbs Color', 'bridge'), esc_html__( 'Choose a color for Breadcrumb text', 'bridge'));
         $enable_breadcrumbs_container->addChild("breadcrumbs_color", $breadcrumbs_color);
+		$show_only_breadcrumbs = new BridgeQodeField("yesno", "show_only_breadcrumbs", "no", esc_html__( 'Show Only Breadcrumbs', 'bridge'), esc_html__( 'Do you want to show only breadcrumbs in title area?', 'bridge'));
+        $enable_breadcrumbs_container->addChild("show_only_breadcrumbs", $show_only_breadcrumbs);
 
 
         $panel9 = new BridgeQodePanel(esc_html__( 'Title Scroll Animations', 'bridge'), 'title_animations');

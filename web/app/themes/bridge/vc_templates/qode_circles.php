@@ -11,13 +11,13 @@ $styles = array();
 
 extract(shortcode_atts($args, $atts));
 
-if(!empty($line_color)) {
-	$styles[] = "border-color: ".$line_color.";";
+if ( ! empty( $line_color ) ) {
+	$styles[] = "border-color: ". esc_attr( $line_color ).";";
 }
 
-$html = '<ul class="q_circles_holder '.$columns.' '.$circle_line.'" '. bridge_qode_get_inline_style(implode(';',$styles)) .'>';
+$html = '<ul class="q_circles_holder '. esc_attr( $columns ) . ' '. esc_attr( $circle_line ) . '" '. bridge_qode_get_inline_style( implode(';',$styles) ) .'>';
 
-$html .= do_shortcode($content);
+$html .= do_shortcode( $content );
 
 $html .= '</ul>';
 

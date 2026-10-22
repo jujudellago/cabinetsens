@@ -45,3 +45,24 @@ if( !function_exists('qode_listing_set_ls_categories_icon_class_name_for_vc_shor
 
 	add_filter('qode_core_filter_add_vc_shortcodes_custom_icon_class', 'qode_listing_set_ls_categories_icon_class_name_for_vc_shortcodes');
 }
+
+if( ! function_exists( 'qode_listing_add_listing_categories_shortcode_packery_script_for_wpb_shortcode_scripts_array' ) ) {
+	function qode_listing_add_listing_categories_shortcode_packery_script_for_wpb_shortcode_scripts_array( $shortcodes_array ) {
+		if( array_key_exists( 'packery', $shortcodes_array ) ) {
+			$shortcodes_array['packery'] = array_merge( $shortcodes_array['packery'], array( 'qode_listing_cats' => false ) );
+		} else {
+			$shortcodes_array = array_merge(
+				$shortcodes_array,
+				array(
+					'packery' => array(
+						'qode_listing_cats' => false
+					)
+				)
+			);
+		}
+		
+		return $shortcodes_array;
+	}
+	
+	add_filter( 'bridge_qode_filter_wpb_shortcode_scripts_array', 'qode_listing_add_listing_categories_shortcode_packery_script_for_wpb_shortcode_scripts_array' );
+}

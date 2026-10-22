@@ -97,7 +97,7 @@
     .vc_sep_line {
       border: none;
       position: relative;
-      height: @vc_separator-shadow-size * 2;
+      height: (@vc_separator-shadow-size * 2);
       top: 0;
       overflow: hidden;
       &::after {
@@ -105,7 +105,7 @@
         display: block;
         position: absolute;
         left: 0;
-        top: -@vc_separator-shadow-size * 2;
+        top: (-@vc_separator-shadow-size * 2);
         right: 0;
         height: @vc_separator-shadow-size;
         border-radius: 100%;
@@ -180,7 +180,7 @@
       }
       &.vc_sep_double .vc_sep_holder .vc_sep_line {
         border-bottom-width: unit(@width, px);
-        top: unit(ceil(-@width/2), px);
+        top: unit(ceil((-@width/2)), px);
       }
       &.vc_sep_shadow {
         .vc_sep_line {
@@ -233,39 +233,6 @@
 .wpb_separator,
 .vc_text_separator {
   border-bottom: 1px solid @vc_separator_border;
-}
-
-.vc_sep_width {
-  &_10 {
-    width: 10%;
-  }
-  &_20 {
-    width: 20%;
-  }
-  &_30 {
-    width: 30%;
-  }
-  &_40 {
-    width: 40%;
-  }
-  &_50 {
-    width: 50%;
-  }
-  &_60 {
-    width: 60%;
-  }
-  &_70 {
-    width: 70%;
-  }
-  &_80 {
-    width: 80%;
-  }
-  &_90 {
-    width: 90%;
-  }
-  &_100 {
-    width: 100%;
-  }
 }
 
 .vc_sep_pos {

@@ -40,9 +40,14 @@
     border: 1px solid transparent;
     border-collapse: collapse;
     padding: 3px 7px;
+    background-color: var(--vc-filter-bg);
+    transition: background-color 0.2s ease;
 
     > span {
-      color: #FFFFFF;
+      color: var(--vc-filter-bg-contrast);
+    }
+    &:hover, &.vc_active {
+      background-color: color-mix(in srgb, var(--vc-filter-bg), #000 12%);
     }
     &:nth-child(n+2) {
       border-left: none;

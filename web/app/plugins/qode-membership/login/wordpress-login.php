@@ -18,9 +18,9 @@ if ( ! function_exists( 'qode_membership_login_user' ) ) {
 			$login = $data['login_data'];
 			parse_str( $login, $login_data );
 			
-			$credentials['user_login']    = $login_data['user_login_name'];
-			$credentials['user_password'] = $login_data['user_login_password'];
-			$redirect_uri                 = $login_data['redirect'];
+			$credentials['user_login']    = isset( $login_data['user_login_name'] ) ? sanitize_user( $login_data['user_login_name'], true ) : '';
+			$credentials['user_password'] = isset( $login_data['user_login_password'] ) ? $login_data['user_login_password'] : '';
+			$redirect_uri                 = isset( $login_data['redirect'] ) ? qode_membership_sanitize_redirect_url( $login_data['redirect'] ) : '';
 			
 			if ( isset( $credentials['remember'] ) && $credentials['remember'] == 'forever' ) {
 				$credentials['remember'] = true;
@@ -48,6 +48,34 @@ if ( ! function_exists( 'qode_membership_login_user' ) ) {
 	add_action( 'wp_ajax_nopriv_qode_membership_login_user', 'qode_membership_login_user' );
 }
 
+if ( ! function_exists( 'qode_membership_sanitize_registration_role' ) ) {
+	/**
+	 * Restricts role assignment during public registration to a safe allowlist.
+	 *
+	 * @param string $role
+	 *
+	 * @return string
+	 */
+	function qode_membership_sanitize_registration_role( $role ) {
+		$role = sanitize_key( $role );
+
+		$safe_defaults = array( 'subscriber', 'customer' );
+		$allowed_roles = apply_filters( 'qode_membership_allowed_registration_roles', $safe_defaults );
+
+		if ( in_array( $role, $allowed_roles, true ) ) {
+			return $role;
+		}
+
+		$default_role = sanitize_key( apply_filters( 'qode_membership_default_role', get_option( 'default_role', 'subscriber' ) ) );
+
+		if ( in_array( $default_role, $allowed_roles, true ) ) {
+			return $default_role;
+		}
+
+		return 'subscriber';
+	}
+}
+
 if ( ! function_exists( 'qode_membership_register_user' ) ) {
 	/**
 	 * Register new user
@@ -62,15 +90,27 @@ if ( ! function_exists( 'qode_membership_register_user' ) ) {
 			
 			$register = $data['register_data'];
 			parse_str( $register, $register_data );
-			$credentials['user_login']       = $register_data['user_register_name'];
-			$credentials['user_email']       = $register_data['user_register_email'];
-			$credentials['password']         = $register_data['user_register_password'];
-			$credentials['confirm_password'] = $register_data['user_register_confirm_password'];
+			$credentials['user_login']       = isset( $register_data['user_register_name'] ) ? sanitize_user( $register_data['user_register_name'], true ) : '';
+			$credentials['user_email']       = isset( $register_data['user_register_email'] ) ? sanitize_email( $register_data['user_register_email'] ) : '';
+			$credentials['password']         = isset( $register_data['user_register_password'] ) ? $register_data['user_register_password'] : '';
+			$credentials['confirm_password'] = isset( $register_data['user_register_confirm_password'] ) ? $register_data['user_register_confirm_password'] : '';
+
+			if ( $credentials['user_login'] === '' || ! validate_username( $credentials['user_login'] ) ) {
+				qode_membership_ajax_response( 'error', esc_html__( 'Please enter a valid username.', 'qode-membership' ) );
+			}
+
+			if ( ! is_email( $credentials['user_email'] ) ) {
+				qode_membership_ajax_response( 'error', esc_html__( 'Please enter a valid email address.', 'qode-membership' ) );
+			}
 			
 			$user_id    = username_exists( $credentials['user_login'] );
 			$user_email = email_exists( $credentials['user_email'] );
 			
 			if ( ! $user_id && ! $user_email ) {
+				if ( $credentials['password'] === '' ) {
+					qode_membership_ajax_response( 'error', esc_html__( 'Please enter a password.', 'qode-membership' ) );
+				}
+
 				if ( $credentials['password'] == $credentials['confirm_password'] ) {
 					$user_save_flag = wp_create_user( $credentials['user_login'], $credentials['password'], $credentials['user_email'] );
 					
@@ -84,6 +124,7 @@ if ( ! function_exists( 'qode_membership_register_user' ) ) {
                             'role' =>  apply_filters('qode_membership_default_role', get_option('default_role'))
                         );
                         $additional_params = apply_filters('qode_membership_additional_registration_params', $additional_params, $register_data);
+                        $additional_params['role'] = qode_membership_sanitize_registration_role( $additional_params['role'] );
                         wp_update_user( array_merge($default_params, $additional_params) );
 						$mail_to = $credentials['user_email'];
 						
@@ -114,18 +155,18 @@ if ( ! function_exists( 'qode_membership_user_lost_password' ) ) {
 	 * Reset user password
 	 */
 	function qode_membership_user_lost_password() {
-		
-		if ( ! function_exists( 'retrieve_password' ) ) {
-			ob_start();
-			include_once( ABSPATH . 'wp-login.php' );
-			ob_clean();
-		}
-		
-		$result = retrieve_password();
+
+		check_ajax_referer( 'qode-ajax-reset-nonce', 'security' );
+
+		$user_login = isset( $_POST['user_login'] ) ? trim( wp_unslash( $_POST['user_login'] ) ) : '';
+		$result     = retrieve_password( $user_login );
+
 		if ( $result === true ) {
 			qode_membership_ajax_response( 'success', esc_html__( 'We have sent you an email', 'qode-membership' ) );
-		} else {
+		} elseif ( is_wp_error( $result ) ) {
 			qode_membership_ajax_response( 'error', $result->get_error_message() );
+		} else {
+			qode_membership_ajax_response( 'error', esc_html__( 'Something went wrong', 'qode-membership' ) );
 		}
 		
 		wp_die();

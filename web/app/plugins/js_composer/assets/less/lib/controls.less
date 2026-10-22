@@ -1,10 +1,29 @@
 // Controls
+@vc-element-controls-height: 32px;
+
+// Copy/paste Select2 dropdown colors. Used across parent/child/container variants.
+.vc-copypaste-select-colors(@bg, @bg-hover) {
+  .vc_copypaste-select + .select2-container .select2-selection {
+    background-color: @bg;
+    &:hover,
+    &:focus,
+    &:focus-visible {
+      background-color: @bg-hover;
+    }
+  }
+  .vc_copypaste-select + .select2-container.select2-container--open .select2-selection,
+  .vc_copypaste-select + .select2-container.select2-container--focus .select2-selection {
+    background-color: @bg-hover;
+  }
+}
+
 .vc_controls {
   font-family: "Open Sans", Helvetica, sans-serif;
   height: 0;
   display: block;
   .opacity(0);
   visibility: hidden;
+  transition: all @wpb_transition_duration_slow @wpb_transition_easing;
   > div {
     position: absolute;
     white-space: nowrap;
@@ -53,7 +72,7 @@
       bottom: 0;
       left: 50%;
       .translate(-50%, 0);
-      z-index: 1;
+      z-index: 5;
     }
     &br {
       //bottom right
@@ -87,7 +106,7 @@
     }
     &out-tc {
       left: 50%;
-      top: -30px;
+      top: -@vc-element-controls-height;
       direction: rtl;
       .translate(-50%, 0);
     }
@@ -101,7 +120,7 @@
       //out left
       z-index: 1002;
       left: -1px;
-      top: -30px;
+      top: -@vc-element-controls-height;
       > .vc_element {
         > :first-child {
           .vc_btn-content {
@@ -113,8 +132,15 @@
     &out-tr {
       //out left
       z-index: 1003;
-      right: -1px;
-      top: -30px;
+      right: -1px; // for tta elements controls should be on the right side, because of their shape and structure
+      top: -@vc-element-controls-height;
+      > .vc_element {
+        > :first-child {
+          .vc_btn-content {
+            .border-left-radius(@vc_border_radius);
+          }
+        }
+      }
     }
     &out-r {
       //out right
@@ -129,6 +155,14 @@
   }
 }
 
+.wpb_content_element > .vc_controls {
+  transition: none;
+  > div {
+    .opacity(0);
+    transition: opacity @wpb_transition_duration_slow @wpb_transition_easing;
+  }
+}
+
 // Section controls
 
 .vc_vc_section {
@@ -136,12 +170,12 @@
     padding-top: 62px;
   }
   .vc_section-has-fill ~ .vc_controls-container > .vc_controls-out-tl {
-    top: 1px !important;
+    top: -3px !important;
   }
   > .vc_controls {
     > .vc_controls-out-tl {
       left: -17px;
-      top: -61px;
+      top: calc(@vc-element-controls-height * -2 - 1px);
     }
   }
   &.vc_empty {
@@ -171,7 +205,61 @@
   }
 }
 
-// Single Control button
+.vc_controls-parent.vc_controls {
+  > .vc_controls-out-tl {
+    left: initial;
+    right: -1px;
+    z-index: 1003;
+  }
+}
+
+// Strips never grow past the preview frame: element names give way with an ellipsis, buttons stay rigid.
+.vc_controls > .vc_controls-out-tl,
+.vc_controls > .vc_controls-out-tr {
+  display: flex;
+  max-width: 100vw;
+  > .vc_parent,
+  > .vc_element {
+    display: flex;
+    min-width: 0;
+  }
+  .advanced,
+  .vc_advanced {
+    display: flex;
+    flex-shrink: 0;
+  }
+  .vc_control-btn {
+    flex-shrink: 0;
+  }
+  .vc_element-name {
+    flex-shrink: 1;
+    min-width: 42px;
+    overflow: hidden;
+    .vc_btn-content {
+      display: block !important;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+// Grid Container controls
+.vc_vc_grid_container {
+  .vc_controls {
+    > .vc_controls-out-tl {
+      left: -2px;
+    }
+  }
+  &.vc_empty {
+    > .vc_controls {
+    > .vc_controls-out-tl {
+        top: -29px;
+      }
+    }
+  }
+}
+
+  // Single Control button
 .vc_control-btn {
   display: inline-block;
   position: relative;
@@ -180,6 +268,15 @@
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
   box-shadow: none !important;
+  text-decoration: none !important;
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    box-shadow: none;
+    > .vc_btn-content {
+      background-color: @vc_control_hover_color;
+    }
+  }
   .icon, .vc_icon {
     display: inline-block !important;
     background-image: url(@vc_pe_controls_sprite);
@@ -195,9 +292,9 @@
 
   .vc-composer-icon {
     display: inline-block;
-    width: 16px;
-    height: 16px;
-    font-size: 15px;
+    width: 14px;
+    height: 14px;
+    font-size: 14px;
     color: #F2F2F2;
     position: relative;
 
@@ -210,19 +307,16 @@
     }
   }
 
-  .vc-c-icon-delete_empty {
-    font-size: 13px;
+
+
+  .vc-c-icon-clone, .vc-c-edit, .vc-c-param-group-dragndrop {
+    font-size: 12px;
   }
 
-  .vc-c-icon-dragndrop {
-    font-size: 13px;
-  }
-
-  .vc-c-icon-add{
+  .vc-c-trash {
     font-size: 14px;
   }
-
-  .vc-c-icon-row_default_fe {
+  .vc-c-layout {
     font-size: 10px;
   }
 }
@@ -238,32 +332,43 @@
 .vc_btn-content {
   .transition(background-color 0.5s);
   background-color: transparent;
-  display: inline-block !important;
-  padding: 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   cursor: pointer !important;
-  line-height: 1px !important;
+  line-height: 1 !important;
   font-size: 1px !important;
   vertical-align: middle !important;
   box-sizing: border-box;
+  letter-spacing: normal !important;
 }
 
 .vc_element-name {
   .vc_btn-content {
+    // Element-name button shows the shortcode label as text, so it grows with content.
     text-decoration: none !important;
+    display: inline-block !important;
     width: auto !important;
-    font-size: 11px !important;
+    height: auto !important;
+    font-size: @wpb_font-size-sm !important;
+    font-weight: @wpb_font-weight !important;
+    font-family: @wpb_font-family-primary !important;
     color: #FFFFFF !important;
-    line-height: 16px !important;
+    line-height: 18px !important;
     padding: 7px 12px !important;
     cursor: auto !important;
-    // height: 30px;
     &:hover {
       text-decoration: none !important;
     }
   }
 }
 
-.vc_element-move, .vc_child-element-move {
+.vc_element-move,
+.vc_element-sort,
+.vc_child-element-move {
   .vc_btn-content {
     cursor: move !important;
     padding-left: 30px !important;
@@ -271,6 +376,7 @@
       background-color: @vc_control_hover_color;
     }
   }
+  .vc-c-param-group-dragndrop,
   .vc-c-icon-dragndrop {
     position: absolute;
     top: 50%;
@@ -282,61 +388,21 @@
 // Control icons variations
 .vc_control-btn-append {
   position: relative;
-  top: 19px;
+  top: 16px;
   &:before {
-    position: relative;
-    left: 7px;
-    content: "";
-    display: block;
-    width: 0;
-    height: 0;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-bottom: 4px solid @vc_controls_bottom_append_border_bottom;
-    .transition(border-color 0.5s);
-  }
-  &:hover {
-    &:before {
-      border-bottom-color: @vc_controls_bottom_append_border_bottom_hover;
-    }
-  }
-  &.vc_control-parent:before {
-    border-bottom-color: @vc_controls_parent_border;
-  }
-  &.vc_control-parent:hover {
-    &:before {
-      border-bottom-color: @vc_controls_parent_border_hover;
-    }
+    display: none;
   }
   .vc_btn-content {
-    -webkit-border-radius: @vc_border_radius;
-    -moz-border-radius: @vc_border_radius;
     border-radius: @vc_border_radius;
-    padding: 3px;
+    padding: 9px;
   }
 }
 
-
-.vc_control-btn-switcher {
-  overflow: hidden;
-  width: 24px;
-  height: 30px;
-  .transition(width 0.5s);
-  display: inline-block;
-  &-disable-switcher {
-    display: none !important;
-  }
-
-  .vc-composer-icon {
-    width: 10px;
-  }
-}
 
 .vc_control-btn-move {
   background-position: 0 0;
 }
 
-// Container-container switcher
 .vc_control-btn-layout {
   position: relative;
 }
@@ -357,6 +423,11 @@
           border-color: @vc_controls_child_border_hover;
         }
       }
+      &:focus .vc_btn-content,
+      &:focus-visible .vc_btn-content {
+        background-color: @vc_controls_child_background_hover;
+        border-color: @vc_controls_child_border_hover;
+      }
     }
     .vc_control-parent {
       .vc_btn-content {
@@ -370,28 +441,34 @@
             border-color: @vc_controls_parent_border_hover;
           }
         }
+        &:focus .vc_btn-content,
+        &:focus-visible .vc_btn-content {
+          background-color: @vc_controls_parent_background_hover;
+          border-color: @vc_controls_parent_border_hover;
+        }
       }
     }
     .vc_advanced {
-      overflow: hidden;
-      height: 30px;
-      width: 0;
+      overflow: visible;
+      width: auto;
       display: inline-block;
       vertical-align: middle;
-      .transition(width 0.5s);
     }
     > .vc_element {
       display: inline-block;
-      :last-child {
-        .vc_btn-content {
-          .border-right-radius(@vc_border_radius);
+      > :last-child {
+        > :last-child {
+          .vc_btn-content {
+            .border-right-radius(@vc_border_radius);
+          }
+        }
+        &.vc_control-btn {
+          .vc_btn-content {
+            .border-right-radius(@vc_border_radius);
+          }
         }
       }
-      .vc_control-btn-switcher {
-        .vc_btn-content {
-          .border-right-radius(@vc_border_radius);
-        }
-      }
+      .vc-copypaste-select-colors(@vc_controls_child_background, @vc_controls_child_background_hover);
     }
     > .vc_parent {
       display: inline-block;
@@ -408,14 +485,34 @@
             border-color: @vc_controls_parent_border_hover;
           }
         }
+        &:focus .vc_btn-content,
+        &:focus-visible .vc_btn-content {
+          background-color: @vc_controls_parent_background_hover;
+          border-color: @vc_controls_parent_border_hover;
+        }
       }
       > :first-child {
         .vc_btn-content {
           .border-left-radius(@vc_border_radius);
         }
       }
+      > :last-child {
+        > :last-child {
+          .vc_btn-content {
+            .border-right-radius(@vc_border_radius);
+          }
+        }
+        &.vc_control-btn {
+          .vc_btn-content {
+            .border-right-radius(@vc_border_radius);
+          }
+        }
+      }
+      .vc-copypaste-select-colors(@vc_controls_parent_background, @vc_controls_parent_background_hover);
     }
-    > .element-vc_section {
+    > .element-vc_section,
+    > .element-vc_grid_container,
+    > .element-vc_flexbox_container {
       .vc_btn-content {
         background-color: @vc_controls_parent_background;
         border-color: @vc_controls_parent_border;
@@ -429,30 +526,17 @@
             border-color: @vc_controls_parent_border_hover;
           }
         }
+        &:focus .vc_btn-content,
+        &:focus-visible .vc_btn-content {
+          background-color: @vc_controls_parent_background_hover;
+          border-color: @vc_controls_parent_border_hover;
+        }
       }
+      .vc-copypaste-select-colors(@vc_controls_parent_background, @vc_controls_parent_background_hover);
     }
     > .vc_active {
       .vc_control-btn {
         display: inline-block;
-      }
-      .vc_control-btn-switcher {
-        width: 0;
-      }
-
-      &.vc_parent, &.vc_element {
-        .vc_advanced {
-          width: 120px;
-        }
-      }
-      &.parent-vc_row, &.parent-vc_row_inner {
-        .vc_advanced {
-          width: 150px;
-        }
-      }
-      &.element-vc_column, &.element-vc_column_inner {
-        .vc_advanced {
-          width: 90px;
-        }
       }
       &.element-vc_tab {
         &.vc_element-name {
@@ -466,20 +550,45 @@
   }
 }
 
-// Toggle container element has custom controls set
-// It requires a custom width
-.vc_vc_tta_toggle_section {
-  .vc_controls-container > div > .vc_active.vc_parent .vc_advanced {
-    width: 90px;
+.vc_controls-parent > div {
+  .vc_control-btn {
+    &::before {
+      border-bottom-color: @vc_controls_parent_background;
+    }
+    .vc_btn-content {
+      background-color: @vc_controls_parent_background;
+      border-color: @vc_controls_parent_border;
+    }
+    &:hover,
+    &:focus,
+    &:focus-visible {
+      &::before {
+        border-bottom-color: @vc_controls_parent_background_hover;
+      }
+      .vc_btn-content {
+        background-color: @vc_controls_parent_background_hover;
+        border-color: @vc_controls_parent_border_hover;
+      }
+    }
   }
+
+  > .vc_element {
+    .vc-copypaste-select-colors(@vc_controls_parent_background, @vc_controls_parent_background_hover);
+  }
+}
+
+// Toggle container element has custom controls set
+.vc_vc_tta_toggle_section {
+  .vc_controls-container > div > .vc_active.vc_parent .vc_advanced,
   .vc_controls-container > div > .vc_active.vc_element .vc_advanced {
-    width: 60px;
+    width: auto;
   }
 }
 
 .vc_element-container {
-  > div.vc_container:first-of-type {
-    margin-top: 31px;
+  > div.vc_container:first-of-type,
+  > div.vc_container-block:first-of-type {
+    margin-top: (@vc-element-controls-height + 1px);
   }
 }
 
@@ -560,6 +669,92 @@
   }
 }
 
+// Copy/Paste select dropdown (frontend editor)
+.vc_copypaste-select {
+  // Hide native select - Select2 replaces it.
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  border: 0 !important;
+
+  + .select2-container {
+    display: inline-block !important;
+    vertical-align: middle !important;
+    width: auto !important;
+
+    .select2-selection {
+      background-color: @vc_controls_child_background;
+      border: none !important;
+      border-radius: 0 !important;
+      padding: 9px;
+      height: @vc-element-controls-height;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      margin: 0;
+      &:hover {
+        background-color: @vc_control_hover_color;
+      }
+      &:focus,
+      &:focus-visible {
+        outline: none;
+        box-shadow: none;
+        background-color: @vc_control_hover_color;
+      }
+    }
+    &.select2-container--open .select2-selection,
+    &.select2-container--focus .select2-selection {
+      background-color: @vc_control_hover_color;
+    }
+    // To keep nearby elements hoverable when copy/paste is open.
+    &.select2-container--open {
+      width: fit-content !important;
+    }
+
+    .select2-selection__rendered {
+      font-size: 0 !important;
+      line-height: 16px !important;
+      padding: 0 !important;
+      width: 14px;
+      height: 14px;
+      position: relative;
+
+      &::before {
+        content: @vc-c-controls-menu;
+        font-family: 'vcpb-plugin-icons' !important;
+        font-size: 10px;
+        color: #F2F2F2;
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        text-align: center;
+      }
+    }
+
+    .select2-selection__arrow {
+      display: none;
+    }
+  }
+}
+
+// Dark dropdown for copy/paste
+.vc_copypaste-select-dropdown.select2-dropdown {
+  z-index: 999999 !important;
+  min-width: 160px !important;
+  width: max-content !important;
+  max-width: max-content !important;
+}
+
+.vc_copypaste-select-dropdown .select2-results__option .vc_copypaste-option--disabled {
+  color: #BECBD1;
+  cursor: not-allowed;
+}
+
 .vc_controls-visible {
   .opacity(1) !important;
   visibility: visible;
@@ -574,8 +769,12 @@
         background-color: @vc_controls_child_background_hover;
       }
     }
+    &:focus .vc_btn-content,
+    &:focus-visible .vc_btn-content {
+      background-color: @vc_controls_child_background_hover;
+    }
   }
-
+  .vc-copypaste-select-colors(@vc_controls_child_background, @vc_controls_child_background_hover);
 }
 
 .vc_controls-content-widget {
@@ -587,5 +786,62 @@
     &:hover {
       background-color: @vc_controls_parent_background_hover;
     }
+  }
+  .vc_control-btn {
+    &:focus .vc_btn-content,
+    &:focus-visible .vc_btn-content {
+      background-color: @vc_controls_parent_background_hover;
+    }
+  }
+  .vc-copypaste-select-colors(@vc_controls_parent_background, @vc_controls_parent_background_hover);
+}
+
+.wpb-post-title {
+  position: relative;
+
+  &.wpb-title-hover {
+    .vc_controls {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  .vc_controls {
+    position: absolute;
+    display: block;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  .vc_controls-cc {
+    height: @vc-element-controls-height;
+  }
+
+  .vc_control-btn,
+  .vc_btn-content {
+    height: @vc-element-controls-height;
+    vertical-align: top !important; // override existing !important from element controls
+  }
+
+  .vc_element-name .vc_btn-content:hover {
+    cursor: default;
+    background-color: transparent;
+  }
+
+}
+
+.wpb-title-hover {
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    bottom: -10px;
+    left: -10px;
+    border: 1px dashed @vc_element_hover_border_rgba;
   }
 }

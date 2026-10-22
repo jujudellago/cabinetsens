@@ -1,4 +1,10 @@
 <?php
+/**
+ * Class that handles specific [vc_facebook] shortcode.
+ *
+ * @see js_composer/include/templates/shortcodes/vc_facebook.php
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
@@ -8,25 +14,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class WPBakeryShortCode_Vc_Facebook extends WPBakeryShortCode {
 	/**
-	 * @param $atts
+	 * Get shortcode inline html.
+	 *
+	 * @param array $atts
 	 * @param null $content
 	 * @return string
 	 * @throws \Exception
 	 */
 	protected function contentInline( $atts, $content = null ) {
+		$atts = vc_map_get_attributes( $this->getShortcode(), $atts );
+		extract( $atts );
+
 		/**
 		 * Shortcode attributes
-		 * @var $atts
-		 * @var $type
-		 * @var $el_class
-		 * @var $css
-		 * @var $css_animation
+		 *
+		 * @var array $atts
+		 * @var string $type
+		 * @var string $css_animation
 		 * Shortcode class
 		 * @var WPBakeryShortCode_Vc_Facebook $this
 		 */
-		$type = $css = $el_class = '';
-		$atts = vc_map_get_attributes( $this->getShortcode(), $atts );
-		extract( $atts );
 
 		$url = get_permalink();
 

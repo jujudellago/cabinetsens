@@ -14,10 +14,7 @@
 
         if(datepicker.length) {
             datepicker.each(function() {
-                $(this).datepicker({
-                    prevText: '<span class="arrow_carrot-left"></span>',
-                    nextText: '<span class="arrow_carrot-right"></span>'
-                });
+                $(this).datepicker();
             });
         }
     };

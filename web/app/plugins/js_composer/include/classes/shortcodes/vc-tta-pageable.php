@@ -1,4 +1,10 @@
 <?php
+/**
+ * Class that handles specific [vc_tta_pageable] shortcode.
+ *
+ * @see js_composer/include/templates/shortcodes/vc_tta_pageable.php
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
@@ -10,9 +16,16 @@ VcShortcodeAutoloader::getInstance()->includeClass( 'WPBakeryShortCode_Vc_Tta_Ta
  */
 class WPBakeryShortCode_Vc_Tta_Pageable extends WPBakeryShortCode_Vc_Tta_Tabs {
 
+	/**
+	 * Layout type.
+	 *
+	 * @var string
+	 */
 	public $layout = 'tabs';
 
 	/**
+	 * Add tta container classes.
+	 *
 	 * @return string
 	 */
 	public function getTtaContainerClasses() {
@@ -24,6 +37,8 @@ class WPBakeryShortCode_Vc_Tta_Pageable extends WPBakeryShortCode_Vc_Tta_Tabs {
 	}
 
 	/**
+	 * Add tta classes.
+	 *
 	 * @return mixed|string
 	 */
 	public function getTtaGeneralClasses() {
@@ -31,7 +46,7 @@ class WPBakeryShortCode_Vc_Tta_Pageable extends WPBakeryShortCode_Vc_Tta_Tabs {
 
 		$classes .= ' vc_tta-pageable';
 
-		// tabs have pagination on opposite side of tabs. pageable should behave normally
+		// tabs have pagination on opposite side of tabs. pageable should behave normally.
 		if ( false !== strpos( $classes, 'vc_tta-tabs-position-top' ) ) {
 			$classes = str_replace( 'vc_tta-tabs-position-top', 'vc_tta-tabs-position-bottom', $classes );
 		} else {
@@ -45,12 +60,22 @@ class WPBakeryShortCode_Vc_Tta_Pageable extends WPBakeryShortCode_Vc_Tta_Tabs {
 	/**
 	 * Disable all tabs
 	 *
-	 * @param $atts
-	 * @param $content
+	 * @param array $atts
+	 * @param string $content
 	 *
 	 * @return string
 	 */
 	public function getParamTabsList( $atts, $content ) {
 		return '';
+	}
+
+	/**
+	 * Get CSS file names for vc_tta_pageable shortcode.
+	 *
+	 * @since 9.0
+	 * @return array
+	 */
+	public function get_shortcode_css_files() {
+		return [ 'vc_tta', 'vc_tta_toggle', 'vc_pagination' ];
 	}
 }

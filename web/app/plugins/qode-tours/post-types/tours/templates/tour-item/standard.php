@@ -2,6 +2,7 @@
 if (!isset($title_tag) || $title_tag == ''){
 	$title_tag = 'h4';
 }
+$title_tag = qode_tours_sanitize_title_tag( $title_tag );
 
 if (!isset($thumb_size) || $thumb_size == ''){
 	$thumb_size = 'full';

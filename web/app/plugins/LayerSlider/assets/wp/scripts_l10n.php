@@ -38,6 +38,8 @@ $l10n_ls = [
 	'scalable_a' 	=> _x('Scalable (Auto Size)', 'Asset size', 'LayerSlider'),
 	'scalable_o' 	=> _x('Scalable (Original Size)', 'Asset size', 'LayerSlider'),
 
+	'currentColor' 	=> __('Current Text Color', 'LayerSlider'),
+
 	// Notifications
 	'notifyProjectSaved' 			=> __('Project saved as draft', 'LayerSlider'),
 	'notifyProjectPublished' 		=> __('Published & changes are now live', 'LayerSlider'),
@@ -49,7 +51,8 @@ $l10n_ls = [
 	'notifyMissingPopup' 			=> __('This is a Popup project, which requires license registration to use.', 'LayerSlider'),
 	'notifyMissingPopupMT' 			=> __('Register your LayerSlider license to use Popups.', 'LayerSlider'),
 	'notifyMissingScene' 			=> __('This is a Sticky or Scroll Scene project, which requires license registration to use on front-end pages.', 'LayerSlider'),
-	'notifyScrollSceneSlides' 		=> __('This is a Scroll Scene project, which will display and animate the first slide only.', 'LayerSlider'),
+	'notifyScrollSceneSlides' 		=> __('Choose how Scroll Scenes should behave when using multiple slides.', 'LayerSlider'),
+	'notifyScrollSceneSlidesButton' => __('Configure', 'LayerSlider'),
 	'notifyMissingEndingTr' 		=> __('Missing Ending Transitions can lead to overlapping layers.', 'LayerSlider'),
 	'confirmMissingEndingTrFix' 		=> sprintf(__('To avoid overlapping issues, %sEnding Transition%s will be enabled on layers missing both Ending Transition and Ending Text Transition. You should manually save the project after the changes have been applied.', 'LayerSlider'), '<b>', '</b>'),
 	'confirmMissingEndingTrDismiss' 	=> __('Are you sure you want to dismiss this notification without fixing potential issues?', 'LayerSlider'),
@@ -63,9 +66,16 @@ $l10n_ls = [
 	'moduleDLImageEditor' 	=> __('Downloading Image Editor ...', 'LayerSlider'),
 	'moduleDLIcons' 		=> __('Downloading Icons ...', 'LayerSlider'),
 	'moduleDLAssets' 		=> __('Downloading Assets ...', 'LayerSlider'),
+	'moduleDLLottie' 		=> __('Downloading Lottie Module ...', 'LayerSlider'),
+
+	'lottieDLErrorTitle' 	=> __('Download Error', 'LayerSlider'),
+	'lottieDLAsset' 		=> __('Downloading Lottie Animation ...', 'LayerSlider'),
+	'lottieServerErrorTitle'=> __('Something went wrong', 'LayerSlider'),
+	'lottieServerErrorText' => sprintf(__('It seems there is a server issue that prevented LayerSlider from downloading the Lottie animation. Please check %sSystem Status%s for potential errors, try to temporarily disable themes/plugins to rule out incompatibility issues, or contact your hosting provider to resolve server configuration problems.', 'LayerSlider'), '<a href="'.admin_url( 'admin.php?page=layerslider&section=system-status' ).'" target="_blank">', '</a>'),
 
 	'assetsDLErrorTitle' 	=> __('Download Error', 'LayerSlider'),
 	'assetsDLAsset' 		=> __('Downloading Asset ...'),
+	'assetsDLAssetFail' 	=> __('Download Failed. Retrying... (%1$s/%2$s)'),
 
 	'assetsDefaultInspectorTitles' => [
 		'objects' 	=> __('Object Details', 'LayerSlider'),
@@ -81,6 +91,8 @@ $l10n_ls = [
 	'assetsAPIErrorText' 	=> __('It seems the remote API is experiencing a temporary outage, and we couldn’t load the assets you’re looking for. Please try again in a few minutes.', 'LayerSlider'),
 	'assetsServerErrorTitle'=> __('Something went wrong', 'LayerSlider'),
 	'assetsServerErrorText' => sprintf(__('It seems there is a server issue that prevented LayerSlider from accessing the assets you’re looking for. Please check %sSystem Status%s for potential errors, try to temporarily disable themes/plugins to rule out incompatibility issues, or contact your hosting provider to resolve server configuration problems.', 'LayerSlider'), '<a href="'.admin_url( 'admin.php?page=layerslider&section=system-status' ).'" target="_blank">', '</a>'),
+	'assetsDLServerErrorTitle'=> __('Something went wrong', 'LayerSlider'),
+	'assetsDLServerErrorText' => sprintf(__('It seems there is a server issue that prevented LayerSlider from downloading the selected asset. Please check %sSystem Status%s for potential errors, try to temporarily disable themes/plugins to rule out incompatibility issues, or contact your hosting provider to resolve server configuration problems.', 'LayerSlider'), '<a href="'.admin_url( 'admin.php?page=layerslider&section=system-status' ).'" target="_blank">', '</a>'),
 
 
 	// Activation
@@ -152,6 +164,14 @@ $l10n_ls = [
 			'title' => __('Slide thumbnail', 'LayerSlider'),
 			'icon' 	=> lsGetSVGIcon('image')
 		],
+		'COUNTDOWN_SETTINGS' 		=> [
+			'title' => __('Countdown settings', 'LayerSlider'),
+			'icon' 	=> lsGetSVGIcon('timer')
+		],
+		'LAYER_SELECT' 			=> [
+			'title' => __('Select layer', 'LayerSlider'),
+			'icon' => lsGetSVGIcon('square-dashed')
+		],
 		'LAYER_NEW' 			=> [
 			'title' => __('New layer', 'LayerSlider'),
 			'icon' 	=> lsGetSVGIcon('layer-plus')
@@ -185,6 +205,11 @@ $l10n_ls = [
 		'LAYER_STYLES' 			=> [
 			'title' => __('Layer styles', 'LayerSlider'),
 			'icon' 	=> lsGetSVGIcon('palette')
+		],
+
+		'LAYER_LOTTIE' 			=> [
+			'title' => __('Lottie settings', 'LayerSlider'),
+			'icon' 	=> lsGetSVGIcon('lottie', 'brands')
 		],
 
 		'BUTTON_PRESET' 		=> [
@@ -252,27 +277,39 @@ $l10n_ls = [
 			'title' => __('Paste layer settings', 'LayerSlider'),
 			'icon' 	=> lsGetSVGIcon('clipboard')
 		],
+		'LAYER_CLEAR_SETTINGS' 	=> [
+			'title' => __('Clear layer settings', 'LayerSlider'),
+			'icon' 	=> lsGetSVGIcon('trash-alt')
+		],
 		'LAYER_SMART_OPERATION' => [
 			'title' => __('Smart Operation', 'LayerSlider'),
 			'icon' 	=> lsGetSVGIcon('lightbulb-on')
 		],
-		'VIDEO_POSTER' 	=> [
+		'VIDEO_POSTER' 			=> [
 			'title' => __('Video poster', 'LayerSlider'),
 			'icon' 	=> lsGetSVGIcon('photo-video')
 		],
-		'MODIFY_SHAPE' 	=> [
+		'MODIFY_SHAPE' 			=> [
 			'title' => __('Modify Shape', 'LayerSlider'),
 			'icon' 	=> lsGetSVGIcon('shapes')
 		],
-		'MODIFY_OBJECT' => [
+		'MODIFY_OBJECT' 		=> [
 			'title' => __('Modify SVG', 'LayerSlider'),
-			'icon' 	=> lsGetSVGIcon('stars')
+			'icon' 	=> lsGetSVGIcon('splotch')
 		],
-		'LAYER_APPLY_TRANSITION' 	=> [
+		'LAYER_APPLY_TRANSITION' => [
 			'title' => __('Apply transition', 'LayerSlider'),
 			'icon' 	=> lsGetSVGIcon('stars')
 		],
+		'LAYER_ACTIONS' 		=> [
+			'title' => __('Layer actions', 'LayerSlider'),
+			'icon' 	=> lsGetSVGIcon('bullseye-pointer', 'regular', [ 'class' => 'lse-mirror-h' ])
+		],
 
+		'LAYER_EFFECTS' 		=> [
+			'title' => __('Layer effects', 'LayerSlider'),
+			'icon' 	=> lsGetSVGIcon('sparkles')
+		],
 
 	],
 
@@ -285,11 +322,14 @@ $l10n_ls = [
 	'SBSlideCopyTitle' 			=> __('Slide #%d copy', 'LayerSlider'),
 	'SBLayerTitle' 				=> __('Layer #%d', 'LayerSlider'),
 	'SBLayerCopyTitle' 			=> __('Layer #%d copy', 'LayerSlider'),
+	'SBMultiSelectLayerCount' 	=> __('(%d layers)', 'LayerSlider'),
 
 	// Search
 	'SBSearchTitle' 			=> __('Search', 'LayerSlider'),
 	'SBSearchSlide' 			=> __('Slide', 'LayerSlider'),
 	'SBSearchLayers' 			=> __('Layers', 'LayerSlider'),
+	'SBSearchTemplateCategory' 	=> __('Template', 'LayerSlider'),
+	'SBSearchTemplateShowInst' 	=> __('Open Template Instructions', 'LayerSlider'),
 
 	'SBUsedFonts' 				=> __('Used Fonts', 'LayerSlider'),
 	'SBDragMe' 					=> __('Drag me :)', 'LayerSlider'),
@@ -297,16 +337,19 @@ $l10n_ls = [
 	'SBPreviewMediaPlaceholder'	=> __('Double click to<br> add media', 'LayerSlider'),
 	'SBPreviewIconPlaceholder'	=> __('Double click to<br> add icon', 'LayerSlider'),
 	'SBPreviewShapePlaceholder'	=> __('Double click to<br> add shape', 'LayerSlider'),
+	'SBPreviewLottiePlaceholder'=> __('Double click to<br> add animation', 'LayerSlider'),
 	'SBPreviewTextPlaceholder' 	=> __('Text Layer', 'LayerSlider'),
 	'SBPreviewHTMLPlaceholder' 	=> __('HTML Layer', 'LayerSlider'),
 	'SBPreviewButtonPlaceholder' => __('Button', 'LayerSlider'),
+	'SBPreviewAudioPlaceholder' => __('Embedded Audio', 'LayerSlider'),
 	'SBPreviewPostPlaceholder' 	=> __('Howdy, [author]', 'LayerSlider'),
 	'SBPreviewSlide' 			=> __('Preview Slide', 'LayerSlider'),
 	'SBPreviewSlideExit' 		=> __('Stop Preview', 'LayerSlider'),
 	'SBPreviewLinkNotAvailable' => __('Auto-generated URLs are not available in Preview. This layer will link to “%s” on your front-end pages.', 'LayerSlider'),
 	'SBStaticUntil' 			=> __('Until the end of Slide #%d', 'LayerSlider'),
-	'SBPasteLayerError'			=> __('There’s nothing to paste. Copy a layer first!', 'LayerSlider'),
-	'SBPasteError' 				=> __('There is nothing to paste! Copy layer style or transition options first.', 'LayerSlider'),
+	'SBPasteLayerError'			=> __('There’s nothing to paste. Copy a layer first.', 'LayerSlider'),
+	'SBPasteError' 				=> __('There’s nothing to paste. Copy something first, and please note that you can only paste between matching sections.', 'LayerSlider'),
+	'SBCPPasteError' 			=> __('There’s nothing to paste. Copy a color or gradient first.', 'LayerSlider'),
 	'SBRemoveSlideTitle' 		=> __('Remove selected slide?', 'LayerSlider'),
 	'SBRemoveSlideTitleName' 	=> __('Remove slide "%s"?', 'LayerSlider'),
 	'SBRemoveSlideText' 		=> __('Are you sure you want to remove this slide? You can’t undo this action.', 'LayerSlider'),
@@ -323,12 +366,23 @@ $l10n_ls = [
 
 	'SBMediaLibraryImage' 		=> __('Pick an image to use it in LayerSlider', 'LayerSlider'),
 	'SBMediaLibraryMedia'		=> __('Choose video or audio files', 'LayerSlider'),
+	'SBMediaLibraryAVError' 	=> __('Please select only video or audio sources without mixing them together.', 'LayerSlider'),
 	'SBUploadError' 			=> __('Upload error. Please verify that the uploaded items have the correct file extension and they are supported by WordPress.', 'LayerSlider'),
 	'SBUploadErrorMessage' 		=> __('Upload error. Please verify that the uploaded items have the correct file extension and they are supported by WordPress. Your server thrown the following error: %s', 'LayerSlider'),
 	'SBInvalidFormat' 			=> __('Invalid format', 'LayerSlider'),
 	'SBEnterImageURL' 			=> __('Enter an image URL', 'LayerSlider'),
+	'SBEnterLottieURL' 			=> __('Enter a Lottie animation URL', 'LayerSlider'),
 	'SBTransitionApplyOthers' 	=> __('Are you sure you want to apply the currently selected transitions and effects on the other slides?', 'LayerSlider'),
+	'SBTransitionCustomPresets' => __('Custom %d', 'LayerSlider'),
+	'SBTransitionRemovePreset' 	=> __('Are you sure you want to delete this custom effect? This action cannot be undone.', 'LayerSlider'),
+	'SBTransitionSelectEffet' 	=> __('Use All Effects in “%s”', 'LayerSlider'),
+	'SBTransitionDeSelectEffet' => __('Use None in “%s”', 'LayerSlider'),
+	'SBConfirmGlobalEnable' 	=> __('Are you sure you want to enable all effects in all categories? This action cannot be undone. If you proceed, you won’t be able to restore your current selection.', 'LayerSlider'),
+	'SBConfirmGlobalDisable' 	=> __('Are you sure you want to disable all effects in all categories? This action cannot be undone. If you proceed, you won’t be able to restore your current selection.', 'LayerSlider'),
 	'SBPostFilterWarning' 		=> __('No posts were found with the current filters.', 'LayerSlider'),
+	'SBPostFilterWarningTT' 	=> __('No post found. Use Configure Post Options to change the current filters.', 'LayerSlider'),
+	'SBPostFieldWarningTT' 		=> __('No data found for this field.', 'LayerSlider'),
+	'SBPostMetaTT' 				=> __('Retrieve values from custom or unlisted fields.<br><br>Once inserted, change <i>fieldname</i> to the actual name of your custom field.', 'LayerSlider'),
 	'SBSaveErrorTitle' 			=> __('Server Error', 'LayerSlider'),
 	'SBSaveError' 				=> sprintf(__('It seems there is a server issue that prevented LayerSlider from saving your work. Please check %sSystem Status%s for potential errors, try to temporarily disable themes/plugins to rule out incompatibility issues, or contact your hosting provider to resolve server configuration problems. Your HTTP server thrown the following error: %%s', 'LayerSlider'), '<a href="'.admin_url( 'admin.php?page=layerslider&section=system-status' ).'" target="_blank">', '</a>'),
 	'SBUnsavedChanges' 			=> __('You have unsaved changes on this page. Do you want to leave and discard the changes made since your last save?', 'LayerSlider'),
@@ -346,15 +400,35 @@ $l10n_ls = [
 
 	'SBConfirmApplyToAllSlides' => __('Are you sure you want to apply this setting on all slides? You won’t be able to undo this.', 'LayerSlider'),
 
-	'SBLayerTypeImg' 			=> __('Image', 'LayerSlider'),
-	'SBLayerTypeIcon' 			=> __('Icon', 'LayerSlider'),
-	'SBLayerTypeText' 			=> __('Text', 'LayerSlider'),
-	'SBLayerTypeButton' 		=> __('Button', 'LayerSlider'),
-	'SBLayerTypeMedia' 			=> __('Video / Audio', 'LayerSlider'),
-	'SBLayerTypeHTML' 			=> __('HTML', 'LayerSlider'),
-	'SBLayerTypePost' 			=> __('Dynamic', 'LayerSlider'),
-	'SBLayerTypeShape' 			=> __('Shape', 'LayerSlider'),
-	'SBLayerTypeSVG' 			=> __('SVG', 'LayerSlider'),
+	'SBLayerTypeImg' 				=> __('Image', 'LayerSlider'),
+	'SBLayerTypeIcon' 				=> __('Icon', 'LayerSlider'),
+	'SBLayerTypeText' 				=> __('Text', 'LayerSlider'),
+	'SBLayerTypeButton' 			=> __('Button', 'LayerSlider'),
+	'SBLayerTypeMedia' 				=> __('Video / Audio', 'LayerSlider'),
+	'SBLayerTypeHTML' 				=> __('HTML', 'LayerSlider'),
+	'SBLayerTypePost' 				=> __('Dynamic', 'LayerSlider'),
+	'SBLayerTypeShape' 				=> __('Shape', 'LayerSlider'),
+	'SBLayerTypeSVG' 				=> __('SVG', 'LayerSlider'),
+	'SBLayerTypeCountdownDays' 		=> __('Countdown %d (Days)', 'LayerSlider'),
+	'SBLayerTypeCountdownHours' 	=> __('Countdown %d (Hours)', 'LayerSlider'),
+	'SBLayerTypeCountdownMinutes' 	=> __('Countdown %d (Mins)', 'LayerSlider'),
+	'SBLayerTypeCountdownSeconds' 	=> __('Countdown %d (Secs)', 'LayerSlider'),
+	'SBLayerTypeCounter' 			=> __('Counter', 'LayerSlider'),
+	'SBLayerTypeLottie' 			=> __('Lottie Animation', 'LayerSlider'),
+
+	'SBPremiumLayerWarnings' 		=> [
+		'countdown' 		=> __('Countdown', 'LayerSlider'),
+		'counter' 			=> __('Counter', 'LayerSlider'),
+		'lottie' 			=> __('Lottie', 'LayerSlider'),
+		'shape' 			=> __('Shape', 'LayerSlider'),
+		'icon' 				=> __('Premium Icon', 'LayerSlider'),
+		'effects' 			=> __('Effects', 'LayerSlider'),
+		'backgroundClip' 	=> __('Background Clip', 'LayerSlider'),
+		'assetImage' 		=> __('Asset Image', 'LayerSlider'),
+		'assetBackground'	=> __('Asset Background', 'LayerSlider'),
+		'assetVideo' 		=> __('Asset Video', 'LayerSlider'),
+		'scrollTransition' => __('Scroll Transition', 'LayerSlider')
+	],
 
 	'SBInvalidSVGSource' 		=> __('The entered SVG code doesn’t seem to be valid.', 'LayerSlider'),
 	'SBInsertObjectTitle' 		=> __('Insert SVG', 'LayerSlider'),
@@ -364,7 +438,12 @@ $l10n_ls = [
 	'SBModifyShapeTitle' 		=> __('Modify Shape', 'LayerSlider'),
 	'SBShapeOptionsTitle' 		=> _x('%s Options', 'Shape Options (e.g. Wave Options, etc.)', 'LayerSlider'),
 
+	'SBLayerEffectTextOnly'	=> __('The selected layer effect cannot be applied because one or more layers in the selection are incompatible.', 'LayerSlider'),
+
 	'SBRevisionsLoading' 		=> __('Loading, please wait...', 'LayerSlider'),
+	'SBRevisionsDeleteTitle' 	=> __('Delete saved revisions?', 'LayerSlider'),
+	'SBRevisionsDeleteMessage' 	=> __('The Revisions add-on has been turned off. You also have the option to delete all revisions of all projects saved so far. Would you like to proceed? This action cannot be undone.', 'LayerSlider'),
+	'SBRevisionsDeleteButton' 	=> __('Delete Revisions', 'LayerSlider'),
 
 	'SBSOPlaceholder'			=> _x('SET', 'Input value is changed via smart operation', 'LayerSlider'),
 	'SBNoPreview'				=> __('No Preview'),
@@ -375,12 +454,22 @@ $l10n_ls = [
 	'SBApplyTransitionPresetOK' 			=> __('Apply Recommendation', 'LayerSlider'),
 	'SBApplyTransitionPresetBoth' 			=> __('Keep Transitions', 'LayerSlider'),
 
+	'SBTemplateInstructionsTitle' => __('Template Instructions', 'LayerSlider'),
+
 	'SBMediaAutoplayNoticeTitle' => __('Audio prevents autoplay', 'LayerSlider'),
 	'SBMediaAutoplayNoticeText' => __('Modern web browsers don’t allow autoplay with sound in most cases since it was deemed undesirable. Some exceptions exist. For example, if a user frequently visits a website or interacts with it first by clicking on an element before attempting to autoplay with sound.
 <br><br>
 There’s no way to circumvent this restriction. You should either autoplay videos muted and offer an unmute button, or wait for visitors to start playback with sound on their own.
 <br><br>
 LayerSlider will attempt to start playback with sound if you select “Auto” for “Play Muted”. If that’s not possible, it’ll autoplay without sound, and visitors are prompted with an unmute button.', 'LayerSlider'),
+
+	// Countdown Presets
+	'SBChooseCountdownPreset' 	=> __('Choose Preset', 'LayerSlider'),
+	'SBCountdownSettings'	 	=> __('Countdown Settings', 'LayerSlider'),
+
+	// Counter Presets
+	'SBChooseCounterPreset' 	=> __('Choose Preset', 'LayerSlider'),
+	'SBCounterSettings'	 	=> __('Counter Settings', 'LayerSlider'),
 
 	// Transition Builder
 	'TBTransitionName' 			=> __('Type transition name', 'LayerSlider'),

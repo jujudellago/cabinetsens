@@ -134,7 +134,7 @@ abstract class NewsShortcodes{
         $params['query_result'] = $this->generatePostsQuery($params);
         $holder_classes = $this->getHolderClasses($params);
 
-        $html = '<div '.bridge_qode_get_class_attribute($holder_classes).' '.esc_attr($this->getNewsShortcodesHolderDataParams($params)).'>';
+        $html = '<div '.bridge_qode_get_class_attribute($holder_classes).' '.esc_attr($this->getNewsShortcodesHolderDataParams($params)).' data-nonce="'.esc_attr( wp_create_nonce( 'qode_news_load_more_nonce' ) ).'">';
 
 
         if (!empty($params['layout_title']) && $params['layout_title'] !== '') {
@@ -890,12 +890,12 @@ abstract class NewsShortcodes{
     	$layout_title_html = '';
     	$title_tag = 'h3';
 
-    	if ($params['layout_title_tag'] !== ''){
-    		$title_tag = $params['layout_title_tag'];
+    	if ( ! empty( $params['layout_title_tag'] ) ) {
+    		$title_tag = qode_news_sanitize_title_tag( $params['layout_title_tag'], 'h3' );
     	}
 
         $layout_title_html .= '<div class="qode-news-list-title-holder">';
-    	$layout_title_html .= '<'.$title_tag.' class="qode-news-layout-title">';
+    	$layout_title_html .= '<' . $title_tag . ' class="qode-news-layout-title">';
 
     	$layout_title_html .= esc_html($params['layout_title']);
 

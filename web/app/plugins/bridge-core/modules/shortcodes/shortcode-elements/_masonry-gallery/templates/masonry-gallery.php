@@ -2,21 +2,21 @@
 
 $qodeIconCollections = bridge_qode_return_icon_collections();
 
-$parallax_item_speed = esc_attr($parallax_item_speed);
-$parallax_item_offset = esc_attr($parallax_item_offset);
+$parallax_item_speed  = esc_attr( $parallax_item_speed );
+$parallax_item_offset = esc_attr( $parallax_item_offset );
 
 $html = '';
 
 /* Query for items */
 $query_args = array(
-    'post_type' => 'masonry_gallery',
-    'orderby' => 'date',
-    'order' => $order,
-    'posts_per_page' => $number
+	'post_type'      => 'masonry_gallery',
+	'orderby'        => 'date',
+	'order'          => esc_attr( $order ),
+	'posts_per_page' => esc_attr( $number )
 );
 
-if ($category != "") {
-    $query_args['masonry_gallery_category'] = $category;
+if ( $category != "" ) {
+	$query_args['masonry_gallery_category'] = esc_attr( $category );
 }
 $query = new WP_Query( $query_args );
 
@@ -35,7 +35,7 @@ switch ($number) {
         break;
 }
 
-$html .= '<div class="masonry_gallery_holder ' . $item_number_class . ' " data-parallax_item_speed="'.$parallax_item_speed.'" data-parallax_item_offset="'.$parallax_item_offset.'"><div class="grid-sizer"></div>';
+$html .= '<div class="masonry_gallery_holder ' . esc_attr( $item_number_class ) . ' " data-parallax_item_speed="'.esc_attr($parallax_item_speed).'" data-parallax_item_offset="'.esc_attr($parallax_item_offset).'"><div class="grid-sizer"></div>';
 
 if ($query->have_posts()) :
     while ( $query->have_posts() ) : $query->the_post();
@@ -110,7 +110,7 @@ if ($query->have_posts()) :
                 $html .= '<p class="masonry_gallery_item_text">' . esc_html($item_text) . '</p>';
 
                 if ($item_link !== '' && $item_button_label !== '') {
-                    $html .= '<a itemprop="url" href="'.esc_url($item_link).'" class="qbutton masonry_gallery_item_button" target="'.esc_attr($item_link_target).'">'.$item_button_label.'</a>';
+                    $html .= '<a itemprop="url" href="'.esc_url($item_link).'" class="qbutton masonry_gallery_item_button" target="'.esc_attr($item_link_target).'">'.esc_html( $item_button_label ).'</a>';
                 }
 
                 $html .= '</div></div></div>';
@@ -120,9 +120,9 @@ if ($query->have_posts()) :
             case 'with_icon':
 
                 //With Icon Type
-                if ($item_link !== '') {
-                    $html .= '<a itemprop="url" href="'.esc_url($item_link).'" target="'.esc_attr($item_link_target).'">';
-                }
+	            if ( $item_link !== '' ) {
+		            $html .= '<a itemprop="url" href="' . esc_url( $item_link ) . '" target="' . esc_attr( $item_link_target ) . '">';
+	            }
 
                 if (has_post_thumbnail()) {
                     $html .= '<div class = "masonry_gallery_image_holder">';
@@ -167,9 +167,9 @@ if ($query->have_posts()) :
             case 'standard':
 
                 //Only image
-                if ($item_link !== '') {
-                    $html .= '<a itemprop="url" href="'.esc_url($item_link).'" target="'.esc_attr($item_link_target).'">';
-                }
+	            if ( $item_link !== '' ) {
+		            $html .= '<a itemprop="url" href="' . esc_url( $item_link ) . '" target="' . esc_attr( $item_link_target ) . '">';
+	            }
 
                 if (has_post_thumbnail()) {
                     $html .= '<div class = "masonry_gallery_image_holder">';

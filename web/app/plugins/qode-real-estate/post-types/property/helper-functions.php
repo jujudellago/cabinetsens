@@ -346,17 +346,80 @@ if (!function_exists('qodef_re_single_property_sidebar_display')) {
     add_filter('bridge_qode_sidebar_layout', 'qodef_re_single_property_sidebar_display');
 }
 
+if ( ! function_exists( 'qodef_re_get_registered_sidebar_id' ) ) {
+	/**
+	 * Map a sidebar option value (name or slug) to the ID used in $wp_registered_sidebars.
+	 *
+	 * Custom Bridge sidebars are registered with id = display name ("Property Single"),
+	 * while Qode Options store sanitize_title() ("property-single"). WordPress
+	 * is_active_sidebar() only looks up the slug and reports those areas as empty.
+	 *
+	 * @param string $sidebar_name
+	 *
+	 * @return string
+	 */
+	function qodef_re_get_registered_sidebar_id( $sidebar_name ) {
+		if ( $sidebar_name === '' || $sidebar_name === null ) {
+			return '';
+		}
+
+		global $wp_registered_sidebars;
+
+		if ( isset( $wp_registered_sidebars[ $sidebar_name ] ) ) {
+			return $sidebar_name;
+		}
+
+		$slug = sanitize_title( $sidebar_name );
+
+		foreach ( (array) $wp_registered_sidebars as $id => $sidebar ) {
+			$name = isset( $sidebar['name'] ) ? $sidebar['name'] : '';
+
+			if ( $id === $slug || sanitize_title( $id ) === $slug || sanitize_title( $name ) === $slug ) {
+				return $id;
+			}
+		}
+
+		return $sidebar_name;
+	}
+}
+
+if ( ! function_exists( 'qodef_re_is_sidebar_active' ) ) {
+	/**
+	 * Whether a sidebar has widgets, using the registered ID (not only the slug).
+	 *
+	 * @param string $sidebar_name
+	 *
+	 * @return bool
+	 */
+	function qodef_re_is_sidebar_active( $sidebar_name ) {
+		$sidebar_id = qodef_re_get_registered_sidebar_id( $sidebar_name );
+
+		if ( $sidebar_id === '' ) {
+			return false;
+		}
+
+		if ( is_active_sidebar( $sidebar_id ) ) {
+			return true;
+		}
+
+		$sidebars_widgets = wp_get_sidebars_widgets();
+
+		return ! empty( $sidebars_widgets[ $sidebar_id ] ) && is_array( $sidebars_widgets[ $sidebar_id ] );
+	}
+}
+
 if (!function_exists('qodef_re_single_property_sidebar')) {
     /**
      * Function that checks option for single property sidebar name and overrides it with filter
      */
     function qodef_re_single_property_sidebar() {
+        $sidebar_name = '';
+
         if (is_singular('property')) {
             //Override displaying sidebar based on property meta field
-            $sidebar_name = '';
             $sidebar_name_meta = get_post_meta(get_the_ID(), 'qode_choose-sidebar', true);
 
-            if ( empty( $sidebar_name_meta ) ) {
+            if ( empty( $sidebar_name_meta ) || 'default' === $sidebar_name_meta ) {
                 $sidebar_name = bridge_qode_options()->getOptionValue('property_custom_sidebar_area');
             } else {
                 $sidebar_name = $sidebar_name_meta;
@@ -367,9 +430,11 @@ if (!function_exists('qodef_re_single_property_sidebar')) {
             }
         }
 
-        if ( is_active_sidebar( $sidebar_name ) ) {
-            dynamic_sidebar( $sidebar_name );
-        };
+        $sidebar_id = qodef_re_get_registered_sidebar_id( $sidebar_name );
+
+        if ( $sidebar_id !== '' && qodef_re_is_sidebar_active( $sidebar_id ) ) {
+            dynamic_sidebar( $sidebar_id );
+        }
     }
 }
 
@@ -693,6 +758,24 @@ if (!function_exists('qodef_re_get_property_taxonomy')) {
     }
 }
 
+if (!function_exists('qodef_re_has_property_field_value')) {
+    /**
+     * Whether a property field should be rendered on the frontend.
+     * Empty strings are hidden; 0 / '0' are treated as entered values.
+     *
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    function qodef_re_has_property_field_value($value) {
+        if (is_array($value)) {
+            return !empty($value);
+        }
+
+        return $value !== '' && $value !== null && $value !== false;
+    }
+}
+
 if (!function_exists('qodef_re_get_property_specification_items')) {
     function qodef_re_get_property_specification_items($item_id = '') {
         $item_id = isset($item_id) && !empty($item_id) ? $item_id : get_the_ID();
@@ -704,57 +787,73 @@ if (!function_exists('qodef_re_get_property_specification_items')) {
         $item['icon'] = '<img src="' . qodef_re_get_assets_icon_src('icon-bedrooms', 'png') . '" alt="' . esc_attr__('Property bedroom icon', 'qode-real-estate') . '"/>';
         $item['label'] = esc_html__('Bedrooms:', 'qode-real-estate');
         $item['value'] = get_post_meta($item_id, 'qodef_property_bedrooms_meta', true);
-        $specification_items[] = $item;
+        if (qodef_re_has_property_field_value($item['value'])) {
+            $specification_items[] = $item;
+        }
 
         //Get Bathrooms
         $item = array();
         $item['icon'] = '<img src="' . qodef_re_get_assets_icon_src('icon-bathrooms', 'png') . '" alt="' . esc_attr__('Property bathroom icon', 'qode-real-estate') . '"/>';
         $item['label'] = esc_html__('Bathrooms:', 'qode-real-estate');
         $item['value'] = get_post_meta($item_id, 'qodef_property_bathrooms_meta', true);
-        $specification_items[] = $item;
+        if (qodef_re_has_property_field_value($item['value'])) {
+            $specification_items[] = $item;
+        }
 
         //Get Property Size
         $item = array();
         $item['icon'] = '<img src="' . qodef_re_get_assets_icon_src('icon-property-size', 'png') . '" alt="' . esc_attr__('Property size icon', 'qode-real-estate') . '"/>';
         $item['label'] = esc_html__('Property size:', 'qode-real-estate');
         $size = get_post_meta($item_id, 'qodef_property_size_meta', true);
-        $item['value'] = qodef_re_get_real_estate_size($size);
-        $specification_items[] = $item;
+        if (qodef_re_has_property_field_value($size)) {
+            $item['value'] = qodef_re_get_real_estate_size($size);
+            $specification_items[] = $item;
+        }
 
         //Get Floor
         $item = array();
         $item['icon'] = '<img src="' . qodef_re_get_assets_icon_src('icon-floor', 'png') . '" alt="' . esc_attr__('Property floor icon', 'qode-real-estate') . '"/>';
         $item['label'] = esc_html__('Floor:', 'qode-real-estate');
         $item['value'] = get_post_meta($item_id, 'qodef_property_floor_meta', true);
-        $specification_items[] = $item;
+        if (qodef_re_has_property_field_value($item['value'])) {
+            $specification_items[] = $item;
+        }
 
         //Get Total Floors
         $item = array();
         $item['icon'] = '<img src="' . qodef_re_get_assets_icon_src('icon-total-floors', 'png') . '" alt="' . esc_attr__('Property total floors icon', 'qode-real-estate') . '"/>';
         $item['label'] = esc_html__('Total floors:', 'qode-real-estate');
         $item['value'] = get_post_meta($item_id, 'qodef_property_total_floors_meta', true);
-        $specification_items[] = $item;
+        if (qodef_re_has_property_field_value($item['value'])) {
+            $specification_items[] = $item;
+        }
 
         //Get Year Built
         $item = array();
         $item['icon'] = '<img src="' . qodef_re_get_assets_icon_src('icon-year-built', 'png') . '" alt="' . esc_attr__('Property year built icon', 'qode-real-estate') . '"/>';
         $item['label'] = esc_html__('Year Built:', 'qode-real-estate');
         $item['value'] = get_post_meta($item_id, 'qodef_property_year_built_meta', true);
-        $specification_items[] = $item;
+        if (qodef_re_has_property_field_value($item['value'])) {
+            $specification_items[] = $item;
+        }
 
         //Get Heating
         $item = array();
         $item['icon'] = '<img src="' . qodef_re_get_assets_icon_src('icon-heating', 'png') . '" alt="' . esc_attr__('Property heating icon', 'qode-real-estate') . '"/>';
         $item['label'] = esc_html__('Heating:', 'qode-real-estate');
         $item['value'] = get_post_meta($item_id, 'qodef_property_heating_meta', true);
-        $specification_items[] = $item;
+        if (qodef_re_has_property_field_value($item['value'])) {
+            $specification_items[] = $item;
+        }
 
         //Get Accommodation
         $item = array();
         $item['icon'] = '<img src="' . qodef_re_get_assets_icon_src('icon-accommodation', 'png') . '" alt="' . esc_attr__('Property accommodation icon', 'qode-real-estate') . '"/>';
         $item['label'] = esc_html__('Accommodation:', 'qode-real-estate');
         $item['value'] = get_post_meta($item_id, 'qodef_property_accommodation_meta', true);
-        $specification_items[] = $item;
+        if (qodef_re_has_property_field_value($item['value'])) {
+            $specification_items[] = $item;
+        }
 
         return $specification_items;
     }
@@ -771,58 +870,74 @@ if (!function_exists('qodef_re_get_property_additional_specification_items')) {
         $item['icon'] = '<img src="' . qodef_re_get_assets_icon_src('icon-ceiling-height', 'png') . '" alt="' . esc_attr__('Property ceiling height icon', 'qode-real-estate') . '"/>';
         $item['label'] = esc_html__('Ceiling height:', 'qode-real-estate');
         $item['value'] = get_post_meta($item_id, 'qodef_property_ceiling_height_meta', true);
-        $specification_items[] = $item;
+        if (qodef_re_has_property_field_value($item['value'])) {
+            $specification_items[] = $item;
+        }
 
         //Get Parking
         $item = array();
         $item['icon'] = '<img src="' . qodef_re_get_assets_icon_src('icon-parking', 'png') . '" alt="' . esc_attr__('Property parking icon', 'qode-real-estate') . '"/>';
         $item['label'] = esc_html__('Parking:', 'qode-real-estate');
         $item['value'] = get_post_meta($item_id, 'qodef_property_parking_meta', true);
-        $specification_items[] = $item;
+        if (qodef_re_has_property_field_value($item['value'])) {
+            $specification_items[] = $item;
+        }
 
         //Get Distance from Center
         $item = array();
         $item['icon'] = '<img src="' . qodef_re_get_assets_icon_src('icon-d-f-center', 'png') . '" alt="' . esc_attr__('Property distance from center icon', 'qode-real-estate') . '"/>';
         $item['label'] = esc_html__('From center:', 'qode-real-estate');
         $item['value'] = get_post_meta($item_id, 'qodef_property_from_center_meta', true);
-        $specification_items[] = $item;
+        if (qodef_re_has_property_field_value($item['value'])) {
+            $specification_items[] = $item;
+        }
 
         //Get Publication Date
         $item = array();
         $item['icon'] = '<img src="' . qodef_re_get_assets_icon_src('icon-publication-date', 'png') . '" alt="' . esc_attr__('Property publication date', 'qode-real-estate') . '"/>';
         $item['label'] = esc_html__('Publication date:', 'qode-real-estate');
         $item['value'] = get_post_meta($item_id, 'qodef_property_publication_date_meta', true);
-        $specification_items[] = $item;
+        if (qodef_re_has_property_field_value($item['value'])) {
+            $specification_items[] = $item;
+        }
 
         //Get Area Size
         $item = array();
         $item['icon'] = '<img src="' . qodef_re_get_assets_icon_src('icon-area-size', 'png') . '" alt="' . esc_attr__('Property area size icon', 'qode-real-estate') . '"/>';
         $item['label'] = esc_html__('Area size:', 'qode-real-estate');
         $size = get_post_meta($item_id, 'qodef_property_area_size_meta', true);
-        $item['value'] = qodef_re_get_real_estate_size($size);
-        $specification_items[] = $item;
+        if (qodef_re_has_property_field_value($size)) {
+            $item['value'] = qodef_re_get_real_estate_size($size);
+            $specification_items[] = $item;
+        }
 
         //Get Garages
         $item = array();
         $item['icon'] = '<img src="' . qodef_re_get_assets_icon_src('icon-garages', 'png') . '" alt="' . esc_attr__('Property garages icon', 'qode-real-estate') . '"/>';
         $item['label'] = esc_html__('Garages:', 'qode-real-estate');
         $item['value'] = get_post_meta($item_id, 'qodef_property_garages_meta', true);
-        $specification_items[] = $item;
+        if (qodef_re_has_property_field_value($item['value'])) {
+            $specification_items[] = $item;
+        }
 
         //Get Garages Size
         $item = array();
         $item['icon'] = '<img src="' . qodef_re_get_assets_icon_src('icon-garages-size', 'png') . '" alt="' . esc_attr__('Property garages size icon', 'qode-real-estate') . '"/>';
         $item['label'] = esc_html__('Garages size:', 'qode-real-estate');
         $size = get_post_meta($item_id, 'qodef_property_garages_size_meta', true);
-        $item['value'] = qodef_re_get_real_estate_size($size);
-        $specification_items[] = $item;
+        if (qodef_re_has_property_field_value($size)) {
+            $item['value'] = qodef_re_get_real_estate_size($size);
+            $specification_items[] = $item;
+        }
 
         //Get Additional Space
         $item = array();
         $item['icon'] = '<img src="' . qodef_re_get_assets_icon_src('icon-additional-space', 'png') . '" alt="' . esc_attr__('Property additional space icon', 'qode-real-estate') . '"/>';
         $item['label'] = esc_html__('Additional space:', 'qode-real-estate');
         $item['value'] = get_post_meta($item_id, 'qodef_property_additional_space_meta', true);
-        $specification_items[] = $item;
+        if (qodef_re_has_property_field_value($item['value'])) {
+            $specification_items[] = $item;
+        }
 
         return $specification_items;
     }
@@ -882,21 +997,29 @@ if (!function_exists('qodef_re_send_property_enquiry')) {
 
                 //Validate
                 if ($email_data['name']) {
-                    $name = esc_html($email_data['name']);
+                    $name = qodef_re_sanitize_mail_header_text($email_data['name']);
+                    if ($name === '') {
+                        $error = true;
+                        $responseMessage = esc_html__('Please insert valid name', 'qode-real-estate');
+                    }
                 } else {
                     $error = true;
                     $responseMessage = esc_html__('Please insert valid name', 'qode-real-estate');
                 }
 
                 if ($email_data['email']) {
-                    $email = esc_html($email_data['email']);
+                    $email = sanitize_email($email_data['email']);
+                    if (!is_email($email)) {
+                        $error = true;
+                        $responseMessage = esc_html__('Please insert valid email', 'qode-real-estate');
+                    }
                 } else {
                     $error = true;
                     $responseMessage = esc_html__('Please insert valid email', 'qode-real-estate');
                 }
 
                 if ($email_data['message']) {
-                    $message = esc_html($email_data['message']);
+                    $message = sanitize_textarea_field($email_data['message']);
                 } else {
                     $error = true;
                     $responseMessage = esc_html__('Please fix your message content', 'qode-real-estate');
@@ -910,15 +1033,19 @@ if (!function_exists('qodef_re_send_property_enquiry')) {
                 } else {
 
                     //Get post id from request
-                    $post_id = $email_data['itemId'];
-                    //Get email address
-                    $contact_user = qodef_re_get_property_contact_user($post_id);
-                    $mail_to = $contact_user->user_email;
-                    $post_title = get_the_title($post_id);
-	
+                    $post_id = absint($email_data['itemId']);
+                    $contact_user = $post_id ? qodef_re_get_property_contact_user($post_id) : false;
+                    $mail_to = ( $contact_user && ! empty( $contact_user->user_email ) ) ? sanitize_email( $contact_user->user_email ) : '';
+                    $post_title = $post_id ? get_the_title($post_id) : '';
+
+                    if ( ! is_email( $mail_to ) ) {
+                        $fail_message = bridge_qode_options()->getOptionValue('property_fail_message_text');
+                        $fail_message = $fail_message !== '' ? $fail_message : esc_html__('An error occurred during message sending. Please try again.', 'qode-real-estate');
+                        qodef_re_ajax_status('error', $fail_message);
+                    }
+
 	                $headers = array(
-		                'From: ' . $name . ' <' . $email . '>',
-		                'Reply-To: ' . $name . ' <' . $email . '>',
+		                'Reply-To: ' . $email,
 	                );
 
                     $additional_emails = array();
@@ -935,6 +1062,8 @@ if (!function_exists('qodef_re_send_property_enquiry')) {
                     if( ! empty( $post_title ) ){
                     	$messageSubject .= esc_html__(' regarding property', 'qode-real-estate') . $post_title;
                     }
+
+                    $messageSubject = qodef_re_sanitize_mail_header_text($messageSubject);
 
                     $mail_sent = wp_mail(
                         $mail_to, //Mail To
@@ -1155,4 +1284,16 @@ if( ! function_exists('qodef_re_add_item_to_favorites') ) {
 
     add_action('wp_ajax_nopriv_qodef_re_add_item_to_favorites', 'qodef_re_add_item_to_favorites');
     add_action('wp_ajax_qodef_re_add_item_to_favorites', 'qodef_re_add_item_to_favorites');
+}
+
+if( ! function_exists( 'qodef_re_enqueue_property_single_owl_carousel' ) ) {
+	function qodef_re_enqueue_property_single_owl_carousel( $should_enqueue ) {
+		if( is_singular( 'property' ) ) {
+			$should_enqueue = true;
+		}
+		
+		return $should_enqueue;
+	}
+	
+	add_action( 'bridge_qode_filter_enqueue_owl_carousel_script', 'qodef_re_enqueue_property_single_owl_carousel' );
 }

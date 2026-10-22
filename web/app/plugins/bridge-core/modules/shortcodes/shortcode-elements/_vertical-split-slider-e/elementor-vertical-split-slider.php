@@ -16,8 +16,12 @@ class BridgeCoreElementorVerticalSplitSlider extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode' ];
     }
-
-    public static function get_templates() {
+	
+	public function get_script_depends() {
+		return array( 'multiscroll', 'qode-vertical-split-slider' );
+	}
+	
+	public static function get_templates() {
         return Elementor\Plugin::instance()->templates_manager->get_source( 'local' )->get_items();
     }
 

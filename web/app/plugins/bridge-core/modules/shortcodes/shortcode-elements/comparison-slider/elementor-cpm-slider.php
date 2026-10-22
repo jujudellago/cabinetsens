@@ -16,6 +16,10 @@ class BridgeCoreElementorComparisonSlider extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode' ];
     }
+	
+	public function get_script_depends() {
+		return array( 'twentytwenty', 'eventMove', 'qode-comparison-slider' );
+	}
 
     protected function register_controls(){
         $this->start_controls_section(

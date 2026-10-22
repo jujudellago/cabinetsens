@@ -4,6 +4,7 @@
 			<input type="text" name="user_reset_password_login" class="qode-input-field" id="user_reset_password_login" placeholder="<?php esc_html_e( 'Enter username or email', 'qode-membership' ) ?>" value="" size="20" required>
 		</div>
 		<?php do_action( 'lostpassword_form' ); ?>
+		<?php wp_nonce_field( 'qode-ajax-reset-nonce', 'qode-reset-security' ); ?>
 		<div class="qode-reset-password-button-holder">
 			<?php
 			if ( qode_membership_theme_installed() ) {

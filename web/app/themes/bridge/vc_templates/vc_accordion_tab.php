@@ -44,6 +44,6 @@ $css_class = apply_filters(VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, 'wpb_accordion_se
 		$output .= "\n\t\t\t" . '<div class="accordion_content_inner">';
 			$output .= ($content=='' || $content==' ') ? esc_html__('Empty section. Edit page to add content here.', 'bridge') : "\n\t\t\t\t" . wpb_js_remove_wpautop($content);
 			$output .= "\n\t\t\t" . '</div>';
-		 $output .= "\n\t\t\t\t" . '</div>' . $this->endBlockComment('.wpb_accordion_section') . "\n";
+		 $output .= "\n\t\t\t\t" . '</div>';
 
 echo bridge_qode_get_module_part( $output );

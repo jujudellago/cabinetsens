@@ -1,5 +1,4 @@
 <?php
-
 class BridgeCoreElementorNumberedCarousel extends \Elementor\Widget_Base{
     public function get_name() {
         return 'bridge_numbered_carousel';
@@ -16,8 +15,12 @@ class BridgeCoreElementorNumberedCarousel extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode' ];
     }
-
-    protected function register_controls(){
+	
+	public function get_script_depends() {
+		return array( 'swiper', 'qode-numbered-carousel' );
+	}
+	
+	protected function register_controls(){
         $this->start_controls_section(
             'general',
             [

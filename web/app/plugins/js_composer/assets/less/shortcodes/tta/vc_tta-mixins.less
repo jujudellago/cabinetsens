@@ -96,6 +96,120 @@
   }
 }
 
+// Make Custom Color Set (driven by --vc-tta-color CSS variable)
+// =================================================================
+// The selector should be applied to elements that have inline
+// `style="--vc-tta-color: <color>"`. Color tweaks (darken/border)
+// are produced with the CSS `color-mix()` function so they work
+// with any user-defined color.
+.vc_tta-make-colors-set-custom(@selector) {
+  @bg:             ~"var(--vc-tta-color)";
+  @bg-darken3:     ~"color-mix(in srgb, var(--vc-tta-color), #000 3%)";
+  @bg-darken6:     ~"color-mix(in srgb, var(--vc-tta-color), #000 6%)";
+  @bg-active:      ~"var(--vc-tta-active-color, @{vc_tta-common-background-color})";
+  @bg-active-darken3: ~"color-mix(in srgb, var(--vc-tta-active-color, @{vc_tta-common-background-color}), #000 3%)";
+  @bg-active-darken6: ~"color-mix(in srgb, var(--vc-tta-active-color, @{vc_tta-common-background-color}), #000 6%)";
+  @bg-border:      ~"color-mix(in srgb, var(--vc-tta-active-color, @{vc_tta-common-border-color}), #000 5%)";
+  @border:         ~"color-mix(in srgb, var(--vc-tta-color), #000 5%)";
+  @text:           ~"var(--vc-tta-title-color, var(--vc-tta-color-contrast, #fff))";
+  @text-on-light:  ~"var(--vc-tta-active-title-color, var(--vc-tta-active-color-contrast, #666))";
+
+  .@{selector} {
+    // Classic Style
+    // ------------------------
+    &.vc_tta-style-classic {
+      .vc_tta-make-panel-color(
+      @border: @border;
+      @border-active: @bg-border;
+      @background: @bg;
+      @background-active: @bg-active;
+      @background-hover: @bg-darken3;
+      @text: @text;
+      @text-active: @text-on-light;
+      );
+      .vc_tta-make-tabs-color(
+      @border: @border;
+      @border-active: @bg-border;
+      @background: @bg;
+      @background-active: @bg-active;
+      @background-hover: @bg-darken6;
+      @text: @text;
+      @text-active: @text-on-light;
+      );
+    }
+
+    // Modern Style
+    // ------------------------
+    &.vc_tta-style-modern {
+      .vc_tta-make-panel-color(
+      @border: @border;
+      @border-active: @bg-border;
+      @background: @bg;
+      @background-active: @bg-active;
+      @background-hover: @bg-darken3;
+      @text: @text;
+      @text-active: @text-on-light;
+      );
+      .vc_tta-make-tabs-color(
+      @border: @border;
+      @border-active: @bg-border;
+      @background: @bg;
+      @background-active: @bg-active;
+      @background-hover: @bg-darken6;
+      @text: @text;
+      @text-active: @text-on-light;
+      );
+    }
+
+    // Outline Style
+    // ------------------------
+    &.vc_tta-style-outline {
+      .vc_tta-make-panel-color(
+      @text: @bg;
+      @text-hover: @text;
+      @text-active: @bg;
+      @border: @bg;
+      @border-active: @bg;
+      @background: transparent;
+      @background-active: transparent;
+      @background-hover: @bg;
+      );
+      .vc_tta-make-tabs-color(
+      @text: @bg;
+      @text-hover: @text;
+      @text-active: @bg;
+      @border: @bg;
+      @border-active: @bg;
+      @background: transparent;
+      @background-active: transparent;
+      @background-hover: @bg;
+      );
+    }
+
+    // Flat Style
+    // ------------------------
+    &.vc_tta-style-flat {
+      @bg-active-flat: ~"var(--vc-tta-active-color, var(--vc-tta-color))";
+      .vc_tta-make-panel-color(
+      @background: @bg-darken3;
+      @background-active: @bg-active-flat;
+      @background-hover: @bg-darken6;
+      @text: @text;
+      @text-active: @text-on-light;
+      @content-color: @text;
+      );
+      .vc_tta-make-tabs-color(
+      @background: @bg-darken3;
+      @background-active: @bg-active-flat;
+      @background-hover: @bg-darken6;
+      @text: @text;
+      @text-active: @text-on-light;
+      @content-color: @text;
+      );
+    }
+  }
+}
+
 // Make Panels Color
 // ==========================
 .vc_tta-make-panel-color( @border:false; @border-active:false; @border-hover: false;
@@ -223,7 +337,7 @@
   // Colors For Tabs
   // -------------------------
   .vc_tta-tab {
-    > a {
+    a {
       & when not (@border = false) {
         border-color: @border;
       }
@@ -252,7 +366,7 @@
     }
     // Active Tab
     &.vc_active {
-      > a {
+      a {
         & when not (@border-active = false) {
           border-color: @border-active;
         }
@@ -318,7 +432,7 @@
 .vc_tta-make-shape(@border-radius) {
   // for panels
   .vc_tta-panel-body {
-    min-height: @border-radius * 2;
+    min-height: (@border-radius * 2);
   }
   .vc_tta-panel-body,
   .vc_tta-panel-heading {
@@ -329,7 +443,7 @@
     margin: @border-radius;
   }
   .vc_tta-tab {
-    > a {
+    a {
       border-radius: @border-radius;
     }
   }
@@ -391,16 +505,16 @@
     // --------------------------------------------------
     .vc_tta-tabs-list {
       padding: 0;
-      margin-top: -(unit(ceil(@spacing / 2), px));
-      margin-bottom: -(unit(floor(@spacing / 2), px));
-      margin-left: -(unit(ceil(@spacing / 2), px));
-      margin-right: -(unit(floor(@spacing / 2), px));
+      margin-top: -(unit(ceil((@spacing / 2)), px));
+      margin-bottom: -(unit(floor((@spacing / 2)), px));
+      margin-left: -(unit(ceil((@spacing / 2)), px));
+      margin-right: -(unit(floor((@spacing / 2)), px));
     }
     .vc_tta-tab {
-      margin-top: unit(ceil(@spacing / 2), px);
-      margin-bottom: unit(floor(@spacing / 2), px);
-      margin-left: unit(ceil(@spacing / 2), px);
-      margin-right: unit(floor(@spacing / 2), px);
+      margin-top: unit(ceil((@spacing / 2)), px);
+      margin-bottom: unit(floor((@spacing / 2)), px);
+      margin-left: unit(ceil((@spacing / 2)), px);
+      margin-right: unit(floor((@spacing / 2)), px);
     }
   }
 }
@@ -448,6 +562,90 @@
     &.vc_tta-tabs-position-right {
       .vc_tta-tabs-container {
         margin-left: unit(@spacing, px);
+      }
+    }
+  }
+}
+
+// Make Custom TTA Spacing (driven by --vc-tta-spacing CSS variable)
+// =================================================================
+// The selector should be applied to elements that have inline
+// `style="--vc-tta-spacing: <value>"` (e.g. `10px`, `1em`).
+.vc_tta-make-spacing-custom() {
+  &.vc_tta-spacing-custom {
+    // Spacing Between Panel Heading And Panel Body
+    // --------------------------------------------------
+    .vc_tta-panel {
+      &:not(:first-child),
+      &.vc_active + .vc_tta-panel {
+        .vc_tta-panel-heading {
+          margin-top: var(--vc-tta-spacing);
+        }
+      }
+      &:not(:last-child),
+      &.vc_active {
+        .vc_tta-panel-heading {
+          margin-bottom: var(--vc-tta-spacing);
+        }
+      }
+    }
+    // Spacing Between Tabs
+    // --------------------------------------------------
+    .vc_tta-tabs-list {
+      padding: 0;
+      margin: ~"calc(var(--vc-tta-spacing) / -2)";
+    }
+    .vc_tta-tab {
+      margin: ~"calc(var(--vc-tta-spacing) / 2)";
+    }
+  }
+}
+
+// Make Custom TTA Gap (driven by --vc-tta-gap CSS variable)
+// =================================================================
+// The selector should be applied to elements that have inline
+// `style="--vc-tta-gap: <value>"` (e.g. `10px`, `1em`).
+.vc_tta-make-gap-custom() {
+  &.vc_tta-gap-custom {
+    // Spacing Between Panel Heading And Panel Body
+    // --------------------------------------------------
+    .vc_tta-panel {
+      &:not(:first-child),
+      &.vc_active + .vc_tta-panel {
+        .vc_tta-panel-heading {
+          margin-top: var(--vc-tta-gap);
+        }
+      }
+      &:not(:last-child):not(.vc_active) {
+        .vc_tta-panel-heading {
+          margin-bottom: var(--vc-tta-gap);
+        }
+      }
+    }
+    // Spacing Between Tabs List And Panels
+    // --------------------------------------------------
+    // top position
+    &.vc_tta-tabs-position-top {
+      .vc_tta-tabs-container {
+        margin-bottom: var(--vc-tta-gap);
+      }
+    }
+    // bottom position
+    &.vc_tta-tabs-position-bottom {
+      .vc_tta-tabs-container {
+        margin-top: var(--vc-tta-gap);
+      }
+    }
+    // left position
+    &.vc_tta-tabs-position-left {
+      .vc_tta-tabs-container {
+        margin-right: var(--vc-tta-gap);
+      }
+    }
+    // right position
+    &.vc_tta-tabs-position-right {
+      .vc_tta-tabs-container {
+        margin-left: var(--vc-tta-gap);
       }
     }
   }

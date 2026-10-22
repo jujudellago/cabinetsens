@@ -9,10 +9,19 @@ $property_accommodation = get_post_meta(get_the_ID(), 'qodef_property_accommodat
 $property_heating = get_post_meta(get_the_ID(), 'qodef_property_heating_meta', true);
 
 $assocciated_user_type = get_post_meta(get_the_ID(), 'qodef_property_contact_info_meta', true);
+
+$has_basic_info = qodef_re_has_property_field_value($property_size)
+    || qodef_re_has_property_field_value($property_structure)
+    || qodef_re_has_property_field_value($property_accommodation)
+    || qodef_re_has_property_field_value($property_heating)
+    || $assocciated_user_type !== '';
+
+if ( $has_basic_info ) {
 ?>
 <div class="qodef-property-basic-info-holder">
     <div class="qodef-property-basic-info-outer">
         <div class="qodef-property-basic-info-inner-left clearfix">
+            <?php if ( qodef_re_has_property_field_value( $property_size ) ) { ?>
             <div class="qodef-property-param">
                 <span class="qodef-property-content">
                     <span class="qodef-property-label">
@@ -23,6 +32,8 @@ $assocciated_user_type = get_post_meta(get_the_ID(), 'qodef_property_contact_inf
                     </span>
                 </span>
             </div>
+            <?php } ?>
+            <?php if ( qodef_re_has_property_field_value( $property_structure ) ) { ?>
             <div class="qodef-property-param">
                 <span class="qodef-property-content">
                     <span class="qodef-property-label">
@@ -33,6 +44,8 @@ $assocciated_user_type = get_post_meta(get_the_ID(), 'qodef_property_contact_inf
                     </span>
                 </span>
             </div>
+            <?php } ?>
+            <?php if ( qodef_re_has_property_field_value( $property_accommodation ) ) { ?>
             <div class="qodef-property-param">
                 <span class="qodef-property-content">
                     <span class="qodef-property-label">
@@ -43,6 +56,8 @@ $assocciated_user_type = get_post_meta(get_the_ID(), 'qodef_property_contact_inf
                     </span>
                 </span>
             </div>
+            <?php } ?>
+            <?php if ( qodef_re_has_property_field_value( $property_heating ) ) { ?>
             <div class="qodef-property-param">
                 <span class="qodef-property-content">
                     <span class="qodef-property-label">
@@ -53,6 +68,7 @@ $assocciated_user_type = get_post_meta(get_the_ID(), 'qodef_property_contact_inf
                     </span>
                 </span>
             </div>
+            <?php } ?>
         </div>
         <div class="qodef-property-basic-info-inner-right clearfix">
             <?php if($assocciated_user_type !== '') { ?>
@@ -84,3 +100,4 @@ $assocciated_user_type = get_post_meta(get_the_ID(), 'qodef_property_contact_inf
         </div>
     </div>
 </div>
+<?php } ?>

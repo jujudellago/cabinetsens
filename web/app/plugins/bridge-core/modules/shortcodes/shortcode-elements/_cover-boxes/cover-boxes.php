@@ -32,8 +32,8 @@ if (!function_exists('bridge_core_cover_boxes')) {
         );
 
         $params = shortcode_atts($args, $atts);
-        $params['content'] = $content;
-        $params['args'] = $args;
+	    $params['content'] = $content;
+	    $params['args'] = $args;
 
         extract($params);
 

@@ -10,29 +10,25 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see     https://docs.woocommerce.com/document/template-structure/
- * @package WooCommerce/Templates
- * @version 3.6.0
+ * @see     https://woocommerce.com/document/template-structure/
+ * @package WooCommerce\Templates
+ * @version 9.4.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
 global $product;
 
-// Ensure visibility
-if ( empty( $product ) || ! $product->is_visible() ) {
+// Check if the product is a valid WooCommerce product and ensure its visibility before proceeding.
+if ( ! is_a( $product, WC_Product::class ) || ! $product->is_visible() ) {
 	return;
 }
 
 $bridge_qode_options = bridge_qode_return_global_options();
 ?>
 
-<?php if ( version_compare( WOOCOMMERCE_VERSION, '3.4' ) >= 0 ) { ?>
-	<li <?php wc_product_class( '', $product ); ?>>
-<?php }
-else { ?>
-    <li <?php post_class(); ?>>
-<?php } ?>
+<li <?php wc_product_class( '', $product ); ?>>
+	
 	<?php do_action( 'woocommerce_before_shop_loop_item' ); ?>
 	
     <div class="top-product-section">
@@ -54,19 +50,13 @@ else { ?>
 		<?php do_action('bridge_qode_action_woocommerce_after_product_image'); ?>
 
     </div>
-    <?php if(isset($bridge_qode_options['woo_products_show_categories']) && $bridge_qode_options['woo_products_show_categories'] == 'yes') {
-     
-	    // WooCommerce plugin changed hooks in 3.0 version and because of that we have this condition
-	    if ( version_compare( WOOCOMMERCE_VERSION, '3.0' ) >= 0 ) {
-		    echo wc_get_product_category_list( $product->get_id(), ', ','<div class="product-categories">','</div>' );
-	    } else {
-		    echo bridge_qode_get_module_part( $product->get_categories(', ','<div class="product-categories">','</div>') );
-	    }
+    <?php if ( isset( $bridge_qode_options['woo_products_show_categories'] ) && $bridge_qode_options['woo_products_show_categories'] == 'yes' ) {
+	    echo wc_get_product_category_list( $product->get_id(), ', ','<div class="product-categories">','</div>' );
     } ?>
     <a itemprop="url" href="<?php the_permalink(); ?>" class="product-category product-info">
         <h6 itemprop="name"><?php the_title(); ?></h6>
-
-        <?php if(isset($bridge_qode_options['woo_products_show_title_sep']) && $bridge_qode_options['woo_products_show_title_sep'] == 'yes') { ?>
+	    
+	    <?php if ( isset( $bridge_qode_options['woo_products_show_title_sep'] ) && $bridge_qode_options['woo_products_show_title_sep'] == 'yes' ) { ?>
             <div class="separator after-title-spearator small center"></div>
         <?php } ?>
 
@@ -80,7 +70,5 @@ else { ?>
             do_action( 'woocommerce_after_shop_loop_item_title' );
         ?>
     </a>
-
     <?php do_action( 'woocommerce_after_shop_loop_item' ); ?>
-
 </li>

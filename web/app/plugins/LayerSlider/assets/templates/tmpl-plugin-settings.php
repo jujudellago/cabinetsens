@@ -3,7 +3,8 @@
 defined( 'LS_ROOT_FILE' ) || exit;
 
 $custom_capability = $custom_role = get_option('layerslider_custom_capability', 'manage_options');
-$gdpr_google_fonts = get_option('layerslider-google-fonts-enabled', true );
+$ls_google_fonts_enabled = get_option('layerslider-google-fonts-enabled', true );
+$ls_google_fonts_host_locally = get_option('layerslider-google-fonts-host-locally', false );
 $custom_locale = get_option('ls_custom_locale', 'auto' );
 
 $default_capabilities = [
@@ -88,7 +89,7 @@ $googleFonts = get_option( 'ls-google-fonts', [] );
 							<tr>
 								<td><?php _e('Language:', 'LayerSlider') ?></td>
 								<td>
-									<select name="ls_custom_locale">
+									<select name="ls_custom_locale" data-confirm="<?= __('The selected language has been changed. Reload the page to apply the new language?', 'LayerSlider') ?>">
 										<option value="auto" <?php echo ( $custom_locale === 'auto' ) ? 'selected' : ''?>><?php _e('Site default', 'LayerSlider') ?></option>
 										<option value="en_US" <?php echo ( $custom_locale === 'en_US' ) ? 'selected' : ''?>>English (United States)</option>
 										<option value="fr_FR" <?php echo ( $custom_locale === 'fr_FR' ) ? 'selected' : ''?>>Français</option>
@@ -146,15 +147,31 @@ $googleFonts = get_option( 'ls-google-fonts', [] );
 							</td>
 							<td>
 								<?= lsGetSwitchControl([
-									'name' => 'ls_gdpr_goole_fonts',
-									'checked' => $gdpr_google_fonts,
-									'data-warning-disable' => __("Many of our importable project templates use and rely on Google Fonts. If you disable this feature, you may not be able to add custom fonts and it might compromise the appearance of textual content in projects. \n\n Are you sure you want to disable Google Fonts?", 'LayerSlider')
+									'name' => 'ls_google_fonts_status',
+									'checked' => $ls_google_fonts_enabled,
+
+									// TODO: Add this back later: <br><br> <b>To comply with GDPR, you can host fonts from a local cache by turning on the “Host Fonts Locally” switch.</b>
+									'data-warning-disable' => __("Many of our importable project templates use and rely on Google Fonts. If you turn off this feature, you may be unable to add custom fonts, and the appearance of textual content might be compromised in projects. <br><br> Are you sure you want to disable Google Fonts?", 'LayerSlider')
 								])?>
 							</td>
 							<td>
 								<?= __('Making the web more beautiful, fast, and open through great typography. Google Fonts provides over a thousand of web-optimized fonts that you can use in your projects.', 'LayerSlider') ?>
 							</td>
 						</tr>
+						<!-- <tr class="ls-show-if-google-fonts-enabled">
+							<td>
+								<?= __('Host Fonts Locally', 'LayerSlider') ?>
+							</td>
+							<td>
+							<?= lsGetSwitchControl([
+									'name' => 'ls_google_fonts_local_cache',
+									'checked' => $ls_google_fonts_host_locally
+								])?>
+							</td>
+							<td>
+								<?= __('You can host fonts from a local cache to ensure full compliance with GDPR and EU regulations.', 'LayerSlider') ?>
+							</td>
+						</tr> -->
 					</table>
 
 
@@ -162,7 +179,7 @@ $googleFonts = get_option( 'ls-google-fonts', [] );
 					<div class="ls-show-if-google-fonts-enabled">
 						<div class="ls-notification-info solid">
 							<?= lsGetSVGIcon('info-circle') ?>
-							<?= __('Consider adding Google Fonts in the project editor for convenience and better performance. Fonts added here will be loaded globally, even if they aren’t used.', 'LayerSlider') ?>
+							<?= sprintf(__('Consider adding Google Fonts %sin the Project Editor%s for convenience and better performance. Fonts added here will be loaded globally, even if they aren’t used.', 'LayerSlider'), '<a href="https://layerslider.com/media/help/project-editor-google-fonts@2x.png" target="_blank">', '</a>') ?>
 						</div>
 
 						<ls-div class="ls--form-control">
@@ -208,12 +225,22 @@ $googleFonts = get_option( 'ls-google-fonts', [] );
 						<tr>
 							<td><?= __('String Translation', 'LayerSlider') ?></td>
 							<td><?= lsGetSwitchOptionField('wpml_string_translation', true ) ?></td>
-							<td><?= sprintf(__('When enabled, LayerSlider will automatically register the strings used in your projects to be translated on multilingual sites. %sPolylang doesn’t support an “untranslated” state for strings.%s If you use Polylang instead of WPML, you should either actively maintain translations or consider disabling this option to avoid issues where your projects’ content doesn’t reflect the changes made in the editor.', 'LayerSlider'), '<br><br><b>', '</b>') ?></td>
+							<td><?= __('When enabled, LayerSlider makes the texts and links used in your projects translatable on multilingual sites. Both WPML and Polylang are fully supported, each with its own first-class, purpose-built integration. Untranslated strings are displayed in their original language.', 'LayerSlider') ?></td>
+						</tr>
+						<tr class="ls-show-if-string-translation-enabled">
+							<td><?= __('Link Translation', 'LayerSlider') ?></td>
+							<td><?= lsGetSwitchOptionField('wpml_link_translation', true ) ?></td>
+							<td><?= __('Allows translating manually entered URLs, so each language can point to its own destination. Links pointing to a selected post or page are not affected: they need no translation, as your multilingual plugin already knows their correct URL in each language.', 'LayerSlider') ?></td>
 						</tr>
 						<tr>
 							<td><?= __('Media Translation', 'LayerSlider') ?></td>
 							<td><?= lsGetSwitchOptionField('wpml_media_translation', true ) ?></td>
 							<td><?= __('Media Translation allows you to translate images. You can provide language-specific alternative versions of the images in your Media Library, and LayerSlider will automatically show the right one. Consider disabling this feature if you use Media Translation on your site but don’t want images in your projects to be changed.', 'LayerSlider') ?></td>
+						</tr>
+						<tr>
+							<td><?= __('Auto Translation Cleanup', 'LayerSlider') ?></td>
+							<td><?= lsGetSwitchOptionField('wpml_auto_cleanup', true ) ?></td>
+							<td><?= __('WPML only. Automatically removes unused translation strings when deleting projects or layers to keep your translation database organized. Consider disabling this option if you wish to retain previously translated content for potential restoration, such as when using the Revisions feature. Polylang requires no cleanup, as it stores no string registrations.', 'LayerSlider') ?></td>
 						</tr>
 					</table>
 
@@ -307,6 +334,12 @@ $googleFonts = get_option( 'ls-google-fonts', [] );
 						</tr>
 
 						<tr>
+							<td><?= __('Fix 3rd party optimizer issues', 'LayerSlider') ?></td>
+							<td><?= lsGetSwitchOptionField('fix_optimizer_issues', true ) ?></td>
+							<td><?= __('This setting resolves conflicts caused by third-party optimizer plugins that may apply incorrect optimizations to scripts, such as adding the defer attribute to critical scripts. Enabling this option helps ensure proper script loading and improves site stability.', 'LayerSlider') ?></td>
+						</tr>
+
+						<tr>
 							<td><?= __('No-conflict mode', 'LayerSlider') ?></td>
 							<td><?= lsGetSwitchOptionField('admin_no_conflict_mode', false, [ 'data-warning-enable' => __('Do not enable this option unless you’re experiencing issues on LayerSlider’s admin screens. This option can be helpful in some cases but can easily cause other issues and side effects. Do you want to proceed?', 'LayerSlider') ]) ?></td>
 							<td><?= __('Removes extraneous scripts and styles on LayerSlider admin pages to reduce conflicts with 3rd party plugins and themes. Disable this option if you experience any issue.', 'LayerSlider') ?></td>
@@ -330,12 +363,6 @@ $googleFonts = get_option( 'ls-google-fonts', [] );
 								'data-warning-disable' => __('Leaving this option enabled is strongly recommended to maximize compatibility with other plugins and themes. Disabling it might cause unexpected issues. Do you wish to proceed?', 'LayerSlider')
 							]) ?></td>
 							<td><?= __('Enabling GreenSock sandboxing can solve issues when other plugins are using multiple/outdated versions of this library.', 'LayerSlider') ?></td>
-						</tr>
-
-						<tr>
-							<td><?= __('Use Google CDN version of jQuery', 'LayerSlider') ?></td>
-							<td><?= lsGetSwitchOptionField('use_custom_jquery', false, [ 'data-warning-enable' => __('Do not enable this option unless you’re experiencing issues with jQuery on your site. This option can easily cause unexpected issues when used incorrectly. Do you want to proceed?', 'LayerSlider') ]) ?></td>
-							<td><?= __('This option will likely solve “Old jQuery” issues, but can easily have other side effects. Use it only when it is necessary.', 'LayerSlider') ?></td>
 						</tr>
 
 						<tr>

@@ -293,3 +293,16 @@ if ( ! function_exists( 'qode_tours_extend_rating_posts_types' ) ) {
 	add_filter( 'bridge_core_filter_rating_post_types', 'qode_tours_extend_rating_posts_types' );
 }
 
+if( ! function_exists( 'qode_tours_enqueue_assets_for_tour_single_item' ) ) {
+	function qode_tours_enqueue_assets_for_tour_single_item() {
+		if( is_singular( 'tour-item' ) ) {
+			wp_enqueue_script( 'packery' );
+			wp_enqueue_script( 'countTo' );
+			wp_enqueue_script( 'qode-progress-bar' );
+			wp_enqueue_script( 'google-map-api' );
+			wp_enqueue_script( 'qode-google-map' );
+		}
+	}
+	
+	add_action( 'wp_enqueue_scripts', 'qode_tours_enqueue_assets_for_tour_single_item' );
+}

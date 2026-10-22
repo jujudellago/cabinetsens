@@ -144,7 +144,7 @@ class SP_Bookings
 
 	public function handle_booking_export()
 	{
-		$action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING);
+		$action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_SPECIAL_CHARS);
 
 		if($action!='export-bookings')
 			return;

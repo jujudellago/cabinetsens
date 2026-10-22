@@ -41,8 +41,8 @@ if($background_image != ""){
 	}
 }
 ?>
-	<div class="<?php echo esc_attr( trim( $css_class ) ); ?>" <?php echo wp_kses_post( $inline_css ); ?> ><span
-			class="vc_empty_space_inner">
-			<span class="empty_space_image" <?php echo wp_kses_post( $image );?> ></span>
-		</span></div>
-<?php echo bridge_qode_get_module_part( $this->endBlockComment( 'empty_space' ) . "\n" );
+<div class="<?php echo esc_attr( trim( $css_class ) ); ?>" <?php echo wp_kses_post( $inline_css ); ?> >
+	<span class="vc_empty_space_inner">
+		<span class="empty_space_image" <?php echo wp_kses_post( $image );?> ></span>
+	</span>
+</div>

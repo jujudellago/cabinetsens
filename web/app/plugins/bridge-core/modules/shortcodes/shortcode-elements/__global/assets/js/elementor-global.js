@@ -6,7 +6,6 @@
 
     elementorGlobal.qodeInitElementorGlobal = qodeInitElementorGlobal;
 
-
     elementorGlobal.qodeOnWindowLoad = qodeOnWindowLoad;
 
     $(window).on('load', qodeOnWindowLoad);
@@ -24,7 +23,9 @@
                 initParallax();
                 initElementorParallaxFX();
                 initFullScreenTemplate();
-                qodeInitStickyWidget();
+                if( 'object' === typeof qode.modules.stickyWidget ) {
+                    qode.modules.stickyWidget.qodeInitStickyWidget();
+                }
             } );
         });
     }

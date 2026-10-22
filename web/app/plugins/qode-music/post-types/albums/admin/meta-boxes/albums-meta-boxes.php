@@ -180,11 +180,15 @@ if(qode_music_theme_installed()) {
 							'type'        => 'select',
 							'options'	  => array(
 								'itunes'		=> esc_html__('iTunes', 'qode-music'),
+								'apple-music'   => esc_html__('Apple Music', 'qode-music'),
 								'google-play'	=> esc_html__('Google Play', 'qode-music'),
+								'youtube-music' => esc_html__('YouTube Play', 'qode-music'),
 								'bandcamp'		=> esc_html__('Bandcamp', 'qode-music'),
 								'spotify'		=> esc_html__('Spotify', 'qode-music'),
 								'amazonmp3'		=> esc_html__('AmazonMP3', 'qode-music'),
-								'deezer'		=> esc_html__('Deezer', 'qode-music')
+								'deezer'		=> esc_html__('Deezer', 'qode-music'),
+								'soundcloud'    => esc_html__('SoundCloud', 'qode-music'),
+								'tidal'         => esc_html__('Tidal', 'qode-music'),
 							),
 							'label'       => esc_html__('Store', 'qode-music'),
 						),

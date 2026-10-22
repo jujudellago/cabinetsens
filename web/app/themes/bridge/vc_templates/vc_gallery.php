@@ -1,451 +1,290 @@
 <?php
-// Code in else part is because of compatibility for older versions of VC.
+/**
+ * The template for displaying [vc_gallery] shortcode of 'Image gallery' element.
+ *
+ * This template can be overridden by copying it to yourtheme/vc_templates/vc_gallery.php.
+ *
+ * @see https://kb.wpbakery.com/docs/developers-how-tos/change-shortcodes-html-output
+ *
+ * @var array $atts
+ * @var WPBakeryShortCode_Vc_gallery $this
+ */
 
-if(version_compare(bridge_qode_get_vc_version(), '4.7.4') >= 0) {
-	/**
-	 * Shortcode attributes
-	 * @var $atts
-	 * @var $title
-	 * @var $source
-	 * @var $type
-	 * @var $onclick
-	 * @var $custom_links
-	 * @var $custom_links_target
-	 * @var $img_size
-	 * @var $external_img_size
-	 * @var $images
-	 * @var $custom_srcs
-	 * @var $el_class
-	 * @var $interval
-	 * @var $css
-	 * Shortcode class
-	 * @var $this WPBakeryShortCode_VC_gallery
-	 */
-	$title = $source = $type = $onclick = $custom_links = $custom_links_target = $img_size = $external_img_size = $images = $custom_srcs = $el_class = $interval = $css = '';
-	$large_img_src = '';
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
-	$attributes = vc_map_get_attributes( $this->getShortcode(), $atts );
-	extract( $attributes );
+$thumbnail = '';
+$title = $source = $type = $onclick = $custom_links = $custom_links_target = $img_size = $external_img_size = $images = $custom_srcs = $el_class = $el_id = $interval = $css = $css_animation = '';
+$column_number = '3';
+$grayscale = 'no';
+$enable_drag = $direction_nav = $control_nav = $show_image_description = 'no';
+$pause_on_hover = $frame = $choose_frame = $images_space = '';
+$large_img_src = '';
 
-	$default_src = vc_asset_url( 'vc/no_image.png' );
+$attributes = vc_map_get_attributes( $this->getShortcode(), $atts );
+extract( $attributes );
 
-	$gal_images = '';
-	$link_start = '';
-	$link_end = '';
-	$el_start = '';
-	$el_end = '';
-	$slides_wrap_start = '';
-	$slides_wrap_end = '';
+/**
+ * Extracted values.
+ *
+ * @var string $title
+ * @var string $source
+ * @var string $type
+ * @var string $onclick
+ * @var string $custom_links
+ * @var string|null $custom_links_target
+ * @var string $img_size
+ * @var string $external_img_size
+ * @var string $images
+ * @var string $custom_srcs
+ * @var string $el_class
+ * @var string|null $el_id
+ * @var string $interval
+ * @var string $css
+ * @var string $css_animation
+ * @var string $column_number
+ * @var string $grayscale
+ * @var string $enable_drag
+ * @var string $direction_nav
+ * @var string $control_nav
+ * @var string $show_image_description
+ * @var string $pause_on_hover
+ * @var string $frame
+ * @var string $choose_frame
+ * @var string $images_space
+ */
 
-	$el_class = $this->getExtraClass( $el_class );
-	if ( 'nivo' === $type ) {
-		$type = ' wpb_slider_nivo theme-default';
-		wp_enqueue_script( 'nivo-slider' );
-		wp_enqueue_style( 'nivo-slider-css' );
-		wp_enqueue_style( 'nivo-slider-theme' );
+$default_src = vc_asset_url( 'vc/no_image.png' );
 
-		$slides_wrap_start = '<div class="nivoSlider">';
-		$slides_wrap_end = '</div>';
-	} else if ( 'flexslider' === $type || 'flexslider_fade' === $type || 'flexslider_slide' === $type || 'fading' === $type ) {
-		$el_start = '<li>';
-		$el_end = '</li>';
-		$slides_wrap_start = '<ul class="slides">';
-		$slides_wrap_end = '</ul>';
-//		wp_enqueue_style( 'flexslider' );
-//		wp_enqueue_script( 'flexslider' );
-	} else if ( 'image_grid' === $type ) {
-		//wp_enqueue_script( 'vc_grid-js-imagesloaded' );
-		//wp_enqueue_script( 'isotope' );
+$gal_images = '';
+$el_start = '';
+$el_end = '';
+$slides_wrap_start = '';
+$slides_wrap_end = '';
 
-//		$el_start = '<li class="isotope-item">';
-//		$el_end = '</li>';
-//		$slides_wrap_start = '<ul class="wpb_image_grid_ul">';
-//		$slides_wrap_end = '</ul>';
+$el_class = $this->getExtraClass( $el_class );
 
-		$li_classes = '';
-		if ($grayscale == 'yes') {
-			$li_classes .= 'grayscale';
-		} else {
-			$li_classes .= 'no_grayscale';
-		}
+if ( 'nivo' === $type ) {
+	$type = ' wpb_slider_nivo theme-default';
+	wp_enqueue_script( 'nivo-slider' );
+	wp_enqueue_style( 'nivo-slider-css' );
+	wp_enqueue_style( 'nivo-slider-theme' );
 
-		$el_start = '<li class="' . $li_classes . '">';
-		$el_end = '</li>';
-		$slides_wrap_start = '<div class="gallery_holder"><ul class="gallery_inner ' . $images_space . '  v' . $column_number . '">';
-		$slides_wrap_end = '</ul></div>';
+	$slides_wrap_start = '<div class="nivoSlider">';
+	$slides_wrap_end = '</div>';
+} elseif ( 'flexslider' === $type || 'flexslider_fade' === $type || 'flexslider_slide' === $type || 'fading' === $type ) {
+	$el_start = '<li>';
+	$el_end = '</li>';
+	$slides_wrap_start = '<ul class="slides">';
+	$slides_wrap_end = '</ul>';
+} elseif ( 'image_grid' === $type ) {
+	$li_classes = ( 'yes' === $grayscale ) ? 'grayscale' : 'no_grayscale';
 
+	$el_start = '<li class="' . esc_attr( $li_classes ) . '">';
+	$el_end = '</li>';
+	$slides_wrap_start = '<div class="gallery_holder"><ul class="gallery_inner ' . esc_attr( $images_space ) . ' v' . esc_attr( $column_number ) . '">';
+	$slides_wrap_end = '</ul></div>';
+}
+
+$flex_fx = '';
+$frame_class = '';
+if ( 'flexslider' === $type || 'flexslider_fade' === $type || 'fading' === $type ) {
+	$type = ' wpb_flexslider flexslider_fade flexslider';
+	$flex_fx = ' data-flex_fx="fade"';
+} elseif ( 'flexslider_slide' === $type ) {
+	$type = ' wpb_flexslider flexslider_slide flexslider';
+	$flex_fx = ' data-flex_fx="slide"';
+	if ( 'use_frame' === $frame ) {
+		$frame_class = ' have_frame';
 	}
+} elseif ( 'image_grid' === $type ) {
+	$type = ' wpb_image_grid';
+}
 
-	if ( 'link_image' === $onclick ) {
-		//wp_enqueue_script( 'prettyphoto' );
-		//wp_enqueue_style( 'prettyphoto' );
-	}
+$control_nav_data = '';
+if ( '' !== $control_nav ) {
+	$control_nav_data .= ' data-control="' . ( 'yes' === $control_nav ? 'true' : 'false' ) . '"';
+}
 
-	$flex_fx = '';
-	$frame_class = '';
-	if ( 'flexslider' === $type || 'flexslider_fade' === $type || 'fading' === $type ) {
-		$type = ' wpb_flexslider flexslider_fade flexslider';
-		$flex_fx = ' data-flex_fx="fade"';
-	} else if ( 'flexslider_slide' === $type ) {
-		$type = ' wpb_flexslider flexslider_slide flexslider';
-		$flex_fx = ' data-flex_fx="slide"';
-		if ($frame == "use_frame") {
-			$frame_class = " have_frame";
+$direction_nav_data = '';
+if ( '' !== $direction_nav ) {
+	$direction_nav_data .= ' data-direction="' . ( 'yes' === $direction_nav ? 'true' : 'false' ) . '"';
+}
 
-		}
-	} else if ( 'image_grid' === $type ) {
-		$type = ' wpb_image_grid';
-	}
+$pause_on_hover_data = '';
+if ( '' !== $pause_on_hover ) {
+	$pause_on_hover_data .= ' data-pause-on-hover="' . ( 'yes' === $pause_on_hover ? 'true' : 'false' ) . '"';
+}
 
-    $control_nav_data = '';
-    if($control_nav !== ''){
-        $control_nav_data .= 'data-control="'. ($control_nav == 'yes' ? 'true' : 'false').'"';
-    }
+$drag_data = '';
+if ( '' !== $enable_drag ) {
+	$drag_data .= ' data-drag="' . ( 'yes' === $enable_drag ? 'true' : 'false' ) . '"';
+}
 
-    $direction_nav_data = '';
-    if($direction_nav !== ''){
-        $direction_nav_data .= 'data-direction="'. ($direction_nav == 'yes' ? 'true' : 'false').'"';
-    }
+$additional_classes = '';
+if ( 'yes' === $control_nav ) {
+	$additional_classes .= ' has_control_nav';
+}
+if ( 'yes' === $enable_drag ) {
+	$additional_classes .= ' drag_enabled';
+}
 
-    $pause_on_hover_data = '';
-    if($pause_on_hover !== ''){
-        $pause_on_hover_data .= 'data-pause-on-hover="'. ($pause_on_hover == 'yes' ? 'true' : 'false').'"';
-    }
+if ( '' === $images ) {
+	$images = '-1,-2,-3';
+}
 
-    $drag_data = '';
-    if($enable_drag !== ''){
-        $drag_data .= 'data-drag="'. ($enable_drag == 'yes' ? 'true' : 'false').'"';
-    }
+if ( 'custom_link' === $onclick ) {
+	$custom_links = vc_value_from_safe( $custom_links );
+	$custom_links = explode( ',', $custom_links );
+}
 
-    $additional_classes = '';
-    if($control_nav == 'yes'){
-        $additional_classes .= ' has_control_nav';
-    }
-    if($enable_drag == 'yes'){
-        $additional_classes .= ' drag_enabled';
-    }
+$pretty_rel_random = ' data-rel="prettyPhoto[rel-' . get_the_ID() . '-' . wp_rand() . ']"';
+$image_data = json_decode( $images, true );
 
-
-	if ( '' === $images ) {
-		$images = '-1,-2,-3';
-	}
-
-	$pretty_rel_random = ' data-rel="prettyPhoto[rel-' . get_the_ID() . '-' . wp_rand() . ']"';
-
-	if ( 'custom_link' === $onclick ) {
-		$custom_links = vc_value_from_safe( $custom_links );
-		$custom_links = explode( ',', $custom_links );
-	}
-
+foreach ( $this->get_images_list( $images, $source, $custom_srcs ) as $i => $image ) {
 	switch ( $source ) {
 		case 'media_library':
-			$images = explode( ',', $images );
+			if ( $image > 0 ) {
+				$img = wpb_getImageBySize( [
+					'attach_id' => $image,
+					'thumb_size' => $img_size,
+				] );
+				$thumbnail = $img['thumbnail'];
+				$large_img_src = $img['p_img_large'][0];
+			} else {
+				$large_img_src = $default_src;
+				$img_attributes = [
+					'src' => esc_url( $large_img_src ),
+				];
+				$img_attributes = vc_add_lazy_loading_attribute( $img_attributes );
+				$thumbnail = '<img ' . vc_stringify_attributes( $img_attributes ) . ' />';
+			}
 			break;
 
 		case 'external_link':
-			$images = vc_value_from_safe( $custom_srcs );
-			$images = explode( ',', $images );
+			$dimensions = vc_extract_dimensions( $external_img_size );
+			$hwstring = $dimensions ? image_hwstring( $dimensions[0], $dimensions[1] ) : '';
+
+			$img_attributes = [
+				'src' => esc_url( $image ),
+			];
+			$img_attributes = vc_add_lazy_loading_attribute( $img_attributes );
+
+			$thumbnail = '<img ' . $hwstring . ' ' . vc_stringify_attributes( $img_attributes ) . ' />';
+			$large_img_src = $image;
 			break;
-	}
-	foreach ( $images as $i => $image ) {
-		switch ( $source ) {
-			case 'media_library':
-				if ( $image > 0 ) {
-					$img = wpb_getImageBySize( array( 'attach_id' => $image, 'thumb_size' => $img_size ) );
-					$thumbnail = $img['thumbnail'];
-					$large_img_src = $img['p_img_large'][0];
-				} else {
-					$large_img_src = $default_src;
-					$thumbnail = '<img itemprop="image" src="' . $default_src . '" />';
-				}
-				break;
 
-			case 'external_link':
-				$image = esc_attr( $image );
-				$dimensions = function_exists('vc_extract_dimensions') ?  vc_extract_dimensions( $external_img_size ) : vcExtractDimensions( $external_img_size );
-				$hwstring = $dimensions ? image_hwstring( $dimensions[0], $dimensions[1] ) : '';
-				$thumbnail = '<img itemprop="image" ' . $hwstring . ' src="' . $image . '" />';
-				$large_img_src = $image;
-				break;
-		}
-		$hover_image = '';
-		if ($type == ' wpb_image_grid' && $grayscale == 'no') {
-			$hover_image = '<span class="gallery_hover"><i class="fa fa-search"></i></span>';
-		}
-
-		$description_html = '';
-		if($show_image_description == 'yes' && get_post_field('post_content', $image) != '') {
-			$description_html = '<div class="qode-image-slider-description"><p>' . get_post_field('post_content', $image) . '</p></div>';
-		}
-
-		$link_start = $link_end = '';
-
-		switch ( $onclick ) {
-			case 'img_link_large':
-				$link_start = '<a itemprop="url" href="' . $large_img_src . '" target="' . $custom_links_target . '">' . $hover_image;
-				$link_end = '</a>';
-				break;
-
-			case 'link_image':
-				$link_start = '<a itemprop="image" class="qode-prettyphoto" href="' . $large_img_src . '"' . $pretty_rel_random . '>' . $hover_image;
-				$link_end = '</a>';
-				break;
-
-			case 'custom_link':
-				if ( ! empty( $custom_links[ $i ] ) ) {
-					$link_start = '<a itemprop="url" href="' . $custom_links[ $i ] . '"' . ( ! empty( $custom_links_target ) ? ' target="' . $custom_links_target . '"' : '' ) . '>'. $hover_image;
-					$link_end = '</a>';
-				}
-				break;
-		}
-
-		$gal_images .= $el_start . $link_start . $thumbnail . $link_end . $description_html . $el_end;
+		default:
+			$thumbnail = '';
+			$large_img_src = $default_src;
 	}
 
-	$class_to_filter = 'wpb_gallery wpb_content_element vc_clearfix';
-	$class_to_filter .= vc_shortcode_custom_css_class( $css, ' ' ) . $this->getExtraClass( $el_class );
-	$css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $class_to_filter, $this->settings['base'], $atts );
-
-	if ($frame == 'use_frame') {
-
-		$css_class .= " frame_holder";
-
-		switch ($choose_frame) {
-			case 'frame2':
-				$css_class .= " frame_holder2";
-				break;
-			case 'frame3':
-				$css_class .= " frame_holder3";
-				break;
-			case 'frame4':
-				$css_class .= " frame_holder4";
-				break;
-			default:
-				break;
-		}
+	$hover_image = '';
+	if ( ' wpb_image_grid' === $type && 'no' === $grayscale ) {
+		$hover_image = '<span class="gallery_hover"><i class="fa fa-search"></i></span>';
 	}
 
-
-	$output = '';
-	$output .= '<div class="' . $css_class . '">';
-	$output .= '<div class="wpb_wrapper">';
-	$output .= wpb_widget_title( array( 'title' => $title, 'extraclass' => 'wpb_gallery_heading' ) );
-	$output .= '<div class="wpb_gallery_slides' . $additional_classes . $type . $frame_class . '" data-interval="' . $interval . '"' . $flex_fx . $control_nav_data . $direction_nav_data . $pause_on_hover_data . $drag_data. '>' . $slides_wrap_start . $gal_images . $slides_wrap_end . '</div>';
-	if ($frame == 'use_frame') {
-		$output .= "<div class='gallery_frame'>";
-		switch ($choose_frame) {
-			case 'frame2':
-				$output .= "<img itemprop='image' src='" . get_template_directory_uri() . "/img/slider_frame-2.png'/>";
-				break;
-
-			case "frame3":
-				$output .= "<img itemprop='image' src='" . get_template_directory_uri() . "/img/slider_frame-3.png'/>";
-				break;
-
-			case "frame4":
-				$output .= "<img itemprop='image' src='" . get_template_directory_uri() . "/img/slider_frame-4.png'/>";
-				break;
-			
-			default:
-				$output .= "<img itemprop='image' src='" . get_template_directory_uri() . "/img/slider_frame.png'/>";
-				break;
-		}
-		$output .= "</div>";
+	$description_html = '';
+	if ( 'yes' === $show_image_description && 'media_library' === $source && $image > 0 && '' !== get_post_field( 'post_content', $image ) ) {
+		$description_html = '<div class="qode-image-slider-description"><p>' . get_post_field( 'post_content', $image ) . '</p></div>';
 	}
 
-	$output .= '</div>';
-	$output .= '</div>';
-
-	echo bridge_qode_get_module_part( $output );
-
-
-}else {
-	$output = $title = $type = $onclick = $custom_links = $img_size = $custom_links_target = $images = $el_class = $interval = $column_number = '';
-	extract(shortcode_atts(array(
-		'title' => '',
-		'type' => 'flexslider',
-		'frame' => '',
-        'enable_drag' => '',
-		'direction_nav' => '',
-		'control_nav' => '',
-		'pause_on_hover' => '',
-		'onclick' => 'link_image',
-		'custom_links' => '',
-		'custom_links_target' => '',
-		'img_size' => 'full',
-		'images' => '',
-		'el_class' => '',
-		'interval' => '5',
-		'column_number' => '3',
-		'grayscale' => 'no',
-		'choose_frame' => 'no',
-		'images_space' => 'gallery_without_space',
-	), $atts));
-	$gal_images = '';
 	$link_start = '';
 	$link_end = '';
-	$el_start = '';
-	$el_end = '';
-	$slides_wrap_start = '';
-	$slides_wrap_end = '';
 
-	$el_class = $this->getExtraClass($el_class);
-
-	if ($type == 'nivo') {
-		$type = ' wpb_slider_nivo theme-default';
-		wp_enqueue_script('nivo-slider');
-		wp_enqueue_style('nivo-slider-css');
-		wp_enqueue_style('nivo-slider-theme');
-
-		$slides_wrap_start = '<div class="nivoSlider">';
-		$slides_wrap_end = '</div>';
-	} else if ($type == 'flexslider' || $type == 'flexslider_fade' || $type == 'flexslider_slide' || $type == 'fading') {
-		$el_start = '<li>';
-		$el_end = '</li>';
-		$slides_wrap_start = '<ul class="slides">';
-		$slides_wrap_end = '</ul>';
-		//wp_enqueue_style('flexslider');
-		// wp_enqueue_script('flexslider');
-	} else if ($type == 'image_grid') {
-		wp_enqueue_script('isotope');
-		$li_classes = '';
-		if ($grayscale == 'yes') {
-			$li_classes .= 'grayscale';
-		} else {
-			$li_classes .= 'no_grayscale';
-		}
-
-		$el_start = '<li class="' . $li_classes . '">';
-		$el_end = '</li>';
-		$slides_wrap_start = '<div class="gallery_holder"><ul class="gallery_inner ' . $images_space . '  v' . $column_number . '">';
-		$slides_wrap_end = '</ul></div>';
-	}
-
-	if ($onclick == 'link_image') {
-		wp_enqueue_script('prettyphoto');
-		wp_enqueue_style('prettyphoto');
-	}
-
-	$flex_fx = '';
-	$frame_class = '';
-	if ($type == 'flexslider' || $type == 'flexslider_fade' || $type == 'fading') {
-		$type = ' wpb_flexslider flexslider_fade flexslider';
-		$flex_fx = ' data-flex_fx="fade"';
-	} else if ($type == 'flexslider_slide') {
-		$type = ' wpb_flexslider flexslider_slide flexslider';
-		$flex_fx = ' data-flex_fx="slide"';
-		if ($frame == "use_frame") {
-			$frame_class = " have_frame";
-
-		}
-	} else if ($type == 'image_grid') {
-		$type = ' wpb_image_grid';
-	}
-
-    $control_nav_data = '';
-    if($control_nav !== ''){
-        $control_nav_data .= 'data-control="'. ($control_nav == 'yes' ? true : false).'"';
-    }
-
-    $direction_nav_data = '';
-    if($direction_nav !== ''){
-        $direction_nav_data .= 'data-direction="'. ($direction_nav == 'yes' ? true : false).'"';
-    }
-
-    $pause_on_hover_data = '';
-    if($pause_on_hover !== ''){
-        $pause_on_hover_data .= 'data-pause-on-hover="'. ($pause_on_hover == 'yes' ? true : false).'"';
-    }
-
-    $drag_data = '';
-    if($enable_drag !== ''){
-        $drag_data .= 'data-drag="'. ($enable_drag == 'yes' ? 'true' : 'false').'"';
-    }
-
-    $additional_classes = '';
-    if($control_nav == 'yes'){
-        $additional_classes .= ' has_control_nav';
-    }
-    if($enable_drag == 'yes'){
-        $additional_classes .= ' drag_enabled';
-    }
-
-    /*
-     else if ( $type == 'fading' ) {
-        $type = ' wpb_slider_fading';
-        $el_start = '<li>';
-        $el_end = '</li>';
-        $slides_wrap_start = '<ul class="slides">';
-        $slides_wrap_end = '</ul>';
-        wp_enqueue_script( 'cycle' );
-    }*/
-
-//if ( $images == '' ) return null;
-	if ($images == '') $images = '-1,-2,-3';
-
-	$pretty_rel_random = ' rel="prettyPhoto[rel-' . wp_rand() . ']"'; //rel-'.wp_rand();
-
-	if ($onclick == 'custom_link') {
-		$custom_links = explode(',', $custom_links);
-	}
-	$images = explode(',', $images);
-	$i = -1;
-
-	foreach ($images as $attach_id) {
-		$i++;
-		if ($attach_id > 0) {
-			$post_thumbnail = wpb_getImageBySize(array('attach_id' => $attach_id, 'thumb_size' => $img_size));
-		} else {
-			$different_kitten = 400 + $i;
-			$post_thumbnail = array();
-			$post_thumbnail['thumbnail'] = '<img src="http://placekitten.com/g/' . $different_kitten . '/300" />';
-			$post_thumbnail['p_img_large'][0] = 'http://placekitten.com/g/1024/768';
-		}
-
-		$thumbnail = $post_thumbnail['thumbnail'];
-		$p_img_large = $post_thumbnail['p_img_large'];
-		$link_start = $link_end = '';
-		$hover_image = '';
-
-		if ($type == ' wpb_image_grid' && $grayscale == 'no') {
-			$hover_image = '<span class="gallery_hover"><i class="fa fa-search"></i></span>';
-		}
-
-		if ($onclick == 'link_image') {
-			$link_start = '<a itemprop="image" class="prettyphoto" href="' . $p_img_large[0] . '"' . $pretty_rel_random . '>' . $hover_image;
+	switch ( $onclick ) {
+		case 'img_link_large':
+			$link_start = '<a itemprop="url" href="' . esc_url( $large_img_src ) . '" target="' . esc_attr( $custom_links_target ) . '">' . $hover_image;
 			$link_end = '</a>';
-		} else if ($onclick == 'custom_link' && isset($custom_links[$i]) && $custom_links[$i] != '') {
-			$link_start = '<a itemprop="url" href="' . $custom_links[$i] . '"' . (!empty($custom_links_target) ? ' target="' . $custom_links_target . '"' : '') . '>' . $hover_image;
+			break;
+
+		case 'link_image':
+			$link_start = '<a itemprop="image" class="qode-prettyphoto" href="' . esc_url( $large_img_src ) . '"' . $pretty_rel_random . '>' . $hover_image;
 			$link_end = '</a>';
-		}
-		$gal_images .= $el_start . $link_start . $thumbnail . $link_end . $el_end;
-	}
-	$css_class = apply_filters(VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, 'wpb_gallery wpb_content_element' . $el_class . ' clearfix', $this->settings['base']);
-	if ($frame == 'use_frame') {
+			break;
 
-		$css_class .= " frame_holder";
-		if ($choose_frame == "frame2") {
-			$css_class .= " frame_holder2";
-		}
-	}
-	$output .= "\n\t" . '<div class="' . $css_class . '">';
-	$output .= "\n\t\t" . '<div class="wpb_wrapper">';
-	$output .= wpb_widget_title(array('title' => $title, 'extraclass' => 'wpb_gallery_heading'));
-	$output .= '<div class="wpb_gallery_slides' . $additional_classes . $type . $frame_class . '" data-interval="' . $interval . '"' . $flex_fx . $control_nav_data . $direction_nav_data . $pause_on_hover_data . $drag_data .'>' . $slides_wrap_start . $gal_images . $slides_wrap_end;
-	$output .= '</div>';
-	if ($frame == 'use_frame') {
-
-		$output .= "<div class='gallery_frame'>";
-		if ($choose_frame == "frame2") {
-			$output .= "<img itemprop='image' src='" . get_template_directory_uri() . "/img/slider_frame-2.png'/>";
-		} else {
-			$output .= "<img itemprop='image' src='" . get_template_directory_uri() . "/img/slider_frame.png'/>";
-		}
-		$output .= "</div>";
+		case 'custom_link':
+			if ( 'media_library' === $source && is_array( $image_data ) && ! empty( $image_data[ $image ]['url'] ) ) {
+				$wpb_link = $image_data[ $image ];
+				$link_start = '<a itemprop="url" href="' . esc_url( $wpb_link['url'] ) . '"';
+				if ( ! empty( $wpb_link['target'] ) ) {
+					$link_start .= ' target="' . esc_attr( $wpb_link['target'] ) . '"';
+				}
+				if ( ! empty( $wpb_link['rel'] ) ) {
+					$link_start .= ' rel="' . esc_attr( $wpb_link['rel'] ) . '"';
+				}
+				if ( ! empty( $wpb_link['title'] ) ) {
+					$link_start .= ' title="' . esc_attr( $wpb_link['title'] ) . '"';
+				}
+				$link_start .= '>' . $hover_image;
+				$link_end = '</a>';
+			} elseif ( ! empty( $custom_links[ $i ] ) ) {
+				$link_start = '<a itemprop="url" href="' . esc_url( $custom_links[ $i ] ) . '"' . ( ! empty( $custom_links_target ) ? ' target="' . esc_attr( $custom_links_target ) . '"' : '' ) . '>' . $hover_image;
+				$link_end = '</a>';
+			}
+			break;
 	}
 
-	$output .= "\n\t\t" . '</div> ' . $this->endBlockComment('.wpb_wrapper');
-	$output .= "\n\t" . '</div> ' . $this->endBlockComment('.wpb_gallery');
-
-	echo bridge_qode_get_module_part( $output );
+	$gal_images .= $el_start . $link_start . $thumbnail . $link_end . $description_html . $el_end;
 }
+
+$settings = $this->getSettings();
+$element_class = empty( $settings['element_default_class'] ) ? '' : $settings['element_default_class'];
+$class_to_filter = 'wpb_gallery wpb_content_element vc_clearfix';
+$class_to_filter .= vc_shortcode_custom_css_class( $css, ' ' ) . ' ' . esc_attr( $element_class ) . $this->getExtraClass( $el_class ) . $this->getCSSAnimation( $css_animation );
+$css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $class_to_filter, $settings['base'], $atts );
+
+if ( 'use_frame' === $frame ) {
+	$css_class .= ' frame_holder';
+
+	switch ( $choose_frame ) {
+		case 'frame2':
+			$css_class .= ' frame_holder2';
+			break;
+		case 'frame3':
+			$css_class .= ' frame_holder3';
+			break;
+		case 'frame4':
+			$css_class .= ' frame_holder4';
+			break;
+	}
+}
+
+$wrapper_attributes = [];
+if ( ! empty( $el_id ) ) {
+	$wrapper_attributes[] = 'id="' . esc_attr( $el_id ) . '"';
+}
+
+$output = '';
+$output .= '<div class="' . esc_attr( trim( $css_class ) ) . '" ' . implode( ' ', $wrapper_attributes ) . '>';
+$output .= '<div class="wpb_wrapper">';
+$output .= wpb_widget_title( [
+	'title' => $title,
+	'extraclass' => 'wpb_gallery_heading',
+] );
+$output .= '<div class="wpb_gallery_slides' . esc_attr( $additional_classes . $type . $frame_class ) . '" data-interval="' . esc_attr( $interval ) . '"' . $flex_fx . $control_nav_data . $direction_nav_data . $pause_on_hover_data . $drag_data . '>' . $slides_wrap_start . $gal_images . $slides_wrap_end . '</div>';
+
+if ( 'use_frame' === $frame ) {
+	$output .= "<div class='gallery_frame'>";
+	switch ( $choose_frame ) {
+		case 'frame2':
+			$output .= "<img itemprop='image' src='" . esc_url( get_template_directory_uri() . '/img/slider_frame-2.png' ) . "'/>";
+			break;
+		case 'frame3':
+			$output .= "<img itemprop='image' src='" . esc_url( get_template_directory_uri() . '/img/slider_frame-3.png' ) . "'/>";
+			break;
+		case 'frame4':
+			$output .= "<img itemprop='image' src='" . esc_url( get_template_directory_uri() . '/img/slider_frame-4.png' ) . "'/>";
+			break;
+		default:
+			$output .= "<img itemprop='image' src='" . esc_url( get_template_directory_uri() . '/img/slider_frame.png' ) . "'/>";
+			break;
+	}
+	$output .= '</div>';
+}
+
+$output .= '</div>';
+$output .= '</div>';
+
+echo bridge_qode_get_module_part( $output );

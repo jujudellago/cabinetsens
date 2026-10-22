@@ -16,6 +16,10 @@ class QodeLmsCourseSlider extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode-lms' ];
     }
+	
+	public function get_script_depends() {
+		return array( 'owlCarousel', 'qode-owl-slider' );
+	}
 
     public function getCourseCategories(){
         $taxonomy = 'course-category';
@@ -457,7 +461,7 @@ class QodeLmsCourseSlider extends \Elementor\Widget_Base{
             'space_between_items'    => 'normal',
             'image_proportions'      => 'full',
             'category'               => '',
-            'selected_projects'      => '',
+            'selected_courses'       => '',
             'tag'                    => '',
             'orderby'                => 'date',
             'order'                  => 'ASC',

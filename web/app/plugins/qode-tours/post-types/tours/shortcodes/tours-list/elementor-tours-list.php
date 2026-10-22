@@ -297,53 +297,8 @@ class QodeToursElementorToursList extends \Elementor\Widget_Base{
 		return $meta_params;
 	}
 	
-	
-	public function handleLoadMore() {
-		$fields = $this->parseRequest();
-		
-		$returnObject = new \stdClass();
-		
-		$meta_params = $this->getMetaQueryParams($fields);
-		$query  = qode_tours_query()->buildQueryObject($fields,$meta_params);
-		
-		if($query->have_posts()) {
-			ob_start();
-			
-			$this->getToursQueryTemplate(array(
-				'query'     => $query,
-				'tour_type' => $fields['tour_type'],
-				'caller'    => $this,
-				'params'    => $fields
-			));
-			
-			$returnObject->html      = ob_get_clean();
-			$returnObject->havePosts = true;
-			$returnObject->message   = esc_html__('Success','qode-tours');
-			$returnObject->nextPage  = $fields['next_page'] + 1;
-		} else {
-			$returnObject->havePosts = false;
-			$returnObject->message   = esc_html__('No more tours.', 'qode-tours');
-		}
-		
-		echo json_encode($returnObject);
-		exit;
-	}
-	
-	private function parseRequest() {
-		if(empty($_POST['fields'])) {
-			return false;
-		}
-		
-		parse_str($_POST['fields'], $fields);
-		
-		if(!(is_array($fields) && count($fields))) {
-			return false;
-		}
-		
-		return $fields;
-	}
-	
 	public function getItemTemplate($tour_type = 'standard', $params = array()) {
+		$tour_type = in_array( $tour_type, array( 'standard', 'gallery', 'masonry' ), true ) ? $tour_type : 'standard';
 		$slug = $tour_type == 'masonry' ? get_post_meta(get_the_ID(), 'qode_tours_masonry_layout', true) : "";
 		echo qode_tours_get_tour_module_template_part('templates/tour-item/'.$tour_type, 'tours', '', $slug, $params);
 	}

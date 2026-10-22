@@ -97,7 +97,7 @@ if($type == "normal_social"){
 	$html .= "</span>"; //close fa-stack
 }
 
-if($link != ""){
+if ( $link != "" ) {
 	$html .= "</a>";
 }
 

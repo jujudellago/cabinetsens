@@ -1,4 +1,10 @@
 <?php
+/**
+ * Class that handles specific [vc_text_separator] shortcode.
+ *
+ * @see js_composer/include/templates/shortcodes/vc_text_separator.php
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
@@ -9,7 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WPBakeryShortCode_Vc_Text_Separator extends WPBakeryShortCode {
 
 	/**
-	 * @param $title
+	 * Override default title.
+	 *
+	 * @param string $title
 	 * @return string
 	 */
 	public function outputTitle( $title ) {
@@ -17,7 +25,9 @@ class WPBakeryShortCode_Vc_Text_Separator extends WPBakeryShortCode {
 	}
 
 	/**
-	 * @param $atts
+	 * Get plugin icon.
+	 *
+	 * @param array $atts
 	 * @return string
 	 * @throws \Exception
 	 */
@@ -35,5 +45,15 @@ class WPBakeryShortCode_Vc_Text_Separator extends WPBakeryShortCode {
 		}
 
 		return '';
+	}
+
+	/**
+	 * Get CSS of separator as it is using same file.
+	 *
+	 * @since 9.0
+	 * @return string
+	 */
+	public function get_shortcode_css_files() {
+		return 'vc_separator';
 	}
 }

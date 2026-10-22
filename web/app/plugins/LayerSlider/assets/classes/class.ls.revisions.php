@@ -10,7 +10,7 @@ defined( 'LS_ROOT_FILE' ) || exit;
  *
  * @since 6.3.0
  * @author John Gera
- * @copyright Copyright (c) 2023  John Gera, George Krupa, and Kreatura Media Kft.
+ * @copyright Copyright (c) 2026  John Gera, George Krupa, and Kreatura Media Kft.
  */
 
 class LS_Revisions {
@@ -37,12 +37,13 @@ class LS_Revisions {
 
 	public static function init() {
 
-		if( LS_Config::isActivatedSite() ) {
-			self::$active = true;
-		}
-
+		self::$enabled 	= ! empty( get_option('ls-revisions-enabled', true) );
 		self::$limit 	= get_option('ls-revisions-limit', 100);
 		self::$interval = get_option('ls-revisions-interval', 10);
+
+		if( LS_Config::isActivatedSite() && self::$enabled ) {
+			self::$active = true;
+		}
 	}
 
 

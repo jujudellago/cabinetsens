@@ -65,6 +65,9 @@ if(!function_exists('qode_music_single_stores_names_and_images')) {
 			case 'google-play':
 				$name = esc_html__('Google Play', 'qode-music');
 				break;
+			case 'youtube-music':
+				$name = esc_html__('YouTube Music', 'qode-music');
+				break;
 			case 'bandcamp':
 				$name = esc_html__('Bandcamp', 'qode-music');
 				break;
@@ -76,6 +79,15 @@ if(!function_exists('qode_music_single_stores_names_and_images')) {
 				break;
 			case 'deezer':
 				$name = esc_html__('Deezer', 'qode-music');
+				break;
+			case 'apple-music':
+				$name = esc_html__('Apple Music', 'qode-music');
+				break;
+			case 'soundcloud':
+				$name = esc_html__('SoundCloud', 'qode-music');
+				break;
+			case 'tidal':
+				$name = esc_html__('Tidal', 'qode-music');
 				break;
 			default:
 				$name = esc_html__('iTunes', 'qode-music');
@@ -221,7 +233,19 @@ if(!function_exists('qode_core_albums_ajax_load_more')){
 
 		echo json_encode($return_obj); exit;
 	}
+	
+	add_action('wp_ajax_nopriv_qode_core_albums_ajax_load_more', 'qode_core_albums_ajax_load_more');
+	add_action( 'wp_ajax_qode_core_albums_ajax_load_more', 'qode_core_albums_ajax_load_more' );
 }
 
-add_action('wp_ajax_nopriv_qode_core_albums_ajax_load_more', 'qode_core_albums_ajax_load_more');
-add_action( 'wp_ajax_qode_core_albums_ajax_load_more', 'qode_core_albums_ajax_load_more' );
+if( ! function_exists( 'qode_music_enqueue_album_single_owl_carousel' ) ) {
+	function qode_music_enqueue_album_single_owl_carousel( $should_enqueue ) {
+		if( is_singular( 'qode-album' ) ) {
+			$should_enqueue = true;
+		}
+		
+		return $should_enqueue;
+	}
+	
+	add_action( 'bridge_qode_filter_enqueue_owl_carousel_script', 'qode_music_enqueue_album_single_owl_carousel' );
+}

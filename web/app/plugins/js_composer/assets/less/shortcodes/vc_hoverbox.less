@@ -37,56 +37,6 @@
     text-align: center;
     width: 100%;
   }
-  &.vc-hoverbox-width--100 {
-    .vc-hoverbox {
-      width: 100%;
-    }
-  }
-  &.vc-hoverbox-width--90 {
-    .vc-hoverbox {
-      width: 90%;
-    }
-  }
-  &.vc-hoverbox-width--80 {
-    .vc-hoverbox {
-      width: 80%;
-    }
-  }
-  &.vc-hoverbox-width--70 {
-    .vc-hoverbox {
-      width: 70%;
-    }
-  }
-  &.vc-hoverbox-width--60 {
-    .vc-hoverbox {
-      width: 60%;
-    }
-  }
-  &.vc-hoverbox-width--50 {
-    .vc-hoverbox {
-      width: 50%;
-    }
-  }
-  &.vc-hoverbox-width--40 {
-    .vc-hoverbox {
-      width: 40%;
-    }
-  }
-  &.vc-hoverbox-width--30 {
-    .vc-hoverbox {
-      width: 30%;
-    }
-  }
-  &.vc-hoverbox-width--20 {
-    .vc-hoverbox {
-      width: 20%;
-    }
-  }
-  &.vc-hoverbox-width--10 {
-    .vc-hoverbox {
-      width: 10%;
-    }
-  }
 }
 
 .vc-hoverbox-inner {
@@ -118,20 +68,14 @@
 .vc-hoverbox-block-inner {
   flex-shrink: 0;
   padding: 20px;
-  > * {
-    backface-visibility: hidden;
-  }
 }
 
 .vc-hoverbox-front {
   transform: rotateY(0deg);
-  //background: @background-front;
-  z-index: 1; // fixed backface visibility for animations
 }
 
 .vc-hoverbox-back {
   transform: rotateY(180deg);
-  //background: @background-back;
 }
 
 .vc-hoverbox {

@@ -16,6 +16,7 @@ $date_formatted = date('d.m.Y', strtotime($date_published));
 
                         <?php qodef_re_get_cpt_single_module_template_part( 'templates/single/parts/taxonomy', 'property', 'status', $params ); ?>
 
+                        <?php if ( qodef_re_has_property_field_value( $property_id ) ) { ?>
                         <div class="qodef-title-id">
                             <span class="qodef-property-id-label">
                                 <?php esc_html_e('Property ID:', 'qode-real-estate'); ?>
@@ -24,6 +25,7 @@ $date_formatted = date('d.m.Y', strtotime($date_published));
                                 <?php echo esc_html($property_id); ?>
                             </span>
                         </div>
+                        <?php } ?>
                     </div>
                 </div>
 

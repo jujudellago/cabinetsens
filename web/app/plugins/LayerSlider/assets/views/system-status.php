@@ -291,12 +291,6 @@ include LS_ROOT_PATH . '/includes/ls_global.php';
 									'default' 	=> true,
 									'name' 		=> __('Use GreenSock (GSAP) sandboxing', 'LayerSlider'),
 									'message' 	=> __('GreenSock is a popular animation engine used by many. Enabling sandboxing helps avoid issues when 3rd parties like other plugins and WordPress themes are also using GreenSock.', 'LayerSlider')
-								],
-
-								'use_custom_jquery' => [
-									'default' 	=> false,
-									'name' 		=> __('Use Google CDN version of jQuery', 'LayerSlider'),
-									'message' 	=> __('This setting should be used in very special cases only as it can break otherwise functioning sites.', 'LayerSlider')
 								]
 							];
 
@@ -411,7 +405,7 @@ include LS_ROOT_PATH . '/includes/ls_global.php';
 						<tr class="<?= ! $test ? 'ls--error' : '' ?>">
 							<td><?= __('PHP Memory Limit:', 'LayerSlider') ?></td>
 							<td><?= lsGetSVGIcon( ! $test ? 'exclamation-triangle' : 'check' ) ?></td>
-							<td><?= $memory ?></td>
+							<td><?= ( (int)$memory > 0 ) ? $memory : __('No limit', 'LayerSlider') ?></td>
 							<td>
 								<?php if( ! $test ) : ?>
 								<ls-span><?= __('PHP memory limit should be set to at least 64MB or higher when dealing with large projects. Please contact your host and ask them to change this PHP setting on your web server accordingly.', 'LayerSlider') ?></ls-span>
@@ -420,11 +414,11 @@ include LS_ROOT_PATH . '/includes/ls_global.php';
 						</tr>
 
 
-						<?php $test = $postMaxB > 16 * 1000 * 1000; ?>
+						<?php $test = ! ( $postMaxB > 0 && $postMaxB < 32 * 1000 * 1000 ); ?>
 						<tr class="<?= ! $test ? 'ls--error' : '' ?>">
 							<td><?= __('PHP Post Max Size:', 'LayerSlider') ?></td>
 							<td><?= lsGetSVGIcon( ! $test ? 'exclamation-triangle' : 'check' ) ?></td>
-							<td><?= ini_get('post_max_size') ?></td>
+							<td><?= ( $postMaxB > 0 ) ? ini_get('post_max_size') : __('No limit', 'LayerSlider') ?></td>
 							<td>
 								<?php if( ! $test ) : ?>
 								<ls-span><?= __('Importing larger projects could be problematic in some cases. This option is needed to upload large files. We recommend to set it to at least 16MB or higher. Please contact your host and ask them to change this PHP setting on your web server accordingly.', 'LayerSlider') ?></ls-span>
@@ -433,11 +427,11 @@ include LS_ROOT_PATH . '/includes/ls_global.php';
 						</tr>
 
 
-						<?php $test = $uploadB > 16 * 1000 * 1000; ?>
+						<?php $test = ! ( $uploadB > 0 && $uploadB < 32 * 1000 * 1000 ); ?>
 						<tr class="<?= ! $test ? 'ls--error' : '' ?>">
 							<td><?= __('PHP Max Upload Size:', 'LayerSlider') ?></td>
 							<td><?= lsGetSVGIcon( ! $test ? 'exclamation-triangle' : 'check' ) ?></td>
-							<td><?= ini_get('upload_max_filesize') ?></td>
+							<td><?= ( $uploadB > 0 ) ? ini_get('upload_max_filesize') : __('No limit', 'LayerSlider') ?></td>
 							<td>
 								<?php if( ! $test ) : ?>
 								<ls-span><?= __('Importing larger projects could be problematic in some cases. This option is needed to upload large files. We recommend to set it to at least 16MB or higher. Please contact your host and ask them to change this PHP setting on your web server accordingly.', 'LayerSlider') ?></ls-span>

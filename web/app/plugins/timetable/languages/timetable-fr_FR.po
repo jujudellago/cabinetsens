@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Timetable for WordPress\n"
-"POT-Creation-Date: 2023-02-27 12:34+0100\n"
-"PO-Revision-Date: 2023-02-27 12:34+0100\n"
+"POT-Creation-Date: 2026-09-08 14:33+0100\n"
+"PO-Revision-Date: 2026-09-08 14:33+0100\n"
 "Last-Translator: \n"
 "Language-Team: Bruno Verrier\n"
 "Language: fr\n"
@@ -16,6 +16,10 @@ msgstr ""
 "X-Poedit-KeywordsList: _e;__;_n;_x;_ex;_nx;esc_attr__;esc_attr_e;esc_attr_x;"
 "esc_html__;esc_html_e;esc_html_x;_n_noop;_nx_noop\n"
 "X-Poedit-SearchPath-0: .\n"
+
+#: vendor/freemius/assets/js/pricing/freemius-pricing.js:2
+msgid "display"
+msgstr ""
 
 #: admin-page-email-config.php:2
 msgid "Email configuration"
@@ -169,7 +173,7 @@ msgid "Save"
 msgstr "Enregistrer"
 
 #: admin-page-google-calendar.php:2 admin-page-google-calendar.php:307
-#: timetable.php:370
+#: timetable.php:431
 msgid "Google Calendar"
 msgstr "Calendrier Google"
 
@@ -282,7 +286,7 @@ msgid ""
 msgstr ""
 
 #: admin-page-google-calendar.php:88 admin-page.php:84
-#: shortcode-timetable.php:1499 timetable.php:1257
+#: shortcode-timetable.php:1499 timetable.php:1357
 msgid "Events"
 msgstr "Événements"
 
@@ -430,7 +434,21 @@ msgstr ""
 msgid "Timetable Dummy Content"
 msgstr "Contenu fictif"
 
-#: admin-page-import-dummy-data.php:5
+#: admin-page-import-dummy-data.php:13
+#, php-format
+msgid ""
+"License not verified%s. Please verify your license <a href='%s' "
+"title='License Verification'>here</a> to enable dummy content import"
+msgstr ""
+
+#: admin-page-import-dummy-data.php:13
+#: admin/purchase-verification/class/QL_License.php:113
+#: admin/purchase-verification/class/QL_License.php:254
+#: admin/purchase-verification/class/QL_License.php:271
+msgid " for the current domain"
+msgstr ""
+
+#: admin-page-import-dummy-data.php:19
 msgid "Import dummy content"
 msgstr "Importer du contenu fictif"
 
@@ -1221,6 +1239,126 @@ msgstr ""
 "{event_description_1} {event_description_2} {user_name} {user_email} "
 "{tt_btn_continue}"
 
+#: admin/purchase-verification/class/QL_License.php:77
+#: admin/purchase-verification/class/QL_License.php:101
+msgid "License verified successfully."
+msgstr ""
+
+#: admin/purchase-verification/class/QL_License.php:78
+msgid ""
+"License not verified. Please provide a valid purchase code and click the "
+"'Verify License' button."
+msgstr ""
+
+#: admin/purchase-verification/class/QL_License.php:79
+#, fuzzy
+msgid "Please confirm! You are about to remove a license."
+msgstr ""
+"Merci de confirmer que vous voulez supprimer les réservations pour "
+"l'événement."
+
+#: admin/purchase-verification/class/QL_License.php:80
+msgid "Processing..."
+msgstr ""
+
+#: admin/purchase-verification/class/QL_License.php:81
+msgid "Please enter the purchase code."
+msgstr ""
+
+#: admin/purchase-verification/class/QL_License.php:113
+#, php-format
+msgid ""
+"License not verified%s. Please provide a valid purchase code and click the "
+"'Verify License' button."
+msgstr ""
+
+#: admin/purchase-verification/class/QL_License.php:116
+#, php-format
+msgid ""
+"If you don't have a purchase code for the <a href='%s' title='Purchase %s' "
+"target='_blank'>%s</a>, please purchase a license <a href='%s' "
+"title='Purchase %s' target='_blank'>here</a>"
+msgstr ""
+
+#: admin/purchase-verification/class/QL_License.php:163
+msgid "The purchase code has been saved."
+msgstr ""
+
+#: admin/purchase-verification/class/QL_License.php:167
+msgid "This purchase code belongs to a different item."
+msgstr ""
+
+#: admin/purchase-verification/class/QL_License.php:191
+msgid "License has been removed."
+msgstr ""
+
+#: admin/purchase-verification/class/QL_License.php:195
+msgid "Failed to remove the license."
+msgstr ""
+
+#: admin/purchase-verification/class/QL_License.php:254
+#, php-format
+msgid ""
+"License not verified%s. Please verify your license <a href='%s' "
+"title='License Verification'>here</a>"
+msgstr ""
+
+#: admin/purchase-verification/class/QL_License.php:271
+#, php-format
+msgid ""
+"%s license not verified%s. Please verify your license <a href='%s' "
+"title='License Verification'>here</a>"
+msgstr ""
+
+#: admin/purchase-verification/verification-form.php:33
+msgid "Domain: "
+msgstr ""
+
+#: admin/purchase-verification/verification-form.php:41
+msgid "Verification date: "
+msgstr ""
+
+#: admin/purchase-verification/verification-form.php:49
+msgid "Supported until: "
+msgstr ""
+
+#: admin/purchase-verification/verification-form.php:60
+#, php-format
+msgid ""
+"Your support has expired. <a href='%s' title='Renew support' "
+"target='_blank'>Renew support now</a>"
+msgstr ""
+
+#: admin/purchase-verification/verification-form.php:64
+#, php-format
+msgid ""
+"%s days of support remaining. <a href='%s' title='Extend support' "
+"target='_blank'>Extend now</a>"
+msgstr ""
+
+#: admin/purchase-verification/verification-form.php:71
+msgid "Purchase code: "
+msgstr ""
+
+#: admin/purchase-verification/verification-form.php:77
+#, php-format
+msgid ""
+"You can find the purchase code in the <a title='License certificate' "
+"href='%s' class='thickbox'>License certificate</a>"
+msgstr ""
+
+#: admin/purchase-verification/verification-form.php:82
+msgid "Verify license"
+msgstr ""
+
+#: admin/purchase-verification/verification-form.php:83
+msgid "Remove license"
+msgstr ""
+
+#: admin/purchase-verification/verification-form.php:85
+msgid "Re-authorize Envato API"
+msgstr ""
+
 #: class/bookings-list.class.php:8
 msgid "Bookings"
 msgstr "Réservation"
@@ -1249,12 +1387,12 @@ msgid "Date"
 msgstr "Date"
 
 #: class/bookings-list.class.php:164 class/sp-bookings.class.php:165
-#: timetable.php:1256
+#: timetable.php:1356
 msgid "Event"
 msgstr "Événement"
 
 #: class/bookings-list.class.php:166 class/sp-bookings.class.php:173
-#: timetable.php:1634
+#: timetable.php:1747
 msgid "Message"
 msgstr "Message"
 
@@ -1306,7 +1444,7 @@ msgstr "Fin"
 msgid "Type"
 msgstr "Type"
 
-#: class/sp-bookings.class.php:170 timetable.php:1590
+#: class/sp-bookings.class.php:170 timetable.php:1703
 msgid "Name"
 msgstr "Nom"
 
@@ -1314,7 +1452,7 @@ msgstr "Nom"
 msgid "E-mail"
 msgstr "E-mail"
 
-#: class/sp-bookings.class.php:172 timetable.php:1609
+#: class/sp-bookings.class.php:172 timetable.php:1722
 msgid "Phone"
 msgstr "Téléphone"
 
@@ -1800,7 +1938,7 @@ msgstr "Aucun %1$s disponible dans la catégorie %2$s  !"
 msgid "No %s hours available!"
 msgstr "Aucune heure %s disponible  !"
 
-#: shortcode-timetable.php:1480 timetable.php:365
+#: shortcode-timetable.php:1480 timetable.php:426
 msgid "Timetable"
 msgstr "Planning"
 
@@ -1870,114 +2008,127 @@ msgstr "Annuler"
 msgid "Continue"
 msgstr "Continuer"
 
-#: timetable.php:70
+#: timetable.php:58
+#, php-format
+msgid ""
+"<a href='%s' title='Convert Envato Purchase' target='_blank'>Convert your "
+"Timetable Booking Schedule for WordPress purchase code</a> to a QuanticaLabs "
+"license and get <strong>3 extra months of support for free</strong>. Already "
+"converted? <a href='%s' title='Activate license'>Activate license</a>."
+msgstr ""
+
+#: timetable.php:131
 msgid "You have been booked for event {event_title}"
 msgstr "Vous avez été enregistré pour l'événement {event_title}"
 
-#: timetable.php:90
+#: timetable.php:151
 msgid "New booking for event: {event_title}"
 msgstr "Nouvelle réservation pour l'événement : {event_title}"
 
-#: timetable.php:159
+#: timetable.php:220
 #, php-format
 msgid "Error: Booking #%d does not exist or validation code is incorrect."
 msgstr ""
 "Erreur: la réservation #%d n'existe pas ou son code de validation est "
 "incorrect."
 
-#: timetable.php:172
+#: timetable.php:233
 #, php-format
 msgid "Booking #%d (%s) deleted"
 msgstr ""
 
-#: timetable.php:173 timetable.php:221
+#: timetable.php:234 timetable.php:282
 #, php-format
 msgid "Title: %s"
 msgstr "Titre: %s"
 
-#: timetable.php:174 timetable.php:222
+#: timetable.php:235 timetable.php:283
 #, php-format
 msgid "Time: %s"
 msgstr "Horaire: %s"
 
-#: timetable.php:175 timetable.php:223
+#: timetable.php:236 timetable.php:284
 #, php-format
 msgid "Column: %s"
 msgstr "Colonne: %s"
 
-#: timetable.php:177 timetable.php:225
+#: timetable.php:238 timetable.php:286
 #, php-format
 msgid "Description 1: %s"
 msgstr "Description 1: %s"
 
-#: timetable.php:179 timetable.php:227
+#: timetable.php:240 timetable.php:288
 #, php-format
 msgid "Description 2: %s"
 msgstr "Description 2: %s"
 
-#: timetable.php:208
+#: timetable.php:269
 msgid "Bookings canceled"
 msgstr ""
 
-#: timetable.php:211
+#: timetable.php:272
 msgid "Client details"
 msgstr "Détails du client"
 
-#: timetable.php:212
+#: timetable.php:273
 #, php-format
 msgid "Name: %s"
 msgstr "Nom : %s"
 
-#: timetable.php:213
+#: timetable.php:274
 #, php-format
 msgid "Email: %s"
 msgstr "Email : %s"
 
-#: timetable.php:215
+#: timetable.php:276
 #, php-format
 msgid "Phone: %s"
 msgstr "Téléphone : %s"
 
-#: timetable.php:217
+#: timetable.php:278
 msgid "Canceled Bookings"
 msgstr ""
 
-#: timetable.php:220
+#: timetable.php:281
 #, php-format
 msgid "Booking: #%d (%s)"
 msgstr ""
 
-#: timetable.php:301
+#: timetable.php:362
 msgid "Event post thumbnail"
 msgstr "Miniature de l'article"
 
-#: timetable.php:302
+#: timetable.php:363
 msgid "Event post box thumbnail"
 msgstr ""
 
-#: timetable.php:366
+#: timetable.php:427
 msgid "Shortcode Generator"
 msgstr "Générateur de Shortcode"
 
-#: timetable.php:367
+#: timetable.php:428
 msgid "Event Post Type"
 msgstr "Type d'article d'événement"
 
-#: timetable.php:368
+#: timetable.php:429
 msgid "Email config"
 msgstr "Config. Email"
 
-#: timetable.php:369
+#: timetable.php:430
 msgid "Import Dummy Data"
 msgstr "Importer les données fictives"
 
-#: timetable.php:402
+#: timetable.php:434
+msgid "License"
+msgstr ""
+
+#: timetable.php:466
 msgid "Please confirm that you want to delete event bookings."
 msgstr ""
 "Merci de confirmer que vous voulez supprimer les réservations pour "
 "l'événement."
 
-#: timetable.php:477
+#: timetable.php:545
 msgid ""
 "<h2>Invalid event hour</h2>\n"
 "<p>Selected event hour doesn't exist.<br>Please select different event.</p>"
@@ -1986,7 +2137,7 @@ msgstr ""
 "<p>L'heure choisie pour l'événement n'existe pas.<br>Merci de choisir un "
 "autre événement.</p>"
 
-#: timetable.php:503
+#: timetable.php:571
 msgid ""
 "<h2>Invalid event hour</h2><p>Selected event hour doesn't exist.<br>Please "
 "select different event.</p>"
@@ -1994,7 +2145,7 @@ msgstr ""
 "<h2>Heure d'événement incorrecte</h2><p>L'heure choisie pour l'événement "
 "n'existe pas.<br>Merci de choisir un autre événement.</p>"
 
-#: timetable.php:556
+#: timetable.php:624
 #, fuzzy, php-format
 msgid ""
 "<p class=\"tt_guest_option %s\">Don't have an account? <a href=\"%s"
@@ -2003,7 +2154,7 @@ msgstr ""
 "<p class=\"tt_guest_option\">Vous n'avez pas de compte utilisateur ? <a href="
 "\"%s\">Continuez comme invité</a></p>"
 
-#: timetable.php:567
+#: timetable.php:635
 #, fuzzy, php-format
 msgid ""
 "<p class=\"tt_login_option %s\">Got an account? <a href=\"%s\">Login</a></p>"
@@ -2011,13 +2162,13 @@ msgstr ""
 "<p class=\"tt_login_option tt_hide\">Vous avez un compte ? <a href=\"%s"
 "\">Login</a></p>"
 
-#: timetable.php:592
+#: timetable.php:660
 msgid ""
 "<h2>Booking couldn't be made</h2>\n"
 "<p>Please accept terms and conditions checkbox.</p>"
 msgstr ""
 
-#: timetable.php:638
+#: timetable.php:706
 msgid ""
 "<h2>Booking couldn't be made</h2>\n"
 "<p>No place available for selected event hour.</p>"
@@ -2025,7 +2176,7 @@ msgstr ""
 "<h2>La réservation ne peut se faire</h2>\n"
 "<p>Il n'y a pas de place disponible pour cet événement.</p>"
 
-#: timetable.php:649
+#: timetable.php:717
 msgid ""
 "<h2>Booking couldn't be made</h2>\n"
 "<p>You've already reached maximum number of slots.</p>"
@@ -2033,7 +2184,7 @@ msgstr ""
 "<h2>La réservation ne peut se faire</h2>\n"
 "<p>Vous avez déjà atteint le nombre maximum de places disponibles.</p>"
 
-#: timetable.php:657
+#: timetable.php:725
 msgid ""
 "<h2>Booking couldn't be made</h2>\n"
 "<p>You have selected too many slots.</p>"
@@ -2041,7 +2192,7 @@ msgstr ""
 "<h2>La réservation ne peut se faire</h2>\n"
 "<p>Vous avez sélectionné un trop grand nombre de places.</p>"
 
-#: timetable.php:667
+#: timetable.php:735
 msgid ""
 "<h2>Error</h2>\n"
 "<p>You must fill name field.</p>"
@@ -2049,7 +2200,7 @@ msgstr ""
 "<h2>Erreur</h2>\n"
 "<p>Vous devez renseigner le champ nom.</p>"
 
-#: timetable.php:674
+#: timetable.php:742
 msgid ""
 "<h2>Error</h2>\n"
 "<p>You must fill email field.</p>"
@@ -2057,7 +2208,7 @@ msgstr ""
 "<h2>Erreur</h2>\n"
 "<p>Vous devez renseigner le champ email.</p>"
 
-#: timetable.php:681
+#: timetable.php:749
 msgid ""
 "<h2>Error</h2>\n"
 "<p>Please provide valid email.</p>"
@@ -2065,7 +2216,7 @@ msgstr ""
 "<h2>Erreur</h2>\n"
 "<p>Merci de fournir une adresse email valide.</p>"
 
-#: timetable.php:688
+#: timetable.php:756
 msgid ""
 "<h2>Error</h2>\n"
 "<p>You must fill phone field.</p>"
@@ -2073,7 +2224,7 @@ msgstr ""
 "<h2>Erreur</h2>\n"
 "<p>Vous devez renseigner le champ téléphone.</p>"
 
-#: timetable.php:695
+#: timetable.php:763
 msgid ""
 "<h2>Error</h2>\n"
 "<p>You must fill message field.</p>"
@@ -2081,7 +2232,7 @@ msgstr ""
 "<h2>Erreur</h2>\n"
 "<p>Vous devez renseigner le champ message.</p>"
 
-#: timetable.php:726
+#: timetable.php:794
 msgid ""
 "<h2>Booking couldn't be made</h2>\n"
 "<p>You can't register for this event hour.</p>"
@@ -2089,25 +2240,25 @@ msgstr ""
 "<h2>La réservation ne peut se faire</h2>\n"
 "<p>Vous ne pouvez pas vous inscrire pour cet horaire.</p>"
 
-#: timetable.php:857
+#: timetable.php:925
 #, php-format
 msgid "Cancel booking #%d"
 msgstr "Annuler la réservation #%d"
 
-#: timetable.php:860
+#: timetable.php:928
 msgid "Cancel all bookings"
 msgstr "Annuler toutes les réservations"
 
-#: timetable.php:940
+#: timetable.php:1008
 msgid "Email message sent."
 msgstr "Email envoyé."
 
-#: timetable.php:944
+#: timetable.php:1012
 #, php-format
 msgid "Email message not sent.<br>%s"
 msgstr "Email non envoyé.<br>%s"
 
-#: timetable.php:1029
+#: timetable.php:1124
 msgid ""
 "Import file: dummy-timetable.xml not found! Please upload import file "
 "manually into Media library. You can find this file inside zip archive "
@@ -2117,13 +2268,19 @@ msgstr ""
 "Merci d'importer le fichier manuellement dans la librairie des Médias. Vous "
 "pouvez trouver ce fichier dans une archive zip téléchargée depuis CodeCanyon."
 
-#: timetable.php:1103
+#: timetable.php:1198
 msgid "Widgets data file not found! Please upload widgets data file manually."
 msgstr ""
 "Les fichiers de données des widgets n'ont pas été trouvés. Veuillez importer "
 "les données des widgets manuellement."
 
-#: timetable.php:1244
+#: timetable.php:1340
+msgid ""
+"License not verified. Please verify your license first to enable dummy "
+"content import"
+msgstr ""
+
+#: timetable.php:1344
 msgid ""
 "dummy-timetable.xml file content and widgets settings has been imported "
 "successfully!"
@@ -2131,27 +2288,32 @@ msgstr ""
 "le fichier .xml avec les contenus des planning fictifs et les paramètres des "
 "widgets a été importé avec succès !"
 
-#: timetable.php:1255
+#: timetable.php:1355
 msgid "events"
 msgstr "événements"
 
-#: timetable.php:1519 timetable.php:1561 timetable.php:1622
+#: timetable.php:1555
+#, fuzzy
+msgid "Timetable License"
+msgstr "Colonnes du planning"
+
+#: timetable.php:1632 timetable.php:1674 timetable.php:1735
 msgid "Slots number"
 msgstr "Place disponibles"
 
-#: timetable.php:1590
+#: timetable.php:1703
 msgid "Name *"
 msgstr "Nom *"
 
-#: timetable.php:1599
+#: timetable.php:1712
 msgid "Email *"
 msgstr "Email *"
 
-#: timetable.php:1609
+#: timetable.php:1722
 msgid "Phone *"
 msgstr "Téléphone *"
 
-#: timetable.php:1634
+#: timetable.php:1747
 msgid "Message *"
 msgstr "Message *"
 

@@ -2,6 +2,7 @@
  * Row styles
  */
 
+// BC: legacy predefined gap classes.
 .vc_row {
   .vc_make-frontend-column-gap(1);
   .vc_make-frontend-column-gap(2);
@@ -16,6 +17,16 @@
   .vc_make-frontend-column-gap(35);
 }
 
+.vc_row.wpb_column-gap {
+  > .vc_vc_column,
+  > .vc_vc_column_inner {
+    > .vc_column_container {
+      padding-left: ~"calc(var(--wpb-column-gap) / 2)";
+      padding-right: ~"calc(var(--wpb-column-gap) / 2)";
+    }
+  }
+}
+
 .vc_vc_column,
 .vc_vc_column_inner {
   padding-left: 0;
@@ -28,8 +39,8 @@
     > .vc_vc_column,
     > .vc_vc_column_inner {
       > .vc_column_container {
-        padding-left: unit(@spacing/2, px);
-        padding-right: unit(@spacing/2, px);
+        padding-left: unit((@spacing/2), px);
+        padding-right: unit((@spacing/2), px);
       }
     }
   }

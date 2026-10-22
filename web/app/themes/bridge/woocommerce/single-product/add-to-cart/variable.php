@@ -10,28 +10,27 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see https://docs.woocommerce.com/document/template-structure/
- * @package WooCommerce/Templates
- * @version 6.1.0
+ * @see https://woocommerce.com/document/template-structure/
+ * @package WooCommerce\Templates
+ * @version 10.9.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
 global $product;
 
-$attribute_keys = array_keys( $attributes );
+$attribute_keys  = array_keys( $attributes );
 $variations_json = wp_json_encode( $available_variations );
 $variations_attr = function_exists( 'wc_esc_json' ) ? wc_esc_json( $variations_json ) : _wp_specialchars( $variations_json, ENT_QUOTES, 'UTF-8', true );
 
 do_action( 'woocommerce_before_add_to_cart_form' ); ?>
-	
-	<form class="variations_form cart" action="<?php echo esc_url( get_permalink() ); ?>" method="post" enctype='multipart/form-data' data-product_id="<?php echo absint( $product->get_id() ); ?>" data-product_variations="<?php echo bridge_qode_get_module_part( $variations_attr ); ?>">
+<form class="variations_form cart" action="<?php echo esc_url( apply_filters( 'woocommerce_add_to_cart_form_action', $product->get_permalink() ) ); ?>" method="post" enctype='multipart/form-data' data-product_id="<?php echo absint( $product->get_id() ); ?>" data-product_variations="<?php echo bridge_qode_get_module_part( $variations_attr ); ?>">
 		<?php do_action( 'woocommerce_before_variations_form' ); ?>
 		
 		<?php if ( empty( $available_variations ) && false !== $available_variations ) : ?>
             <p class="stock out-of-stock"><?php esc_html_e( 'This product is currently out of stock and unavailable.', 'bridge' ); ?></p>
 		<?php else : ?>
-			<table class="variations" cellspacing="0">
+			<table class="variations" role="presentation">
 				<tbody>
 				<?php foreach ( $attributes as $attribute_name => $options ) : ?>
 					<tr>
@@ -50,7 +49,15 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 				<?php endforeach;?>
 				</tbody>
 			</table>
-
+			<div class="reset_variations_alert screen-reader-text" role="alert" aria-live="polite" aria-relevant="all"></div>
+			<?php
+			// Reset snapshot for cases where a theme/plugin loads the variation form later, like quick-view modals.
+			if ( \Automattic\WooCommerce\Internal\VariationGallery\Package::is_enabled() ) :
+			?>
+				<script type="text/template" class="wc-product-gallery-default-template"><?php echo wc_get_product_gallery_html( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></script>
+			<?php
+			endif;
+			?>
 			<?php do_action( 'woocommerce_after_variations_table' ); ?>
 			
 			<div class="single_variation_wrap">

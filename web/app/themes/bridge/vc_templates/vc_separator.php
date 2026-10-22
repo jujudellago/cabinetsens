@@ -53,6 +53,6 @@ if($width != '') {
 }
 
 $output .= '<div class="'.$separator_classes.' " style="'.$separator_styles.'">';
-$output .= '</div>'.$this->endBlockComment('separator')."\n";
+$output .= '</div>';
 
 echo bridge_qode_get_module_part( $output );

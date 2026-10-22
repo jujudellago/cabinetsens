@@ -122,7 +122,7 @@
 		}
 
 	}
-    
+
 
     $bridge_qode_pagination_masonry = "pagination";
     if(isset($bridge_qode_options['pagination_masonry'])){
@@ -261,5 +261,4 @@
         <?php } ?>
     <?php } ?>
 <?php } ?>
-
 <?php wp_reset_postdata(); ?>

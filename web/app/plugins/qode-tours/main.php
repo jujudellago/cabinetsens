@@ -3,7 +3,7 @@
 Plugin Name: Qode Tours
 Description: Plugin that adds tours post types needed by theme
 Author: Qode Themes
-Version: 3.0.8
+Version: 3.1.3.5
 */
 
 require_once 'load.php';
@@ -50,7 +50,7 @@ if ( ! function_exists( 'qode_tours_text_domain' ) ) {
 		load_plugin_textdomain( 'qode-tours', false, QODE_TOURS_REL_PATH . '/languages' );
 	}
 	
-	add_action( 'plugins_loaded', 'qode_tours_text_domain' );
+	add_action( 'init', 'qode_tours_text_domain' );
 }
 
 if ( ! function_exists( 'qode_tours_scripts' ) ) {

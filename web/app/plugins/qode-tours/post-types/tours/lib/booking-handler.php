@@ -56,8 +56,9 @@ class BookingHandler {
 	 */
 	public function initialize() {
 		$this->enqueueScripts();
-		$this->setLabels();
-
+		
+		add_action( 'init', array( $this, 'setLabels' ) );
+		
 		add_action('wp_ajax_check_tour_booking', array($this, 'handleBooking'));
 		add_action('wp_ajax_nopriv_check_tour_booking', array($this, 'handleBooking'));
 
@@ -71,7 +72,41 @@ class BookingHandler {
 	 *
 	 */
 	public function startSession() {
-		session_start();
+		$this->ensureSession();
+	}
+
+	/**
+	 * Start a PHP session only when headers can still be sent.
+	 */
+	private function ensureSession() {
+		if ( function_exists( 'bridge_qode_maybe_start_session' ) ) {
+			bridge_qode_maybe_start_session();
+			return;
+		}
+
+		if ( headers_sent() ) {
+			return;
+		}
+
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			return;
+		}
+
+		if ( function_exists( 'wp_doing_cron' ) && wp_doing_cron() ) {
+			return;
+		}
+
+		if ( function_exists( 'bridge_qode_is_session_blocked_request' ) && bridge_qode_is_session_blocked_request() ) {
+			return;
+		}
+
+		if ( session_status() === PHP_SESSION_ACTIVE ) {
+			return;
+		}
+
+		if ( session_status() === PHP_SESSION_NONE ) {
+			session_start();
+		}
 	}
 
 	/**
@@ -416,7 +451,7 @@ class BookingHandler {
 	/**
 	 * Sets validation labels
 	 */
-	private function setLabels() {
+	public function setLabels() {
 		$this->labels = array(
 			'name'             => esc_html__('Please enter your name', 'qode-tours'),
 			'email'            => esc_html__('Please enter valid email', 'qode-tours'),
@@ -460,7 +495,7 @@ class BookingHandler {
 	 * @param $bookingEmail
 	 */
 	private function storeBookingToSession($bookingHash, $bookingEmail) {
-		session_start();
+		$this->ensureSession();
 
 		$_SESSION[$bookingHash] = array(
 			'booking_hash' => $bookingHash,
@@ -565,6 +600,8 @@ class BookingHandler {
 	 * @return bool
 	 */
 	public function canSeeBookingData($bookingObject) {
+		$this->ensureSession();
+
 		if(!$bookingObject || empty($_SESSION[$bookingObject->unique_hash])) {
 			return false;
 		}

@@ -2470,7 +2470,9 @@ vc_map( array(
             "heading" => esc_html__( 'Time Between Slides (ms)', 'bridge'),
             "description" => esc_html__( 'Default is 5000.', 'bridge'),
             "param_name" => "timeout",
-            "placeholder" => '5000',
+			"settings" => array(
+				'placeholder' => '5000',
+			),
             'dependency' => array('element' => 'auto_start', 'value' => array('yes'))
         )
     ),
@@ -2597,17 +2599,25 @@ vc_map( array(
 
 class WPBakeryShortCode_Qode_Content_Slider_Item  extends WPBakeryShortCodesContainer {}
 //Register "container" content element. It will hold all your inner (child) content elements
-vc_map( array(
-    "name" =>  esc_html__( 'Content Slider Item', 'bridge' ),
-    "base" => "qode_content_slider_item",
-    "as_parent" => array(''),
-    "as_child" => array('only' => 'qode_content_slider'),
-    "content_element" => true,
-    "category" => esc_html__( 'by QODE', 'bridge'),
-    "icon" => "extended-custom-icon-qode icon-wpb-qode_content_slider_item",
-    "show_settings_on_create" => false,
-    "js_view" => 'VcColumnView'
-) );
+vc_map(
+	array(
+	        "name"                    => esc_html__( 'Content Slider Item', 'bridge' ),
+	        "base"                    => "qode_content_slider_item",
+	        "as_parent"               => array( '' ),
+	        "as_child"                => array( 'only' => 'qode_content_slider' ),
+	        "content_element"         => true,
+	        "category"                => esc_html__( 'by QODE', 'bridge' ),
+	        "icon"                    => "extended-custom-icon-qode icon-wpb-qode_content_slider_item",
+	        "js_view"                 => 'VcColumnView',
+	        "params"                  => array(
+		        array(
+			        "type"        => "textfield",
+			        "heading"     => esc_html__( 'Custom Class', 'bridge' ),
+			        "param_name"  => "custom_class",
+		        ),
+	        ),
+	)
+);
 
 
 /*** Contact Form 7 ***/

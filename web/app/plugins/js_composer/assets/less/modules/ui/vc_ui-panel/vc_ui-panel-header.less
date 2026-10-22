@@ -4,12 +4,11 @@
 @import "../vc_ui-tabs-line.less";
 
 @vcui-panel-header-font-size: 14px;
-@vcui-panel-header-padding-horizontal: 18px;
-@vcui-panel-header-padding-vertical: 14px;
+@vcui-panel-header-padding: 15px;
 @vcui-panel-header-gap: 16px;
 @vcui-panel-header-background: @vc_main_color;
 @vcui-panel-header-color: #fff;
-@vcui-panel-header-heading-font-size: 18px;
+@vcui-panel-header-heading-font-size: 14px;
 @vcui-panel-header-search-width: 200px;
 @vcui-panel-header-search-width-focus: 110%;
 @vcui-panel-header-search-color: #333;
@@ -17,7 +16,7 @@
 @vcui-panel-header-transition-duration: .2s;
 
 .vc_ui-panel-header-container {
-  padding: @vcui-panel-header-padding-vertical  @vcui-panel-header-padding-horizontal;
+  padding: @vcui-panel-header-padding;
   background: @vcui-panel-header-background;
   margin: 0;
   font-size: @vcui-panel-header-font-size;
@@ -37,6 +36,9 @@
   }
 
   .vc_ui-panel-header-controls {
+    display: flex;
+    align-items: center;
+    gap: 14px;
     float: right;
     margin: -2px 0 0 12px;
     .vc_ui-dropdown {
@@ -56,16 +58,23 @@
   }
 
   .vc_ui-panel-header-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     flex-grow: 1;
     margin: 0 1em 0 0;
-    font-size: @vcui-panel-header-heading-font-size;
     color: inherit;
-    font-weight: 300;
-    line-height: normal;
-  }
-  .vc_ui-panel-header-actions {
+    font-size: @vcui-panel-header-heading-font-size;
+    font-family: inherit;
+    font-weight: @wpb_font-weight;
+    line-height: 18px;
 
+    .vc-composer-icon {
+      cursor: move;
+      font-size: 11.7px; // so it matches the design
+    }
   }
+
   .vc_ui-panel-header-content {
     clear: both;
   }
@@ -77,86 +86,38 @@
     .vc-composer-icon {
       font-size: 26px;
     }
-    .vc-c-icon-cog {
-      display: inline-block;
-      margin-top: 2px;
-      font-size: 22px;
-    }
-    .vc-c-icon-close {
+
+    .vc-c-cog-filled,
+    .vc-c-icon-panel-minimize {
       font-size: 18px;
-      margin-top: 4px;
+    }
+
+    .vc-c-icon-panel-minimize {
+      position: relative;
+      top: -3px;
+    }
+
+    .vc-c-icon-close {
+      font-size: 13.5px;
       display: inline-block;
     }
   }
 }
 
 .vc_ui-add-element-header-container .vc_ui-panel-header .vc_ui-panel-header-controls {
-  margin: 2px 0 0 12px;
+  margin: 0 0 16px 12px;
 }
 
-// search box
-.vc_ui-search-box {
+.vc_ui-panel-header-actions .wpb-search-input {
   width: @vcui-panel-header-search-width;
-  input[type=search] {
-    display: inline-block;
-    margin: 0;
-    padding: 7px 12px 7px 32px;
-    line-height: normal;
-    font-size: 12px;
-    font-family: inherit;
-    vertical-align: middle;
-    color: @vcui-panel-header-search-color;
-    border: none;
-    box-sizing: border-box;
-    transition: all .2s ease-in-out;
-    border-radius: 5px;
-    width: 100%;
-    position: relative;
-    left: 0;
-    &:focus {
-      color: @vcui-panel-header-search-color;
-    }
-    &::-moz-placeholder {
-      .style-placeholder();
-      opacity: 1;
-    }
-    &:-ms-input-placeholder {
-      .style-placeholder();
-    }
-    &::-webkit-input-placeholder {
-      .style-placeholder();
-    }
-    .style-placeholder() {
-      text-overflow: ellipsis;
-      line-height: inherit;
-      color: @vcui-panel-header-search-placeholder-color;
-      font-size: inherit;
-      font-style: italic;
-    }
-  }
-  .vc_ui-search-box-input {
-    position: relative;
-    label {
-      height: 24px;
-      width: 24px;
-      content: '';
-      display: block;
-      position: absolute;
-      left: 6px;
-      top: 0;
-      bottom: 0;
-      margin: auto;
-      transition-property: color;
-      transition-duration: @vcui-panel-header-transition-duration;
-      transition-timing-function: ease-in-out;
-      cursor: pointer;
-      color: #BFC2C8;
-      font-size: 22px;
-    }
 
-    input[type=search]:focus + label {
-      cursor: default;
-      color: #7F8591;
+  input[type="text"].wpb-form-input {
+    width: 100%;
+    padding-right: 32px;
+    border-color: @vc_main_color;
+
+    &:focus {
+      border-color: @vc_main_color_hover;
     }
   }
 }

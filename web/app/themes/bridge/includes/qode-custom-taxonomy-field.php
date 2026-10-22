@@ -3,6 +3,9 @@ if(!function_exists('bridge_qode_slides_category_taxonomy_custom_fields')) {
 	function bridge_qode_slides_category_taxonomy_custom_fields($tag) {
 	    $t_id = $tag->term_id; // Get the ID of the term you're editing
 	    $term_meta = get_option( "taxonomy_term_$t_id" );
+		if( empty( $term_meta['header_effect'] ) ) {
+			$term_meta['header_effect'] = 'no';
+		}
 	?>
 
 	<tr class="form-field">

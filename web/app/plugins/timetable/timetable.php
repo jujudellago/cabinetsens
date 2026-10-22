@@ -1,17 +1,74 @@
 <?php
 /*
-Plugin Name: Timetable Responsive Schedule for WordPress
-Plugin URI: https://1.envato.market/timetable-responsive-schedule-for-wordpress
-Description: Timetable Responsive Schedule for WordPress is a powerful and easy-to-use schedule plugin for WordPress. It will help you to create a timetable view of your events in minutes. It is perfect for gym classes, school or kindergarten classes, medical departments, nightclubs, lesson plans, meal plans etc. It comes with Events Manager, Event Occurrences Shortcode, Timetable Shortcode Generator and Upcoming Events Widget.
+Plugin Name: Timetable Booking Schedule for WordPress
+Plugin URI: https://quanticalabs.com/wordpress-plugins/timetable-booking-schedule-for-wordpress/
+Description: Timetable Booking Schedule for WordPress is a powerful and easy-to-use schedule plugin for WordPress. It will help you to create a timetable view of your events in minutes. It is perfect for gym classes, school or kindergarten classes, medical departments, nightclubs, lesson plans, meal plans etc. It comes with Events Manager, Event Occurrences Shortcode, Timetable Shortcode Generator and Upcoming Events Widget.
 Author: QuanticaLabs
-Author URI: https://1.envato.market/quanticalabs-portfolio-codecanyon
-Version: 7.2
+Author URI: https://quanticalabs.com/
+Version: 8.0
 */
+
+if(isset($_GET["timetable_converted"]) && (int)$_GET["timetable_converted"])
+{
+	add_option("timetable_converted", 1);
+}
+if(file_exists(dirname( __FILE__ ) . '/vendor/freemius/start.php') && get_option("timetable_converted"))
+{
+	if ( ! function_exists( 'tbsfw_fs' ) ) {
+		// Create a helper function for easy SDK access.
+		function tbsfw_fs() {
+			global $tbsfw_fs;
+
+			if ( ! isset( $tbsfw_fs ) ) {
+				// Include Freemius SDK.
+				require_once dirname( __FILE__ ) . '/vendor/freemius/start.php';
+
+				$tbsfw_fs = fs_dynamic_init( array(
+					'id'                  => '30650',
+					'slug'                => 'timetable-booking-schedule-for-wordpress',
+					'premium_slug'        => 'timetable',
+					'type'                => 'plugin',
+					'public_key'          => 'pk_a271a9d1885b5c6e52e97414bd6da',
+					'is_premium'          => true,
+					'is_premium_only'     => true,
+					'has_addons'          => false,
+					'has_paid_plans'      => true,
+					'is_org_compliant'    => false,
+					'menu'                => array(
+						'slug'           => 'timetable_admin',
+						'support'        => false,
+					),
+				) );
+			}
+
+			return $tbsfw_fs;
+		}
+
+		// Init Freemius.
+		tbsfw_fs();
+		// Signal that SDK was initiated.
+		do_action( 'tbsfw_fs_loaded' );
+	}
+}
+if(!get_option("timetable_converted") || (isset($tbsfw_fs) && !(int)$tbsfw_fs->has_any_license()))
+{
+	function timetable_convert_notice()
+	{
+		echo '<div class="notice notice-info is-dismissible">
+			<p>' . sprintf(wp_kses(__("<a href='%s' title='Convert Envato Purchase' target='_blank'>Convert your Timetable Booking Schedule for WordPress purchase code</a> to a QuanticaLabs license and get <strong>3 extra months of support for free</strong>. Already converted? <a href='%s' title='Activate license'>Activate license</a>.", 'timetable'), array("a" => array("href" => array(), "title" => array(), "target" => array()), "strong" => array())), esc_url("https://support.quanticalabs.com/account/convert_purchase/"), esc_url(admin_url("admin.php?page=timetable_admin&timetable_converted=1"))) . '</p>
+		</div>';
+	}
+	add_action("admin_notices", "timetable_convert_notice");
+}
 
 //translation
 function timetable_load_textdomain()
 {
 	load_plugin_textdomain("timetable", false, dirname(plugin_basename(__FILE__)) . '/languages');
+	if(!file_exists(dirname( __FILE__ ) . '/vendor/freemius/start.php') || (!get_option("timetable_converted") || (isset($tbsfw_fs) && !(int)$tbsfw_fs->has_any_license())))
+	{
+		QL_License::getInstance("7010836", "Timetable Booking Schedule for WordPress plugin", "timetable/timetable.php", "timetable_admin_page_license", "https://1.envato.market/timetable-responsive-schedule-for-wordpress");
+	}
 }
 add_action('plugins_loaded', 'timetable_load_textdomain');
 function timetable_init_sp_bookings()
@@ -33,6 +90,10 @@ require_once('post-type-events.php');
 require_once('widget-upcoming-events.php');
 require_once('shortcodes.php');
 require_once('shortcode-timetable.php');
+if(!file_exists(dirname( __FILE__ ) . '/vendor/freemius/start.php') || (!get_option("timetable_converted") || (isset($tbsfw_fs) && !(int)$tbsfw_fs->has_any_license())))
+{
+	require_once('admin/purchase-verification/class/QL_License.php');
+}
 //Template fallback
 add_action('template_redirect', 'timetable_redirect', 99);
 
@@ -174,9 +235,9 @@ function timetable_cancel_booking()
 		echo sprintf(esc_html__('Time: %s', 'timetable'), $booking['start'] . '-' . $booking['end']) . '<br>';
 		echo sprintf(esc_html__('Column: %s', 'timetable'), $booking['weekday']) . '<br>';
 		if($booking['event_description_1'])
-			echo sprintf(esc_html__('Description 1: %s', 'timetable'), $booking['event_description_1']) . '<br>';
+			echo sprintf(__('Description 1: %s', 'timetable'), $booking['event_description_1']) . '<br>';
 		if($booking['event_description_2'])
-			echo sprintf(esc_html__('Description 2: %s', 'timetable'), $booking['event_description_2']) . '<br>';
+			echo sprintf(__('Description 2: %s', 'timetable'), $booking['event_description_2']) . '<br>';
 		echo '<br>';
 	}
 	
@@ -368,7 +429,10 @@ if(is_admin())
 		$email_config_page = add_submenu_page('timetable_admin', esc_html__('Email config', 'timetable'), esc_html__('Email config', 'timetable'), 'manage_options', 'timetable_admin_page_email_config', 'timetable_admin_page_email_config');
 		$import_dummy_data_page = add_submenu_page('timetable_admin', esc_html__('Import Dummy Data', 'timetable'), esc_html__('Import Dummy Data', 'timetable'), 'manage_options', 'timetable_admin_page_import_dummy_data', 'timetable_admin_page_import_dummy_data');
 		$google_calendar_page = add_submenu_page('timetable_admin', esc_html__('Google Calendar', 'timetable'), esc_html__('Google Calendar', 'timetable'), 'manage_options', 'timetable_admin_page_google_calendar', 'timetable_admin_page_google_calendar');
-		
+		if(!file_exists(dirname( __FILE__ ) . '/vendor/freemius/start.php') || (!get_option("timetable_converted") || (isset($tbsfw_fs) && !(int)$tbsfw_fs->has_any_license())))
+		{
+			$license_page = add_submenu_page('timetable_admin', esc_html__('License', 'timetable'), esc_html__('License', 'timetable'), 'manage_options', 'timetable_admin_page_license', 'timetable_admin_page_license');
+		}
 		add_action('admin_enqueue_scripts', 'timetable_admin_enqueue_scripts');
 	}
 	add_action('admin_menu', 'timetable_admin_menu');
@@ -402,6 +466,7 @@ if(is_admin())
 				'delete_event_booking_confirmation' => esc_html__('Please confirm that you want to delete event bookings.', 'timetable'),
 				'booking_popup_message' => BOOKING_POPUP_MESSAGE,
 				'booking_popup_thank_you_message' => BOOKING_POPUP_THANK_YOU_MESSAGE,
+				'timetable_ajax_nonce' => wp_create_nonce('timetable_ajax_nonce')
 			);
 			//pass data to javascript
 			$params = array(
@@ -442,25 +507,28 @@ if(is_admin())
 	
 	function timetable_ajax_get_font_subsets()
 	{
-		if($_POST["font"]!="")
+		if(wp_doing_ajax() && current_user_can("manage_options") && isset($_POST['timetable_ajax_nonce']) && wp_verify_nonce($_POST['timetable_ajax_nonce'], 'timetable_ajax_nonce'))
 		{
-			$subsets = '';
-			$fontExplode = explode(":", $_POST["font"]);
-			//get google fonts
-			$fontsArray = timetable_get_google_fonts();
-			$fontsCount = count((array)$fontsArray->items);
-			for($i=0; $i<$fontsCount; $i++)
+			if($_POST["font"]!="")
 			{
-				if($fontsArray->items[$i]->family==$fontExplode[0])
+				$subsets = '';
+				$fontExplode = explode(":", $_POST["font"]);
+				//get google fonts
+				$fontsArray = timetable_get_google_fonts();
+				$fontsCount = count((array)$fontsArray->items);
+				for($i=0; $i<$fontsCount; $i++)
 				{
-				    for($j=0, $max_j=count((array)$fontsArray->items[$i]->subsets); $j<$max_j; $j++)
+					if($fontsArray->items[$i]->family==$fontExplode[0])
 					{
-						$subsets .= '<option value="' . esc_attr($fontsArray->items[$i]->subsets[$j]) . '">' . $fontsArray->items[$i]->subsets[$j] . '</option>';
+						for($j=0, $max_j=count((array)$fontsArray->items[$i]->subsets); $j<$max_j; $j++)
+						{
+							$subsets .= '<option value="' . esc_attr($fontsArray->items[$i]->subsets[$j]) . '">' . $fontsArray->items[$i]->subsets[$j] . '</option>';
+						}
+						break;
 					}
-					break;
 				}
+				echo "timetable_start" . $subsets . "timetable_end";
 			}
-			echo "timetable_start" . $subsets . "timetable_end";
 		}
 		exit();
 	}
@@ -581,9 +649,9 @@ if(is_admin())
 		$result['booking_id'] = 0;
 		$result['event_hour_active'] = 1;
 
-		$allow_user_booking = (isset($_POST['atts']['allow_user_booking']) ? filter_var($_POST['atts']['allow_user_booking'], FILTER_SANITIZE_STRING) : 'yes');
+		$allow_user_booking = (isset($_POST['atts']['allow_user_booking']) ? filter_var($_POST['atts']['allow_user_booking'], FILTER_SANITIZE_SPECIAL_CHARS) : 'yes');
 		$user_id = ($allow_user_booking=='yes' ? get_current_user_id() : 0);
-		$terms_checkbox_required = (isset($_POST['atts']['terms_checkbox']) ? filter_var($_POST['atts']['terms_checkbox'], FILTER_SANITIZE_STRING) : 'no');
+		$terms_checkbox_required = (isset($_POST['atts']['terms_checkbox']) ? filter_var($_POST['atts']['terms_checkbox'], FILTER_SANITIZE_SPECIAL_CHARS) : 'no');
 		$terms_checkbox = (isset($_POST["terms_checkbox"]) ? filter_var($_POST["terms_checkbox"], FILTER_VALIDATE_BOOLEAN) : false);
 
 		if(!$user_id && $terms_checkbox_required=='yes' && !$terms_checkbox)
@@ -814,8 +882,6 @@ if(is_admin())
 			'column_title' => $booking_details['weekday'],
 			'event_start' => $booking_details['start'],
 			'event_end' => $booking_details['end'],
-			'event_description_1' => $booking_details['event_description_1'],
-			'event_description_2' => $booking_details['event_description_2'],
 			'booking_datetime' => $booking_details['booking_datetime'],
 			'user_id' => $booking_details['user_id'],
 			'user_name' => $booking_details['user_name'],
@@ -829,6 +895,8 @@ if(is_admin())
 		
 		$values = timetable_stripslashes_deep($values);
 		$values = array_map('htmlspecialchars', $values);
+		$values['event_description_1'] = timetable_stripslashes_deep($booking_details['event_description_1']);
+		$values['event_description_2'] = timetable_stripslashes_deep($booking_details['event_description_2']);
 		
 		$user_name = '';
 		$user_email = '';
@@ -973,10 +1041,28 @@ if(is_admin())
 		return $new_widget_name;
 	}
 	
+	function tt_get_page_by_title($title, $post_type = "page")
+	{
+		$posts = get_posts(array(
+			'post_type' => $post_type,
+			'title' => $title,
+			'post_status' => 'all',
+			'numberposts' => 1
+		));
+		if(!empty($posts))
+		{
+			return $posts[0];
+		}
+		else 
+		{
+			return null;
+		}
+	}
+	
 	function tt_download_import_file($file)
 	{
-		$url = "http://quanticalabs.com/wp_plugins/timetable/files/2014/02/" . $file["name"] . "." . $file["extension"];
-		$attachment = get_page_by_title($file["name"], "OBJECT", "attachment");
+		$url = "https://quanticalabs.com/wp_plugins/timetable/files/2014/02/" . $file["name"] . "." . $file["extension"];
+		$attachment = tt_get_page_by_title($file["name"], "attachment");
 		
 		if($attachment!=null)
 			$id = $attachment->ID;
@@ -1010,235 +1096,249 @@ if(is_admin())
 	
 	function timetable_import_dummy()
 	{
+		global $tbsfw_fs;
 		$result = array("info" => "");
-		//import dummy content
-		$fetch_attachments = true;
-		$file = tt_download_import_file(array(
-			"name" => "dummy-timetable",
-			"extension" => "xml"
-		));
 		
-		if(is_wp_error($file))
+		if(!file_exists(dirname( __FILE__ ) . '/vendor/freemius/start.php') || (!get_option("timetable_converted") || (isset($tbsfw_fs) && !(int)$tbsfw_fs->has_any_license())))
 		{
-			$file = plugin_dir_path( __FILE__ ) . "dummy-content-files/dummy-timetable.xml";
+			$ql_license = QL_License::getInstance("7010836");
+			$ql_license->getLicense();
 		}
-		if(!is_wp_error($file))
-			require_once 'importer/importer.php';
-		else
+		if(wp_doing_ajax() && current_user_can("manage_options") && isset($_POST['timetable_ajax_nonce']) && wp_verify_nonce($_POST['timetable_ajax_nonce'], 'timetable_ajax_nonce') && (((!file_exists(dirname( __FILE__ ) . '/vendor/freemius/start.php') || (!get_option("timetable_converted") || (isset($tbsfw_fs) && !(int)$tbsfw_fs->has_any_license()))) && !empty($ql_license->license_data["supported_until"]) && !empty($ql_license->license_data["domain"]) && $ql_license->license_data["domain"]==$_SERVER["HTTP_HOST"]) || (file_exists(dirname( __FILE__ ) . '/vendor/freemius/start.php') && get_option("timetable_converted") && isset($tbsfw_fs) && (int)$tbsfw_fs->has_any_license())))
 		{
-			$result["info"] .= esc_html__("Import file: dummy-timetable.xml not found! Please upload import file manually into Media library. You can find this file inside zip archive downloaded from CodeCanyon.", 'timetable');
-			exit();
-		}
-		//widget import
-		$response = array(
-			'what' => 'widget_import_export',
-			'action' => 'import_submit'
-		);
-
-		$widgets = isset( $_POST['widgets'] ) ? $_POST['widgets'] : false;
-		$json_file = tt_download_import_file(array(
-			"name" => "widget_data",
-			"extension" => "json"
-		));
-		if(is_wp_error($json_file))
-		{
-			$json_file = plugin_dir_path( __FILE__ ) . "dummy-content-files/widget_data.json";
-		}
-		$json_data = file_get_contents($json_file);
-		if($json_data!=false)
-		{
-			$json_data = json_decode( $json_data, true );
-			$sidebars_data = $json_data[0];
-			$widget_data = $json_data[1];
-			$current_sidebars = get_option( 'sidebars_widgets' );
-			//remove inactive widgets
-			$current_sidebars['wp_inactive_widgets'] = array();
-			update_option('sidebars_widgets', $current_sidebars);
-			$new_widgets = array( );
-			foreach ( $sidebars_data as $import_sidebar => $import_widgets ) :
-
-				foreach ( $import_widgets as $import_widget ) :
-					//if the sidebar exists
-					//if ( isset( $current_sidebars[$import_sidebar] ) ) :
-						$title = trim( substr( $import_widget, 0, strrpos( $import_widget, '-' ) ) );
-						$index = trim( substr( $import_widget, strrpos( $import_widget, '-' ) + 1 ) );
-						$current_widget_data = get_option( 'widget_' . $title );
-						$new_widget_name = tt_get_new_widget_name( $title, $index );
-						$new_index = trim( substr( $new_widget_name, strrpos( $new_widget_name, '-' ) + 1 ) );
-
-						if ( !empty( $new_widgets[ $title ] ) && is_array( $new_widgets[$title] ) ) {
-							while ( array_key_exists( $new_index, $new_widgets[$title] ) ) {
-								$new_index++;
-							}
-						}
-						$current_sidebars[$import_sidebar][] = $title . '-' . $new_index;
-						if ( array_key_exists( $title, $new_widgets ) ) {
-							$new_widgets[$title][$new_index] = $widget_data[$title][$index];
-							$multiwidget = $new_widgets[$title]['_multiwidget'];
-							unset( $new_widgets[$title]['_multiwidget'] );
-							$new_widgets[$title]['_multiwidget'] = $multiwidget;
-						} else {
-							$current_widget_data[$new_index] = $widget_data[$title][$index];
-							$current_multiwidget = $current_widget_data['_multiwidget'];
-							$new_multiwidget = $widget_data[$title]['_multiwidget'];
-							$multiwidget = ($current_multiwidget != $new_multiwidget) ? $current_multiwidget : 1;
-							unset( $current_widget_data['_multiwidget'] );
-							$current_widget_data['_multiwidget'] = $multiwidget;
-							$new_widgets[$title] = $current_widget_data;
-						}
-
-					//endif;
-				endforeach;
-			endforeach;
-			if ( isset( $new_widgets ) && isset( $current_sidebars ) ) {
-				update_option( 'sidebars_widgets', $current_sidebars );
-
-				foreach ( $new_widgets as $title => $content )
-					update_option( 'widget_' . $title, $content );
-
+			//import dummy content
+			$fetch_attachments = true;
+			$file = tt_download_import_file(array(
+				"name" => "dummy-timetable",
+				"extension" => "xml"
+			));
+			
+			if(is_wp_error($file))
+			{
+				$file = plugin_dir_path( __FILE__ ) . "dummy-content-files/dummy-timetable.xml";
 			}
+			if(!is_wp_error($file))
+				require_once 'importer/importer.php';
+			else
+			{
+				$result["info"] .= esc_html__("Import file: dummy-timetable.xml not found! Please upload import file manually into Media library. You can find this file inside zip archive downloaded from CodeCanyon.", 'timetable');
+				exit();
+			}
+			//widget import
+			$response = array(
+				'what' => 'widget_import_export',
+				'action' => 'import_submit'
+			);
+
+			$widgets = isset( $_POST['widgets'] ) ? $_POST['widgets'] : false;
+			$json_file = tt_download_import_file(array(
+				"name" => "widget_data",
+				"extension" => "json"
+			));
+			if(is_wp_error($json_file))
+			{
+				$json_file = plugin_dir_path( __FILE__ ) . "dummy-content-files/widget_data.json";
+			}
+			$json_data = file_get_contents($json_file);
+			if($json_data!=false)
+			{
+				$json_data = json_decode( $json_data, true );
+				$sidebars_data = $json_data[0];
+				$widget_data = $json_data[1];
+				$current_sidebars = get_option( 'sidebars_widgets' );
+				//remove inactive widgets
+				$current_sidebars['wp_inactive_widgets'] = array();
+				update_option('sidebars_widgets', $current_sidebars);
+				$new_widgets = array( );
+				foreach ( $sidebars_data as $import_sidebar => $import_widgets ) :
+
+					foreach ( $import_widgets as $import_widget ) :
+						//if the sidebar exists
+						//if ( isset( $current_sidebars[$import_sidebar] ) ) :
+							$title = trim( substr( $import_widget, 0, strrpos( $import_widget, '-' ) ) );
+							$index = trim( substr( $import_widget, strrpos( $import_widget, '-' ) + 1 ) );
+							$current_widget_data = get_option( 'widget_' . $title );
+							$new_widget_name = tt_get_new_widget_name( $title, $index );
+							$new_index = trim( substr( $new_widget_name, strrpos( $new_widget_name, '-' ) + 1 ) );
+
+							if ( !empty( $new_widgets[ $title ] ) && is_array( $new_widgets[$title] ) ) {
+								while ( array_key_exists( $new_index, $new_widgets[$title] ) ) {
+									$new_index++;
+								}
+							}
+							$current_sidebars[$import_sidebar][] = $title . '-' . $new_index;
+							if ( array_key_exists( $title, $new_widgets ) ) {
+								$new_widgets[$title][$new_index] = $widget_data[$title][$index];
+								$multiwidget = $new_widgets[$title]['_multiwidget'];
+								unset( $new_widgets[$title]['_multiwidget'] );
+								$new_widgets[$title]['_multiwidget'] = $multiwidget;
+							} else {
+								$current_widget_data[$new_index] = $widget_data[$title][$index];
+								$current_multiwidget = $current_widget_data['_multiwidget'];
+								$new_multiwidget = $widget_data[$title]['_multiwidget'];
+								$multiwidget = ($current_multiwidget != $new_multiwidget) ? $current_multiwidget : 1;
+								unset( $current_widget_data['_multiwidget'] );
+								$current_widget_data['_multiwidget'] = $multiwidget;
+								$new_widgets[$title] = $current_widget_data;
+							}
+
+						//endif;
+					endforeach;
+				endforeach;
+				if ( isset( $new_widgets ) && isset( $current_sidebars ) ) {
+					update_option( 'sidebars_widgets', $current_sidebars );
+
+					foreach ( $new_widgets as $title => $content )
+						update_option( 'widget_' . $title, $content );
+
+				}
+			}
+			else
+			{
+				$result["info"] .= esc_html__("Widgets data file not found! Please upload widgets data file manually.", 'timetable');
+				exit();
+			}
+			//import sample hours
+			global $wpdb;
+			$query = "INSERT INTO `" . $wpdb->prefix . "event_hours` (`event_hours_id`, `event_id`, `weekday_id`, `start`, `end`, `tooltip`, `before_hour_text`, `after_hour_text`, `category`, `available_places`) VALUES
+				(242, 2146, 1217, '11:00:00', '13:00:00', 'Reaction time training with sparring partners.', 'Boxing class', 'Robert Bandana', '', 0),
+				(247, 15, 1214, '15:00:00', '15:45:00', '', 'High impact', 'Mark Moreau', '', 2),
+				(238, 2148, 1217, '17:00:00', '18:30:00', '', 'Advanced', 'Kevin Nomak', '', 0),
+				(222, 2148, 1218, '15:00:00', '16:00:00', '', 'Beginners', 'Kevin Nomak', '', 0),
+				(223, 2148, 1213, '15:00:00', '16:00:00', '', 'Intermediate', 'Kevin Nomak', '', 1),
+				(244, 2144, 1217, '15:00:00', '16:00:00', 'Basic exercises for kids.', 'Preschool class', 'Emma Brown', '', 0),
+				(183, 15, 2132, '16:00:00', '17:00:00', '', 'Low impact', 'Mark Moreau', '', 0),
+				(184, 15, 1213, '16:00:00', '17:00:00', '', 'High impact', 'Trevor Smith', '', 5),
+				(199, 2139, 1216, '07:00:00', '09:00:00', 'Open entry to the fitness room with wide variety of equipment.', 'Open entry', 'Mark Moreau', '', 3),
+				(185, 15, 1214, '16:00:00', '17:00:00', '', 'Low impact', 'Mark Moreau', '', 1),
+				(228, 2142, 1218, '13:00:00', '15:00:00', '', 'Body works', 'Kevin Nomak', '', 0),
+				(239, 2148, 2132, '15:00:00', '16:00:00', 'Advanced stamina workout.', 'Advanced', 'Kevin Nomak', '', 0),
+				(205, 2139, 1213, '07:00:00', '11:00:00', 'Open entry to the fitness room with wide variety of equipment.', 'Open entry', 'Mark Moreau', '', 3),
+				(163, 2146, 1216, '14:00:00', '15:00:00', '', 'Thai boxing', 'Robert Bandana', '', 3),
+				(156, 2146, 1213, '11:00:00', '13:00:00', '', 'MMA beginners', 'Robert Bandana', '', 0),
+				(243, 2144, 1216, '15:00:00', '16:00:00', 'Basic exercises for kids.', 'Preschool class', 'Emma Brown', '', 0),
+				(162, 2146, 1215, '14:00:00', '15:00:00', '', 'Thai boxing', 'Robert Bandana', '', 0),
+				(190, 2142, 1213, '18:00:00', '19:30:00', '', 'Weightlifting', 'Kevin Nomak', '', 8),
+				(141, 2144, 1216, '17:00:00', '18:30:00', '', 'Fitness and fun', 'Emma Brown', '', 0),
+				(139, 2144, 1214, '17:00:00', '18:30:00', '', 'Zumba dance', 'Emma Brown', '', 0),
+				(144, 2144, 1217, '17:00:00', '18:30:00', '', 'Fitness and fun', 'Emma Brown', '', 0),
+				(164, 2148, 1214, '07:00:00', '09:00:00', '', 'Weightlifting', 'Kevin Nomak', '', 0),
+				(193, 2148, 1215, '17:00:00', '18:30:00', '', 'Beginners', 'Kevin Nomak', '', 6),
+				(231, 15, 1217, '16:00:00', '17:00:00', '', 'High impact', 'Trevor Smith', '', 0),
+				(152, 2146, 1213, '13:00:00', '14:00:00', '', 'MMA all levels', 'Robert Bandana', '', 3),
+				(153, 2146, 1217, '13:00:00', '14:00:00', '', 'MMA all levels', 'Robert Bandana', '', 0),
+				(157, 2146, 2132, '11:00:00', '13:00:00', '', 'Boxing class', 'Robert Bandana', '', 3),
+				(214, 2148, 1217, '14:00:00', '15:00:00', '', 'Weightlifting', 'Kevin Nomak', '', 12),
+				(204, 2139, 2132, '07:00:00', '11:00:00', 'Open entry to the fitness room with wide variety of equipment.', 'Open entry', 'Mark Moreau', '', 5),
+				(189, 2142, 2132, '18:00:00', '19:30:00', '', 'Weightlifting', 'Kevin Nomak', '', 0),
+				(175, 2144, 1215, '17:00:00', '18:30:00', '', 'Advanced', 'Emma Brown', '', 0),
+				(229, 2139, 1218, '07:00:00', '11:00:00', 'Open entry to the fitness room with wide variety of equipment.', 'Open entry', 'Mark Moreau', '', 5),
+				(221, 2139, 1215, '07:00:00', '12:00:00', 'Open entry to the fitness room with wide variety of equipment.', 'Open entry', 'Mark Moreau', '', 4),
+				(227, 2142, 1218, '11:00:00', '13:00:00', '', 'Weightlifting', 'Kevin Nomak', '', 0),
+				(232, 2144, 1213, '08:00:00', '09:00:00', '', 'Advanced', 'Emma Brown', '', 0),
+				(191, 2142, 1215, '12:30:00', '14:00:00', '', 'Weightlifting', 'Kevin Nomak', '', 6),
+				(192, 2142, 1216, '12:30:00', '14:00:00', '', 'Weightlifting', 'Kevin Nomak', '', 2),
+				(207, 2144, 1214, '11:00:00', '13:00:00', '', 'Beginners', 'Emma Brown', '', 0),
+				(210, 2144, 2132, '08:00:00', '09:00:00', '', 'Beginners', 'Emma Brown', '', 0),
+				(246, 2148, 1214, '13:00:00', '15:00:00', '', 'Beginners', 'Kevin Nomak', '', 1),
+				(230, 2146, 1218, '16:00:00', '17:00:00', '', 'Thai boxing', 'Robert Bandana', '', 0),
+				(315, 2159, 2132, '11:00:00', '12:45:00', '', '', '<strong>Instructor:</strong> M. Moreau<br/>\r\n<strong>Room:</strong> 6<br/>\r\n<strong>Level:</strong> Beginner', '', 4),
+				(329, 2164, 1214, '09:00:00', '10:30:00', 'Mixed Martial Arts training with Muay Thai and Thai Boxing.', '', '<strong>Instructor:</strong> R. Bandana<br/>\r\n<strong>Room:</strong> 24<br/>\r\n<strong>Level:</strong> Beginner', '', 10),
+				(313, 2164, 2132, '09:00:00', '10:30:00', '', '', '<strong>Instructor:</strong> R. Bandana<br/>\r\n<strong>Room:</strong> 24<br/>\r\n<strong>Level:</strong> Beginner', '', 3),
+				(331, 2177, 1215, '14:00:00', '17:00:00', 'Super stamina workout and weightlifting.', '', '<strong>Instructor:</strong> K. Nomak<br/>\r\n<strong>Room:</strong> 305A<br/>\r\n<strong>Level:</strong> All Levels', '', 5),
+				(319, 2159, 1215, '11:00:00', '12:45:00', '', '', '<strong>Instructor:</strong> M. Moreau<br/>\r\n<strong>Room:</strong> 6<br/>\r\n<strong>Level:</strong> Beginner', '', 2),
+				(493, 2244, 2229, '16:00:00', '18:22:00', '', 'Horror', 'Free Entry<br/>\r\n142 min.', '', 8),
+				(330, 2159, 1214, '11:00:00', '14:00:00', '', '', '<strong>Instructor:</strong> M. Moreau<br/>\r\n<strong>Room:</strong> 6<br/>\r\n<strong>Level:</strong> Advanced', '', 0),
+				(314, 2164, 1213, '11:00:00', '12:45:00', '', '', '<strong>Instructor:</strong> R. Bandana<br/>\r\n<strong>Room:</strong> 24<br/>\r\n<strong>Level:</strong> Intermediate', '', 0),
+				(459, 2298, 2230, '12:30:00', '14:00:00', '', 'Catering', 'Free Entry<br/>\r\n90 min.', '', 10),
+				(327, 2164, 1217, '09:00:00', '12:45:00', 'Mixed Martial Arts training with Muay Thai and Thai Boxing.', '', '<strong>Instructor:</strong> R. Bandana<br/>\r\n<strong>Room:</strong> 24<br/>\r\n<strong>Level:</strong> All Levels', '', 5),
+				(473, 2243, 2227, '16:30:00', '17:56:00', '', 'Animation', 'Free Entry<br/>\r\n86 min.', '', 10),
+				(323, 2177, 1217, '14:00:00', '18:00:00', '', '', '<strong>Instructor:</strong> K. Nomak<br/>\r\n<strong>Room:</strong> 305A<br/>\r\n<strong>Level:</strong> All Levels', '', 3),
+				(325, 2164, 1215, '09:00:00', '10:30:00', '', '', '<strong>Instructor:</strong> R. Bandana<br/>\r\n<strong>Room:</strong> 24<br/>\r\n<strong>Level:</strong> Beginner', '', 2),
+				(301, 2177, 1213, '13:00:00', '14:00:00', '', '', '<strong>Instructor:</strong> K. Nomak<br/>\r\n<strong>Room:</strong> 305A<br/>\r\n<strong>Level:</strong> All Levels', '', 4),
+				(300, 2177, 2132, '13:00:00', '14:00:00', '', '', '<strong>Instructor:</strong> K. Nomak<br/>\r\n<strong>Room:</strong> 305A<br/>\r\n<strong>Level:</strong> All Levels', '', 3),
+				(309, 2159, 2132, '15:00:00', '16:30:00', '', '', '<strong>Instructor:</strong> M. Moreau<br/>\r\n<strong>Room:</strong> 6<br/>\r\n<strong>Level:</strong> Advanced', '', 7),
+				(332, 2191, 1213, '09:00:00', '09:45:00', '', '', 'Class Leader<br/>Ann Smith', '', 0),
+				(333, 2191, 1214, '10:00:00', '10:45:00', '', '', 'Class Leader<br/>Emma White', '', 0),
+				(324, 2159, 1217, '13:00:00', '14:00:00', '', '', '<strong>Instructor:</strong> M. Moreau<br/>\r\n<strong>Room:</strong> 6<br/>\r\n<strong>Level:</strong> All Levels', '', 3),
+				(310, 2159, 1213, '15:00:00', '16:30:00', '', '', '<strong>Instructor:</strong> M. Moreau<br/>\r\n<strong>Room:</strong> 6<br/>\r\n<strong>Level:</strong> Advanced', '', 1),
+				(417, 2242, 2229, '14:40:00', '16:30:00', '', 'Animation', 'G Rating<br/>\r\n110 min.', '', 0),
+				(433, 2264, 2229, '16:30:00', '17:30:00', '', 'Free Snacks', 'Festival Pass', '', 0),
+				(492, 2244, 2227, '14:00:00', '16:22:00', '', 'Horror', 'Free Entry<br/>\r\n142 min.', '', 20),
+				(488, 2266, 2227, '09:00:00', '12:30:00', '', 'Concert', '$60 Entry<br/>\r\n210 min.<br/><br/>\r\nUnder 16\'s to be accompanied by an adult.', '', 0),
+				(467, 2239, 2231, '14:00:00', '16:15:00', '', 'Adventure', '$10 Entry<br/>\r\n135 min.', '', 0),
+				(560, 2353, 2343, '11:30:00', '12:45:00', '', '', 'Performance', '', 0),
+				(434, 2264, 2231, '16:30:00', '17:30:00', '', 'Free Snacks', 'Festival Pass', '', 0),
+				(466, 2236, 2230, '14:00:00', '16:10:00', '', 'Thriller', 'Free Entry<br/>\r\n130 min.', '', 10),
+				(460, 2298, 2231, '12:30:00', '14:00:00', '', 'Catering', 'Free Entry<br/>\r\n90 min.', '', 10),
+				(479, 2310, 2231, '16:30:00', '18:30:00', '', 'Thriller', '$20 Entry<br/>\r\n120 min.', '', 0),
+				(474, 2238, 2231, '09:00:00', '10:45:00', '', 'Action', 'Free Entry<br/>\r\n105 min.', '', 10),
+				(458, 2298, 2229, '12:30:00', '14:00:00', '', 'Catering', 'Free Entry<br/>\r\n90 min.', '', 15),
+				(435, 2264, 2232, '16:30:00', '17:30:00', '', 'Free Snacks', 'Festival Pass', '', 0),
+				(477, 2245, 2232, '16:30:00', '17:56:00', '', 'Horror', '$10 Entry<br/>\r\n86 min.', '', 0),
+				(438, 2264, 2227, '16:30:00', '17:30:00', '', 'Free Snacks', 'Festival Pass', '', 0),
+				(471, 2243, 2231, '11:00:00', '12:26:00', '', 'Animation', 'Free Entry<br/>\r\n86 min.', '', 10),
+				(448, 2234, 2230, '11:00:00', '12:25:00', '', 'Animation', 'Free Entry<br/>\r\n85 min.', '', 10),
+				(496, 2237, 2229, '18:30:00', '20:10:00', '', 'Action', 'Free Entry<br/>\r\n100 min.', '', 15),
+				(461, 2298, 2227, '12:30:00', '14:00:00', '', 'Catering', 'Free Entry<br/>\r\n90 min.', '', 15),
+				(490, 2235, 2230, '09:00:00', '10:42:00', '', 'Comedy', 'Free Entry<br/>\r\n102 min.', '', 20),
+				(436, 2264, 2230, '16:30:00', '17:30:00', '', 'Free Snacks', 'Festival Pass', '', 0),
+				(476, 2245, 2232, '11:00:00', '12:26:00', '', 'Horror', '$10 Entry<br/>\r\n86 min.', '', 0),
+				(485, 2241, 2232, '12:30:00', '16:30:00', '', 'Concert', '$50 ticket<br/>\r\n240 min.<br/><br/>\r\nWith special guest Kevin Numan and Markus Smith.', '', 0),
+				(491, 2235, 2229, '14:00:00', '15:42:00', '', 'Comedy', 'Free Entry<br/>\r\n102 min.', '', 20),
+				(486, 2240, 2229, '09:00:00', '12:10:00', '', 'Concert', '$50 ticket<br/>\r\n190 min.<br/><br/>\r\nWith special guest Kevin Numan and Markus Smith.', '', 30),
+				(489, 2266, 2230, '16:30:00', '20:00:00', '', 'Concert', '$60 Entry<br/>\r\n210 min.<br/><br/>\r\nUnder 16\'s to be accompanied by an adult.', '', 0),
+				(495, 2237, 2232, '09:00:00', '10:40:00', '', 'Action', 'Free Entry<br/>\r\n100 min.', '', 15),
+				(573, 2365, 2342, '09:00:00', '12:00:00', '', '', 'Registration and General Information', '', 0),
+				(561, 2350, 2343, '12:45:00', '14:00:00', '', '', 'Performance', '', 0),
+				(581, 2375, 2342, '16:30:00', '19:00:00', '', '', 'Conference Banquet With Closing Ceremony. John Williams Speech.', '', 0),
+				(570, 2351, 2343, '15:30:00', '16:45:00', '', '', 'Performance', '', 0),
+				(519, 2359, 2346, '12:00:00', '13:15:00', '', '', 'Screening', '', 0),
+				(536, 2367, 2344, '12:00:00', '15:00:00', '', '', 'Display', '', 0),
+				(537, 2366, 2344, '15:00:00', '17:30:00', '', '', 'Display', '', 0),
+				(526, 2362, 2346, '10:00:00', '12:00:00', '', '', 'Screening', '', 0),
+				(558, 2355, 2343, '09:00:00', '10:15:00', '', '', 'Performance', '', 0),
+				(520, 2361, 2346, '13:15:00', '14:40:00', '', '', 'Screening', '', 0),
+				(554, 2357, 2345, '13:30:00', '14:15:00', '', '', 'Panel with Josh Kowalsky', '', 0),
+				(535, 2368, 2344, '09:00:00', '12:00:00', '', '', 'Display', '', 0),
+				(556, 2374, 2342, '08:30:00', '09:00:00', '', '', '', '', 0),
+				(564, 2363, 2345, '09:00:00', '10:15:00', '', '', 'Panel with Ann Perkins', '', 0),
+				(572, 2352, 2346, '15:30:00', '17:15:00', '', '', 'Performance', '', 0),
+				(566, 2358, 2345, '11:30:00', '13:30:00', '', '', 'Panel with Robin Watson, Chris Prochaska and Shawn Georges', '', 0),
+				(562, 2364, 2347, '09:00:00', '12:30:00', '', '', 'Free Entry', '', 0),
+				(551, 2373, 2347, '12:30:00', '16:30:00', '', '', 'Luch Menu', '', 0),
+				(567, 2356, 2345, '14:15:00', '16:15:00', '', '', 'Panel with Helena Howington, Frank Kasper and John Williams ', '', 0),
+				(559, 2354, 2343, '10:15:00', '11:30:00', '', '', 'Performance', '', 0),
+				(565, 2360, 2345, '10:15:00', '11:30:00', '', '', 'Panel with Robin Landrum', '', 0),
+				(576, 2365, 2342, '13:30:00', '15:00:00', '', '', 'Registration and General Information', '', 0),
+				(588, 2367, 2344, '14:30:00', '15:00:00', '', 'Comments', 'Comments on Display Session', '', 0),
+				(589, 2366, 2344, '17:00:00', '17:30:00', '', 'Comments', 'Comments on Display Session', '', 0),
+				(587, 2368, 2344, '11:30:00', '12:00:00', '', 'Comments', 'Comments on Display Session', '', 0);";
+			$wpdb->query($query);
+			
+			//insert shortcodes from live preview
+			$timetable_shortcodes_live_preview = array(
+				"timetable-for-wordpress" => "[tt_timetable event='body-building,boxing,cardio-fitness,crossfit,open-gym,zumba' columns='sunday,monday,tuesday,wednesday,thursday,friday,saturday' time_format='g:i a' export_to_pdf_button='1' show_booking_button='always' show_available_slots='always' event_description_responsive='description-1-and-description-2']",
+				"timetable-for-wordpress-sample-2" => "[tt_timetable event='banquet,big-data-symposium,case-studies-in-rcts,charles-choice,crisis-archives,donna-wright,elizabeth-wallace,food-and-drinks,general-information,world-economy,gold-standard-overview,impact-investing,janice-watson,lunch-menu,market-overview-symposium,money-as-debt,nola-sollars,robert-duncan,smart-investment,taxes-from-prices,welcome-reception,who-leads-world-economic-rebound' event_category='bar,display,panel,performance,registration,screening' columns='reception,floor-2,lounge-bar,floor-4,speakers-room,campus-green' measure='0.25' filter_kind='event_and_event_category' filter_label_2='All Locations' time_format='H:i' box_bg_color='96235B' filter_color='353C40' disable_event_url='1' custom_css='.tt_timetable .event .event_header {font-size:16px;font-weight:normal;}' export_to_pdf_button='1' colors_responsive_mode='1' generate_pdf_bg_color='353C40' generate_pdf_hover_bg_color='FF9935']",
+				"timetable-for-wordpress-sample-3" => "[tt_timetable event='power-fitness,martial-arts,body-works' columns='monday,tuesday,wednesday,thursday,saturday' filter_style='tabs' time_format='g.i a' hide_hours_column='1' event_layout='3' box_bg_color='2B363D' box_hover_bg_color='A13230' filter_color='D74340' hide_empty='1' text_align='left' show_booking_button='on_hover' show_available_slots='always']",
+				"timetable-for-wordpress-sample-4" => "[tt_timetable event_category='action,animation,catering,comedy,concert,horror,thriller' columns='bay-plaza-cinema,lakewood-cinema,north-park-theatre,old-capitol-arts,music-hall' measure='0.5' filter_kind='event_category' time_format='H:i' hide_hours_column='1' show_end_hour='1' event_layout='4' box_bg_color='DF4432' box_hover_bg_color='DF4432' filter_color='DF4432' disable_event_url='1' row_height='40' font='Open Sans:regular' font_subset='latin-ext' custom_css='.tt_timetable .hours {font-weight:400;font-size:24px;}' booking_label='Buy Ticket' booking_popup_label='Buy Ticket' show_booking_button='always' unavailable_label='Tickets Sold' booking_popup_message='<h2>You are about to book event</h2><div class=\"event_details_wrapper\"><p class=\"event_details bold\">{event_title}</p><p class=\"event_details\">{column_title}</p><p class=\"event_details\">{event_start} - {event_end}</p><p class=\"event_details\">{event_description_2}</p></div>{booking_form}<p>An initial receipt will be sent out automatically unless you decide not to do so below.</p><div class=\"tt_btn_wrapper\">{tt_btn_book}{tt_btn_cancel}</div>' booking_bg_color='61a22d' unavailable_text_color='999999' unavailable_bg_color='f0f0f0']",
+				"timetable-for-wordpress-sample-5" => "[tt_timetable event='body-building,boxing,cardio-fitness,crossfit,open-gym,zumba' columns='monday,tuesday,wednesday,thursday,friday,saturday,sunday' show_end_hour='1' event_layout='3' generate_pdf_bg_color='496EBB' generate_pdf_hover_bg_color='42B3E5' box_bg_color='3156A3' box_hover_bg_color='42B3E5' box_hours_txt_color='A6C3FF' filter_color='3156A3' disable_event_url='1' text_align='left' export_to_pdf_button='1']",
+			);
+			$timetable_shortcodes_list = get_option("timetable_shortcodes_list");
+			if($timetable_shortcodes_list===false)
+				$timetable_shortcodes_list = array();
+			foreach($timetable_shortcodes_live_preview as $key=>$val)
+			{
+				if(!array_key_exists($key, $timetable_shortcodes_list))
+					$timetable_shortcodes_list[$key] = $val;
+			}
+			ksort($timetable_shortcodes_list);
+			update_option("timetable_shortcodes_list", $timetable_shortcodes_list);
 		}
 		else
 		{
-			$result["info"] .= esc_html__("Widgets data file not found! Please upload widgets data file manually.", 'timetable');
-			exit();
+			$result["info"] = esc_html__("License not verified. Please verify your license first to enable dummy content import", 'timetable');
 		}
-		//import sample hours
-		global $wpdb;
-		$query = "INSERT INTO `" . $wpdb->prefix . "event_hours` (`event_hours_id`, `event_id`, `weekday_id`, `start`, `end`, `tooltip`, `before_hour_text`, `after_hour_text`, `category`, `available_places`) VALUES
-			(242, 2146, 1217, '11:00:00', '13:00:00', 'Reaction time training with sparring partners.', 'Boxing class', 'Robert Bandana', '', 0),
-			(247, 15, 1214, '15:00:00', '15:45:00', '', 'High impact', 'Mark Moreau', '', 2),
-			(238, 2148, 1217, '17:00:00', '18:30:00', '', 'Advanced', 'Kevin Nomak', '', 0),
-			(222, 2148, 1218, '15:00:00', '16:00:00', '', 'Beginners', 'Kevin Nomak', '', 0),
-			(223, 2148, 1213, '15:00:00', '16:00:00', '', 'Intermediate', 'Kevin Nomak', '', 1),
-			(244, 2144, 1217, '15:00:00', '16:00:00', 'Basic exercises for kids.', 'Preschool class', 'Emma Brown', '', 0),
-			(183, 15, 2132, '16:00:00', '17:00:00', '', 'Low impact', 'Mark Moreau', '', 0),
-			(184, 15, 1213, '16:00:00', '17:00:00', '', 'High impact', 'Trevor Smith', '', 5),
-			(199, 2139, 1216, '07:00:00', '09:00:00', 'Open entry to the fitness room with wide variety of equipment.', 'Open entry', 'Mark Moreau', '', 3),
-			(185, 15, 1214, '16:00:00', '17:00:00', '', 'Low impact', 'Mark Moreau', '', 1),
-			(228, 2142, 1218, '13:00:00', '15:00:00', '', 'Body works', 'Kevin Nomak', '', 0),
-			(239, 2148, 2132, '15:00:00', '16:00:00', 'Advanced stamina workout.', 'Advanced', 'Kevin Nomak', '', 0),
-			(205, 2139, 1213, '07:00:00', '11:00:00', 'Open entry to the fitness room with wide variety of equipment.', 'Open entry', 'Mark Moreau', '', 3),
-			(163, 2146, 1216, '14:00:00', '15:00:00', '', 'Thai boxing', 'Robert Bandana', '', 3),
-			(156, 2146, 1213, '11:00:00', '13:00:00', '', 'MMA beginners', 'Robert Bandana', '', 0),
-			(243, 2144, 1216, '15:00:00', '16:00:00', 'Basic exercises for kids.', 'Preschool class', 'Emma Brown', '', 0),
-			(162, 2146, 1215, '14:00:00', '15:00:00', '', 'Thai boxing', 'Robert Bandana', '', 0),
-			(190, 2142, 1213, '18:00:00', '19:30:00', '', 'Weightlifting', 'Kevin Nomak', '', 8),
-			(141, 2144, 1216, '17:00:00', '18:30:00', '', 'Fitness and fun', 'Emma Brown', '', 0),
-			(139, 2144, 1214, '17:00:00', '18:30:00', '', 'Zumba dance', 'Emma Brown', '', 0),
-			(144, 2144, 1217, '17:00:00', '18:30:00', '', 'Fitness and fun', 'Emma Brown', '', 0),
-			(164, 2148, 1214, '07:00:00', '09:00:00', '', 'Weightlifting', 'Kevin Nomak', '', 0),
-			(193, 2148, 1215, '17:00:00', '18:30:00', '', 'Beginners', 'Kevin Nomak', '', 6),
-			(231, 15, 1217, '16:00:00', '17:00:00', '', 'High impact', 'Trevor Smith', '', 0),
-			(152, 2146, 1213, '13:00:00', '14:00:00', '', 'MMA all levels', 'Robert Bandana', '', 3),
-			(153, 2146, 1217, '13:00:00', '14:00:00', '', 'MMA all levels', 'Robert Bandana', '', 0),
-			(157, 2146, 2132, '11:00:00', '13:00:00', '', 'Boxing class', 'Robert Bandana', '', 3),
-			(214, 2148, 1217, '14:00:00', '15:00:00', '', 'Weightlifting', 'Kevin Nomak', '', 12),
-			(204, 2139, 2132, '07:00:00', '11:00:00', 'Open entry to the fitness room with wide variety of equipment.', 'Open entry', 'Mark Moreau', '', 5),
-			(189, 2142, 2132, '18:00:00', '19:30:00', '', 'Weightlifting', 'Kevin Nomak', '', 0),
-			(175, 2144, 1215, '17:00:00', '18:30:00', '', 'Advanced', 'Emma Brown', '', 0),
-			(229, 2139, 1218, '07:00:00', '11:00:00', 'Open entry to the fitness room with wide variety of equipment.', 'Open entry', 'Mark Moreau', '', 5),
-			(221, 2139, 1215, '07:00:00', '12:00:00', 'Open entry to the fitness room with wide variety of equipment.', 'Open entry', 'Mark Moreau', '', 4),
-			(227, 2142, 1218, '11:00:00', '13:00:00', '', 'Weightlifting', 'Kevin Nomak', '', 0),
-			(232, 2144, 1213, '08:00:00', '09:00:00', '', 'Advanced', 'Emma Brown', '', 0),
-			(191, 2142, 1215, '12:30:00', '14:00:00', '', 'Weightlifting', 'Kevin Nomak', '', 6),
-			(192, 2142, 1216, '12:30:00', '14:00:00', '', 'Weightlifting', 'Kevin Nomak', '', 2),
-			(207, 2144, 1214, '11:00:00', '13:00:00', '', 'Beginners', 'Emma Brown', '', 0),
-			(210, 2144, 2132, '08:00:00', '09:00:00', '', 'Beginners', 'Emma Brown', '', 0),
-			(246, 2148, 1214, '13:00:00', '15:00:00', '', 'Beginners', 'Kevin Nomak', '', 1),
-			(230, 2146, 1218, '16:00:00', '17:00:00', '', 'Thai boxing', 'Robert Bandana', '', 0),
-			(315, 2159, 2132, '11:00:00', '12:45:00', '', '', '<strong>Instructor:</strong> M. Moreau<br/>\r\n<strong>Room:</strong> 6<br/>\r\n<strong>Level:</strong> Beginner', '', 4),
-			(329, 2164, 1214, '09:00:00', '10:30:00', 'Mixed Martial Arts training with Muay Thai and Thai Boxing.', '', '<strong>Instructor:</strong> R. Bandana<br/>\r\n<strong>Room:</strong> 24<br/>\r\n<strong>Level:</strong> Beginner', '', 10),
-			(313, 2164, 2132, '09:00:00', '10:30:00', '', '', '<strong>Instructor:</strong> R. Bandana<br/>\r\n<strong>Room:</strong> 24<br/>\r\n<strong>Level:</strong> Beginner', '', 3),
-			(331, 2177, 1215, '14:00:00', '17:00:00', 'Super stamina workout and weightlifting.', '', '<strong>Instructor:</strong> K. Nomak<br/>\r\n<strong>Room:</strong> 305A<br/>\r\n<strong>Level:</strong> All Levels', '', 5),
-			(319, 2159, 1215, '11:00:00', '12:45:00', '', '', '<strong>Instructor:</strong> M. Moreau<br/>\r\n<strong>Room:</strong> 6<br/>\r\n<strong>Level:</strong> Beginner', '', 2),
-			(493, 2244, 2229, '16:00:00', '18:22:00', '', 'Horror', 'Free Entry<br/>\r\n142 min.', '', 8),
-			(330, 2159, 1214, '11:00:00', '14:00:00', '', '', '<strong>Instructor:</strong> M. Moreau<br/>\r\n<strong>Room:</strong> 6<br/>\r\n<strong>Level:</strong> Advanced', '', 0),
-			(314, 2164, 1213, '11:00:00', '12:45:00', '', '', '<strong>Instructor:</strong> R. Bandana<br/>\r\n<strong>Room:</strong> 24<br/>\r\n<strong>Level:</strong> Intermediate', '', 0),
-			(459, 2298, 2230, '12:30:00', '14:00:00', '', 'Catering', 'Free Entry<br/>\r\n90 min.', '', 10),
-			(327, 2164, 1217, '09:00:00', '12:45:00', 'Mixed Martial Arts training with Muay Thai and Thai Boxing.', '', '<strong>Instructor:</strong> R. Bandana<br/>\r\n<strong>Room:</strong> 24<br/>\r\n<strong>Level:</strong> All Levels', '', 5),
-			(473, 2243, 2227, '16:30:00', '17:56:00', '', 'Animation', 'Free Entry<br/>\r\n86 min.', '', 10),
-			(323, 2177, 1217, '14:00:00', '18:00:00', '', '', '<strong>Instructor:</strong> K. Nomak<br/>\r\n<strong>Room:</strong> 305A<br/>\r\n<strong>Level:</strong> All Levels', '', 3),
-			(325, 2164, 1215, '09:00:00', '10:30:00', '', '', '<strong>Instructor:</strong> R. Bandana<br/>\r\n<strong>Room:</strong> 24<br/>\r\n<strong>Level:</strong> Beginner', '', 2),
-			(301, 2177, 1213, '13:00:00', '14:00:00', '', '', '<strong>Instructor:</strong> K. Nomak<br/>\r\n<strong>Room:</strong> 305A<br/>\r\n<strong>Level:</strong> All Levels', '', 4),
-			(300, 2177, 2132, '13:00:00', '14:00:00', '', '', '<strong>Instructor:</strong> K. Nomak<br/>\r\n<strong>Room:</strong> 305A<br/>\r\n<strong>Level:</strong> All Levels', '', 3),
-			(309, 2159, 2132, '15:00:00', '16:30:00', '', '', '<strong>Instructor:</strong> M. Moreau<br/>\r\n<strong>Room:</strong> 6<br/>\r\n<strong>Level:</strong> Advanced', '', 7),
-			(332, 2191, 1213, '09:00:00', '09:45:00', '', '', 'Class Leader<br/>Ann Smith', '', 0),
-			(333, 2191, 1214, '10:00:00', '10:45:00', '', '', 'Class Leader<br/>Emma White', '', 0),
-			(324, 2159, 1217, '13:00:00', '14:00:00', '', '', '<strong>Instructor:</strong> M. Moreau<br/>\r\n<strong>Room:</strong> 6<br/>\r\n<strong>Level:</strong> All Levels', '', 3),
-			(310, 2159, 1213, '15:00:00', '16:30:00', '', '', '<strong>Instructor:</strong> M. Moreau<br/>\r\n<strong>Room:</strong> 6<br/>\r\n<strong>Level:</strong> Advanced', '', 1),
-			(417, 2242, 2229, '14:40:00', '16:30:00', '', 'Animation', 'G Rating<br/>\r\n110 min.', '', 0),
-			(433, 2264, 2229, '16:30:00', '17:30:00', '', 'Free Snacks', 'Festival Pass', '', 0),
-			(492, 2244, 2227, '14:00:00', '16:22:00', '', 'Horror', 'Free Entry<br/>\r\n142 min.', '', 20),
-			(488, 2266, 2227, '09:00:00', '12:30:00', '', 'Concert', '$60 Entry<br/>\r\n210 min.<br/><br/>\r\nUnder 16\'s to be accompanied by an adult.', '', 0),
-			(467, 2239, 2231, '14:00:00', '16:15:00', '', 'Adventure', '$10 Entry<br/>\r\n135 min.', '', 0),
-			(560, 2353, 2343, '11:30:00', '12:45:00', '', '', 'Performance', '', 0),
-			(434, 2264, 2231, '16:30:00', '17:30:00', '', 'Free Snacks', 'Festival Pass', '', 0),
-			(466, 2236, 2230, '14:00:00', '16:10:00', '', 'Thriller', 'Free Entry<br/>\r\n130 min.', '', 10),
-			(460, 2298, 2231, '12:30:00', '14:00:00', '', 'Catering', 'Free Entry<br/>\r\n90 min.', '', 10),
-			(479, 2310, 2231, '16:30:00', '18:30:00', '', 'Thriller', '$20 Entry<br/>\r\n120 min.', '', 0),
-			(474, 2238, 2231, '09:00:00', '10:45:00', '', 'Action', 'Free Entry<br/>\r\n105 min.', '', 10),
-			(458, 2298, 2229, '12:30:00', '14:00:00', '', 'Catering', 'Free Entry<br/>\r\n90 min.', '', 15),
-			(435, 2264, 2232, '16:30:00', '17:30:00', '', 'Free Snacks', 'Festival Pass', '', 0),
-			(477, 2245, 2232, '16:30:00', '17:56:00', '', 'Horror', '$10 Entry<br/>\r\n86 min.', '', 0),
-			(438, 2264, 2227, '16:30:00', '17:30:00', '', 'Free Snacks', 'Festival Pass', '', 0),
-			(471, 2243, 2231, '11:00:00', '12:26:00', '', 'Animation', 'Free Entry<br/>\r\n86 min.', '', 10),
-			(448, 2234, 2230, '11:00:00', '12:25:00', '', 'Animation', 'Free Entry<br/>\r\n85 min.', '', 10),
-			(496, 2237, 2229, '18:30:00', '20:10:00', '', 'Action', 'Free Entry<br/>\r\n100 min.', '', 15),
-			(461, 2298, 2227, '12:30:00', '14:00:00', '', 'Catering', 'Free Entry<br/>\r\n90 min.', '', 15),
-			(490, 2235, 2230, '09:00:00', '10:42:00', '', 'Comedy', 'Free Entry<br/>\r\n102 min.', '', 20),
-			(436, 2264, 2230, '16:30:00', '17:30:00', '', 'Free Snacks', 'Festival Pass', '', 0),
-			(476, 2245, 2232, '11:00:00', '12:26:00', '', 'Horror', '$10 Entry<br/>\r\n86 min.', '', 0),
-			(485, 2241, 2232, '12:30:00', '16:30:00', '', 'Concert', '$50 ticket<br/>\r\n240 min.<br/><br/>\r\nWith special guest Kevin Numan and Markus Smith.', '', 0),
-			(491, 2235, 2229, '14:00:00', '15:42:00', '', 'Comedy', 'Free Entry<br/>\r\n102 min.', '', 20),
-			(486, 2240, 2229, '09:00:00', '12:10:00', '', 'Concert', '$50 ticket<br/>\r\n190 min.<br/><br/>\r\nWith special guest Kevin Numan and Markus Smith.', '', 30),
-			(489, 2266, 2230, '16:30:00', '20:00:00', '', 'Concert', '$60 Entry<br/>\r\n210 min.<br/><br/>\r\nUnder 16\'s to be accompanied by an adult.', '', 0),
-			(495, 2237, 2232, '09:00:00', '10:40:00', '', 'Action', 'Free Entry<br/>\r\n100 min.', '', 15),
-			(573, 2365, 2342, '09:00:00', '12:00:00', '', '', 'Registration and General Information', '', 0),
-			(561, 2350, 2343, '12:45:00', '14:00:00', '', '', 'Performance', '', 0),
-			(581, 2375, 2342, '16:30:00', '19:00:00', '', '', 'Conference Banquet With Closing Ceremony. John Williams Speech.', '', 0),
-			(570, 2351, 2343, '15:30:00', '16:45:00', '', '', 'Performance', '', 0),
-			(519, 2359, 2346, '12:00:00', '13:15:00', '', '', 'Screening', '', 0),
-			(536, 2367, 2344, '12:00:00', '15:00:00', '', '', 'Display', '', 0),
-			(537, 2366, 2344, '15:00:00', '17:30:00', '', '', 'Display', '', 0),
-			(526, 2362, 2346, '10:00:00', '12:00:00', '', '', 'Screening', '', 0),
-			(558, 2355, 2343, '09:00:00', '10:15:00', '', '', 'Performance', '', 0),
-			(520, 2361, 2346, '13:15:00', '14:40:00', '', '', 'Screening', '', 0),
-			(554, 2357, 2345, '13:30:00', '14:15:00', '', '', 'Panel with Josh Kowalsky', '', 0),
-			(535, 2368, 2344, '09:00:00', '12:00:00', '', '', 'Display', '', 0),
-			(556, 2374, 2342, '08:30:00', '09:00:00', '', '', '', '', 0),
-			(564, 2363, 2345, '09:00:00', '10:15:00', '', '', 'Panel with Ann Perkins', '', 0),
-			(572, 2352, 2346, '15:30:00', '17:15:00', '', '', 'Performance', '', 0),
-			(566, 2358, 2345, '11:30:00', '13:30:00', '', '', 'Panel with Robin Watson, Chris Prochaska and Shawn Georges', '', 0),
-			(562, 2364, 2347, '09:00:00', '12:30:00', '', '', 'Free Entry', '', 0),
-			(551, 2373, 2347, '12:30:00', '16:30:00', '', '', 'Luch Menu', '', 0),
-			(567, 2356, 2345, '14:15:00', '16:15:00', '', '', 'Panel with Helena Howington, Frank Kasper and John Williams ', '', 0),
-			(559, 2354, 2343, '10:15:00', '11:30:00', '', '', 'Performance', '', 0),
-			(565, 2360, 2345, '10:15:00', '11:30:00', '', '', 'Panel with Robin Landrum', '', 0),
-			(576, 2365, 2342, '13:30:00', '15:00:00', '', '', 'Registration and General Information', '', 0),
-			(588, 2367, 2344, '14:30:00', '15:00:00', '', 'Comments', 'Comments on Display Session', '', 0),
-			(589, 2366, 2344, '17:00:00', '17:30:00', '', 'Comments', 'Comments on Display Session', '', 0),
-			(587, 2368, 2344, '11:30:00', '12:00:00', '', 'Comments', 'Comments on Display Session', '', 0);";
-		$wpdb->query($query);
-		
-		//insert shortcodes from live preview
-		$timetable_shortcodes_live_preview = array(
-			"timetable-for-wordpress" => "[tt_timetable event='body-building,boxing,cardio-fitness,crossfit,open-gym,zumba' columns='sunday,monday,tuesday,wednesday,thursday,friday,saturday' time_format='g:i a' export_to_pdf_button='1' show_booking_button='always' show_available_slots='always' event_description_responsive='description-1-and-description-2']",
-			"timetable-for-wordpress-sample-2" => "[tt_timetable event='banquet,big-data-symposium,case-studies-in-rcts,charles-choice,crisis-archives,donna-wright,elizabeth-wallace,food-and-drinks,general-information,world-economy,gold-standard-overview,impact-investing,janice-watson,lunch-menu,market-overview-symposium,money-as-debt,nola-sollars,robert-duncan,smart-investment,taxes-from-prices,welcome-reception,who-leads-world-economic-rebound' event_category='bar,display,panel,performance,registration,screening' columns='reception,floor-2,lounge-bar,floor-4,speakers-room,campus-green' measure='0.25' filter_kind='event_and_event_category' filter_label_2='All Locations' time_format='H:i' box_bg_color='96235B' filter_color='353C40' disable_event_url='1' custom_css='.tt_timetable .event .event_header {font-size:16px;font-weight:normal;}' export_to_pdf_button='1' colors_responsive_mode='1' generate_pdf_bg_color='353C40' generate_pdf_hover_bg_color='FF9935']",
-			"timetable-for-wordpress-sample-3" => "[tt_timetable event='power-fitness,martial-arts,body-works' columns='monday,tuesday,wednesday,thursday,saturday' filter_style='tabs' time_format='g.i a' hide_hours_column='1' event_layout='3' box_bg_color='2B363D' box_hover_bg_color='A13230' filter_color='D74340' hide_empty='1' text_align='left' show_booking_button='on_hover' show_available_slots='always']",
-			"timetable-for-wordpress-sample-4" => "[tt_timetable event_category='action,animation,catering,comedy,concert,horror,thriller' columns='bay-plaza-cinema,lakewood-cinema,north-park-theatre,old-capitol-arts,music-hall' measure='0.5' filter_kind='event_category' time_format='H:i' hide_hours_column='1' show_end_hour='1' event_layout='4' box_bg_color='DF4432' box_hover_bg_color='DF4432' filter_color='DF4432' disable_event_url='1' row_height='40' font='Open Sans:regular' font_subset='latin-ext' custom_css='.tt_timetable .hours {font-weight:400;font-size:24px;}' booking_label='Buy Ticket' booking_popup_label='Buy Ticket' show_booking_button='always' unavailable_label='Tickets Sold' booking_popup_message='<h2>You are about to book event</h2><div class=\"event_details_wrapper\"><p class=\"event_details bold\">{event_title}</p><p class=\"event_details\">{column_title}</p><p class=\"event_details\">{event_start} - {event_end}</p><p class=\"event_details\">{event_description_2}</p></div>{booking_form}<p>An initial receipt will be sent out automatically unless you decide not to do so below.</p><div class=\"tt_btn_wrapper\">{tt_btn_book}{tt_btn_cancel}</div>' booking_bg_color='61a22d' unavailable_text_color='999999' unavailable_bg_color='f0f0f0']",
-			"timetable-for-wordpress-sample-5" => "[tt_timetable event='body-building,boxing,cardio-fitness,crossfit,open-gym,zumba' columns='monday,tuesday,wednesday,thursday,friday,saturday,sunday' show_end_hour='1' event_layout='3' generate_pdf_bg_color='496EBB' generate_pdf_hover_bg_color='42B3E5' box_bg_color='3156A3' box_hover_bg_color='42B3E5' box_hours_txt_color='A6C3FF' filter_color='3156A3' disable_event_url='1' text_align='left' export_to_pdf_button='1']",
-		);
-		$timetable_shortcodes_list = get_option("timetable_shortcodes_list");
-		if($timetable_shortcodes_list===false)
-			$timetable_shortcodes_list = array();
-		foreach($timetable_shortcodes_live_preview as $key=>$val)
-		{
-			if(!array_key_exists($key, $timetable_shortcodes_list))
-				$timetable_shortcodes_list[$key] = $val;
-		}
-		ksort($timetable_shortcodes_list);
-		update_option("timetable_shortcodes_list", $timetable_shortcodes_list);
 		
 		if($result["info"]=="")
 			$result["info"] = esc_html__("dummy-timetable.xml file content and widgets settings has been imported successfully!", 'timetable');
@@ -1447,24 +1547,37 @@ if(is_admin())
 
 		require(__DIR__ . "/admin-page-google-calendar.php");
 	}
+
+	function timetable_admin_page_license()
+	{
+		$ql_license = QL_License::getInstance("7010836");
+		$result = $ql_license->initLicense();
+		$page_title = esc_html__("Timetable License", "timetable");
+		require(__DIR__ . "/admin/purchase-verification/verification-form.php");
+	}
 }
 
 function timetable_ajax_timetable_save_shortcode()
-{	
-	$shortcode = (!empty($_POST["timetable_shortcode"]) ? stripslashes($_POST["timetable_shortcode"]) : "");
-	$shortcode_id = (!empty($_POST["timetable_shortcode_id"]) ? $_POST["timetable_shortcode_id"] : "");
-	
-	if($shortcode_id!=="" && $shortcode!=="")
+{
+	if(wp_doing_ajax() && current_user_can("manage_options") && isset($_POST['timetable_ajax_nonce']) && wp_verify_nonce($_POST['timetable_ajax_nonce'], 'timetable_ajax_nonce'))
 	{
-		$timetable_shortcodes_list = get_option("timetable_shortcodes_list");
-		if($timetable_shortcodes_list===false)
-			$timetable_shortcodes_list = array();
-		$timetable_shortcodes_list[$shortcode_id] = $shortcode;
-		ksort($timetable_shortcodes_list);
-		if(update_option("timetable_shortcodes_list", $timetable_shortcodes_list))
-			echo "timetable_start" . $shortcode_id . "timetable_end";
-		else
-			echo 0;		
+		$shortcode = (!empty($_POST["timetable_shortcode"]) ? stripslashes($_POST["timetable_shortcode"]) : "");
+		$shortcode_id = (!empty($_POST["timetable_shortcode_id"]) ? $_POST["timetable_shortcode_id"] : "");
+		
+		if($shortcode_id!=="" && $shortcode!=="")
+		{
+			$timetable_shortcodes_list = get_option("timetable_shortcodes_list");
+			if($timetable_shortcodes_list===false)
+				$timetable_shortcodes_list = array();
+			$timetable_shortcodes_list[$shortcode_id] = $shortcode;
+			ksort($timetable_shortcodes_list);
+			update_option("timetable_shortcodes_list", $timetable_shortcodes_list);
+			echo "timetable_start" . esc_html($shortcode_id) . "timetable_end";
+		}
+	}
+	else
+	{
+		echo "timetable_start" . 0 . "timetable_end";
 	}
 	exit();
 }
@@ -1472,7 +1585,7 @@ add_action('wp_ajax_timetable_save_shortcode', 'timetable_ajax_timetable_save_sh
 
 function timetable_ajax_timetable_delete_shortcode()
 {
-	if(!empty($_POST["timetable_shortcode_id"]))
+	if(wp_doing_ajax() && current_user_can("manage_options") && isset($_POST['timetable_ajax_nonce']) && wp_verify_nonce($_POST['timetable_ajax_nonce'], 'timetable_ajax_nonce') && !empty($_POST["timetable_shortcode_id"]))
 	{
 		$shortcode_id = $_POST["timetable_shortcode_id"];
 		$timetable_shortcodes_list = get_option("timetable_shortcodes_list");
@@ -1493,7 +1606,7 @@ add_action('wp_ajax_timetable_delete_shortcode', 'timetable_ajax_timetable_delet
 
 function timetable_ajax_timetable_get_shortcode()
 {
-	if(!empty($_POST["timetable_shortcode_id"]))
+	if(wp_doing_ajax() && current_user_can("manage_options") && isset($_POST['timetable_ajax_nonce']) && wp_verify_nonce($_POST['timetable_ajax_nonce'], 'timetable_ajax_nonce') && !empty($_POST["timetable_shortcode_id"]))
 	{
 		$shortcode_id = $_POST["timetable_shortcode_id"];
 		$timetable_shortcodes_list = get_option("timetable_shortcodes_list");
@@ -1693,14 +1806,14 @@ function tt_btn_book($args)
 function tt_btn_continue($continue_label)
 {
 	$output = '';
-	$output .= "<a href='#' class='tt_btn continue'>" . $continue_label . "</a>";
+	$output .= '<a href="#" class="tt_btn continue">' . $continue_label . '</a>';
 	return $output;
 }
 
 function tt_btn_cancel($cancel_label)
 {
 	$output = '';
-	$output .= "<a href='#' class='tt_btn cancel'>" . $cancel_label . "</a>";
+	$output .= '<a href="#" class="tt_btn cancel">' . $cancel_label . '</a>';
 	return $output;
 }
 
@@ -1720,7 +1833,7 @@ function timetable_get_google_fonts()
 		if(isset($fontsArray))
 		{
 			$fontsArray->last_update = time();		
-			update_option("timetable_google_fonts", $fontsArray);
+			update_option("timetable_google_fonts", $fontsArray, false);
 		}
 	}
 	return $fontsArray;

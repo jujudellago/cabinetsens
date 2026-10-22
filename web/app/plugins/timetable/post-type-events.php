@@ -54,24 +54,24 @@ function timetable_events_init()
 		add_action("admin_notices", "timetable_warning_available_places");
 	}
 	
-	
 	if(!get_option("timetable_event_hours_table_installed"))
 	{
 		//create custom db table
 		$query = "CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "event_hours` (
-			`event_hours_id` BIGINT( 20 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-			`event_id` BIGINT( 20 ) NOT NULL ,
-			`weekday_id` BIGINT( 20 ) NOT NULL ,
+			`event_hours_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+			`event_id` BIGINT NOT NULL ,
+			`weekday_id` BIGINT NOT NULL ,
 			`start` TIME NOT NULL ,
 			`end` TIME NOT NULL,
 			`tooltip` text NOT NULL,
 			`before_hour_text` text NOT NULL,
 			`after_hour_text` text NOT NULL,
 			`category` varchar(255) NOT NULL,
-			`available_places` int(11) NOT NULL DEFAULT 0,
+			`available_places` int NOT NULL DEFAULT 0,
+			`slots_per_user` int NOT NULL DEFAULT 1,
 			KEY `event_id` (`event_id`),
 			KEY `weekday_id` (`weekday_id`)
-		) ENGINE = MYISAM DEFAULT CHARSET=utf8;";
+		) DEFAULT CHARSET=utf8;";
 		$wpdb->query($query);
 		update_option("timetable_event_hours_table_installed", 1);
 		global $wp_rewrite;
@@ -84,7 +84,7 @@ function timetable_events_init()
 		$result=$wpdb->get_results($query);
 		if(!$result)
 		{
-			$query = "ALTER TABLE " . $wpdb->prefix . "event_hours ADD available_places int(11) NOT NULL DEFAULT 0";
+			$query = "ALTER TABLE " . $wpdb->prefix . "event_hours ADD available_places int NOT NULL DEFAULT 0";
 			$wpdb->query($query);
 		}
 		update_option("timetable_event_hours_table_column_available_places", 1);
@@ -96,7 +96,7 @@ function timetable_events_init()
 		$result=$wpdb->get_results($query);
 		if(!$result)
 		{
-			$query = "ALTER TABLE " . $wpdb->prefix . "event_hours ADD slots_per_user int(11) NOT NULL DEFAULT 1";
+			$query = "ALTER TABLE " . $wpdb->prefix . "event_hours ADD slots_per_user int NOT NULL DEFAULT 1";
 			$wpdb->query($query);
 		}
 		update_option("timetable_event_hours_table_column_slots_per_user", 1);
@@ -106,13 +106,13 @@ function timetable_events_init()
 	{
 		//create custom db table
 		$query = "CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "event_hours_booking` (
-			`booking_id` BIGINT( 20 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-			`event_hours_id` BIGINT( 20 ) UNSIGNED NOT NULL,
-			`user_id` BIGINT( 20 ) UNSIGNED NOT NULL DEFAULT 0,
+			`booking_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+			`event_hours_id` BIGINT UNSIGNED NOT NULL,
+			`user_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
 			`booking_datetime` DATETIME NOT NULL,
 			`validation_code` VARCHAR(32) NOT NULL,
-			`guest_id` BIGINT( 20 ) UNSIGNED NOT NULL DEFAULT 0
-		) ENGINE = MYISAM DEFAULT CHARSET=utf8;";
+			`guest_id` BIGINT UNSIGNED NOT NULL DEFAULT 0
+		) DEFAULT CHARSET=utf8;";
 		
 		$wpdb->query($query);
 		update_option("timetable_event_hours_booking_table_installed", 1);
@@ -124,7 +124,7 @@ function timetable_events_init()
 		$result=$wpdb->get_results($query);
 		if(!$result)
 		{
-			$query = 'ALTER TABLE ' . $wpdb->prefix . 'event_hours_booking ADD guest_id BIGINT(20) UNSIGNED';
+			$query = 'ALTER TABLE ' . $wpdb->prefix . 'event_hours_booking ADD guest_id BIGINT UNSIGNED';
 			$wpdb->query($query);
 		}
 		
@@ -142,12 +142,12 @@ function timetable_events_init()
 	{
 		//create custom db table
 		$query = "CREATE TABLE IF NOT EXISTS `" . $wpdb->prefix . "timetable_guests` (
-			`guest_id` BIGINT( 20 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+			`guest_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 			`name` VARCHAR(250),
 			`email` VARCHAR(100),
 			`phone` VARCHAR(50),
 			`message` TEXT
-		) ENGINE = MYISAM DEFAULT CHARSET=utf8;";
+		) DEFAULT CHARSET=utf8;";
 		$wpdb->query($query);
 		update_option("timetable_timetable_guests_table_installed", 1);
 	}
@@ -258,7 +258,7 @@ function timetable_inner_events_custom_box_side($post)
 	);
 	$bookings = TT_DB::getBookings($args);
 	$bookings_array = array();
-	for($i=0, $max_i=count($bookings); $i<$max_i; $i++)
+	for($i=0, $max_i=count((array)$bookings); $i<$max_i; $i++)
 	{
 		$bookings_array[$bookings[$i]['event_hours_id']][] = $bookings[$i];
 	}
@@ -598,8 +598,8 @@ function timetable_save_events_postdata($post_id)
 		$delete_event_hours_ids_count = count($_POST["delete_event_hours_ids"]);
 		if($delete_event_hours_ids_count)
 		{
-			$wpdb->query("DELETE FROM `" . $wpdb->prefix . "event_hours` WHERE event_hours_id IN(" . implode(",", esc_sql($_POST["delete_event_hours_ids"])) . ")");
-			$wpdb->query("DELETE FROM `" . $wpdb->prefix . "event_hours_booking` WHERE event_hours_id IN(" . implode(",", esc_sql($_POST["delete_event_hours_ids"])) . ")");
+			$wpdb->query("DELETE FROM `" . $wpdb->prefix . "event_hours` WHERE event_hours_id IN('" . implode("','", array_map('esc_sql', $_POST["delete_event_hours_ids"])) . "')");
+			$wpdb->query("DELETE FROM `" . $wpdb->prefix . "event_hours_booking` WHERE event_hours_id IN('" . implode("','", array_map('esc_sql', $_POST["delete_event_hours_ids"])) . "')");
 		}
 	}
 	if(isset($_POST["delete_booking_ids"]))

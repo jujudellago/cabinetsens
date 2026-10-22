@@ -21,7 +21,7 @@
     function qodeInitElementorAdvancedImageGalleryMasonry(){
         $j(window).on('elementor/frontend/init', function () {
             elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_advanced_image_gallery.default', function() {
-                qodeOwlSlider();
+                qode.modules.owlSlider.qodeOwlSlider();
                 qode.modules.imageGallery.qodeInitAdvancedImageGalleryMasonry();
             } );
         });

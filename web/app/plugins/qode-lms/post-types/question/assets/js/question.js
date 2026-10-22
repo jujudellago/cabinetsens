@@ -62,7 +62,7 @@
         var prevForm = $('.qode-lms-question-prev-form');
         var finishForm = $('.qode-lms-finish-quiz-form');
 
-        radios.change(function() {
+        radios.on('change', function() {
             checkForm.find('input[name=qode_lms_question_answer]').val(this.value);
             nextForm.find('input[name=qode_lms_question_answer]').val(this.value);
             prevForm.find('input[name=qode_lms_question_answer]').val(this.value);
@@ -70,7 +70,7 @@
         });
 
         checkboxes.on('change', function() {
-            var values = $('input[type=checkbox]:checked').map(function() {
+            var values = $('.qode-course-popup input[type=checkbox]:checked').map(function() {
                 return this.value;
             }).get().join(',');
             checkForm.find('input[name=qode_lms_question_answer]').val(values);

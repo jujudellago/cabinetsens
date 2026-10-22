@@ -39,7 +39,13 @@ if( class_exists( 'BridgeCoreDashboardRestAPI' ) ) {
 								return is_array( $param ) ? $param : (array) strip_tags( $param );
 							},
 							'description'       => esc_html__( 'Options data is array with parameters', 'bridge-core' )
-						)
+						),
+						'security_token' => array(
+							'required'          => true,
+							'validate_callback' => function ( $param ) {
+								return esc_attr( $param );
+							},
+						),
 					)
 				)
 			) );

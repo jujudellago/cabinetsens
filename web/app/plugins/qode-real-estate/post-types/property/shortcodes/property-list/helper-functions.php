@@ -190,3 +190,34 @@ if(!function_exists('qodef_re_include_elementor_property_list_shortcode')) {
 
 	add_action('bridge_core_load_elementor_shortcodes_from_plugins', 'qodef_re_include_elementor_property_list_shortcode');
 }
+
+if( ! function_exists( 'qodef_re_include_property_list_shortcode_for_owl_carousel' ) ) {
+	function qodef_re_include_property_list_shortcode_for_owl_carousel( $shortcodes_to_check ) {
+		$shortcodes_to_check[] = 'qodef_property_list';
+		
+		return $shortcodes_to_check;
+	}
+	
+	add_filter( 'bridge_qode_filter_owl_carousel_shortcodes', 'qodef_re_include_property_list_shortcode_for_owl_carousel' );
+}
+
+if( ! function_exists( 'qodef_re_add_property_list_shortcode_packery_script_for_wpb_shortcode_scripts_array' ) ) {
+	function qodef_re_add_property_list_shortcode_packery_script_for_wpb_shortcode_scripts_array( $shortcodes_array ) {
+		if( array_key_exists( 'packery', $shortcodes_array ) ) {
+			$shortcodes_array['packery'] = array_merge( $shortcodes_array['packery'], array( 'qodef_property_list' => false ) );
+		} else {
+			$shortcodes_array = array_merge(
+				$shortcodes_array,
+				array(
+					'packery' => array(
+						'qodef_property_list' => false
+					)
+				)
+			);
+		}
+		
+		return $shortcodes_array;
+	}
+	
+	add_filter( 'bridge_qode_filter_wpb_shortcode_scripts_array', 'qodef_re_add_property_list_shortcode_packery_script_for_wpb_shortcode_scripts_array' );
+}

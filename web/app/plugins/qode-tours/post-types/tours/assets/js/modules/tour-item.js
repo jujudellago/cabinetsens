@@ -155,8 +155,8 @@
     
     function qodeToursReInitGoogleMap(){
 
-        if(typeof qode !== 'undefined'){
-            showGoogleMap();
+        if( 'object' === typeof qode && 'object' === typeof qode.modules.googleMap ){
+	        qode.modules.googleMap.showGoogleMap();
         }
     }
 

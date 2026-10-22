@@ -37,34 +37,54 @@ if(!function_exists('qode_music_scope_meta_box_functions')) {
 	add_filter('bridge_qode_filter_title_scope_post_types', 'qode_music_scope_meta_box_functions');
 	//add_filter('bridge_qode_filter_sidebar_scope_post_types', 'qode_music_scope_meta_box_functions');
 }
-if(!function_exists('qode_music_get_shortcode_module_template_part')) {
-
-	function qode_music_get_shortcode_module_template_part($shortcode,$template, $slug = '', $params = array()) {
-
+if ( ! function_exists( 'qode_music_get_shortcode_module_template_part' ) ) {
+	
+	function qode_music_get_shortcode_module_template_part( $shortcode, $template, $slug = '', $params = array() ) {
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $shortcode ) ) {
+			$shortcode = preg_replace( $available_characters, '', $shortcode );
+		} else {
+			$shortcode = '';
+		}
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
+		}
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
 		//HTML Content from template
-		$html = '';
-		$template_path = QODE_MUSIC_CPT_PATH.'/'.$shortcode.'/shortcodes';
-
-		$temp = $template_path.'/'.$template;
-		if(is_array($params) && count($params)) {
-			extract($params);
+		$html          = '';
+		$template_path = QODE_MUSIC_CPT_PATH . '/' . $shortcode . '/shortcodes';
+		
+		$temp = $template_path . '/' . $template;
+		if ( is_array( $params ) && count( $params ) ) {
+			extract( $params );
 		}
 		
 		$template = '';
-
-		if($temp !== '') {
-			$template = $temp.'.php';
-
-			if($slug !== '') {
+		
+		if ( $temp !== '' ) {
+			$template = $temp . '.php';
+			
+			if ( $slug !== '' ) {
 				$template = "{$temp}-{$slug}.php";
 			}
 		}
-		if($template) {
+		if ( $template ) {
 			ob_start();
-			include($template);
+			include( $template );
 			$html = ob_get_clean();
 		}
-
+		
 		return $html;
 	}
 }
@@ -80,35 +100,55 @@ if(!function_exists('qode_music_get_cpt_single_module_template_part')) {
 	 *
 	 * @return html
 	 */
-	function qode_music_get_cpt_single_module_template_part($template, $cpt_name, $slug = '', $params = array()) {
-
-		//HTML Content from template
-		$html = '';
-		$template_path = QODE_MUSIC_CPT_PATH.'/'.$cpt_name;
-
-		$temp = $template_path.'/'.$template;
-
-		if(is_array($params) && count($params)) {
-			extract($params);
+	function qode_music_get_cpt_single_module_template_part( $template, $cpt_name, $slug = '', $params = array()) {
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
 		}
-
+		
+		if ( is_scalar( $cpt_name ) ) {
+			$cpt_name = preg_replace( $available_characters, '', $cpt_name );
+		} else {
+			$cpt_name = '';
+		}
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
+		//HTML Content from template
+		$html          = '';
+		$template_path = QODE_MUSIC_CPT_PATH . '/' . $cpt_name;
+		
+		$temp = $template_path . '/' . $template;
+		
+		if ( is_array( $params ) && count( $params ) ) {
+			extract( $params );
+		}
+		
 		$template = '';
-
-		if (!empty($temp)) {
-			if (!empty($slug)) {
+		
+		if ( ! empty( $temp ) ) {
+			if ( ! empty( $slug ) ) {
 				$template = "{$temp}-{$slug}.php";
-
-				if(!file_exists($template)) {
-					$template = $temp.'.php';
+				
+				if ( ! file_exists( $template ) ) {
+					$template = $temp . '.php';
 				}
 			} else {
-				$template = $temp.'.php';
+				$template = $temp . '.php';
 			}
 		}
-
-		if (!empty($template)) {
+		
+		if ( ! empty( $template ) ) {
 			ob_start();
-			include($template);
+			include( $template );
 			$html = ob_get_clean();
 		}
 
@@ -128,53 +168,68 @@ if(!function_exists('qode_music_get_template_part')) {
 	 *
 	 * @return mixed
 	 */
-	function qode_music_get_template_part($template, $slug = '', $params = array(), $return = false) {
-		//HTML Content from template
-		$html = '';
-		$template_path = QODE_MUSIC_ABS_PATH;
-
-		$temp = $template_path.'/'.$template;
-		if(is_array($params) && count($params)) {
-			extract($params);
+	function qode_music_get_template_part( $template, $slug = '', $params = array(), $return = false ) {
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
 		}
-
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
+		//HTML Content from template
+		$html          = '';
+		$template_path = QODE_MUSIC_ABS_PATH;
+		
+		$temp = $template_path . '/' . $template;
+		if ( is_array( $params ) && count( $params ) ) {
+			extract( $params );
+		}
+		
 		$template = '';
-
-		if($temp !== '') {
-			$template = $temp.'.php';
-
-			if($slug !== '') {
+		
+		if ( $temp !== '' ) {
+			$template = $temp . '.php';
+			
+			if ( $slug !== '' ) {
 				$template = "{$temp}-{$slug}.php";
 			}
 		}
-
-		if($template) {
-			if($return) {
+		
+		if ( $template ) {
+			if ( $return ) {
 				ob_start();
 			}
-
-			include($template);
-
-			if($return) {
+			
+			include( $template );
+			
+			if ( $return ) {
 				$html = ob_get_clean();
 			}
-
+			
 		}
-
-		if($return) {
+		
+		if ( $return ) {
 			return $html;
 		}
 	}
 }
 
-if(!function_exists('qode_music_inline_style')) {
+if ( ! function_exists( 'qode_music_inline_style' ) ) {
 	/**
 	 * Function that echoes generated style attribute
 	 * @param $value string | array attribute value
 	 *
 	 */
-	function qode_music_inline_style($value) {
-		echo qode_music_get_inline_style($value);
+	function qode_music_inline_style( $value ) {
+		echo qode_music_get_inline_style( $value );
 	}
 }
 
@@ -245,18 +300,28 @@ if(!function_exists('qode_music_get_attachment_id_from_url')) {
 	function qode_music_get_attachment_id_from_url($attachment_url) {
 		global $wpdb;
 		$attachment_id = '';
-
-		//is attachment url set?
-		if($attachment_url !== '') {
-			//prepare query
-
-			$query = $wpdb->prepare("SELECT ID FROM {$wpdb->posts} WHERE guid=%s", $attachment_url);
-
-			//get attachment id
-			$attachment_id = $wpdb->get_var($query);
+		
+		if ( '' !== $attachment_url ) {
+			
+			$attachment_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE guid=%s", $attachment_url ) );
+			
+			// Additional check for undefined reason when guid is not image src
+			if ( empty( $attachment_id ) ) {
+				
+				// Skip if image is from theme folder ( ex. logo.png )
+				$theme_folder_name      = substr( get_template_directory(), strrpos( get_template_directory(), '/' ) + 1 );
+				$check_theme_files_urls = strpos( $attachment_url, $theme_folder_name . '/assets/img' );
+				
+				if ( false === $check_theme_files_urls ) {
+					
+					$modified_url = substr( $attachment_url, strrpos( $attachment_url, '/' ) + 1 );
+					
+					//get attachment id
+					$attachment_id = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='_wp_attached_file' AND meta_value LIKE %s", '%' . $modified_url . '%' ) );
+				}
+			}
 		}
-
-		//return id
+		
 		return $attachment_id;
 	}
 }

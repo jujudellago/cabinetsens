@@ -426,7 +426,7 @@ if ( ! function_exists( 'qode_lms_calculate_course_price' ) ) {
 		
 		if ( $free_course != 'yes' ) {
 			if ( $discount_price != '' ) {
-				$final_price = $discount_price;
+				$final_price =  $discount_price . ' <del>' . get_woocommerce_currency_symbol() . $price . '</del>';
 			} elseif ( $price != '' ) {
 				$final_price = $price;
 			}
@@ -472,37 +472,39 @@ if ( ! function_exists( 'qode_lms_show_reviews_form' ) ) {
 
 if ( ! function_exists( 'qode_lms_get_buy_form' ) ) {
 	function qode_lms_get_buy_form() {
-		
 		if ( qode_lms_is_woocommerce_installed() ) {
-			$user_has_course = qode_lms_user_has_course();
-			$params          = array();
-			
-			$user_current_course_status = qode_lms_user_current_course_status();
-			$user_completed_prerequired = qode_lms_user_completed_prerequired_course();
-			
-			if ( $user_current_course_status == 'completed' ) {
-				$params['percent'] = 100;
-			} else if ( $user_current_course_status == 'in-progress' ) {
-				$params['percent'] = qode_lms_user_current_course_completed_percent();
-			} else {
-				$params['percent'] = 0;
-			}
-			if ( $user_has_course ) {
-				if ( ! $user_completed_prerequired ) {
-					$params['prerequired'] = get_post_meta( get_the_ID(), 'qode_course_prerequired_meta', true );
-					qode_lms_get_cpt_single_module_template_part( 'templates/single/parts/prerequired-info', 'course', '', $params );
+			if( is_user_logged_in() ) {
+				$user_has_course = qode_lms_user_has_course();
+				$params          = array();
+				
+				$user_current_course_status = qode_lms_user_current_course_status();
+				$user_completed_prerequired = qode_lms_user_completed_prerequired_course();
+				
+				if ( $user_current_course_status == 'completed' ) {
+					$params['percent'] = 100;
+				} else if ( $user_current_course_status == 'in-progress' ) {
+					$params['percent'] = qode_lms_user_current_course_completed_percent();
 				} else {
-					if ( $user_current_course_status == 'completed' && ( qode_lms_check_retakes_option() > qode_lms_user_current_course_retakes() ) ) {
-						qode_lms_get_cpt_single_module_template_part( 'templates/single/parts/retake-form', 'course', '', $params );
-					}
-					qode_lms_get_cpt_single_module_template_part( 'templates/single/parts/progress-bar', 'course', '', $params );
+					$params['percent'] = 0;
 				}
-			} elseif ( qode_lms_check_is_course_in_cart() ) {
-				qode_lms_get_cpt_single_module_template_part( 'templates/single/parts/cart-button', 'course', '', $params );
-			} elseif ( qode_lms_qode_woocommerce_integration_installed() ) {
-				qode_woocomerce_checkout_integration_get_buy_form( array(), array( 'input_text' => esc_html__( 'Buy Course', 'qode-lms' ), 'class' => 'qbutton' ) );
+				if ( $user_has_course ) {
+					if ( ! $user_completed_prerequired ) {
+						$params['prerequired'] = get_post_meta( get_the_ID(), 'qode_course_prerequired_meta', true );
+						qode_lms_get_cpt_single_module_template_part( 'templates/single/parts/prerequired-info', 'course', '', $params );
+					} else {
+						if ( $user_current_course_status == 'completed' && ( qode_lms_check_retakes_option() > qode_lms_user_current_course_retakes() ) ) {
+							qode_lms_get_cpt_single_module_template_part( 'templates/single/parts/retake-form', 'course', '', $params );
+						}
+						qode_lms_get_cpt_single_module_template_part( 'templates/single/parts/progress-bar', 'course', '', $params );
+					}
+				} elseif ( qode_lms_check_is_course_in_cart() ) {
+					qode_lms_get_cpt_single_module_template_part( 'templates/single/parts/cart-button', 'course', '', $params );
+				} elseif ( qode_lms_qode_woocommerce_integration_installed() ) {
+					qode_woocomerce_checkout_integration_get_buy_form( array(), array( 'input_text' => esc_html__( 'Buy Course', 'qode-lms' ), 'class' => 'qbutton' ) );
+				}
+			} else {
+				echo '<a class="qbutton default qode-course-login">' . esc_html__( 'Login / Register', 'qode-lms' ) . '</a>';
 			}
-			//this should move from this function when sidebar created
 		}
 	}
 }
@@ -1130,31 +1132,124 @@ if ( ! function_exists( 'qode_lms_search_courses' ) ) {
 /**
  * Loads more function for portfolio.
  */
+if ( ! function_exists( 'qode_lms_get_course_ajax_allowed_param_keys' ) ) {
+	/**
+	 * Allowed AJAX keys come from the course list shortcode defaults plus pagination runtime fields.
+	 *
+	 * @param object $course_list
+	 *
+	 * @return string[]
+	 */
+	function qode_lms_get_course_ajax_allowed_param_keys( $course_list ) {
+		$keys = array( 'next_page', 'max_num_pages' );
+
+		if ( method_exists( $course_list, 'getDefaultParams' ) ) {
+			$keys = array_merge( $keys, array_keys( $course_list->getDefaultParams() ) );
+		}
+
+		return array_unique( $keys );
+	}
+}
+
+if ( ! function_exists( 'qode_lms_sanitize_course_ajax_param_value' ) ) {
+	/**
+	 * Sanitizes a single AJAX param by key pattern.
+	 *
+	 * @param string $key
+	 * @param string $value
+	 *
+	 * @return mixed
+	 */
+	function qode_lms_sanitize_course_ajax_param_value( $key, $value ) {
+		$value = sanitize_text_field( $value );
+
+		if ( substr( $key, -4 ) === '_tag' ) {
+			return qode_lms_sanitize_title_tag( $value );
+		}
+
+		if ( $key === 'order' ) {
+			$value = strtoupper( $value );
+
+			return in_array( $value, array( 'ASC', 'DESC' ), true ) ? $value : 'DESC';
+		}
+
+		if ( $key === 'orderby' ) {
+			$orderby_allowed = array( 'date', 'title', 'rand', 'menu_order', 'ID', 'author', 'name', 'modified', 'parent', 'comment_count' );
+
+			return in_array( $value, $orderby_allowed, true ) ? $value : 'date';
+		}
+
+		if ( $key === 'item_layout' ) {
+			return in_array( $value, array( 'standard', 'minimal' ), true ) ? $value : 'standard';
+		}
+
+		if ( strpos( $key, 'enable_' ) === 0 || in_array( $key, array( 'filter', 'course_slider_on', 'widget' ), true ) ) {
+			return in_array( $value, array( 'yes', 'no' ), true ) ? $value : '';
+		}
+
+		if ( preg_match( '/(_page|_length|_items|_columns|_margin|_speed|_animation)$/', $key ) || in_array( $key, array( 'max_num_pages', 'paged' ), true ) ) {
+			return intval( $value );
+		}
+
+		return $value;
+	}
+}
+
+if ( ! function_exists( 'qode_lms_parse_course_ajax_params' ) ) {
+	/**
+	 * Builds course list params from the AJAX request, limited to keys the shortcode accepts.
+	 *
+	 * @param object $course_list
+	 *
+	 * @return array
+	 */
+	function qode_lms_parse_course_ajax_params( $course_list ) {
+		$allowed_keys = qode_lms_get_course_ajax_allowed_param_keys( $course_list );
+		$params       = method_exists( $course_list, 'getDefaultParams' ) ? $course_list->getDefaultParams() : array();
+
+		if ( empty( $_POST ) || ! is_array( $_POST ) ) {
+			$params['next_page'] = 1;
+
+			return $params;
+		}
+
+		foreach ( $_POST as $key => $value ) {
+			if ( $key === '' || $key === 'nonce' || $key === 'action' || is_array( $value ) ) {
+				continue;
+			}
+
+			$normalized = strtolower( preg_replace( '/([A-Z])/', '_$1', $key ) );
+
+			if ( ! in_array( $normalized, $allowed_keys, true ) ) {
+				continue;
+			}
+
+			$params[ $normalized ] = qode_lms_sanitize_course_ajax_param_value( $normalized, wp_unslash( $value ) );
+		}
+
+		if ( empty( $params['next_page'] ) ) {
+			$params['next_page'] = 1;
+		}
+
+		return $params;
+	}
+}
+
 if ( ! function_exists( 'qode_lms_course_ajax_load_more' ) ) {
 	function qode_lms_course_ajax_load_more() {
-		$shortcode_params = array();
-		
-		if ( ! empty( $_POST ) ) {
-			foreach ( $_POST as $key => $value ) {
-				if ( $key !== '' ) {
-					$addUnderscoreBeforeCapitalLetter = preg_replace( '/([A-Z])/', '_$1', $key );
-					$setAllLettersToLowercase         = strtolower( $addUnderscoreBeforeCapitalLetter );
-					
-					$shortcode_params[ $setAllLettersToLowercase ] = $value;
-				}
-			}
-		}
-		
+		check_ajax_referer( 'qode_lms_course_load_more_nonce', 'nonce' );
+
+		$course_list      = new \QodeLMS\CPT\Shortcodes\Course\CourseList();
+		$shortcode_params = qode_lms_parse_course_ajax_params( $course_list );
+
 		$html = '';
-		
-		$course_list = new \QodeLMS\CPT\Shortcodes\Course\CourseList();
-		
+
 		$query_array                     = $course_list->getQueryArray( $shortcode_params );
 		$query_results                   = new \WP_Query( $query_array );
 		$shortcode_params['this_object'] = $course_list;
-		
+
 		$number_of_posts = 0;
-		
+
 		if ( $query_results->have_posts() ):
 			while ( $query_results->have_posts() ) : $query_results->the_post();
 				$number_of_posts ++;
@@ -1163,9 +1258,9 @@ if ( ! function_exists( 'qode_lms_course_ajax_load_more' ) ) {
 		else:
 			$html .= qode_lms_get_cpt_shortcode_module_template_part( 'course', 'parts/posts-not-found', '', $shortcode_params );
 		endif;
-		
+
 		wp_reset_postdata();
-		
+
 		$next_page      = $shortcode_params['next_page'];
 		$posts_per_page = $shortcode_params['number_of_items'];
 		$min_value      = ( $next_page - 1 ) * $posts_per_page + 1;
@@ -1176,20 +1271,19 @@ if ( ! function_exists( 'qode_lms_course_ajax_load_more' ) ) {
 		} else {
 			$max_value = $next_page * $posts_per_page;
 		}
-		
-		$return_obj = array(
-			'html'     => $html,
-			'minValue' => $min_value,
-			'maxValue' => $max_value,
-		);
-		
-		echo json_encode( $return_obj );
-		exit;
-	}
-}
 
-add_action( 'wp_ajax_nopriv_qode_lms_course_ajax_load_more', 'qode_lms_course_ajax_load_more' );
-add_action( 'wp_ajax_qode_lms_course_ajax_load_more', 'qode_lms_course_ajax_load_more' );
+		wp_send_json(
+			array(
+				'html'     => $html,
+				'minValue' => $min_value,
+				'maxValue' => $max_value,
+			)
+		);
+	}
+
+	add_action( 'wp_ajax_nopriv_qode_lms_course_ajax_load_more', 'qode_lms_course_ajax_load_more' );
+	add_action( 'wp_ajax_qode_lms_course_ajax_load_more', 'qode_lms_course_ajax_load_more' );
+}
 
 if ( ! function_exists( 'qode_lms_course_ratings' ) ) {
 	function qode_lms_course_ratings() {
@@ -1381,4 +1475,27 @@ if ( ! function_exists( 'qode_lms_extend_rating_posts_types' ) ) {
     }
 
     add_filter( 'bridge_core_filter_rating_post_types', 'qode_lms_extend_rating_posts_types' );
+}
+
+if( ! function_exists( 'qode_lms_enqueue_course_single_fluidvids' ) ) {
+	function qode_lms_enqueue_course_single_fluidvids( $should_enqueue ) {
+		if( is_singular( 'course' ) ) {
+			$should_enqueue = true;
+		}
+		
+		return $should_enqueue;
+	}
+	
+	add_action( 'bridge_qode_filter_enqueue_fluidvids_script', 'qode_lms_enqueue_course_single_fluidvids' );
+}
+
+if( ! function_exists( 'qode_lms_enqueue_assets_for_course_single_item' ) ) {
+	function qode_lms_enqueue_assets_for_course_single_item() {
+		if( is_singular( 'course' ) ) {
+			wp_enqueue_script( 'countTo' );
+			wp_enqueue_script( 'qode-progress-bar' );
+		}
+	}
+	
+	add_action( 'wp_enqueue_scripts', 'qode_lms_enqueue_assets_for_course_single_item' );
 }

@@ -27,53 +27,69 @@ if(!function_exists('qode_quick_links_get_template_part')) {
 	 *
 	 * @return mixed
 	 */
-	function qode_quick_links_get_template_part($template, $slug = '', $params = array(), $return = false) {
-		//HTML Content from template
-		$html = '';
-		$template_path = QODE_QUICK_LINKS_ABS_PATH;
-
-		$temp = $template_path.'/'.$template;
-		if(is_array($params) && count($params)) {
-			extract($params);
+	function qode_quick_links_get_template_part( $template, $slug = '', $params = array(), $return = false ) {
+		
+		$available_characters = '/[^A-Za-z0-9\_\-\/\:\\\\]/';
+		
+		if ( is_scalar( $template ) ) {
+			$template = preg_replace( $available_characters, '', $template );
+		} else {
+			$template = '';
 		}
-
+		
+		if ( is_scalar( $slug ) ) {
+			$slug = preg_replace( $available_characters, '', $slug );
+		} else {
+			$slug = '';
+		}
+		
+		//HTML Content from template
+		$html          = '';
+		$template_path = QODE_QUICK_LINKS_ABS_PATH;
+		
+		$temp = $template_path . '/' . $template;
+		if ( is_array( $params ) && count( $params ) ) {
+			extract( $params );
+		}
+		
 		$template = '';
-
-		if($temp !== '') {
-			$template = $temp.'.php';
-
-			if($slug !== '') {
+		
+		if ( $temp !== '' ) {
+			$template = $temp . '.php';
+			
+			if ( $slug !== '' ) {
 				$template = "{$temp}-{$slug}.php";
 			}
 		}
-
-		if($template) {
-			if($return) {
+		
+		if ( $template ) {
+			if ( $return ) {
 				ob_start();
 			}
-
-			include($template);
-
-			if($return) {
+			
+			include( $template );
+			
+			if ( $return ) {
 				$html = ob_get_clean();
 			}
-
+			
 		}
-
-		if($return) {
+		
+		if ( $return ) {
 			return $html;
 		}
 	}
 }
 
-if(!function_exists('qode_quick_links_inline_style')) {
+if ( ! function_exists( 'qode_quick_links_inline_style' ) ) {
 	/**
 	 * Function that echoes generated style attribute
+	 *
 	 * @param $value string | array attribute value
 	 *
 	 */
-	function qode_quick_links_inline_style($value) {
-		echo qode_quick_links_get_inline_style($value);
+	function qode_quick_links_inline_style( $value ) {
+		echo qode_quick_links_get_inline_style( $value );
 	}
 }
 
@@ -118,16 +134,16 @@ if(!function_exists('qode_quick_links_get_inline_attr')) {
 	 * @param $glue string glue with which to implode $attr. Used only when $attr is array
 	 * @return string generated html attribute
 	 */
-	function qode_quick_links_get_inline_attr($value, $attr, $glue = '') {
-		if(!empty($value)) {
-
-			if(is_array($value) && count($value)) {
-				$properties = implode($glue, $value);
+	function qode_quick_links_get_inline_attr( $value, $attr, $glue = '' ) {
+		if ( ! empty( $value ) ) {
+			
+			if ( is_array( $value ) && count( $value ) ) {
+				$properties = implode( $glue, $value );
 			} elseif($value !== '') {
 				$properties = $value;
 			}
-
-			return $attr.'="'.esc_attr($properties).'"';
+			
+			return $attr . '="' . esc_attr( $properties ) . '"';
 		}
 
 		return '';

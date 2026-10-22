@@ -142,7 +142,7 @@ class Album implements Lib\ShortcodeInterface {
 				/*------------------------------------------------------------------------------------------*/
 				//if import is executed second time and file does exists in 'uploads' but not in database
 				//usercase ex: user empties db, but not 'uploads' folder
-				if(qode_music_get_attachment_id_from_url($track) == null){
+				if(qode_music_get_attachment_id_from_url($track['qode_album_track_file']) == null){
 					$i++;
 					continue;
 				}

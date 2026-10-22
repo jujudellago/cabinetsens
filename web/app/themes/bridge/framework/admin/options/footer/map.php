@@ -124,6 +124,7 @@ if(!function_exists('bridge_qode_footer_options_map')) {
                 'description'   => esc_html__('Choose a width at which advanced responsive options will take effect. This will make footer columns go 2 by 2 under selected width.', 'bridge'),
                 'parent'        => $qode_footer_top_responsive_advanced_options_container,
                 'options'       => array(
+                    '1024'  => '1024px',
                     '1000'  => '1000px',
                     '768'   => '768px'
                 )

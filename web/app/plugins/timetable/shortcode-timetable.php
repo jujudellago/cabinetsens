@@ -290,7 +290,7 @@ function tt_timetable($atts, $content)
 	
 	if((int)$row_height!=31 || strtoupper($box_bg_color)!="00A27C" || strtoupper($filter_color)!="00A27C" || strtoupper($available_slots_color)!="FFD544" || $custom_css!="")
 	{
-		$inline_style .= $custom_css . ((int)$row_height!=31 ? ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable td{height: ' . (int)$row_height . (substr($row_height, -2)!="px" ? 'px' : '') . ';}' : '') . (strtoupper($box_bg_color)!="00A27C" ? ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable .event{background: #' . $box_bg_color . ';}' : '') . (strtoupper($filter_color)!="00A27C" ? ($id!="" ? '#' . $id : '') . ' .tt_tabs_navigation li a:hover,' . ($id!="" ? '#' . $id : '') . ' .tt_tabs_navigation li a.selected,' . ($id!="" ? '#' . $id : '') . ' .tt_tabs_navigation li.ui-tabs-active a{border-color:#' . $filter_color . ' !important;}' . ($id!="" ? '.' . $id : '') . '.tabs_box_navigation.sf-timetable-menu .tabs_box_navigation_selected{background-color:#' . $filter_color . ';border-color:#' . $filter_color . ';}' . ($id!="" ? '.' . $id : '') . '.tabs_box_navigation.sf-timetable-menu .tabs_box_navigation_selected:hover{background-color: #FFF; border: 1px solid rgba(0, 0, 0, 0.1);}' . ($id!="" ? '.' . $id : '') . '.sf-timetable-menu li ul li a:hover, .sf-timetable-menu li ul li.selected a:hover{background-color:#' . $filter_color . ';}' : '') . (strtoupper($available_slots_color)!="FFD544" ? ($id!="" ? '#' . $id : '') . ' .tt_timetable .event span.available_slots,' . ($id!="" ? '#' . $id : '') . ' .tt_responsive .tt_timetable.small .tt_items_list span.available_slots,' . ($id!="" ? '#' . $id : '') . ' .tt_responsive .tt_timetable.small .tt_items_list span.available_slots span.count { color:#' . $available_slots_color . ' !important;}' : '');
+		$inline_style .= $custom_css . ((int)$row_height!=31 ? ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable td{height: ' . (int)$row_height . (substr($row_height, -2)!="px" ? 'px' : '') . ';}' : '') . (strtoupper($box_bg_color)!="00A27C" ? ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable .event{background: #' . $box_bg_color . ';}' : '') . (strtoupper($filter_color)!="00A27C" ? ($id!="" ? '#' . $id : '') . ' .tt_tabs_navigation li a:hover,' . ($id!="" ? '#' . $id : '') . ' .tt_tabs_navigation li a.selected,' . ($id!="" ? '#' . $id : '') . ' .tt_tabs_navigation li.ui-tabs-active a{border-color:#' . $filter_color . ' !important;}' . ($id!="" ? '#' . $id . ' ' : '') . '.tabs_box_navigation.sf-timetable-menu .tabs_box_navigation_selected{background-color:#' . $filter_color . ';border-color:#' . $filter_color . ';}' . ($id!="" ? '#' . $id . ' ' : '') . '.tabs_box_navigation.sf-timetable-menu .tabs_box_navigation_selected:hover{background-color: #FFF; border: 1px solid rgba(0, 0, 0, 0.1);}' . ($id!="" ? '#' . $id . ' ' : '') . '.sf-timetable-menu li ul li a:hover, .sf-timetable-menu li ul li.selected a:hover{background-color:#' . $filter_color . ';}' : '') . (strtoupper($available_slots_color)!="FFD544" ? ($id!="" ? '#' . $id : '') . ' .tt_timetable .event span.available_slots,' . ($id!="" ? '#' . $id : '') . ' .tt_responsive .tt_timetable.small .tt_items_list span.available_slots,' . ($id!="" ? '#' . $id : '') . ' .tt_responsive .tt_timetable.small .tt_items_list span.available_slots span.count { color:#' . $available_slots_color . ' !important;}' : '');
 	}
 	if($font!="")
 		$output .= '<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=' . $font . '&amp;subset=' . $font_subset . '">';
@@ -299,7 +299,7 @@ function tt_timetable($atts, $content)
 		$font_explode = explode(":", $font);
 			$font = '"' . $font_explode[0] . '"';
 			
-		$inline_style .= ($font_custom!="" || $font!="" ? ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable, #tt_booking_popup_message .tt_booking_message, #tt_booking_popup_message h2{font-family:' . ($font_custom!="" ? $font_custom : $font) . ' !important;}' : '') . ((int)$font_size>0 ? ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable th,' . ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable td,' . ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable .event .before_hour_text,' . ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable .event .after_hour_text,' . ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable .event .event_header{font-size:' . (int)$font_size . 'px !important;}' : '');
+		$inline_style .= ($font_custom!="" || $font!="" ? ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable,' . ($id!="" ? '#' . $id : '') . ' .sf-timetable-menu.tabs_box_navigation label,' . ($id!="" ? '#' . $id : '') . ' .sf-timetable-menu li:hover ul a,' . ($id!="" ? '#' . $id : '') . ' .sf-timetable-menu li.submenu:hover ul a, .tt_booking .tt_booking_message, .tt_booking_message h2,' . ($id!="" ? '#' . $id : '') . ' form.tt_generate_pdf input[type="submit"],' . ($id!="" ? '#' . $id : '') . '.tt_responsive .tt_timetable.small .tt_items_list a,' . ($id!="" ? '#' . $id : '') . '.tt_responsive .tt_timetable.small .tt_items_list span,' . ($id!="" ? '#' . $id : '') . '.tt_responsive .tt_timetable.small .box_header{font-family:' . ($font_custom!="" ? $font_custom : $font) . ' !important;}' : '') . ((int)$font_size>0 ? ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable th,' . ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable td,' . ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable .event .before_hour_text,' . ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable .event .after_hour_text,' . ($id!="" ? '#' . $id : '') . '.tt_tabs .tt_timetable .event .event_header{font-size:' . (int)$font_size . 'px !important;}' : '');
 	}
 	$output .= '<div class="timetable_clearfix tt_tabs' . ((int)$responsive ? " tt_responsive" : "") . " event_layout_" . esc_attr($event_layout) . '"' . ($id!="" ? ' id="' . esc_attr($id) . '"' : '') . '>';
 	
@@ -909,7 +909,7 @@ function tt_get_timetable($atts, $event = null)
 						}
 						
 						$output .= '
-							<li ' . $colors_html . ' class="timetable_clearfix">
+							<li ' . $colors_html . ' class="timetable_clearfix id-' . esc_attr($event_hours_tt[$weekday_fixed_number][$i]["id"]) . '">
 								<div class="event_container">
 									<' . ($classes_url!="" ? 'a' : 'span') . ($classes_url!="" ? ' href="' . esc_url($classes_url) . '"' : '') . ' title="' .  esc_attr($event_hours_tt[$weekday_fixed_number][$i]["title"]) . '"' . ' class="event_header" ' . $text_colors_html . '>' . $event_hours_tt[$weekday_fixed_number][$i]["title"] . ' </' . ($classes_url!="" ? 'a' : 'span') . '>';
 						
@@ -2220,7 +2220,7 @@ function timetable_vc_init()
 		),
 	));
 }
-add_action('init', 'timetable_vc_init');
+add_action('admin_init', 'timetable_vc_init');
 
 function timetable_vc_dropdownmultiple_settings_field($settings, $value)
 {

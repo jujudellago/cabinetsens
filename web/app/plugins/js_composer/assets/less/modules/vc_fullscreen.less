@@ -1,11 +1,11 @@
 .vc_fullscreen {
-  #post-body-content,
   #screen-meta-links,
   #postbox-container-1,
   .ui-sortable-handle:not(.vc_control),
   .handlediv,
   .wrap > h1,
   .wrap > .notice,
+  .wrap > .page-title-action,
   .postbox,
   #wpfooter {
     display: none;
@@ -43,6 +43,14 @@
     width: 100%;
     top: 32px;
     left: 0;
+  }
+
+  #post-body-content > * {
+    display: none;
+  }
+
+  #post-body-content .ui-sortable:has(#wpb_wpbakery) {
+    display: block;
   }
 }
 

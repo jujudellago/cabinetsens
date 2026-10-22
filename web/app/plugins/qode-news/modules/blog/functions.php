@@ -25,10 +25,10 @@ if(!function_exists('qode_news_blog_category_archive')) {
 	 */
 	function qode_news_blog_category_archive($single) {
 		global $post;
+		
+		if ( qode_news_theme_installed() ) {
 
-		if (qode_news_theme_installed()){
-
-			if(is_author() || $post->post_type == 'post') {
+			if( is_author() || ( isset( $post ) && $post->post_type == 'post' )) {
 				return QODE_NEWS_BLOG_PATH.'/news-archive.php';
 			}
 		}

@@ -1,5 +1,6 @@
 <?php
     $new_reviews = $this_shortcode->getTopReviews($params);
+    $title_tag   = qode_tours_sanitize_title_tag( isset( $title_tag ) ? $title_tag : 'h4' );
 ?>
 <div class="qode-top-reviews-carousel-holder <?php if(!empty($enable_shadow) && $enable_shadow == 'yes'){ echo ' qode-enabled-shadow'; } ?> ">
     <?php if(is_array($new_reviews) && count($new_reviews)) : ?>

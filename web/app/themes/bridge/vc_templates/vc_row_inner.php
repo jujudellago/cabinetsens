@@ -353,14 +353,14 @@ if($row_type == 'row') {
 		$output .= '</svg>';
 	}
 
-	$output .= '</div>'.$this->endBlockComment('row');
+	$output .= '</div>';
 }elseif($row_type == 'parallax'){
     $output .= '</div></div>';
     $output .= $before_wrapper_close;
-    $output .= '</section>'.$this->endBlockComment('row');
+    $output .= '</section>';
 
 }elseif($row_type == 'expandable'){
-	$output .= '</div></div></div></div></div>'.$this->endBlockComment('row');
+	$output .= '</div></div></div></div></div>';
 }else if($row_type == 'content_menu'){
 	$output .= '</nav>';
 }

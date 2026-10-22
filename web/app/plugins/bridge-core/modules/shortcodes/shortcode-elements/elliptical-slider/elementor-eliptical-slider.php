@@ -16,8 +16,12 @@ class BridgeCoreElementorEllipticalSlider extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode' ];
     }
-
-    public static function get_templates() {
+	
+	public function get_script_depends() {
+		return array( 'flexslider', 'fitvids', 'touchSwipe' );
+	}
+	
+	public static function get_templates() {
         return Elementor\Plugin::instance()->templates_manager->get_source( 'local' )->get_items();
     }
 

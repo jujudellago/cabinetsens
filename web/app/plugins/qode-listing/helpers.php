@@ -90,7 +90,7 @@ if(!function_exists('qode_listing_set_ajax_url')){
 
 if(!function_exists('qode_listing_load_js_assets')){
 	function qode_listing_load_js_assets(){
-		wp_enqueue_script( 'qode_rangeslider', QODE_LISTING_URL_PATH.'assets/js/rangeslider.min.js', array('jquery'), false, true );
+		wp_enqueue_script( 'rangeslider', QODE_LISTING_URL_PATH.'assets/js/rangeslider.min.js', array('jquery'), false, true );
 		wp_enqueue_script( 'select2', QODE_LISTING_URL_PATH.'assets/js/select2.min.js', array(), false, true );
 		wp_enqueue_script( 'qode_listing_script', QODE_LISTING_URL_PATH.'assets/js/listing.js', array('jquery', 'underscore', 'jquery-ui-autocomplete'), false, true );
 
@@ -155,4 +155,29 @@ if(!function_exists('qode_listing_include_elementor_course_shortcodes')) {
     }
 
     add_action('bridge_core_load_elementor_shortcodes_from_plugins', 'qode_listing_include_elementor_course_shortcodes');
+}
+
+if( ! function_exists( 'qode_listing_include_google_maps_api' ) ) {
+	function qode_listing_include_google_maps_api() {
+		return true;
+	}
+	
+	add_filter( 'bridge_qode_filter_enqueue_google_maps_api', 'qode_listing_include_google_maps_api' );
+}
+
+if ( ! function_exists( 'qode_listing_sanitize_mail_header_text' ) ) {
+	/**
+	 * Strip CR/LF and control chars so user input cannot inject extra mail headers.
+	 *
+	 * @param string $value
+	 *
+	 * @return string
+	 */
+	function qode_listing_sanitize_mail_header_text( $value ) {
+		$value = wp_strip_all_tags( (string) $value );
+		$value = str_replace( array( "\r", "\n", "\0", "\t" ), '', $value );
+		$value = str_replace( array( '<', '>', ':' ), '', $value );
+
+		return trim( $value );
+	}
 }

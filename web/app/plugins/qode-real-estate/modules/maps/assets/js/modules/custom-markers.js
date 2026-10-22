@@ -1,5 +1,9 @@
 var j = jQuery.noConflict();
 function CustomMarker( options ) {
+    if ( typeof google !== 'object' || typeof google.maps !== 'object' ) {
+        return;
+    }
+
     this.latlng = new google.maps.LatLng({lat: options.position.lat, lng: options.position.lng});
     this.setMap(options.map);
     this.templateData = options.templateData;

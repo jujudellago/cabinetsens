@@ -13,6 +13,7 @@
 				<input type="hidden" name="image_size" value="<?php echo esc_attr($image_size); ?>">
 				<input type="hidden" name="title_tag" value="<?php echo esc_attr($title_tag); ?>">
 				<input type="hidden" name="text_length" value="<?php echo esc_attr($text_length); ?>">
+				<input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( 'qode_tours_list_load_more_nonce' ) ); ?>">
 			</div>
 		<?php endif; ?>
 

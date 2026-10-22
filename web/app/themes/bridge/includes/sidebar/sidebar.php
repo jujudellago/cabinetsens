@@ -4,12 +4,16 @@ if(! function_exists('bridge_qode_register_additional_sidebars')){
     function bridge_qode_register_additional_sidebars(){
         $bridge_qode_options = bridge_qode_return_global_options();
         $centered_logo = false;
-        if (isset($bridge_qode_options['center_logo_image'])){ if($bridge_qode_options['center_logo_image'] == "yes") { $centered_logo = true; }};
-        if(isset($bridge_qode_options['header_bottom_appearance']) && $bridge_qode_options['header_bottom_appearance'] == "fixed_hiding"){
-            $centered_logo = true;
-        }
-
-        if (function_exists('register_sidebar')) {
+	    if ( isset( $bridge_qode_options['center_logo_image'] ) ) {
+		    if ( $bridge_qode_options['center_logo_image'] == "yes" ) {
+			    $centered_logo = true;
+		    }
+	    };
+	    if ( isset( $bridge_qode_options['header_bottom_appearance'] ) && $bridge_qode_options['header_bottom_appearance'] == "fixed_hiding" ) {
+		    $centered_logo = true;
+	    }
+	    
+	    if ( function_exists( 'register_sidebar' ) ) {
             register_sidebar(array(
                 'name' => 'Sidebar',
                 'id' => 'sidebar',
@@ -244,14 +248,24 @@ if(! function_exists('bridge_qode_register_additional_sidebars')){
         }
     }
 
-    add_action('after_setup_theme', 'bridge_qode_register_additional_sidebars');
+    add_action( 'after_setup_theme', 'bridge_qode_register_additional_sidebars');
 }
 
-// register custom sidebars to theme
-add_theme_support('BridgeQodeSidebar');
-if (get_theme_support('BridgeQodeSidebar')) new BridgeQodeSidebar();
+if ( ! function_exists( 'bridge_qode_add_support_custom_sidebar' ) ) {
+	function bridge_qode_add_support_custom_sidebar() {
+		/**
+		 * Function that adds theme support for custom sidebars. It also creates bridge_qode_sidebar object
+		 */
+		add_theme_support('BridgeQodeSidebar');
+		
+		if ( get_theme_support( 'BridgeQodeSidebar' ) ) {
+			new BridgeQodeSidebar();
+		}
+	}
+	add_action('after_setup_theme', 'bridge_qode_add_support_custom_sidebar');
+}
 
-if (!function_exists('bridge_qode_is_user_made_sidebar')) {
+if ( ! function_exists( 'bridge_qode_is_user_made_sidebar' ) ) {
     function bridge_qode_is_user_made_sidebar($name){
 
         //this have to be changed depending on theme

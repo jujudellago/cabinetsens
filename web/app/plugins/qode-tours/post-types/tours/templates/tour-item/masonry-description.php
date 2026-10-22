@@ -2,6 +2,7 @@
 if (!isset($title_tag) || $title_tag == ''){
 	$title_tag = 'h4';
 }
+$title_tag = qode_tours_sanitize_title_tag( $title_tag );
 
 $id = get_the_ID();
 $image_size = get_post_meta($id, 'qode_tours_masonry_dimensions', true);

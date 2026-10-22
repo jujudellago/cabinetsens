@@ -10,10 +10,11 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see 	    https://docs.woocommerce.com/document/template-structure/
- * @author 		WooThemes
- * @package 	WooCommerce/Templates
- * @version     3.7.0
+ * @see https://docs.woocommerce.com/document/template-structure/
+ * @package WooCommerce\Templates
+ * @version 8.1.0
+ *
+ * @var WC_Order $order
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -39,8 +40,8 @@ defined( 'ABSPATH' ) || exit;
 			</p>
 		
 		<?php else : ?>
-			
-			<p class="woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received woocommerce-message"><?php echo apply_filters( 'woocommerce_thankyou_order_received_text', esc_html__( 'Thank you. Your order has been received.', 'bridge' ), $order ); ?></p>
+		
+		<?php wc_get_template( 'checkout/order-received.php', array( 'order' => $order ) ); ?>
 			
 			<ul class="woocommerce-order-overview woocommerce-thankyou-order-details order_details clearfix">
 				
@@ -109,7 +110,7 @@ defined( 'ABSPATH' ) || exit;
 		
 	<?php else : ?>
 		
-		<p class="woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received message"><?php echo apply_filters( 'woocommerce_thankyou_order_received_text', esc_html__( 'Thank you. Your order has been received.', 'bridge' ), null ); ?></p>
+		<?php wc_get_template( 'checkout/order-received.php', array( 'order' => false ) ); ?>
 	
 	<?php endif; ?>
 	

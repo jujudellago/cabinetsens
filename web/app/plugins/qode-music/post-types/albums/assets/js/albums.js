@@ -390,7 +390,6 @@
 	function qodeInitElementorAlbum(){
 		$j(window).on('elementor/frontend/init', function () {
 			elementorFrontend.hooks.addAction( 'frontend/element_ready/bridge_album.default', function() {
-				console.log('nijeca');
 				qodeAlbumPlayButton();
 			} );
 		});

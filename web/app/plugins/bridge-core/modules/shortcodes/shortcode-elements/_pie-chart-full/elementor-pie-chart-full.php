@@ -16,6 +16,10 @@ class BridgeCoreElementorPieChartFull extends \Elementor\Widget_Base{
     public function get_categories() {
         return [ 'qode' ];
     }
+	
+	public function get_script_depends() {
+		return array( 'chart', 'qode-pie-chart-full' );
+	}
 
     protected function register_controls() {
 

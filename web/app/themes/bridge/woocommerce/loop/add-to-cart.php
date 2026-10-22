@@ -10,10 +10,9 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see 	    https://docs.woocommerce.com/document/template-structure/
- * @author 		WooThemes
- * @package 	WooCommerce/Templates
- * @version     3.3.0
+ * @see         https://woocommerce.com/document/template-structure/
+ * @package     WooCommerce\Templates
+ * @version     9.2.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,10 +20,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 global $product;
+	
+$aria_describedby = isset( $args['aria-describedby_text'] ) ? sprintf( 'aria-describedby="woocommerce_loop_add_to_cart_link_describedby_%s"', esc_attr( $product->get_id() ) ) : '';
+
+
 $bridge_qode_options = bridge_qode_return_global_options();
 
 $button_classes = ' qbutton add-to-cart-button';
-if (isset($bridge_qode_options['woo_products_add_to_cart_hover_type']) && $bridge_qode_options['woo_products_add_to_cart_hover_type'] !== ''){
+if ( isset( $bridge_qode_options['woo_products_add_to_cart_hover_type'] ) && $bridge_qode_options['woo_products_add_to_cart_hover_type'] !== '' ) {
 	$button_classes .= ' enlarge';
 }
 
@@ -36,8 +39,9 @@ if ( ! $product->is_in_stock() ) : ?>
     </span>
 <?php else :
 	echo apply_filters( 'woocommerce_loop_add_to_cart_link', // WPCS: XSS ok.
-		sprintf( '<span class="add-to-cart-button-outer"><span class="add-to-cart-button-inner"><a href="%s" data-quantity="%s" class="%s" %s>%s</a></span></span>',
-			esc_url( $product->add_to_cart_url() ),
+		sprintf( '<span class="add-to-cart-button-outer"><span class="add-to-cart-button-inner"><a href="%s" %s data-quantity="%s" class="%s" %s>%s</a></span></span>',
+		         esc_url( $product->add_to_cart_url() ),
+		         $aria_describedby,
 			esc_attr( isset( $args['quantity'] ) ? $args['quantity'] : 1 ),
 			esc_attr( isset( $args['class'] ) ? $args['class'] . $button_classes : 'button' . $button_classes ),
 			isset( $args['attributes'] ) ? wc_implode_html_attributes( $args['attributes'] ) : '',
@@ -45,4 +49,9 @@ if ( ! $product->is_in_stock() ) : ?>
 		),
 		$product, $args );
 
-endif;
+endif; ?>
+<?php if ( isset( $args['aria-describedby_text'] ) ) : ?>
+	<span id="woocommerce_loop_add_to_cart_link_describedby_<?php echo esc_attr( $product->get_id() ); ?>" class="screen-reader-text">
+		<?php echo esc_html( $args['aria-describedby_text'] ); ?>
+	</span>
+<?php endif; ?>

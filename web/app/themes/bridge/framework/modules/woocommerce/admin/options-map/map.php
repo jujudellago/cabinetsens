@@ -465,7 +465,18 @@ if(!function_exists('bridge_qode_woocommerce_options_map')) {
 
 		$quantity_button_icon_hover_color = new BridgeQodeField('colorsimple', 'quantity_button_icon_hover_color', '', esc_html__( 'Icon Hover Color', 'bridge'));
 		$quantity_buttons_group->addChild('quantity_button_icon_hover_color', $quantity_button_icon_hover_color);
-
+		
+		bridge_qode_add_admin_field(
+			array(
+				'name'              => 'product_gallery_slider_on_mobile',
+				'type'              => 'yesno',
+				'label'             => esc_html__('Make slider of product gallery images on mobile', 'bridge'),
+				'description'       => esc_html__('Enabling this option will make slider of product gallery images on mobile screen resolutions', 'bridge'),
+				'default_value'     => 'no',
+				'parent'            => $product_single_panel
+			)
+		);
+		
 		//Default WooCommerce features
 
 		$default_woo_features_container = bridge_qode_add_admin_container(
@@ -557,13 +568,33 @@ if(!function_exists('bridge_qode_woocommerce_options_map')) {
 		$panel_dropdown_cart = new BridgeQodePanel(esc_html__( 'Dropdown Cart', 'bridge'), 'panel_dropdown_cart');
 		$woocommerce_page->addChild('panel_dropdown_cart', $panel_dropdown_cart);
 
-		$woo_cart_type = new BridgeQodeField('select', 'woo_cart_type', '', esc_html__( 'Cart Icon Type', 'bridge'), esc_html__( 'Choose icon type for dropdown cart icon', 'bridge'), array(
-			'' => esc_html__( 'Default', 'bridge'),
-			'font-elegant' => esc_html__( 'Font Elegant Icon', 'bridge'),
-			'dripicons'	=> esc_html__( 'Dripicons Icon', 'bridge'),
-			'font-awesome'	=> esc_html__( 'Font Awesome', 'bridge')
-		));
+		$woo_cart_type = new BridgeQodeField('select', 'woo_cart_type', '', esc_html__( 'Cart Icon Type', 'bridge'), esc_html__( 'Choose icon type for dropdown cart icon', 'bridge'),
+			array(
+				'' => esc_html__( 'Default', 'bridge'),
+				'font-elegant' => esc_html__( 'Font Elegant Icon', 'bridge'),
+				'dripicons'	=> esc_html__( 'Dripicons Icon', 'bridge'),
+				'font-awesome'	=> esc_html__( 'Font Awesome', 'bridge'),
+				'svg_path' => esc_html__( 'SVG Path', 'bridge'),
+			),
+			array(
+			"dependence" => true,
+				"hide" => array(
+					'' => '#qodef_woo_cart_icon_svg_container',
+					'font-elegant' => '#qodef_woo_cart_icon_svg_container',
+					'dripicons' => '#qodef_woo_cart_icon_svg_container',
+					'font-awesome' => '#qodef_woo_cart_icon_svg_container',
+				),
+				"show" => array(
+					'svg_path' => '#qodef_woo_cart_icon_svg_container'
+				)
+			)
+		);
 		$panel_dropdown_cart->addChild('woo_cart_type', $woo_cart_type);
+		
+		$woo_cart_icon_svg_container = new BridgeQodeContainer("woo_cart_icon_svg_container","woo_cart_type", "", array( '', 'font-elegant', 'dripicons', 'font-awesome' ));
+		$woo_cart_icon_svg_opener = new BridgeQodeField("textarea", "woo_cart_icon_svg_opener", "", esc_html__('Cart Icon SVG Path', 'bridge'), esc_html__('Enter your Cart icon SVG path here. Please remove version and id attributes from your SVG path because of HTML validation', 'bridge'), "", array("col_width" => 3));
+		$woo_cart_icon_svg_container->addChild("woo_cart_icon_svg_opener", $woo_cart_icon_svg_opener);
+		$panel_dropdown_cart->addChild("woo_cart_icon_svg_container", $woo_cart_icon_svg_container);
 
 	}
 	add_action('bridge_qode_action_options_map','bridge_qode_woocommerce_options_map',200);

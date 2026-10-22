@@ -299,3 +299,17 @@ if( ! function_exists('bridge_core_generate_portfolio_link') ){
         return $portfolio_link;
     }
 }
+
+if( ! function_exists( 'bridge_core_generate_portfolio_link_target' ) ) {
+	function bridge_core_generate_portfolio_link_target() {
+		$custom_portfolio_link = get_post_meta(get_the_ID(), 'qode_portfolio-external-link', true);
+		
+		if(get_post_meta(get_the_ID(), 'qode_portfolio-external-link-target', true) != ""){
+			$custom_portfolio_link_target = get_post_meta(get_the_ID(), 'qode_portfolio-external-link-target', true);
+		} else {
+			$custom_portfolio_link_target = '_blank';
+		}
+		
+		return $custom_portfolio_link != "" ? $custom_portfolio_link_target : '_self';
+	}
+}

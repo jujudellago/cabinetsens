@@ -10,9 +10,12 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see     https://docs.woocommerce.com/document/template-structure/
- * @package WooCommerce/Templates
- * @version 7.4.0
+ * @see     https://woocommerce.com/document/template-structure/
+ * @package WooCommerce\Templates
+ * @version 10.1.0
+ *
+ * @var bool   $readonly If the input should be set to readonly mode.
+ * @var string $type     The input type attribute.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -38,7 +41,26 @@ if ( $max_value && $min_value === $max_value ) {
 		<input type="hidden" id="<?php echo esc_attr( $input_id ); ?>" class="qty" name="<?php echo esc_attr( $input_name ); ?>" value="<?php echo esc_attr( $min_value ); ?>" />
 	<?php } else { ?>
 		<input type="button" value="-" class="minus" />
-		<input type="text" id="<?php echo esc_attr( $input_id ); ?>" step="<?php echo esc_attr( $step ); ?>" min="<?php echo esc_attr( $min_value ); ?>" max="<?php echo esc_attr( 0 < $max_value ? $max_value : '' ); ?>" name="<?php echo esc_attr( $input_name ); ?>" value="<?php echo esc_attr( $input_value ); ?>" title="<?php echo esc_attr_x( 'Qty', 'Product quantity input tooltip', 'bridge' ) ?>" class="input-text qty text" size="4" pattern="<?php echo esc_attr( $pattern ); ?>" inputmode="<?php echo esc_attr( $inputmode ); ?>" aria-labelledby="<?php echo ! empty( $args['product_name'] ) ? sprintf( esc_attr__( '%s quantity', 'bridge' ), $args['product_name'] ) : ''; ?>" />
+		<input type="text"
+		       id="<?php echo esc_attr( $input_id ); ?>"
+		       min="<?php echo esc_attr( $min_value ); ?>"
+		       max="<?php echo esc_attr( 0 < $max_value ? $max_value : '' ); ?>"
+		       name="<?php echo esc_attr( $input_name ); ?>"
+		       value="<?php echo esc_attr( $input_value ); ?>"
+		       aria-label="<?php esc_attr_e( 'Qty', 'bridge' ) ?>"
+		       class="input-text qty text"
+				<?php if ( in_array( $type, array( 'text', 'search', 'tel', 'url', 'email', 'password' ), true ) ) : ?>
+					size="4"
+				<?php endif; ?>
+		       pattern="<?php echo esc_attr( $pattern ); ?>"
+		       aria-labelledby="<?php echo ! empty( $args['product_name'] ) ? sprintf( esc_attr__( '%s quantity', 'bridge' ), $args['product_name'] ) : ''; ?>"
+				<?php if ( ! $readonly ) : ?>
+					step="<?php echo esc_attr( $step ); ?>"
+					placeholder="<?php echo esc_attr( $placeholder ); ?>"
+					inputmode="<?php echo esc_attr( $inputmode ); ?>"
+					autocomplete="<?php echo esc_attr( isset( $autocomplete ) ? $autocomplete : 'on' ); ?>"
+				<?php endif; ?>
+		/>
 		<input type="button" value="+" class="plus" />
 	<?php } ?>
 	
