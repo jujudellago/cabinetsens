@@ -25,6 +25,10 @@ pages/posts return 200 (2 intentional 302 redirects), no PHP fatals or syntax er
 
 ## Deploy
 
+0. Add `RSSSL_KEY` to `shared/.env` **before** deploying (Really Simple SSL 9.x encryption key, read by
+   `config/application.php`). Without it the plugin writes the key into `web/wp-config.php` inside the release
+   and deletes its DB copy, so the next deploy loses it. Generate once: `openssl rand -base64 48 | tr -dc A-Za-z0-9 | head -c 64`.
+   If production already has a `rsssl_main_key` site option, use that value instead: `wp option get rsssl_main_key`.
 1. Back up the production DB and `shared/web/app/uploads`.
 2. Merge the branch to `master`, push, then `bundle exec cap production deploy`.
 3. On the server, in `current`:
@@ -51,6 +55,10 @@ pages/posts return 200 (2 intentional 302 redirects), no PHP fatals or syntax er
 
 - `web/app/themes/bridge/css/style_dynamic_callback.php`, `css/style_dynamic_responsive_callback.php`,
   `js/default_dynamic_callback.php`: load `wp/wp-load.php` (Bedrock layout). Re-apply after every Bridge update.
+- `web/app/themes/bridge/css/style_dynamic*.css` and `js/default_dynamic.js` are generated from the Bridge options
+  but committed (each deploy replaces the theme folder). They are kept as production serves them. Note: the
+  options in the DB say 40/35/30px headings while the committed CSS has 35/30/27px, so saving Bridge options
+  will change the look. Regenerate locally, check, and commit if a change is intended.
 
 ## Still to decide
 

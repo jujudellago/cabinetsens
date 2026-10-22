@@ -67,6 +67,14 @@ define('LOGGED_IN_SALT', env('LOGGED_IN_SALT'));
 define('NONCE_SALT', env('NONCE_SALT'));
 
 /**
+ * Really Simple SSL encryption key. Kept in .env (shared between releases): when it is
+ * not defined the plugin writes it into web/wp-config.php, which each deploy replaces.
+ */
+if (env('RSSSL_KEY')) {
+    define('RSSSL_KEY', env('RSSSL_KEY'));
+}
+
+/**
  * Custom Settings
  */
 define('AUTOMATIC_UPDATER_DISABLED', true);
