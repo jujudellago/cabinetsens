@@ -41,7 +41,7 @@ if ( ! class_exists( 'Envato_Market_Github' ) ) :
 		 *
 		 * @var string
 		 */
-		private static $api_url = 'http://envato.github.io/wp-envato-market/dist/update-check.json';
+		private static $api_url = 'https://envato.github.io/wp-envato-market/dist/update-check.json';
 
 		/**
 		 * The Envato_Market_Items Instance
@@ -298,7 +298,8 @@ if ( ! class_exists( 'Envato_Market_Github' ) ) :
 						'action'   => 'activate',
 						'plugin'   => urlencode( "$slug/$slug.php" ),
 						'_wpnonce' => urlencode( wp_create_nonce( "activate-plugin_$slug/$slug.php" ) ),
-					), self_admin_url( 'plugins.php' )
+					),
+					self_admin_url( 'plugins.php' )
 				);
 
 				$message = sprintf(
@@ -311,7 +312,8 @@ if ( ! class_exists( 'Envato_Market_Github' ) ) :
 					array(
 						'action' => 'install-plugin',
 						'plugin' => $slug,
-					), self_admin_url( 'update.php' )
+					),
+					self_admin_url( 'update.php' )
 				);
 
 				$message = sprintf(
@@ -349,7 +351,12 @@ if ( ! class_exists( 'Envato_Market_Github' ) ) :
 		 * @since 1.0.0
 		 */
 		public function dismiss_notice() {
-			check_ajax_referer( self::AJAX_ACTION, 'nonce' );
+			if ( ! check_ajax_referer( self::AJAX_ACTION, 'nonce', false ) ) {
+				status_header( 400 );
+				wp_send_json_error( 'bad_nonce' );
+			} elseif ( ! current_user_can( 'update_plugins' ) ) {
+				wp_send_json_error( array( 'message' => __( 'User not allowed to update items.', 'envato-market' ) ) );
+			}
 
 			update_option( self::AJAX_ACTION, 'dismissed' );
 			wp_send_json_success();
