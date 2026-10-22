@@ -99,6 +99,7 @@ set :local_app_path, Pathname.new(File.dirname(__FILE__)).join('../')
 
 namespace :deploy do
   task :set_rights do
+    next unless fetch(:set_rights, true) # disabled per stage (teerak)
     on roles(:web) do
       execute :find, release_path.to_s, ' -type d -name  "*" -exec chmod 755 {} \;'
       execute :find, release_path.to_s, ' -type f -name  "*" -exec chmod 644 {} \;'

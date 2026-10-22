@@ -27,7 +27,7 @@
     "optimize-autoloader": true,
     "preferred-install": "dist",
     "platform": {
-      "php": "8.5.12"
+      "php": "8.3.36"
     },
     "allow-plugins": {
       "composer/installers": true,
