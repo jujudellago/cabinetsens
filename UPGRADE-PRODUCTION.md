@@ -40,6 +40,10 @@ pages/posts return 200 (2 intentional 302 redirects), no PHP fatals or syntax er
 
 - `obfuscate-email`, `stop-spam-comments`, `google-no-captcha-recaptcha`: closed on wordpress.org (no longer
   installable). The first two were active; WordPress deactivates missing plugins automatically.
+- Unused, not updatable: `advanced-custom-fields-pro` 5.7.6 (no field groups) and `vc-extensions-bundle` 3.6.5
+  (shortcodes only in 2018 revisions). Both were active; WordPress deactivates them automatically.
+- Inactive and unmaintained: `qode-instagram-widget`, `qode-twitter-feed`, `essential-grid`, `otw-blog-manager`,
+  `trx_addons`, `uxbarn-portfolio-lite`, themes `jeanne` and `callie-britt`.
 - `roots/wp-password-bcrypt`: WordPress ≥ 6.8 hashes with bcrypt natively and still verifies existing `$2y$`
   hashes, so nobody needs to reset a password.
 
@@ -50,11 +54,6 @@ pages/posts return 200 (2 intentional 302 redirects), no PHP fatals or syntax er
 
 ## Still to decide
 
-- **Not updatable from the package, unused by the site:** `advanced-custom-fields-pro` 5.7.6 (2018, active,
-  no field groups; only the inactive `jeanne` theme uses it; many PHP 8.5 deprecations) and
-  `vc-extensions-bundle` 3.6.5 (active, shortcodes only in 2018 revisions). Candidates for removal.
 - `envato-market` 2.0.1 → 2.0.14 available (https://envato.github.io/wp-envato-market/dist/envato-market.zip).
-- Inactive and unmaintained, still committed: `qode-instagram-widget`, `qode-twitter-feed`, `essential-grid`
-  2.2.5, `otw-blog-manager`, `trx_addons`, `uxbarn-portfolio-lite`, themes `jeanne`, `callie-britt`.
 - `web/wp-config.php` defines `WP_CACHE` true ("Added by W3 Total Cache") although W3TC is inactive. Harmless
   without `advanced-cache.php`, but can be removed.

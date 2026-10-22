@@ -2,23 +2,16 @@
 web/app/plugins/*
 !web/app/plugins/.gitkeep
 !web/app/plugins/js_composer
-!web/app/plugins/uxbarn-portfolio-lite
 !web/app/plugins/envato-market
-!web/app/plugins/advanced-custom-fields-pro
 !web/app/plugins/wpml-cms-nav
 !web/app/plugins/wpml-media-translation
 !web/app/plugins/wpml-sticky-links
 !web/app/plugins/wpml-string-translation
 !web/app/plugins/wpml-translation-management
 !web/app/plugins/sitepress-multilingual-cms
-!web/app/plugins/otw-blog-manager
 !web/app/plugins/revslider
-!web/app/plugins/trx_addons
-!web/app/plugins/essential-grid
-!web/app/plugins/vc-extensions-bundle
 !web/app/plugins/LayerSlider
 !web/app/plugins/bridge-core
-!web/app/plugins/qode-instagram-widget
 !web/app/plugins/qode-listing
 !web/app/plugins/qode-lms
 !web/app/plugins/qode-membership
@@ -28,7 +21,6 @@ web/app/plugins/*
 !web/app/plugins/qode-real-estate
 !web/app/plugins/qode-restaurant
 !web/app/plugins/qode-tours
-!web/app/plugins/qode-twitter-feed
 !web/app/plugins/qode-woocommerce-checkout-integration
 !web/app/plugins/timetable
 
