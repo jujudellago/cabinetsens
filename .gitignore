@@ -70,3 +70,11 @@ bin
 
 log/*
 config/backups
+
+# Local-only: downloads, scratch, generated, diagnostics
+/tmp/
+web/app/tmp_plugins/
+web/app/themes/*.zip
+web/app/cache/
+web/app/rsssl-managed-htaccess.lock
+web/info.php
