@@ -71,3 +71,10 @@ bundle _4.0.23_ exec cap teerak deploy
 - Don't use the old DB/uploads sync tasks against production.
 - Commit only intended files, never `git add .`. This checkout has local work in progress (`bridge-child/header.php`, `lib/`, `Gemfile`…) that is not deployed.
 - Email is intentionally disabled on the site.
+
+## Pulling and pushing data
+
+- `bundle _4.0.23_ exec cap teerak wpcli:db:pull`: production DB → local DB (replaces the local DB, rewrites URLs). Safe for production.
+- `bundle _4.0.23_ exec cap teerak wpcli:uploads:rsync:pull`: production uploads → local.
+- `wpcli:db:push` / `wpcli:uploads:rsync:push` **overwrite production**. On teerak they ask you to type `cabinetsens` first; the gem also saves a production DB backup in `config/backups/` before asking. Don't push a stale local DB.
+- The stage maps `wp` to `teerak-wp cabinetsens` only on the server; local steps use your local `wp`.

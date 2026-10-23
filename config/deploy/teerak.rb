@@ -77,3 +77,33 @@ namespace :wpcli do
     end
   end
 end
+
+# --- WP-CLI data sync (wpcli:db:pull/push, uploads) -----------------------------
+# :wp is mapped to the server-only teerak-wp wrapper above. SSHKit's command map is
+# global, so give local commands (db import/export, search-replace on this Mac)
+# plain wp while the local backend runs them.
+module TeerakLocalWp
+  def execute_command(cmd)
+    map = SSHKit.config.command_map
+    remote_wp = map[:wp]
+    map[:wp] = "wp"
+    super
+  ensure
+    map[:wp] = remote_wp
+  end
+end
+SSHKit::Backend::Local.prepend(TeerakLocalWp) unless SSHKit::Backend::Local < TeerakLocalWp
+
+# One dump file per site on the server instead of the gem's shared name.
+set :wpcli_remote_db_file, "/tmp/wpcli-cabinetsens.sql.gz"
+
+# Pushing local data to teerak overwrites the live production site: confirm first.
+namespace :teerak do
+  task :confirm_push do
+    ask(:teerak_push_confirm, "This OVERWRITES PRODUCTION cabinetsens with local data. Type 'cabinetsens' to continue")
+    raise "Push cancelled" unless fetch(:teerak_push_confirm).to_s.strip == "cabinetsens"
+  end
+end
+%w[wpcli:db:push wpcli:uploads:rsync:push].each do |t|
+  before t, "teerak:confirm_push" if Rake::Task.task_defined?(t)
+end
