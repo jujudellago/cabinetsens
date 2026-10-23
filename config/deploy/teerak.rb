@@ -94,8 +94,21 @@ module TeerakLocalWp
 end
 SSHKit::Backend::Local.prepend(TeerakLocalWp) unless SSHKit::Backend::Local < TeerakLocalWp
 
-# One dump file per site on the server instead of the gem's shared name.
+# One dump file per site on the server instead of the gem's shared name. /tmp is shared
+# with the other site users: pre-create it deploy-only (0600) before each export, so the
+# dump never exists world-readable. If someone else owns that path, install fails in the
+# sticky /tmp and the task aborts instead of writing the DB there.
 set :wpcli_remote_db_file, "/tmp/wpcli-cabinetsens.sql.gz"
+namespace :teerak do
+  task :private_dump_file do
+    on roles(:web) do
+      execute :install, "-m", "600", "/dev/null", fetch(:wpcli_remote_db_file)
+    end
+  end
+end
+%w[wpcli:db:pull wpcli:db:backup:remote].each do |t|
+  before t, "teerak:private_dump_file" if Rake::Task.task_defined?(t)
+end
 
 # Pushing local data to teerak overwrites the live production site: confirm first.
 namespace :teerak do
